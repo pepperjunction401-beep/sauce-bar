@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Sauce Bar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Digital Sauce Bar</h1>
+        <p>Find your perfect sauce!</p>
+    </header>
+    <section class="filters">
+        <h2>Filters</h2>
+        <label for="sauce-type">Sauce Type:</label>
+        <select id="sauce-type">
+            <option value="all">All</option>
+            <option value="hot">Hot</option>
+            <option value="sweet">Sweet</option>
+            <option value="savory">Savory</option>
+        </select>
+        <button id="filter-btn">Apply Filters</button>
+    </section>
+    <section class="results">
+        <h2>Results</h2>
+        <div id="results-grid">
+            <!-- Results will be dynamically populated here -->
+        </div>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>
