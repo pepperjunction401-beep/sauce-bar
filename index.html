@@ -3,31 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Sauce Bar</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Pepper Junction Digital Sauce Finder</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; }
+        header { background: #ff6347; padding: 10px; text-align: center; color: white; }
+        .container { width: 80%; margin: auto; overflow: hidden; }
+        input[type='text'] { width: 100%; padding: 10px; margin: 10px 0; }
+        .sauce { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+        .filter { margin-bottom: 20px; }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Digital Sauce Bar</h1>
-        <p>Find your perfect sauce!</p>
+        <h1>Pepper Junction Digital Sauce Finder</h1>
     </header>
-    <section class="filters">
-        <h2>Filters</h2>
-        <label for="sauce-type">Sauce Type:</label>
-        <select id="sauce-type">
-            <option value="all">All</option>
-            <option value="hot">Hot</option>
-            <option value="sweet">Sweet</option>
-            <option value="savory">Savory</option>
-        </select>
-        <button id="filter-btn">Apply Filters</button>
-    </section>
-    <section class="results">
-        <h2>Results</h2>
-        <div id="results-grid">
-            <!-- Results will be dynamically populated here -->
+    <div class="container">
+        <div class="filter">
+            <label for="search">Search for Sauces:</label>
+            <input type="text" id="search" placeholder="Type to search...">
         </div>
-    </section>
-    <script src="script.js"></script>
+        <div id="sauces">
+            <!-- Product data will be injected here by JavaScript -->
+        </div>
+    </div>
+    <script>
+        const sauces = [
+            { name: 'Sweet Chili Sauce', type: 'sweet', heat: 2 },
+            { name: 'Spicy BBQ Sauce', type: 'spicy', heat: 4 },
+            { name: 'Garlic Hot Sauce', type: 'spicy', heat: 5 },
+            { name: 'Honey Mustard Sauce', type: 'sweet', heat: 1 },
+            { name: 'Buffalo Sauce', type: 'spicy', heat: 5 },
+            // Add more sauces as needed
+        ];
+
+        function displaySauces(sauceList) {
+            const saucesContainer = document.getElementById('sauces');
+            saucesContainer.innerHTML = '';
+            sauceList.forEach(sauce => {
+                const sauceDiv = document.createElement('div');
+                sauceDiv.classList.add('sauce');
+                sauceDiv.innerHTML = `<strong>${sauce.name}</strong> (Heat Level: ${sauce.heat})`;
+                saucesContainer.appendChild(sauceDiv);
+            });
+        }
+
+        document.getElementById('search').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const filteredSauces = sauces.filter(sauce => sauce.name.toLowerCase().includes(searchTerm));
+            displaySauces(filteredSauces);
+        });
+
+        displaySauces(sauces);
+    </script>
 </body>
 </html>
