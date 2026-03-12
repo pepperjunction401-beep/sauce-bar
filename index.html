@@ -160,7 +160,7 @@
       const heatFinish = els.heatFinish.value;
 
       if (category && record["Category"] !== category) return false;
-      if (heatTier && record["Heat Teir"] !== heatTier) return false;
+      if (heatTier && record["Heat Tier"] !== heatTier) return false;
       if (foodStyle && record["Food Style"] !== foodStyle) return false;
       if (pepperType && record["Pepper Type"] !== pepperType) return false;
       if (heatCurve && record["Heat Curve"] !== heatCurve) return false;
@@ -173,7 +173,7 @@
           record["Category"],
           record["Food Style"],
           record["Pepper Type"],
-          record["Heat Teir"],
+          record["Heat Tier"],
           record["Heat Curve"],
           record["Heat Finish"],
           record["Primary Flavor Notes"],
@@ -215,7 +215,7 @@
             ${pill(record["Category"])}
             ${pill(record["Food Style"])}
             ${pill(record["Pepper Type"])}
-            ${pill(record["Heat Teir"])}
+            ${pill(record["Heat Tier"])}
           </div>
 
           <div class="pj-meta">
