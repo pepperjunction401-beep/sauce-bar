@@ -188,7 +188,9 @@
 
 function getRelevanceScore(record, query) {
   let score = 0;
-  const q = query.toLowerCase();
+
+  const q = query.toLowerCase().trim();
+  const singularQ = q.endsWith("s") ? q.slice(0, -1) : q;
 
   const productName = (record["Product Name"] || "").toLowerCase();
   const pairings = (record["Best Food Pairings"] || "").toLowerCase();
@@ -197,12 +199,16 @@ function getRelevanceScore(record, query) {
   const foodStyle = (record["Food Style"] || "").toLowerCase();
   const category = (record["Category"] || "").toLowerCase();
 
-  if (productName.includes(q)) score += 12;
-  if (pairings.includes(q)) score += 15;
-  if (foodStyle.includes(q)) score += 14;
-  if (flavorNotes.includes(q)) score += 8;
-  if (pepperType.includes(q)) score += 5;
-  if (category.includes(q)) score += 4;
+  function includesQuery(text) {
+    return text.includes(q) || text.includes(singularQ);
+  }
+
+  if (includesQuery(productName)) score += 12;
+  if (includesQuery(pairings)) score += 15;
+  if (includesQuery(foodStyle)) score += 14;
+  if (includesQuery(flavorNotes)) score += 8;
+  if (includesQuery(pepperType)) score += 5;
+  if (includesQuery(category)) score += 4;
 
   return score;
 }
