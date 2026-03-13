@@ -186,6 +186,19 @@
       return true;
     }
 
+    function getRelevanceScore(record, query) {
+  let score = 0;
+  const q = query.toLowerCase();
+
+  if ((record["Product Name"] || "").toLowerCase().includes(q)) score += 10;
+  if ((record["Best Food Pairings"] || "").toLowerCase().includes(q)) score += 8;
+  if ((record["Primary Flavor Notes"] || "").toLowerCase().includes(q)) score += 7;
+  if ((record["Pepper Type"] || "").toLowerCase().includes(q)) score += 6;
+  if ((record["Food Style"] || "").toLowerCase().includes(q)) score += 5;
+  if ((record["Category"] || "").toLowerCase().includes(q)) score += 4;
+
+  return score;
+}
     function pill(text) {
       if (!text) return '';
       return `<span class="pj-pill">${escapeHtml(text)}</span>`;
@@ -263,11 +276,23 @@
         return;
       }
 
-      filtered.sort((a, b) => {
-        const byHeat = Number(a["Heat Level"] || 0) - Number(b["Heat Level"] || 0);
-        if (byHeat !== 0) return byHeat;
-        return String(a["Product Name"] || '').localeCompare(String(b["Product Name"] || ''));
-      });
+    filtered.sort((a, b) => {
+  const query = els.search.value.trim().toLowerCase();
+
+  if (query) {
+    const scoreA = getRelevanceScore(a, query);
+    const scoreB = getRelevanceScore(b, query);
+
+    if (scoreA !== scoreB) return scoreB - scoreA;
+  }
+
+  const heatA = Number(a["Heat Level"] || 0);
+  const heatB = Number(b["Heat Level"] || 0);
+
+  if (heatA !== heatB) return heatB - heatA;
+
+  return String(a["Product Name"] || '').localeCompare(String(b["Product Name"] || ''));
+});
 
       els.results.innerHTML = filtered.map(card).join('');
     }
