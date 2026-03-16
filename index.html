@@ -268,18 +268,20 @@
   color: var(--accent);
 }
 
-  .pj-name::after {
+ .pj-name::after {
   content: "";
   position: absolute;
-  top: -4px;
+  top: -8px;
   right: 0;
-  width: 36px;
-  height: 36px;
+  width: 60px;
+  height: 60px;
   background-image: url("assets/pj-logo.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.9;
+  opacity: 1;
+  outline: 1px solid blue;
+  background-color: rgba(255, 0, 0, 0.08);
 }
 
   .pj-meta {
