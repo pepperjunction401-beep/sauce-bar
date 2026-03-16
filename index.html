@@ -261,29 +261,25 @@
     z-index: 1;
   }
 
-  .pj-name {
+ .pj-name {
   margin: 0 0 10px;
   font-size: 18px;
   line-height: 1.25;
   color: var(--accent);
   position: relative;
-  padding-right: 44px;
+  padding-right: 50px;
 }
- pj-name::after {
+ .pj-name::after {
   content: "";
   position: absolute;
-  top: -4px;
-  right: 10px;
   width: 36px;
   height: 36px;
-  background-image: url("assets/PJ-logo.png");
+  top: -4px;
+  right: 10px;
+  background: url("assets/PJ-logo.png") no-repeat center;
   background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  outline: 1px solid blue;
-  background-color: rgba(255, 0, 0, 0.08);
-}
-  .pj-meta {
+} 
+   .pj-meta {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
