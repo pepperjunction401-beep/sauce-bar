@@ -590,8 +590,9 @@ function getRelevanceScore(record, query) {
     function card(record) {
       const productUrl = PRODUCT_URL_COL ? String(record[PRODUCT_URL_COL] || '').trim() : '';
       const action = productUrl
-        ? `<div class="pj-card-actions"><a class="pj-btn primary" href="${escapeHtml(productUrl)}" target="_blank" rel="noopener noreferrer">View Sauce</a></div>`
-        : '';
+        const action = productUrl
+  ? `<div class="pj-card-actions"><a class="pj-btn sauce" href="${escapeHtml(productUrl)}" target="_blank" rel="noopener noreferrer">View Sauce</a></div>`
+  : '';
 
       return `
         <article class="pj-card">
