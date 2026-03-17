@@ -264,6 +264,7 @@ body {
   position: relative;
   overflow: hidden;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
+   cursor: pointer;
 }
 
 .pj-card:hover {
@@ -292,10 +293,6 @@ body {
   pointer-events: none;
 }
 
-.pj-card:hover .pj-name {
-  color: #8f1c0a;
-}
-
   .pj-brand {
     color: var(--ticket-ink);
     font-size: 11px;
@@ -314,6 +311,11 @@ body {
   color: #b8260e;
   position: relative;
   padding-right: 92px;
+ transition: color 0.18s ease;
+}
+
+.pj-card:hover .pj-name {
+  color: #3f8f04;
 }
    
 .pj-name::before {
