@@ -587,55 +587,54 @@ function getRelevanceScore(record, query) {
         .replace(/'/g, '&#39;');
     }
 
-    function card(record) {
-      const productUrl = PRODUCT_URL_COL ? String(record[PRODUCT_URL_COL] || '').trim() : '';
-      const action = productUrl
-        const action = productUrl
-  ? `<div class="pj-card-actions"><a class="pj-btn sauce" href="${escapeHtml(productUrl)}" target="_blank" rel="noopener noreferrer">View Sauce</a></div>`
-  : '';
+function card(record) {
+  const productUrl = PRODUCT_URL_COL ? String(record[PRODUCT_URL_COL] || '').trim() : '';
+  const action = productUrl
+    ? `<div class="pj-card-actions"><a class="pj-btn sauce" href="${escapeHtml(productUrl)}" target="_blank" rel="noopener noreferrer">View Sauce</a></div>`
+    : '';
 
-      return `
-        <article class="pj-card">
-          <div class="pj-brand">${escapeHtml(record["Brand"])}</div>
-          <h3 class="pj-name">${escapeHtml(record["Product Name"])}</h3>
+  return `
+    <article class="pj-card">
+      <div class="pj-brand">${escapeHtml(record["Brand"])}</div>
+      <h3 class="pj-name">${escapeHtml(record["Product Name"])}</h3>
 
-          <div>
-            ${pill(record["Category"])}
-            ${pill(record["Food Style"])}
-            ${pill(record["Pepper Type"])}
-            ${pill(record["Heat Tier"])}
-          </div>
+      <div>
+        ${pill(record["Category"])}
+        ${pill(record["Food Style"])}
+        ${pill(record["Pepper Type"])}
+        ${pill(record["Heat Tier"])}
+      </div>
 
-          <div class="pj-meta">
-            <div class="pj-section">
-              <span class="pj-k">Heat Level</span>
-              <div class="pj-v">${escapeHtml(record["Heat Level"])}</div>
-            </div>
-            <div class="pj-section">
-              <span class="pj-k">Heat Curve</span>
-              <div class="pj-v">${escapeHtml(record["Heat Curve"])}</div>
-            </div>
-          </div>
+      <div class="pj-meta">
+        <div class="pj-section">
+          <span class="pj-k">Heat Level</span>
+          <div class="pj-v">${escapeHtml(record["Heat Level"])}</div>
+        </div>
+        <div class="pj-section">
+          <span class="pj-k">Heat Curve</span>
+          <div class="pj-v">${escapeHtml(record["Heat Curve"])}</div>
+        </div>
+      </div>
 
-          <div class="pj-section">
-            <span class="pj-k">Heat Finish</span>
-            <div class="pj-v">${escapeHtml(record["Heat Finish"])}</div>
-          </div>
+      <div class="pj-section">
+        <span class="pj-k">Heat Finish</span>
+        <div class="pj-v">${escapeHtml(record["Heat Finish"])}</div>
+      </div>
 
-          <div class="pj-section">
-            <span class="pj-k">Flavor Notes</span>
-            <div class="pj-v">${escapeHtml(record["Primary Flavor Notes"])}</div>
-          </div>
+      <div class="pj-section">
+        <span class="pj-k">Flavor Notes</span>
+        <div class="pj-v">${escapeHtml(record["Primary Flavor Notes"])}</div>
+      </div>
 
-          <div class="pj-section">
-            <span class="pj-k">Best Food Pairings</span>
-            <div class="pj-v">${escapeHtml(record["Best Food Pairings"])}</div>
-          </div>
+      <div class="pj-section">
+        <span class="pj-k">Best Food Pairings</span>
+        <div class="pj-v">${escapeHtml(record["Best Food Pairings"])}</div>
+      </div>
 
-          ${action}
-        </article>
-      `;
-    }
+      ${action}
+    </article>
+  `;
+}
 
     function render() {
       const filtered = PJ_DATA.filter(matches);
