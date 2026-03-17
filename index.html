@@ -252,7 +252,7 @@ body {
     counter-reset: ticket;
   }
 
-  .pj-card {
+.pj-card {
   counter-increment: ticket;
   border: 1px solid rgba(160, 116, 70, 0.52);
   border-radius: 16px;
@@ -263,29 +263,36 @@ body {
   box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-  .pj-card::before {
-    content: "";
-    position: absolute;
-    inset: 9px;
-    border: 1px dashed rgba(132, 94, 58, 0.42);
-    border-radius: 10px;
-    pointer-events: none;
-  }
+.pj-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(78, 49, 24, 0.18);
+}
 
-  .pj-card::after {
-    content: "Route 401  •  Ticket No. " counter(ticket, decimal-leading-zero);
-    position: absolute;
-    right: 16px;
-    bottom: 10px;
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(85, 57, 35, 0.56);
-    pointer-events: none;
-  }
-   .pj-card:hover .pj-name {
+.pj-card::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px dashed rgba(132, 94, 58, 0.42);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.pj-card::after {
+  content: "Route 401  •  Ticket No. " counter(ticket, decimal-leading-zero);
+  position: absolute;
+  right: 16px;
+  bottom: 10px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(85, 57, 35, 0.56);
+  pointer-events: none;
+}
+
+.pj-card:hover .pj-name {
   color: #8f1c0a;
 }
 
