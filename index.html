@@ -583,65 +583,74 @@ const PROTECTED_WORDS = [
       count: document.getElementById('pj-count')
     };
 
-    function matches(record) {
-      const q = els.search.value.trim().toLowerCase();
-      const category = els.category.value;
-      const heatTier = els.heatTier.value;
-      const foodStyle = els.foodStyle.value;
-      const pepperType = els.pepperType.value;
-      const heatCurve = els.heatCurve.value;
-      const heatFinish = els.heatFinish.value;
+function matches(record) {
+  const q = els.search.value.trim();
+  const category = els.category.value;
+  const heatTier = els.heatTier.value;
+  const foodStyle = els.foodStyle.value;
+  const pepperType = els.pepperType.value;
+  const heatCurve = els.heatCurve.value;
+  const heatFinish = els.heatFinish.value;
 
-      if (category && record["Category"] !== category) return false;
-      if (heatTier && record["Heat Tier"] !== heatTier) return false;
-      if (foodStyle && record["Food Style"] !== foodStyle) return false;
-      if (pepperType && record["Pepper Type"] !== pepperType) return false;
-      if (heatCurve && record["Heat Curve"] !== heatCurve) return false;
-      if (heatFinish && record["Heat Finish"] !== heatFinish) return false;
+  if (category && record["Category"] !== category) return false;
+  if (heatTier && record["Heat Tier"] !== heatTier) return false;
+  if (foodStyle && record["Food Style"] !== foodStyle) return false;
+  if (pepperType && record["Pepper Type"] !== pepperType) return false;
+  if (heatCurve && record["Heat Curve"] !== heatCurve) return false;
+  if (heatFinish && record["Heat Finish"] !== heatFinish) return false;
 
-      if (q) {
-        const searchable = [
-          record["Brand"],
-          record["Product Name"],
-          record["Category"],
-          record["Food Style"],
-          record["Pepper Type"],
-          record["Heat Tier"],
-          record["Heat Curve"],
-          record["Heat Finish"],
-          record["Primary Flavor Notes"],
-          record["Best Food Pairings"]
-        ].join(" | ").toLowerCase();
+  if (!matchesSearch(record, q)) return false;
 
-        if (!searchable.includes(q)) return false;
-      }
-
-      return true;
-    }
+  return true;
+}
 
 function getRelevanceScore(record, query) {
   let score = 0;
+  const q = normalizeText(query);
+  if (!q) return score;
 
-  const q = query.toLowerCase().trim();
-  const singularQ = q.endsWith("s") ? q.slice(0, -1) : q;
+  const fields = recordFields(record);
 
-  const productName = (record["Product Name"] || "").toLowerCase();
-  const pairings = (record["Best Food Pairings"] || "").toLowerCase();
-  const flavorNotes = (record["Primary Flavor Notes"] || "").toLowerCase();
-  const pepperType = (record["Pepper Type"] || "").toLowerCase();
-  const foodStyle = (record["Food Style"] || "").toLowerCase();
-  const category = (record["Category"] || "").toLowerCase();
-
-  function includesQuery(text) {
-    return text.includes(q) || text.includes(singularQ);
+  if (isLockedPhrase(q)) {
+    if (hasWholePhrase(fields.productName, q)) score += 30;
+    if (hasWholePhrase(fields.pairings, q)) score += 40;
+    if (hasWholePhrase(fields.flavorNotes, q)) score += 18;
+    if (hasWholePhrase(fields.foodStyle, q)) score += 16;
+    if (hasWholePhrase(fields.brand, q)) score += 8;
+    if (hasWholePhrase(fields.category, q)) score += 6;
+    return score;
   }
 
-  if (includesQuery(productName)) score += 12;
-  if (includesQuery(pairings)) score += 15;
-  if (includesQuery(foodStyle)) score += 14;
-  if (includesQuery(flavorNotes)) score += 8;
-  if (includesQuery(pepperType)) score += 5;
-  if (includesQuery(category)) score += 4;
+  if (isProtectedWord(q)) {
+    if (hasWholeWord(fields.productName, q)) score += 22;
+    if (hasWholeWord(fields.pairings, q)) score += 28;
+    if (hasWholeWord(fields.flavorNotes, q)) score += 14;
+    if (hasWholeWord(fields.foodStyle, q)) score += 12;
+    if (hasWholeWord(fields.brand, q)) score += 6;
+    if (hasWholeWord(fields.category, q)) score += 4;
+    return score;
+  }
+
+  const parts = q.split(/\s+/).filter(Boolean);
+
+  if (parts.length > 1) {
+    parts.forEach((part) => {
+      if (hasWholeWord(fields.productName, part)) score += 10;
+      if (hasWholeWord(fields.pairings, part)) score += 12;
+      if (hasWholeWord(fields.flavorNotes, part)) score += 6;
+      if (hasWholeWord(fields.foodStyle, part)) score += 7;
+      if (hasWholeWord(fields.brand, part)) score += 3;
+      if (hasWholeWord(fields.category, part)) score += 2;
+    });
+    return score;
+  }
+
+  if (hasWholeWord(fields.productName, q)) score += 12;
+  if (hasWholeWord(fields.pairings, q)) score += 15;
+  if (hasWholeWord(fields.foodStyle, q)) score += 14;
+  if (hasWholeWord(fields.flavorNotes, q)) score += 8;
+  if (hasWholeWord(fields.pepperType, q)) score += 5;
+  if (hasWholeWord(fields.category, q)) score += 4;
 
   return score;
 }
