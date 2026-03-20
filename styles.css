@@ -48,3 +48,21 @@ header {
     flex-direction: column;
   }
 }
+/* ------------------------------------------------ */
+/* Pepper Junction Sauce Card Hover Interaction     */
+/* ------------------------------------------------ */
+
+.pj-card {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.pj-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+}
+
+/* Title highlight on hover */
+
+.pj-card:hover .pj-title {
+  color: #9f1e0c;
+}
