@@ -582,6 +582,117 @@ const PROTECTED_WORDS = [
       results: document.getElementById('pj-results'),
       count: document.getElementById('pj-count')
     };
+    function normalizeText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function escapeRegExp(str) {
+  return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getQueryVariants(term) {
+  const t = normalizeText(term);
+  if (!t) return [];
+
+  const variants = new Set([t]);
+
+  if (t.length > 3) {
+    if (t.endsWith("s")) {
+      variants.add(t.slice(0, -1));
+    } else {
+      variants.add(`${t}s`);
+    }
+  }
+
+  return [...variants];
+}
+
+function hasWholeWord(text, term) {
+  const normalized = normalizeText(text);
+  if (!normalized) return false;
+
+  return getQueryVariants(term).some((variant) => {
+    const pattern = new RegExp(`(^|[^a-z0-9])${escapeRegExp(variant)}($|[^a-z0-9])`, "i");
+    return pattern.test(normalized);
+  });
+}
+
+function hasWholePhrase(text, phrase) {
+  const normalized = normalizeText(text);
+  const target = normalizeText(phrase);
+  if (!normalized || !target) return false;
+
+  const pattern = new RegExp(`(^|[^a-z0-9])${escapeRegExp(target)}($|[^a-z0-9])`, "i");
+  return pattern.test(normalized);
+}
+
+function isLockedPhrase(query) {
+  const q = normalizeText(query);
+  return LOCKED_PHRASES.some((phrase) => normalizeText(phrase) === q);
+}
+
+function isProtectedWord(query) {
+  const q = normalizeText(query);
+  return PROTECTED_WORDS.some((word) => normalizeText(word) === q);
+}
+
+function recordFields(record) {
+  return {
+    brand: record["Brand"] || "",
+    productName: record["Product Name"] || "",
+    category: record["Category"] || "",
+    foodStyle: record["Food Style"] || "",
+    pepperType: record["Pepper Type"] || "",
+    heatTier: record["Heat Tier"] || "",
+    heatCurve: record["Heat Curve"] || "",
+    heatFinish: record["Heat Finish"] || "",
+    flavorNotes: record["Primary Flavor Notes"] || "",
+    pairings: record["Best Food Pairings"] || ""
+  };
+}
+
+function matchesSearch(record, query) {
+  const q = normalizeText(query);
+  if (!q) return true;
+
+  const fields = recordFields(record);
+
+  const priorityFields = [
+    fields.productName,
+    fields.pairings,
+    fields.flavorNotes,
+    fields.foodStyle,
+    fields.brand,
+    fields.category,
+    fields.pepperType
+  ];
+
+  const secondaryFields = [
+    fields.heatTier,
+    fields.heatCurve,
+    fields.heatFinish
+  ];
+
+  if (isLockedPhrase(q)) {
+    return [...priorityFields, ...secondaryFields].some((text) => hasWholePhrase(text, q));
+  }
+
+  if (isProtectedWord(q)) {
+    return [...priorityFields, ...secondaryFields].some((text) => hasWholeWord(text, q));
+  }
+
+  const parts = q.split(/\s+/).filter(Boolean);
+
+  if (parts.length > 1) {
+    const allText = [...priorityFields, ...secondaryFields].join(" | ");
+    return parts.every((part) => hasWholeWord(allText, part));
+  }
+
+  return [...priorityFields, ...secondaryFields].some((text) => hasWholeWord(text, q));
+}
 
 function matches(record) {
   const q = els.search.value.trim();
