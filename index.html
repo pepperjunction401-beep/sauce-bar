@@ -1662,6 +1662,39 @@ function card(record, options = {}) {
       });
     }
 
+    function renderRecipeIntroCard(recipe) {
+  const recipeLabel = recipe ? (recipe["Dropdown Label"] || recipe["Recipe Name"] || "Selected Recipe") : "Selected Recipe";
+  const recipeUrl = recipe && recipe["Recipe URL"] ? String(recipe["Recipe URL"]).trim() : "";
+  const descriptorParts = [
+    recipe && recipe["Course"] ? String(recipe["Course"]).trim() : "",
+    recipe && recipe["Food Type"] ? String(recipe["Food Type"]).trim() : ""
+  ].filter(Boolean);
+
+  const descriptor = descriptorParts.join(" • ");
+
+  return `
+    <article class="pj-card pj-system-card">
+      <div class="pj-mode-pill">Recipe</div>
+      <div class="pj-brand">Pepper Junction</div>
+      <h3 class="pj-name">${escapeHtml(recipeLabel)}</h3>
+
+      ${descriptor ? `<div><span class="pj-pill">${escapeHtml(descriptor)}</span></div>` : ""}
+
+      <div class="pj-section">
+        <div class="pj-v">
+          These products are intentionally tied to this recipe and remain locked while Recipe Mode is active.
+          ${recipeUrl ? `<a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
+        </div>
+      </div>
+
+      ${recipeUrl ? `
+        <div class="pj-card-actions">
+          <a class="pj-btn sauce" href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">View Recipe</a>
+        </div>
+      ` : ""}
+    </article>
+  `;
+}
     function renderRecipeResults() {
       const recipeLabel = activeRecipe ? (activeRecipe["Dropdown Label"] || activeRecipe["Recipe Name"] || 'Selected Recipe') : 'Selected Recipe';
       els.count.textContent = `${recipeLockedProducts.length} recipe product${recipeLockedProducts.length === 1 ? '' : 's'} loaded`;
