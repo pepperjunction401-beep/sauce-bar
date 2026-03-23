@@ -1035,6 +1035,12 @@ body {
   font-size: 14px;
   line-height: 1.45;
 }
+   .pj-fineprint {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.35;
+  opacity: 0.72;
+}
 
 .pj-system-card .pj-card-note {
   font-size: 15px;
@@ -1680,12 +1686,15 @@ function card(record, options = {}) {
 
       ${descriptor ? `<div><span class="pj-pill">${escapeHtml(descriptor)}</span></div>` : ""}
 
-      <div class="pj-section">
-        <div class="pj-v">
-          These products are intentionally tied to this recipe and remain locked while Recipe Mode is active.
-          ${recipeUrl ? `<a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
-        </div>
-      </div>
+    <div class="pj-section">
+  <div class="pj-v">
+    These products were crafted by John specifically for this recipe. By changing them, we can’t guarantee the intended results.
+    ${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
+  </div>
+  <div class="pj-fineprint">
+    And depending on how bad you cook, we still can’t guarantee the results.
+  </div>
+</div>
 
       ${recipeUrl ? `
         <div class="pj-card-actions">
