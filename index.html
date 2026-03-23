@@ -512,24 +512,38 @@ body {
           </select>
         </div>
 
-        <div class="pj-actions">
-          <button class="pj-btn primary" id="pj-apply" type="button">Apply Filters</button>
-          <button class="pj-btn" id="pj-reset" type="button">Reset</button>
-        </div>
-      </aside>
+       <div class="pj-actions">
+  <button class="pj-btn primary" id="pj-apply" type="button">Apply Filters</button>
+  <button class="pj-btn" id="pj-reset" type="button">Reset</button>
+</div>
+</aside>
 
-      <main>
-        <div class="pj-results-head">
-          <div>
-            <h2>Matching Sauces</h2>
-            <div class="pj-count" id="pj-count"></div>
-          </div>
-        </div>
+<section class="pj-recipe-widget" id="pj-recipe-widget">
+  <div class="pj-recipe-header">
+    <h3>From the Pepper Junction Kitchen</h3>
+    <p>Select a recipe to load its locked product set. Recipe mode overrides the Discovery Engine until cleared.</p>
+  </div>
 
-        <div id="pj-results" class="pj-grid"></div>
-      </main>
+  <div class="pj-recipe-controls">
+    <select id="pj-recipe-select">
+      <option value="">Select a recipe</option>
+    </select>
+
+    <a id="pj-recipe-open" href="#" target="_blank" rel="noopener" aria-disabled="true">Open Recipe</a>
+    <button type="button" id="pj-clear-recipe">Clear Recipe</button>
+  </div>
+</section>
+
+<main>
+  <div class="pj-results-head">
+    <div>
+      <h2>Matching Sauces</h2>
+      <div class="pj-count" id="pj-count"></div>
     </div>
   </div>
+
+  <div id="pj-results" class="pj-grid"></div>
+</main>
 
  
 <!DOCTYPE html>
