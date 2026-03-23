@@ -1709,62 +1709,67 @@ function renderRecipeIntroCard(recipe) {
     </article>
   `;
 }
-    function renderRecipeResults() {
-      const recipeLabel = activeRecipe ? (activeRecipe["Dropdown Label"] || activeRecipe["Recipe Name"] || 'Selected Recipe') : 'Selected Recipe';
-      els.count.textContent = `${recipeLockedProducts.length} recipe product${recipeLockedProducts.length === 1 ? '' : 's'} loaded`;
+function renderRecipeResults() {
+  const recipeLabel = activeRecipe
+    ? (activeRecipe["Dropdown Label"] || activeRecipe["Recipe Name"] || "Selected Recipe")
+    : "Selected Recipe";
 
-      if (!recipeLockedProducts.length) {
-        els.results.innerHTML = card({
-          "Brand": 'Pepper Junction',
-          "Product Name": recipeLabel,
-          "Category": '',
-          "Food Style": activeRecipe ? activeRecipe["Food Type"] : '',
-          "Pepper Type": '',
-          "Heat Tier": '',
-          "Heat Level": '',
-          "Heat Curve": '',
-          "Heat Finish": '',
-          "Primary Flavor Notes": 'No mapped products found',
-          "Best Food Pairings": 'Check the recipe map JSON for exact product name matches.'
-        }, {
-          modeLabel: 'Recipe Mode',
-          note: 'This recipe is active, but none of its mapped products matched the current product dataset.',
-          system: true
-        });
-        return;
-      }
+  const recipeUrl = activeRecipe && activeRecipe["Recipe URL"]
+    ? String(activeRecipe["Recipe URL"]).trim()
+    : "";
 
-      const introCard = card({
-        "Brand": 'Pepper Junction',
-        "Product Name": recipeLabel,
-        "Category": activeRecipe ? activeRecipe["Course"] : '',
-        "Food Style": activeRecipe ? activeRecipe["Food Type"] : '',
-        "Pepper Type": '',
-        "Heat Tier": '',
-        "Heat Level": '',
-        "Heat Curve": '',
-        "Heat Finish": '',
-        "Primary Flavor Notes": 'Locked recipe mode is active',
-        "Best Food Pairings": 'These products are tied directly to the recipe and will not be altered by Discovery Engine filters.'
-      }, {
-        modeLabel: 'Recipe Mode',
-        note: activeRecipe && activeRecipe["Notes / Logic"] ? activeRecipe["Notes / Logic"] : 'Recipe integrity protected. Clear Recipe Mode to return to normal discovery.',
-        system: true
-      });
+  const descriptorParts = [
+    activeRecipe && activeRecipe["Course"] ? String(activeRecipe["Course"]).trim() : "",
+    activeRecipe && activeRecipe["Food Type"] ? String(activeRecipe["Food Type"]).trim() : ""
+  ].filter(Boolean);
 
-      const productCards = recipeLockedProducts.map(({ product, role }) =>
-        card(product, {
-          modeLabel: role,
-          note: role === 'Suggested Product'
-            ? 'Suggested supporting item for this recipe.'
-            : role === 'Alternative Product'
-              ? 'Approved backup option for this recipe.'
-              : 'Core product locked to this recipe.'
-        })
-      ).join('');
+  const descriptor = descriptorParts.join(" • ");
 
-      els.results.innerHTML = introCard + productCards;
-    }
+  els.count.textContent = `${recipeLockedProducts.length} recipe product${recipeLockedProducts.length === 1 ? '' : 's'} loaded`;
+
+  const introCard = `
+    <article class="pj-card pj-system-card">
+      <div class="pj-mode-pill">Recipe</div>
+      <div class="pj-brand">Pepper Junction</div>
+      <h3 class="pj-name">${escapeHtml(recipeLabel)}</h3>
+
+      ${descriptor ? `<div><span class="pj-pill">${escapeHtml(descriptor)}</span></div>` : ""}
+
+      <div class="pj-section">
+        <div class="pj-v">
+          These products were crafted by John specifically for this recipe. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
+        </div>
+        <div class="pj-fineprint">
+          And depending on how bad you cook, we can’t guarantee the results either.
+        </div>
+      </div>
+
+      ${recipeUrl ? `
+        <div class="pj-card-actions">
+          <a class="pj-btn sauce" href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">View Recipe</a>
+        </div>
+      ` : ""}
+    </article>
+  `;
+
+  if (!recipeLockedProducts.length) {
+    els.results.innerHTML = introCard;
+    return;
+  }
+
+  const productCards = recipeLockedProducts.map(({ product, role }) =>
+    card(product, {
+      modeLabel: role,
+      note: role === 'Suggested Product'
+        ? 'Suggested supporting item for this recipe.'
+        : role === 'Alternative Product'
+          ? 'Approved backup option for this recipe.'
+          : 'Core product locked to this recipe.'
+    })
+  ).join('');
+
+  els.results.innerHTML = introCard + productCards;
+}
 
     function renderDiscoveryResults() {
       const filtered = PJ_DATA.filter(matches);
