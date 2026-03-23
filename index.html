@@ -949,33 +949,55 @@ body {
 
 .pj-recipe-widget {
   margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(160, 116, 70, 0.2);
+  padding: 18px 20px;
+  border: 1px solid rgba(163, 119, 72, 0.45);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(184, 38, 14, 0.98), rgba(143, 28, 10, 0.98));
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
 }
 
-.pj-recipe-widget h3 {
+.pj-recipe-widget::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(255, 222, 82, 0.18);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.pj-recipe-header {
+  position: relative;
+  z-index: 1;
+}
+
+.pj-recipe-header h3 {
   margin: 0 0 6px;
   font-size: 20px;
+  color: #ffde52;
 }
 
-.pj-recipe-widget p {
+.pj-recipe-header p {
   margin: 0 0 14px;
-  color: rgba(255, 249, 241, 0.92);
+  color: rgba(255, 249, 241, 0.96);
   line-height: 1.5;
 }
 
-.pj-recipe-actions {
+.pj-recipe-controls {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
   gap: 10px;
-  margin-top: 12px;
   align-items: stretch;
+  position: relative;
+  z-index: 1;
 }
 
-.pj-recipe-actions .pj-btn,
-.pj-recipe-actions .pj-link-btn,
-.pj-recipe-actions select {
+.pj-recipe-controls select,
+.pj-recipe-controls .pj-btn,
+.pj-recipe-controls .pj-link-btn {
   width: 100%;
+  min-height: 42px;
 }
 
 .pj-link-btn {
@@ -998,9 +1020,8 @@ body {
   background: #fffdfa;
 }
 
-
-@media (max-width: 780px) {
-  .pj-recipe-actions {
+@media (max-width: 720px) {
+  .pj-recipe-controls {
     grid-template-columns: 1fr;
   }
 }
