@@ -1768,14 +1768,24 @@ function card(record, options = {}) {
       renderDiscoveryResults();
     }
 
-    els.apply.addEventListener('click', onDiscoveryInteraction);
-    els.search.addEventListener('input', onDiscoveryInteraction);
-    [els.category, els.heatTier, els.foodStyle, els.pepperType, els.heatCurve, els.heatFinish].forEach(el => el.addEventListener('change', onDiscoveryInteraction));
-    els.reset.addEventListener('click', () => {
-      clearDiscoveryInputs();
-      activateDiscoveryMode();
-      render();
-    });
+els.apply.addEventListener('click', onDiscoveryInteraction);
+
+els.search.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    onDiscoveryInteraction();
+  }
+});
+
+[els.category, els.heatTier, els.foodStyle, els.pepperType, els.heatCurve, els.heatFinish].forEach(el =>
+  el.addEventListener('change', onDiscoveryInteraction)
+);
+
+els.reset.addEventListener('click', () => {
+  clearDiscoveryInputs();
+  activateDiscoveryMode();
+  render();
+});
 
     if (els.recipeSelect) {
       els.recipeSelect.addEventListener('change', (e) => {
