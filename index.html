@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -493,7 +492,8 @@ body {
   margin-top: 8px;
   font-size: 11px;
   line-height: 1.35;
-  opacity: 0.72;
+  color: rgba(255, 249, 241, 0.82);
+  opacity: 1;
 }
 
 .pj-system-card .pj-card-note {
@@ -639,8 +639,7 @@ body {
       <main>
         <section class="pj-recipe-widget" id="pj-recipe-widget">
           <h3>From the Pepper Junction Kitchen</h3>
-          <p>These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.</p>
-          </p> And depending how bad you cook we can't guarantee the results either. </p>
+          <p>Select a recipe to load its locked product set. Recipe mode overrides the Discovery Engine until cleared.</p>
 
           <div class="pj-field">
             <label for="pj-recipe-select">Recipe</label>
@@ -1120,28 +1119,6 @@ function card(record, options = {}) {
       });
     }
 
-function renderRecipeIntroCard(recipe) {
-  const recipeLabel = recipe
-    ? (recipe["Dropdown Label"] || recipe["Recipe Name"] || "Selected Recipe")
-    : "Selected Recipe";
-
-  const recipeUrl = recipe && recipe["Recipe URL"]
-    ? String(recipe["Recipe URL"]).trim()
-    : "";
-
-  const descriptorParts = [
-    recipe && recipe["Course"] ? String(recipe["Course"]).trim() : "",
-    recipe && recipe["Food Type"] ? String(recipe["Food Type"]).trim() : ""
-  ].filter(Boolean);
-
-  const descriptor = descriptorParts.join(" • ");
-
-  return `
-    <article class="pj-card pj-system-card">
-      <div class="pj-mode-pill">Recipe</div>
-      <div class="pj-brand">Pepper Junction</div>
-      <h3 class="pj-name">${escapeHtml(recipeLabel)}</h3>
-
 function renderRecipeResults() {
   const recipeLabel = activeRecipe
     ? (activeRecipe["Dropdown Label"] || activeRecipe["Recipe Name"] || "Selected Recipe")
@@ -1170,12 +1147,12 @@ function renderRecipeResults() {
 
       <div class="pj-section">
         <div class="pj-v">
-         These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
+          These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
         </div>
-<div class="pj-fineprint" style="color: rgba(255, 249, 241, 0.82);">
-  And depending on how bad you cook, we can’t guarantee the results either.
-</div>
-</div>
+        <div class="pj-fineprint">
+          And depending on how bad you cook, we can’t guarantee the results either.
+        </div>
+      </div>
 
       ${recipeUrl ? `
         <div class="pj-card-actions">
