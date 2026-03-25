@@ -640,7 +640,7 @@ body {
       <main>
         <section class="pj-recipe-widget" id="pj-recipe-widget">
           <h3>From the Pepper Junction Kitchen</h3>
-          <p>These products were crafted by John specifically for this recipe. By changing them, we can’t guarantee the intended results.</p>
+          <p>These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.</p>
            <p>And depending on how bad you cook, we can’t guarantee the results either.<p>
 
           <div class="pj-field">
@@ -1145,23 +1145,6 @@ function renderRecipeIntroCard(recipe) {
 
       ${descriptor ? `<div><span class="pj-pill">${escapeHtml(descriptor)}</span></div>` : ""}
 
-      <div class="pj-section">
-        <div class="pj-v">
-           specifically for this recipe. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
-        </div>
-        <div class="pj-fineprint">
-          And depending on how bad you cook, we can’t guarantee the results either.
-        </div>
-      </div>
-
-      ${recipeUrl ? `
-        <div class="pj-card-actions">
-          <a class="pj-btn sauce" href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">View Recipe</a>
-        </div>
-      ` : ""}
-    </article>
-  `;
-}
 function renderRecipeResults() {
   const recipeLabel = activeRecipe
     ? (activeRecipe["Dropdown Label"] || activeRecipe["Recipe Name"] || "Selected Recipe")
@@ -1190,7 +1173,7 @@ function renderRecipeResults() {
 
       <div class="pj-section">
         <div class="pj-v">
-          These products were crafted by John specifically for this recipe. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
+          These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
         </div>
         <div class="pj-fineprint">
           And depending on how bad you cook, we can’t guarantee the results either.
