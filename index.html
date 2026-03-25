@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -425,19 +424,18 @@ body {
   z-index: 1;
 }
 
-.pj-recipe-header h3,
-.pj-recipe-widget > h3 {
+.pj-recipe-header h3 {
   margin: 0 0 6px;
   font-size: 20px;
   color: #ffde52;
 }
 
-.pj-recipe-header p,
-.pj-recipe-widget > p {
+.pj-recipe-header p {
   margin: 0 0 14px;
-  color: #f5e6c8;
+  color: rgba(255, 249, 241, 0.96);
   line-height: 1.5;
 }
+
 .pj-recipe-controls {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
@@ -640,8 +638,7 @@ body {
       <main>
         <section class="pj-recipe-widget" id="pj-recipe-widget">
           <h3>From the Pepper Junction Kitchen</h3>
-          <p>These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.</p>
-           <p>And depending on how bad you cook, we can’t guarantee the results either.<p>
+          <p>Select a recipe to load its locked product set. Recipe mode overrides the Discovery Engine until cleared.</p>
 
           <div class="pj-field">
             <label for="pj-recipe-select">Recipe</label>
@@ -1145,6 +1142,23 @@ function renderRecipeIntroCard(recipe) {
 
       ${descriptor ? `<div><span class="pj-pill">${escapeHtml(descriptor)}</span></div>` : ""}
 
+      <div class="pj-section">
+        <div class="pj-v">
+          These products were crafted by John specifically for this recipe. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
+        </div>
+        <div class="pj-fineprint">
+          And depending on how bad you cook, we can’t guarantee the results either.
+        </div>
+      </div>
+
+      ${recipeUrl ? `
+        <div class="pj-card-actions">
+          <a class="pj-btn sauce" href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">View Recipe</a>
+        </div>
+      ` : ""}
+    </article>
+  `;
+}
 function renderRecipeResults() {
   const recipeLabel = activeRecipe
     ? (activeRecipe["Dropdown Label"] || activeRecipe["Recipe Name"] || "Selected Recipe")
@@ -1173,7 +1187,7 @@ function renderRecipeResults() {
 
       <div class="pj-section">
         <div class="pj-v">
-          These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
+          These products were crafted by John specifically for this recipe. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
         </div>
         <div class="pj-fineprint">
           And depending on how bad you cook, we can’t guarantee the results either.
