@@ -1142,25 +1142,6 @@ function renderRecipeIntroCard(recipe) {
       <div class="pj-brand">Pepper Junction</div>
       <h3 class="pj-name">${escapeHtml(recipeLabel)}</h3>
 
-      ${descriptor ? `<div><span class="pj-pill">${escapeHtml(descriptor)}</span></div>` : ""}
-
-      <div class="pj-section">
-        <div class="pj-v">
-          These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
-        </div>
-        <div class="pj-fineprint">
-          And depending on how bad you cook, we can’t guarantee the results either.
-        </div>
-      </div>
-
-      ${recipeUrl ? `
-        <div class="pj-card-actions">
-          <a class="pj-btn sauce" href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">View Recipe</a>
-        </div>
-      ` : ""}
-    </article>
-  `;
-}
 function renderRecipeResults() {
   const recipeLabel = activeRecipe
     ? (activeRecipe["Dropdown Label"] || activeRecipe["Recipe Name"] || "Selected Recipe")
