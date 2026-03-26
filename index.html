@@ -1235,6 +1235,10 @@ function renderRecipeResults() {
 
 els.apply.addEventListener('click', onDiscoveryInteraction);
 
+els.search.addEventListener('input', () => {
+  onDiscoveryInteraction();
+});
+
 els.search.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     e.preventDefault();
