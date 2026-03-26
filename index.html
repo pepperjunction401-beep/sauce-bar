@@ -950,11 +950,16 @@ function matchesSearch(record, query) {
   const parts = q.split(/\s+/).filter(Boolean);
 
   if (parts.length > 1) {
-    const allText = [...priorityFields, ...secondaryFields].join(" | ");
-    return parts.every((part) => hasWholeWord(allText, part));
+ const allText = [...priorityFields, ...secondaryFields]
+  .map((text) => normalizeText(text))
+  .join(" | ");
+
+return parts.every((part) => allText.includes(part));
   }
 
-  return [...priorityFields, ...secondaryFields].some((text) => hasWholeWord(text, q));
+ return [...priorityFields, ...secondaryFields].some((text) =>
+  normalizeText(text).includes(q)
+);
 }
 
 function matches(record) {
