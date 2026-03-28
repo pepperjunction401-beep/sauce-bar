@@ -1221,7 +1221,33 @@ function card(record, options = {}) {
   `;
 }
 
-    function renderRecipeRedirectCard() {
+function bindCardImageToggles() {
+  document.querySelectorAll('[data-card-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cardId = btn.getAttribute('data-card-toggle');
+      const front = document.querySelector(`[data-card-front="${cardId}"]`);
+      const panel = document.querySelector(`[data-card-panel="${cardId}"]`);
+
+      if (!front || !panel) return;
+
+      const isOpening = panel.hasAttribute('hidden');
+
+      if (isOpening) {
+        front.hidden = true;
+        panel.hidden = false;
+      } else {
+        panel.hidden = true;
+        front.hidden = false;
+      }
+
+      document.querySelectorAll(`[data-card-toggle="${cardId}"]`).forEach((toggleBtn) => {
+        toggleBtn.setAttribute('aria-expanded', isOpening ? 'true' : 'false');
+      });
+    });
+  });
+}
+
+function renderRecipeRedirectCard() {
       els.count.textContent = 'Recipe redirect active';
       els.results.innerHTML = card({
         "Brand": 'Pepper Junction',
@@ -1240,6 +1266,8 @@ function card(record, options = {}) {
         note: 'Recipes live in the Pepper Junction recipe widget. The Discovery Engine is reserved for product, flavor, heat, and pairing searches.',
         system: true
       });
+
+      bindCardImageToggles();
     }
 
 function renderRecipeResults() {
@@ -1287,6 +1315,7 @@ function renderRecipeResults() {
 
   if (!recipeLockedProducts.length) {
     els.results.innerHTML = introCard;
+    bindCardImageToggles();
     return;
   }
 
@@ -1302,6 +1331,7 @@ function renderRecipeResults() {
   ).join('');
 
   els.results.innerHTML = introCard + productCards;
+  bindCardImageToggles();
 }
 
     function renderDiscoveryResults() {
@@ -1335,6 +1365,7 @@ function renderRecipeResults() {
       });
 
       els.results.innerHTML = filtered.map(record => card(record)).join('');
+      bindCardImageToggles();
     }
 
     function render() {
