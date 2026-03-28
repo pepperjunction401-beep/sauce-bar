@@ -1121,9 +1121,9 @@ function getRelevanceScore(record, query) {
 
 function card(record, options = {}) {
   const productUrl = PRODUCT_URL_COL ? String(record[PRODUCT_URL_COL] || '').trim() : '';
-  const action = productUrl
-    ? `<div class="pj-card-actions"><a class="pj-btn sauce" href="${escapeHtml(productUrl)}" target="_blank" rel="noopener noreferrer">View Sauce</a></div>`
-    : '';
+  const productImage = String(record["Product Image"] || '').trim();
+  const fallbackImage = 'assets/PJ-logo.png';
+  const cardId = `pj-card-${Math.random().toString(36).slice(2, 10)}`;
 
   const modePill = options.modeLabel
     ? `<div class="pj-mode-pill">${escapeHtml(options.modeLabel)}</div>`
@@ -1133,47 +1133,90 @@ function card(record, options = {}) {
     ? `<p class="pj-card-note">${escapeHtml(options.note)}</p>`
     : '';
 
+  const purchaseAction = productUrl
+    ? `<a class="pj-btn sauce" href="${escapeHtml(productUrl)}" target="_blank" rel="noopener noreferrer">Purchase Sauce</a>`
+    : '';
+
+  const showViewButton = !options.system;
+  const viewAction = showViewButton
+    ? `<button class="pj-btn sauce pj-view-sauce-btn" type="button" data-card-toggle="${cardId}" aria-expanded="false">View Sauce</button>`
+    : '';
+
+  const actions = (viewAction || purchaseAction)
+    ? `<div class="pj-card-actions dual">${viewAction}${purchaseAction}</div>`
+    : '';
+
+  const hasImage = !!productImage;
+  const imageSrc = hasImage ? productImage : fallbackImage;
+  const imageAlt = hasImage
+    ? `${String(record["Brand"] || 'Pepper Junction')} ${String(record["Product Name"] || options.title || '')}`
+    : 'Pepper Junction logo';
+
+  const imageCaption = hasImage
+    ? `${escapeHtml(record["Brand"] || '')} • ${escapeHtml(record["Product Name"] || options.title || '')}`
+    : 'Image coming soon';
+
+  const imagePanel = showViewButton
+    ? `
+      <div class="pj-card-media" hidden data-card-panel="${cardId}">
+        <div class="pj-card-image-panel${hasImage ? '' : ' is-fallback'}">
+          <div class="pj-card-image-shell">
+            <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" loading="lazy">
+          </div>
+          <div class="pj-card-image-caption">${imageCaption}</div>
+          <div class="pj-card-image-back">
+            <button class="pj-btn pj-card-back-btn" type="button" data-card-toggle="${cardId}" aria-expanded="true">Back to Details</button>
+          </div>
+        </div>
+      </div>
+    `
+    : '';
+
   return `
-    <article class="pj-card${options.system ? ' pj-system-card' : ''}">
+    <article class="pj-card${options.system ? ' pj-system-card' : ''}" data-card-id="${cardId}">
       ${modePill}
       <div class="pj-brand">${escapeHtml(record["Brand"] || 'Pepper Junction')}</div>
       <h3 class="pj-name">${escapeHtml(record["Product Name"] || options.title || '')}</h3>
 
-      <div>
-        ${pill(record["Category"])}
-        ${pill(record["Food Style"])}
-        ${pill(record["Pepper Type"])}
-        ${pill(record["Heat Tier"])}
-      </div>
-
-      <div class="pj-meta">
-        <div class="pj-section">
-          <span class="pj-k">Heat Level</span>
-          <div class="pj-v">${escapeHtml(record["Heat Level"])}</div>
+      <div data-card-front="${cardId}">
+        <div>
+          ${pill(record["Category"])}
+          ${pill(record["Food Style"])}
+          ${pill(record["Pepper Type"])}
+          ${pill(record["Heat Tier"])}
         </div>
-        <div class="pj-section">
-          <span class="pj-k">Heat Curve</span>
-          <div class="pj-v">${escapeHtml(record["Heat Curve"])}</div>
+
+        <div class="pj-meta">
+          <div class="pj-section">
+            <span class="pj-k">Heat Level</span>
+            <div class="pj-v">${escapeHtml(record["Heat Level"])}</div>
+          </div>
+          <div class="pj-section">
+            <span class="pj-k">Heat Curve</span>
+            <div class="pj-v">${escapeHtml(record["Heat Curve"])}</div>
+          </div>
         </div>
+
+        <div class="pj-section">
+          <span class="pj-k">Heat Finish</span>
+          <div class="pj-v">${escapeHtml(record["Heat Finish"])}</div>
+        </div>
+
+        <div class="pj-section">
+          <span class="pj-k">Flavor Notes</span>
+          <div class="pj-v">${escapeHtml(record["Primary Flavor Notes"])}</div>
+        </div>
+
+        <div class="pj-section">
+          <span class="pj-k">Best Food Pairings</span>
+          <div class="pj-v">${escapeHtml(record["Best Food Pairings"])}</div>
+        </div>
+
+        ${note}
+        ${actions}
       </div>
 
-      <div class="pj-section">
-        <span class="pj-k">Heat Finish</span>
-        <div class="pj-v">${escapeHtml(record["Heat Finish"])}</div>
-      </div>
-
-      <div class="pj-section">
-        <span class="pj-k">Flavor Notes</span>
-        <div class="pj-v">${escapeHtml(record["Primary Flavor Notes"])}</div>
-      </div>
-
-      <div class="pj-section">
-        <span class="pj-k">Best Food Pairings</span>
-        <div class="pj-v">${escapeHtml(record["Best Food Pairings"])}</div>
-      </div>
-
-      ${note}
-      ${action}
+      ${imagePanel}
     </article>
   `;
 }
