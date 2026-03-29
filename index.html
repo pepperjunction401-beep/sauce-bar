@@ -416,14 +416,15 @@ body {
     z-index: 1;
   }
 
-  .pj-card-image-panel {
-    margin-top: 0;
-    padding: 6px 0 0;
-    border: 0;
-    background: transparent;
-    text-align: center;
-    box-shadow: none;
-  }
+  .pj-card-image-shell img {
+  max-width: 100%;
+  max-height: 220px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
 
   .pj-card-image-shell {
     min-height: 260px;
