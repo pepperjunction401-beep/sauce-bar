@@ -4,56 +4,575 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pepper Junction Sauce Finder</title>
-  <style>
-    :root {
-      --bg: #f7f3ea;
-      --panel: #fffaf1;
-      --ink: #2a2018;
-      --muted: #6d5c4c;
-      --border: #d7c7b3;
-      --accent: #8b2e1a;
-      --card: #fffdf8;
+  <title>Pepper Junction Sauce Discovery Engine</title>
+ <style>
+:root {
+  --bg: #efe3cc;
+  --bg-deep: #e4d2b2;
+  --panel: rgba(255, 248, 236, 0.94);
+  --panel-strong: rgba(250, 241, 226, 0.98);
+  --ticket: #f5e6c8;
+  --ticket-deep: #ead4ad;
+  --ticket-edge: #b48958;
+  --ticket-ink: #2b1d15;
+  --ticket-muted: #6d5440;
+  --border: #ccb089;
+  --accent: #972f1f;
+  --accent-hover: #7f2619;
+  --gold: #b88939;
+  --shadow: 0 10px 26px rgba(44, 27, 18, 0.16);
+  --shadow-soft: 0 6px 18px rgba(44, 27, 18, 0.1);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--ticket-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,0.28), transparent 35%),
+    linear-gradient(180deg, rgba(239,227,204,0.96), rgba(228,210,178,0.96)),
+    repeating-linear-gradient(
+      90deg,
+      rgba(120, 92, 62, 0.015) 0,
+      rgba(120, 92, 62, 0.015) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  min-height: 100vh;
+}
+
+.pj-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 22px;
+}
+
+.pj-header {
+  margin-bottom: 14px;
+  padding: 22px 24px;
+  border: 1px solid rgba(163, 119, 72, 0.45);
+  border-radius: 18px;
+  background: var(--ticket);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.pj-header::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(180, 137, 88, 0.28);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.pj-title {
+  margin: 0 0 8px;
+  font-size: 32px;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  color: #b8260e;
+}
+
+.pj-sub {
+  margin: 0;
+  color: var(--ticket-muted);
+  font-size: 15px;
+  line-height: 1.55;
+  max-width: 760px;
+}
+
+.pj-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.pj-panel,
+.pj-results-head {
+  border: 1px solid rgba(163, 119, 72, 0.4);
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pj-panel::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(180, 137, 88, 0.2);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.pj-panel {
+  background: #b8260e;
+  padding: 18px;
+  position: sticky;
+  top: 16px;
+  color: #ffde52;
+  box-shadow: var(--shadow-soft);
+}
+
+.pj-results-head {
+  background: var(--ticket);
+  border: 1px solid rgba(163, 119, 72, 0.45);
+  border-radius: 18px;
+  padding: 14px 20px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-soft);
+}
+   .pj-results-head::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(180, 137, 88, 0.2);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.pj-results-head h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #b8260e;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.pj-count {
+  font-size: 13px;
+  color: var(--ticket-muted);
+  letter-spacing: 0.03em;
+}
+.pj-panel h2 {
+  margin: 0 0 14px;
+  font-size: 28px;
+  line-height: 1.2;
+  color: #ffde52;
+}
+
+.pj-field {
+  margin-bottom: 12px;
+}
+
+.pj-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffde52;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.pj-field select,
+.pj-field input {
+  width: 100%;
+  border: 1px solid rgba(174, 132, 84, 0.45);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.82);
+  color: var(--ticket-ink);
+  padding: 11px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
+}
+
+.pj-field select:focus,
+.pj-field input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(151, 47, 31, 0.12);
+}
+
+.pj-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.pj-btn {
+  border: 1px solid rgba(174, 132, 84, 0.45);
+  background: rgba(255,255,255,0.86);
+  color: var(--ticket-ink);
+  padding: 10px 13px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.pj-btn:hover {
+  transform: translateY(-1px);
+  background: #fffdfa;
+}
+
+.pj-btn.primary {
+  background: #ffde52;
+  color: #4a2418;
+  border-color: #ffde52;
+}
+
+.pj-btn.primary:hover {
+  background: #f0cf3f;
+  border-color: #f0cf3f;
+}
+
+   .pj-btn.sauce {
+  background: #b8260e;
+  color: #ffde52;
+  border-color: #b8260e;
+}
+
+.pj-btn.sauce:hover {
+  background: #8f1c0a;
+  border-color: #8f1c0a;
+  transform: translateY(-1px);
+}
+.pj-count {
+  color: var(--ticket-muted);
+  font-size: 14px;
+}
+
+  .pj-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 16px;
+    counter-reset: ticket;
+  }
+
+.pj-card {
+  counter-increment: ticket;
+  border: 1px solid rgba(160, 116, 70, 0.52);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,0.28), transparent 28%),
+    linear-gradient(180deg, rgba(245,230,200,0.98), rgba(234,212,173,0.98));
+  padding: 16px 16px 18px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+   cursor: pointer;
+}
+
+.pj-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(78, 49, 24, 0.18);
+}
+
+.pj-card::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px dashed rgba(132, 94, 58, 0.42);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.pj-card::after {
+  content: "Route 401  •  Ticket No. " counter(ticket, decimal-leading-zero);
+  position: absolute;
+  right: 16px;
+  bottom: 10px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(85, 57, 35, 0.56);
+  pointer-events: none;
+}
+
+  .pj-brand {
+    color: var(--ticket-ink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    position: relative;
+    z-index: 1;
+  }
+
+.pj-name {
+  margin: 0 0 10px;
+  font-size: 20px;
+  line-height: 1.25;
+  color: #b8260e;
+  position: relative;
+  padding-right: 92px;
+ transition: color 0.18s ease;
+}
+
+.pj-card:hover .pj-name {
+  color: #3f8f04;
+}
+   
+.pj-name::before {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 2px;
+  background: rgba(163, 119, 72, 0.45);
+  margin: 6px 0 8px;
+}
+   
+ .pj-name::after {
+  content: "";
+  position: absolute;
+  width: 92px;
+  height: 92px;
+  top: -40px;
+  right: -12px;
+  background: url("assets/PJ-logo.png") no-repeat center;
+  background-size: contain;
+   pointer-events: none;
+}
+   .pj-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pj-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ticket-ink);
+    background: rgba(255, 248, 236, 0.72);
+    border: 1px solid rgba(174, 132, 84, 0.42);
+    border-radius: 999px;
+    padding: 5px 9px;
+    margin: 0 6px 6px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pj-section {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(143, 108, 74, 0.38);
+    position: relative;
+    z-index: 1;
+  }
+
+  .pj-k {
+    display: block;
+    font-size: 11px;
+    color: var(--ticket-muted);
+    margin-bottom: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .pj-v {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ticket-ink);
+  }
+
+  .pj-card-actions {
+    margin-top: 14px;
+    position: relative;
+    z-index: 1;
+    padding-bottom: 12px;
+  }
+
+  .pj-card-actions .pj-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  
+
+.pj-recipe-widget {
+  margin-top: 18px;
+  padding: 18px 20px;
+  border: 1px solid rgba(163, 119, 72, 0.45);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(184, 38, 14, 0.98), rgba(143, 28, 10, 0.98));
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.pj-recipe-widget::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(255, 222, 82, 0.18);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.pj-recipe-header {
+  position: relative;
+  z-index: 1;
+}
+
+.pj-recipe-widget > h3 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  color: #ffde52;
+}
+
+.pj-recipe-widget > p {
+  margin: 0 0 14px;
+  color: rgba(255, 249, 241, 0.96);
+  line-height: 1.5;
+}
+
+.pj-recipe-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 10px;
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
+}
+
+.pj-recipe-controls select,
+.pj-recipe-controls .pj-btn,
+.pj-recipe-controls .pj-link-btn {
+  width: 100%;
+  min-height: 42px;
+}
+
+.pj-link-btn {
+  border: 1px solid rgba(174, 132, 84, 0.45);
+  background: rgba(255,255,255,0.86);
+  color: var(--ticket-ink);
+  padding: 10px 13px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.pj-link-btn:hover {
+  transform: translateY(-1px);
+  background: #fffdfa;
+}
+
+@media (max-width: 720px) {
+  .pj-recipe-controls {
+    grid-template-columns: 1fr;
+  }
+}
+.pj-link-btn[aria-disabled="true"] {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.pj-card-note {
+  margin: 10px 0 0;
+  color: var(--ticket-muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.pj-fineprint {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--ticket-ink) !important;
+  opacity: 1;
+}
+
+.pj-system-card .pj-card-note {
+  font-size: 15px;
+}
+
+.pj-mode-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(160, 116, 70, 0.4);
+  background: rgba(255,255,255,0.68);
+  color: var(--ticket-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.pj-empty {
+    border: 1px dashed rgba(160, 116, 70, 0.52);
+    border-radius: 16px;
+    background: var(--panel-strong);
+    padding: 24px;
+    text-align: center;
+    color: var(--ticket-muted);
+    box-shadow: var(--shadow-soft);
+  }
+
+  @media (max-width: 860px) {
+    .pj-layout {
+      grid-template-columns: 1fr;
     }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: var(--ink); background: var(--bg); }
-    .pj-wrap { max-width: 1100px; margin: 0 auto; padding: 20px; }
-    .pj-header { margin-bottom: 18px; padding: 18px 20px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(180deg, #fffdf8, #fff8ee); }
-    .pj-title { margin: 0 0 6px; font-size: 30px; line-height: 1.1; }
-    .pj-sub { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; }
-    .pj-layout { display: grid; grid-template-columns: 320px 1fr; gap: 18px; align-items: start; }
-    .pj-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 16px; position: sticky; top: 16px; }
-    .pj-panel h2, .pj-results-head h2 { margin: 0 0 14px; font-size: 20px; }
-    .pj-field { margin-bottom: 12px; }
-    .pj-field label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: bold; }
-    .pj-field select, .pj-field input { width: 100%; border: 1px solid var(--border); border-radius: 10px; background: white; color: var(--ink); padding: 10px 12px; font-size: 14px; }
-    .pj-actions { display: flex; gap: 10px; margin-top: 10px; }
-    .pj-btn { border: 1px solid var(--border); background: white; color: var(--ink); padding: 10px 12px; border-radius: 10px; cursor: pointer; font-weight: bold; text-decoration: none; display: inline-block; }
-    .pj-btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
-    .pj-results-head { display: flex; justify-content: space-between; align-items: end; gap: 12px; padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--panel); margin-bottom: 14px; }
-    .pj-count { color: var(--muted); font-size: 14px; }
-    .pj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
-    .pj-card { border: 1px solid var(--border); border-radius: 16px; background: var(--card); padding: 14px; }
-    .pj-brand { color: var(--accent); font-size: 12px; font-weight: bold; letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 6px; }
-    .pj-name { margin: 0 0 10px; font-size: 18px; line-height: 1.25; }
-    .pj-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-    .pj-pill { display: inline-block; font-size: 12px; font-weight: bold; color: var(--ink); background: #f1e6d5; border: 1px solid var(--border); border-radius: 999px; padding: 5px 9px; margin: 0 6px 6px 0; }
-    .pj-section { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
-    .pj-k { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.03em; }
-    .pj-v { font-size: 14px; line-height: 1.45; }
-    .pj-empty { border: 1px dashed var(--border); border-radius: 16px; background: var(--panel); padding: 24px; text-align: center; color: var(--muted); }
-    .pj-card-actions { margin-top: 14px; }
-    @media (max-width: 860px) {
-      .pj-layout { grid-template-columns: 1fr; }
-      .pj-panel { position: static; }
+
+    .pj-panel {
+      position: static;
     }
-  </style>
+  }
+
+  @media (max-width: 560px) {
+    .pj-wrap {
+      padding: 14px;
+    }
+
+    .pj-header,
+    .pj-panel,
+    .pj-results-head,
+    .pj-card {
+      border-radius: 14px;
+    }
+
+    .pj-title {
+      font-size: 27px;
+    }
+
+    .pj-name {
+      font-size: 19px;
+    }
+
+    .pj-meta {
+      grid-template-columns: 1fr;
+    }
+
+    .pj-actions {
+      flex-direction: column;
+    }
+  }
+</style>
 </head>
 <body>
   <div class="pj-wrap">
     <div class="pj-header">
-      <h1 class="pj-title">Pepper Junction Sauce Finder</h1>
-      <p class="pj-sub">Filter Pepper Junction’s catalog by what you’re cooking, heat, pepper type, food style, and flavor profile.</p>
+      <h1 class="pj-title">Pepper Junction Sauce Discovery Engine</h1>
+      <p class="pj-sub">All aboard the Sauce Discovery Engine. Find your next bottle by heat, flavor, pepper, or food pairing.</p>
     </div>
 
     <div class="pj-layout">
@@ -120,6 +639,23 @@
       </aside>
 
       <main>
+        <section class="pj-recipe-widget" id="pj-recipe-widget">
+          <h3>From the Pepper Junction Kitchen</h3>
+          <p>These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.</p>
+          <p>And depending on how bad you cook, we can’t guarantee the results either.</p>
+
+          <div class="pj-field">
+            <label for="pj-recipe-select">Recipe</label>
+            <select id="pj-recipe-select">
+              <option value="">Select a recipe</option>
+            </select>
+          </div>
+
+          <div class="pj-recipe-actions">
+            <a class="pj-link-btn" id="pj-recipe-open" href="#" target="_blank" rel="noopener" aria-disabled="true">Open Recipe</a>
+            <button class="pj-btn" id="pj-clear-recipe" type="button">Clear Recipe</button>
+          </div>
+        </section>
         <div class="pj-results-head">
           <div>
             <h2>Matching Sauces</h2>
@@ -133,8 +669,48 @@
   </div>
 
   <script>
-    const PJ_DATA = [{"Category": "HOT SAUCE", "Food Style": "Asian", "Brand": "13 Stars", "Product Name": "Dragon’s Breath", "Pepper Type": "Jalapeño", "Heat Teir": "Mild", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Soy-ginger", "Product URL": "https://www.pepperjunction401.com/product/13starsbigredone/181?cs=true&cst=custom", "Best Food Pairings": "Veggies, salmon, shrimp, sushi, rice, ramen, dumplings"}, {"Category": "HOT SAUCE", "Food Style": "Mexican", "Brand": "CaJohns", "Product Name": "La Segadora Carolina Reaper", "Pepper Type": "Reaper", "Heat Teir": "Extreme", "Heat Level": 9, "Heat Curve": "Immediate Hit", "Heat Finish": "Flash Fade", "Primary Flavor Notes": "Taco", "Product URL": "https://www.pepperjunction401.com/product/Cajohns-segadora-reaper/97?cs=true&cst=custom", "Best Food Pairings": "Tacos, eggs, grilled meats, burittos, empanadas"}, {"Category": "HOT SAUCE", "Food Style": "Caribbean", "Brand": "Dirty Dick's", "Product Name": "Hot Tropical Hot Sauce", "Pepper Type": "Habanero", "Heat Teir": "Very Hot", "Heat Level": 7, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Sweet tropical fruit", "Product URL": "https://www.pepperjunction401.com/product/Dirty-Dicks-Hot-Tropical/65?cs=true&cst=custom", "Best Food Pairings": "Pork, chicken, eggs, shrimp, seafood"}, {"Category": "HOT SAUCE", "Food Style": "American", "Brand": "Ghost Scream", "Product Name": "Ghost Scream", "Pepper Type": "Ghost Pepper", "Heat Teir": "Super Hot", "Heat Level": 8, "Heat Curve": "Steady Build", "Heat Finish": "It Burns", "Primary Flavor Notes": "Raosted red pepper", "Product URL": "https://www.pepperjunction401.com/product/ghost-scream-/50?cs=true&cst=custom", "Best Food Pairings": "Tacos, eggs, grilled meats, Pizza, chowder, chili"}, {"Category": "HOT SAUCE", "Food Style": "Verde", "Brand": "Heartbreaking Dawn's", "Product Name": "The Green", "Pepper Type": "Jalapeño", "Heat Teir": "Hot", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "Flash Fade", "Primary Flavor Notes": "Verde", "Product URL": "https://www.pepperjunction401.com/product/fire-roasted-jalape-o-verde-hot-sauce/63?cs=true&cst=custom", "Best Food Pairings": "Tacos, veggies, avacado, pizza, nachos"}, {"Category": "HOT SAUCE", "Food Style": "Chipotle", "Brand": "High River Sauces", "Product Name": "Hellacious", "Pepper Type": "Chipotle", "Heat Teir": "Hot", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Chipotle-Smokey", "Product URL": "https://www.pepperjunction401.com/product/high-river-hellacious-chipotle-hot-sauce-/200?cs=true&cst=custom", "Best Food Pairings": "Tacos, grilled meats, burgers, clams, nachos, chili"}, {"Category": "HOT SAUCE", "Food Style": "Cayenne", "Brand": "High River Sauces", "Product Name": "Psych Sauce", "Pepper Type": "Cayenne", "Heat Teir": "Hot", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cayenne black Pepper", "Product URL": "https://www.pepperjunction401.com/product/high-river-psych-sauce-cayenne-garlic-hot-sauce-/7CECSBCJRF2AROAXX3VNEPSO?cs=true&cst=custom", "Best Food Pairings": "Tacos, eggs, grilled meats, clams, chowder, chili"}, {"Category": "HOT SAUCE", "Food Style": "Asian", "Brand": "High River Sauces", "Product Name": "Foo Foo Mama Choo", "Pepper Type": "Reaper", "Heat Teir": "Extreme", "Heat Level": 9, "Heat Curve": "Delayed Escalation", "Heat Finish": "It Burns", "Primary Flavor Notes": "Asian sweet", "Product URL": "https://www.pepperjunction401.com/product/High-River-Foo-Foo-mama-choo/15?cs=true&cst=custom", "Best Food Pairings": "Tacos, chicken salad, sushi, rice, dumplings"}, {"Category": "HOT SAUCE", "Food Style": "Fruit", "Brand": "High River Sauces", "Product Name": "Peppers Up", "Pepper Type": "Apollo", "Heat Teir": "Nuclear", "Heat Level": 11, "Heat Curve": "Delayed Escalation", "Heat Finish": "Say Goodnight", "Primary Flavor Notes": "Black - Blue Berry", "Product URL": "https://www.pepperjunction401.com/product/high-river-peppers-up-hot-sauce-/218?cs=true&cst=custom", "Best Food Pairings": "Tacos, eggs, grilled meats"}, {"Category": "HOT SAUCE", "Food Style": "Fruit", "Brand": "High River Sauces", "Product Name": "Rogue", "Pepper Type": "Scorpion", "Heat Teir": "Super Hot", "Heat Level": 8, "Heat Curve": "Steady Build", "Heat Finish": "It Burns", "Primary Flavor Notes": "Blood Orange-Pear", "Product URL": "https://www.pepperjunction401.com/product/High-River-Rogue/3?cs=true&cst=custom", "Best Food Pairings": "Turky, pork, sushi, fish, shrimp"}, {"Category": "HOT SAUCE", "Food Style": "Caribbean", "Brand": "High River Sauces", "Product Name": "Tears of the Sun", "Pepper Type": "Habanero", "Heat Teir": "Medium", "Heat Level": 4, "Heat Curve": "Immediate Hit", "Heat Finish": "No Hang", "Primary Flavor Notes": "Fruity", "Product URL": "https://www.pepperjunction401.com/product/high-river-tears-of-the-sun-tropical-hot-sauce-/1?cs=true&cst=custom", "Best Food Pairings": "Tacos, seafood, oysters, shrimp, fish"}, {"Category": "HOT SAUCE", "Food Style": "Fruit", "Brand": "High River Sauces", "Product Name": "Thunder Juice", "Pepper Type": "Reaper", "Heat Teir": "Extreme", "Heat Level": 10, "Heat Curve": "Steady Build", "Heat Finish": "It Burns", "Primary Flavor Notes": "Fruit and berries", "Product URL": "https://www.pepperjunction401.com/product/High-River-Thunder-Juice/99?cs=true&cst=custom", "Best Food Pairings": "Tacos, eggs, pork"}, {"Category": "HOT SAUCE", "Food Style": "Taco", "Brand": "High River Sauces", "Product Name": "Taco X", "Pepper Type": "Pepper X", "Heat Teir": "Nuclear", "Heat Level": 12, "Heat Curve": "Delayed Escalation", "Heat Finish": "Say Goodnight", "Primary Flavor Notes": "Taco", "Product URL": "https://www.pepperjunction401.com/product/high-river-pepper-x-taco-sauce-5oz-/JA7YBF77FWY2HJON5CR7KR4O?cs=true&cst=custom", "Best Food Pairings": "Tacos, eggs, grilled meats, empanadas, nachos"}, {"Category": "HOT SAUCE", "Food Style": "Indian", "Brand": "Hell’s Kitchen", "Product Name": "Cinnamon Ghost", "Pepper Type": "Ghost Pepper", "Heat Teir": "Super Hot", "Heat Level": 7, "Heat Curve": "Delayed Escalation", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cinnamon", "Product URL": "https://www.pepperjunction401.com/product/hell-s-kitchen-cinnamon-ghost-punch-hot-sauce-5oz-/E6VYVOI2666KH27HV2YEVJWO?cs=true&cst=custom", "Best Food Pairings": "Indian, pork, ice cream, dumplings"}, {"Category": "HOT SAUCE", "Food Style": "Caribbean", "Brand": "Hell’s Kitchen", "Product Name": "Coconut Curry", "Pepper Type": "Scotch Bonnet", "Heat Teir": "Very Hot", "Heat Level": 6, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Coconut curry", "Product URL": "https://www.pepperjunction401.com/product/hell-s-kitchen-rockin-rasta-jamaican-coconut-curry-/533JZBWR6HXWICTZDBKRZPOV?cs=true&cst=custom", "Best Food Pairings": "Indian, pork, seafood, dumplings, empanadas"}, {"Category": "HOT SAUCE", "Food Style": "Mediterranean", "Brand": "Hell’s Kitchen", "Product Name": "Black Forest", "Pepper Type": "Ghost Pepper", "Heat Teir": "Very Hot", "Heat Level": 6, "Heat Curve": "Delayed Escalation", "Heat Finish": "Flash Fade", "Primary Flavor Notes": "Black cherry-balsamic", "Product URL": "https://www.pepperjunction401.com/product/hell-s-kitchen-black-forest-black-cherry-balsamic-ghost-pepper-hot-sauce-/TZMMRDFB7WRZGYVLBVCHWIXZ?cs=true&cst=custom", "Best Food Pairings": "Grilled meats, Italian cold cuts, salads,"}, {"Category": "HOT SAUCE", "Food Style": "American", "Brand": "Sauce Crafters", "Product Name": "Hog's Ass Garlic Habanero Sauce", "Pepper Type": "Habanero", "Heat Teir": "Very Hot", "Heat Level": 7, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Garlic-forward", "Product URL": "https://www.pepperjunction401.com/product/hogs-ass-garlic-habanero/28?cs=true&cst=custom", "Best Food Pairings": "Tacos, eggs, grilled meats, pizza, burgers, nachos"}, {"Category": "HOT SAUCE", "Food Style": "Asian", "Brand": "Ashley Foods", "Product Name": "Mad Dog Sriracha", "Pepper Type": "Reaper", "Heat Teir": "Extreme", "Heat Level": 10, "Heat Curve": "Immediate Hit", "Heat Finish": "Say Goodnight", "Primary Flavor Notes": "Sriracha", "Product URL": "https://www.pepperjunction401.com/product/Mad-Dog-Sriracha-Reaper/59?cs=true&cst=custom", "Best Food Pairings": "Seafood, pork, sushi, Ramen, rice"}, {"Category": "HOT SAUCE", "Food Style": "Fruit", "Brand": "Melinda's", "Product Name": "Mango Habanero", "Pepper Type": "Habanero", "Heat Teir": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Mango", "Product URL": "https://www.pepperjunction401.com/product/melinda-s-mango-habanero-hot-sauce-/57?cs=true&cst=custom", "Best Food Pairings": "Chicken, shrimp tacos, salsas"}, {"Category": "HOT SAUCE", "Food Style": "Caribbean", "Brand": "Melinda's", "Product Name": "Original Naga Jolokia", "Pepper Type": "Ghost Pepper", "Heat Teir": "Super Hot", "Heat Level": 8, "Heat Curve": "Delayed Escalation", "Heat Finish": "It Burns", "Primary Flavor Notes": "Fruity", "Product URL": "https://www.pepperjunction401.com/product/Melindas-Naga-Jolokia/13?cs=true&cst=custom", "Best Food Pairings": "Tacos, eggs, fried chicken, sandwiches"}, {"Category": "HOT SAUCE", "Food Style": "Caribbean", "Brand": "Melinda's", "Product Name": "Scotch Bonnet Sauce", "Pepper Type": "Scotch Bonnet", "Heat Teir": "Hot", "Heat Level": 6, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Fruity", "Product URL": "https://www.pepperjunction401.com/product/Melindas-Scotch-bonnet/18?cs=true&cst=custom", "Best Food Pairings": "Tacos, seafood, oysters, shrimp, fish"}, {"Category": "HOT SAUCE", "Food Style": "Taco", "Brand": "Mikey V's", "Product Name": "I love Taco Sauce Hot", "Pepper Type": "Habanero", "Heat Teir": "Hot", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Taco", "Product URL": "https://www.pepperjunction401.com/product/mikey-v-s-i-love-taco-sauce-hot-5-oz/188?cs=true&cst=custom", "Best Food Pairings": "Tacos, eggs, grilled meats, pizza, nachos"}, {"Category": "HOT SAUCE", "Food Style": "Verde", "Brand": "Mikey V's", "Product Name": "Jalapeno Dill Pickle", "Pepper Type": "Jalapeño", "Heat Teir": "Mild", "Heat Level": 1, "Heat Curve": "Immediate Hit", "Heat Finish": "Flash Fade", "Primary Flavor Notes": "Dill pickle tang", "Product URL": "https://www.pepperjunction401.com/product/mikey-v-s-jalapeno-dill-pickle-hot-sauce-5-fl-oz-/207?cs=true&cst=custom", "Best Food Pairings": "Hot dogs, burgers, potato salad"}, {"Category": "HOT SAUCE", "Food Style": "Verde", "Brand": "Mikey V's", "Product Name": "Reaper Jalapeno Dill Pickle", "Pepper Type": "Reaper", "Heat Teir": "Extreme", "Heat Level": 9, "Heat Curve": "Immediate Hit", "Heat Finish": "It Burns", "Primary Flavor Notes": "Dill pickle tang", "Product URL": "https://www.pepperjunction401.com/product/mikey-v-s-carolina-reaper-dill-pickle-hot-sauce-5-oz/2L6BEUUPBPCFKPRI4OGULQVJ?cs=true&cst=custom", "Best Food Pairings": "Hot dogs, burgers, potato salad"}, {"Category": "HOT SAUCE", "Food Style": "American", "Brand": "Mikey V's", "Product Name": "Ghostly Garlic", "Pepper Type": "Ghost Pepper", "Heat Teir": "Super Hot", "Heat Level": 8, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Garlic-forward savory", "Product URL": "https://www.pepperjunction401.com/product/ghostly-garlic-ghost-pepper-hot-sauce-5-fl-oz-/206?cs=true&cst=custom", "Best Food Pairings": "Pizza, wings, burgers, chili, pasta"}, {"Category": "HOT SAUCE", "Food Style": "Chipotle", "Brand": "Sauce Crafters", "Product Name": "Mountain Man Fire Roasted Habanero", "Pepper Type": "Habanero", "Heat Teir": "Very Hot", "Heat Level": 7, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Roasted", "Product URL": "https://www.pepperjunction401.com/product/Mouintainman-Fire-Roasted-Habanero/11?cs=true&cst=custom", "Best Food Pairings": "Grilled Meats, burgers, roast beef, steak and cheese, chili"}, {"Category": "HOT SAUCE", "Food Style": "American", "Brand": "Puckerbutt", "Product Name": "Puckerbutt Gator Sauce", "Pepper Type": "Pepper X", "Heat Teir": "Nuclear", "Heat Level": 12, "Heat Curve": "Immediate Hit", "Heat Finish": "It Burns", "Primary Flavor Notes": "Citrusy", "Product URL": "https://www.pepperjunction401.com/product/gator-hot-sauce-pepper-x-edition/199?cs=true&cst=custom", "Best Food Pairings": "Tacos, eggs, grilled meats"}, {"Category": "HOT SAUCE", "Food Style": "Asian", "Brand": "Rhed's", "Product Name": "Deja Vu", "Pepper Type": "Habanero", "Heat Teir": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Smokey", "Product URL": "https://www.pepperjunction401.com/product/13starsbigredone/181?cs=true&cst=custom", "Best Food Pairings": "Veggies, Salmon, shrimp, sushi, rice, ramen, dumplings"}, {"Category": "HOT SAUCE", "Food Style": "Fruit", "Brand": "Rhed's", "Product Name": "Lemon Drop", "Pepper Type": "Aji Lemon Drop", "Heat Teir": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Lemon Citrus", "Product URL": "https://www.pepperjunction401.com/product/rhed-s-aji-lemon-drop-citrus-hot-sauce-/117?cs=true&cst=custom", "Best Food Pairings": "Seafood, oysters, shrimp, veggies, lobster, butter"}, {"Category": "HOT SAUCE", "Food Style": "Verde", "Brand": "Rhed’s", "Product Name": "Original", "Pepper Type": "Jalapeño", "Heat Teir": "Medium", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cajun", "Product URL": "https://www.pepperjunction401.com/product/rhed-s-rhode-island-farm-hot-sauce-/62?cs=true&cst=custom", "Best Food Pairings": "Tacos, eggs, grilled meats, clams, chowder, chili"}, {"Category": "HOT SAUCE", "Food Style": "Cayenne", "Brand": "Walker & Son", "Product Name": "Slap Ya Mama Hot Sauce", "Pepper Type": "Cayenne", "Heat Teir": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cajun", "Product URL": "https://www.pepperjunction401.com/product/Slap-ya-mama-cajun/55?cs=true&cst=custom", "Best Food Pairings": "Tacos, eggs, grilled meats, clams, chowder, chili"}, {"Category": "WING SAUCE", "Food Style": "Wing", "Brand": "Defcon", "Product Name": "Curbstomp", "Pepper Type": "Reaper", "Heat Teir": "Extreme", "Heat Level": 10, "Heat Curve": "Delayed Escalation", "Heat Finish": "It Burns", "Primary Flavor Notes": "Buffalo cayenne", "Product URL": "https://www.pepperjunction401.com/product/defcon-curbstomp-limited-edition-/121?cs=true&cst=custom", "Best Food Pairings": "Wings, buffalo chicken, buffalo dip, wraps, fried chicken"}, {"Category": "WING SAUCE", "Food Style": "Wing", "Brand": "Defcon", "Product Name": "Cluckwing", "Pepper Type": "Scorpion", "Heat Teir": "Medium", "Heat Level": 8, "Heat Curve": "Immediate Hit", "Heat Finish": "It Burns", "Primary Flavor Notes": "Buffalo cayenne", "Product URL": "https://www.pepperjunction401.com/product/Defcon-Cluckwing-Orange/113?cs=true&cst=custom", "Best Food Pairings": "Wings, buffalo chicken, buffalo dip, wraps, fried chicken"}, {"Category": "WING SAUCE", "Food Style": "Wing", "Brand": "Defcon", "Product Name": "Defense Condition #2", "Pepper Type": "Habanero", "Heat Teir": "Medium", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Buffalo cayenne", "Product URL": "https://www.pepperjunction401.com/product/Defcon-Defense-Condition-two-wing-sauce/111?cs=true&cst=custom", "Best Food Pairings": "Wings, buffalo chicken, buffalo dip, wraps, fried chicken"}, {"Category": "WING SAUCE", "Food Style": "Wing", "Brand": "Defcon", "Product Name": "Defense Condition #3", "Pepper Type": "Cayenne", "Heat Teir": "Mild", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Buffalo cayenne", "Product URL": "https://www.pepperjunction401.com/product/Defcon-Defense-Three-Wing-Sauce-Mild/100?cs=true&cst=custom", "Best Food Pairings": "Wings, buffalo chicken, buffalo dip, wraps, fried chicken"}, {"Category": "BBQ SAUCE", "Food Style": "BBQ", "Brand": "Sucklebusters", "Product Name": "Original BBQ", "Pepper Type": "Spices", "Heat Teir": "Mild", "Heat Level": 2, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "BBQ sauce", "Product URL": "https://www.pepperjunction401.com/product/suckelbusters-original-bbq/33?cs=true&cst=custom", "Best Food Pairings": "BBQ, glaze, glazing, dipping, grilled meats, burgers, pork"}, {"Category": "BBQ SAUCE", "Food Style": "BBQ", "Brand": "Sucklebusters", "Product Name": "BBQ Chipotle", "Pepper Type": "Chipotle", "Heat Teir": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Smoky pepper", "Product URL": "https://www.pepperjunction401.com/product/sucklebusters-chipotle-bbq/9?cs=true&cst=custom", "Best Food Pairings": "BBQ, glaze, glazing, dipping, grilled meats, burgers, pork"}, {"Category": "CONDIMENTS", "Food Style": "Mustard", "Brand": "Sauce Crafters", "Product Name": "Colon Cleaner Mustard", "Pepper Type": "Habanero", "Heat Teir": "Hot", "Heat Level": 7, "Heat Curve": "Steady Build", "Heat Finish": "It Burns", "Primary Flavor Notes": "Mustard", "Product URL": "https://www.pepperjunction401.com/product/colon-cleaner-mustard-hot-sauce/5?cs=true&cst=custom", "Best Food Pairings": "Cole slaw, sausages, brats, kielbasa, pork, cold cuts"}, {"Category": "CONDIMENTS", "Food Style": "Ketchup", "Brand": "Melinda's", "Product Name": "Chipotle Ketchup", "Pepper Type": "Chipotle", "Heat Teir": "Medium", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Smoky pepper", "Product URL": "https://www.pepperjunction401.com/product/melindas_chipotle_ketchup/66?cs=true&cst=custom", "Best Food Pairings": "Burgers, hot dogs, fries, cookout"}, {"Category": "CONDIMENTS", "Food Style": "Ketchup", "Brand": "Melinda's", "Product Name": "Naga Jolokia Ketchup", "Pepper Type": "Ghost Pepper", "Heat Teir": "Very Hot", "Heat Level": 8, "Heat Curve": "Delayed Escalation", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Tomato", "Product URL": "https://www.pepperjunction401.com/product/melinda-s-naga-jolokia-ghost-pepper-ketchup-/12?cs=true&cst=custom", "Best Food Pairings": "Burgers, hot dogs, fries, cookout"}, {"Category": "CONDIMENTS", "Food Style": "Syrup", "Brand": "The Spicy Shark", "Product Name": "Habanero Maple Syrup", "Pepper Type": "Habanero", "Heat Teir": "Medium", "Heat Level": 5, "Heat Curve": "Delayed Escalation", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Maple", "Product URL": "https://www.pepperjunction401.com/product/Spicy-Shark-Hot-Syrup/166?cs=true&cst=custom", "Best Food Pairings": "Glaze, ribs, chicken waffles, panckakes, waffles, pork"}, {"Category": "SNACKS", "Food Style": "Vegetable", "Brand": "Mikey V's", "Product Name": "Gator Toes - Spicy", "Pepper Type": "Red Pepper", "Heat Teir": "Medium", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Garlic cayenne", "Product URL": "https://www.pepperjunction401.com/product/gator-toes-fried-garlic-spicy-/187?cs=true&cst=custom", "Best Food Pairings": "Snack, salads, pasta"}, {"Category": "SNACKS", "Food Style": "Vegetable", "Brand": "Mikey V's", "Product Name": "Gator Toes - BBQ", "Pepper Type": "", "Heat Teir": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Garlic bbq", "Product URL": "https://www.pepperjunction401.com/product/gator-toes-fried-garlic-bbq-4oz/216?cs=true&cst=custom", "Best Food Pairings": "Snack, salads, burgers, hot dogs"}, {"Category": "SNACKS", "Food Style": "Vegetable", "Brand": "Mikey V's", "Product Name": "Gator Toes - Buffalo", "Pepper Type": "Paprika", "Heat Teir": "Medium", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Garlic buffalo", "Product URL": "https://www.pepperjunction401.com/product/gator-toes-fried-garlic-buffalo-wing-4oz-/221?cs=true&cst=custom", "Best Food Pairings": "Snack, salads, pizza, burgers"}, {"Category": "SNACKS", "Food Style": "Vegetable", "Brand": "Mikey V's", "Product Name": "Gator Toes - Dill Pickle", "Pepper Type": "", "Heat Teir": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Garlic dill pickle", "Product URL": "https://www.pepperjunction401.com/product/gator-toes-fried-garlic-dill-pickle-3oz/UYTHBGZDW24MPZUMY3OYJ535?cs=true&cst=custom", "Best Food Pairings": "Snack, salads, pasta, sandwiches"}, {"Category": "SNACKS", "Food Style": "Vegetable", "Brand": "Mikey V's", "Product Name": "Gator Toes - Loco Spice", "Pepper Type": "Reaper", "Heat Teir": "Extreme", "Heat Level": 10, "Heat Curve": "Immediate Hit", "Heat Finish": "It Burns", "Primary Flavor Notes": "Garlic", "Product URL": "https://www.pepperjunction401.com/product/gator-toes-fried-garlic-loco-spice-/219?cs=true&cst=custom", "Best Food Pairings": "Snack, salads, pasta, sandwiches"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "BBQ", "Brand": "2 Pig Mafia", "Product Name": "2 Pig Mafia Steak Seasoning 14oz", "Pepper Type": "Chili Peppers", "Heat Teir": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Pepper sweet", "Product URL": "https://www.pepperjunction401.com/product/2-pig-mafia-steak-seasoning-competition-grade-dry-rub-savory-blend-mild-heat/146?cs=true&cst=custom", "Best Food Pairings": "BBQ, smoking, Grilling, grilled meats, steaks, burgers, pork"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "BBQ", "Brand": "Sucklebusters", "Product Name": "Sucklebusters Hogwaller 14oz", "Pepper Type": "Chili Peppers", "Heat Teir": "Mild", "Heat Level": 2, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "BBQ sweet", "Product URL": "https://www.pepperjunction401.com/product/Hogwaller-BBQ-Rub/48?cs=true&cst=custom", "Best Food Pairings": "Pork, chicken, fries, potatoes"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "BBQ", "Brand": "Suckelbusters", "Product Name": "Suckelbusters 1836 14oz", "Pepper Type": "Spices", "Heat Teir": "Mild", "Heat Level": 2, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cracked Pepper", "Product URL": "https://www.pepperjunction401.com/product/sucklebustuers-1836-12-oz-/152?cs=true&cst=custom", "Best Food Pairings": "Chicken, fries, burgers, potatoes"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "BBQ", "Brand": "Sucklebusters", "Product Name": "Sucklebusters Clucker Dust 14oz", "Pepper Type": "Chipotle", "Heat Teir": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "BBQ chipotle", "Product URL": "https://www.pepperjunction401.com/product/Sucklebusters-Cluckerdust-BBQ-Rub/54?cs=true&cst=custom", "Best Food Pairings": "BBQ, smoking, Grilling, grilled meats, steaks, burgers, pork"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "BBQ", "Brand": "Sucklebusters", "Product Name": "Sucklebusters Bamm 14oz", "Pepper Type": "Habanero", "Heat Teir": "Hot", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "BBQ very sweet", "Product URL": "https://www.pepperjunction401.com/product/Sucklebusters-Bamm-BBQ-Rub/51?cs=true&cst=custom", "Best Food Pairings": "Chicken, fries, burgers, potatoes"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "BBQ", "Brand": "Pepper Junction", "Product Name": "All Purpose SPG 14oz", "Pepper Type": "none", "Heat Teir": "Mild", "Heat Level": 1, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Salt pepper garlic", "Product URL": "https://www.pepperjunction401.com/product/pepper-junction-competition-spg-all-purpose-dry-rub/184?cs=true&cst=custom", "Best Food Pairings": "BBQ, smoking, grilling, grilled meats, steaks, burgers, pork"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "Cajun", "Brand": "Walker & Son", "Product Name": "Slap Ya Mama Cajun orig", "Pepper Type": "Red Pepper", "Heat Teir": "Medium", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cajun", "Product URL": "https://www.pepperjunction401.com/product/Slap-Ya-Mama-Cajun-Seasoning/26?cs=true&cst=custom", "Best Food Pairings": "Eggs, pasta salad, potatoes, pasta, pork, wings, chicken"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "Cajun", "Brand": "Walker & Son", "Product Name": "Slap Ya Mama Cajun hot", "Pepper Type": "Red Pepper", "Heat Teir": "Hot", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Cajun", "Product URL": "https://www.pepperjunction401.com/product/hot-blend-cajun-seasoning/XUEECP3DODT7BCI4ROKRNNKJ?cs=true&cst=custom", "Best Food Pairings": "Eggs, pasta salad, potatoes, pasta, pork, wings, chicken"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "Cajun", "Brand": "Walker & Son", "Product Name": "Slap Ya Mama Cajun low sodium", "Pepper Type": "Red Pepper", "Heat Teir": "Medium", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cajun", "Product URL": "https://www.pepperjunction401.com/bbq-sauces-rubs-and-seasonings#doPYmD", "Best Food Pairings": "Eggs, pasta salad, potatoes, pasta, pork, wings, chicken"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "Seasoning", "Brand": "Ass Kickin", "Product Name": "Habanero Garlic Salt", "Pepper Type": "Habanero", "Heat Teir": "Hot", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Garlic-forward savory", "Product URL": "https://www.pepperjunction401.com/product/Ass-Kickin-Garlic-Habanero-Salt/208?cs=true&cst=custom", "Best Food Pairings": "Pizza, wings, burgers, pasta, pork, chicken"}, {"Category": "Olive Oil/Vinegar", "Food Style": "Mediterranean", "Brand": "Ariston", "Product Name": "Chili infused olive oil", "Pepper Type": "Chili Peppers", "Heat Teir": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Chil", "Product URL": "https://www.pepperjunction401.com/product/ariston-chili-infused-olive-oil-8-45-fl-oz-250-ml/B435RVFFOUIXS6MXOBOCDKF4?cs=true&cst=custom", "Best Food Pairings": "Pasta, pizza, Tuscan Bread, dipping, finnishing oil, salad"}, {"Category": "Olive Oil/Vinegar", "Food Style": "Mediterranean", "Brand": "Ariston", "Product Name": "Garlic infused olive oil", "Pepper Type": "", "Heat Teir": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Garlic forward", "Product URL": "https://www.pepperjunction401.com/product/ariston-garlic-infused-olive-oil-8-45-fl-oz-250-ml/ALYUW7N6NOE2H2Q3QQFVDX77?cs=true&cst=custom", "Best Food Pairings": "Pasta, pizza, Tuscan Bread, dipping, finnishing oil, salad"}, {"Category": "Olive Oil/Vinegar", "Food Style": "Mediterranean", "Brand": "Ariston", "Product Name": "Tuscan Herb infused olive oil", "Pepper Type": "", "Heat Teir": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Herbs", "Product URL": "https://www.pepperjunction401.com/product/ariston-tuscan-herb-infused-olive-oil-8-45-fl-oz-250-ml/K5ATEQ55ZV57BHCFWJA2ZCVI?cs=true&cst=custom", "Best Food Pairings": "Pasta, pizza, Tuscan Bread, dipping, finnishing oil, salad"}, {"Category": "Olive Oil/Vinegar", "Food Style": "Mediterranean", "Brand": "Ariston", "Product Name": "Lemon infused olive pop", "Pepper Type": "", "Heat Teir": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Lemon", "Product URL": "https://www.pepperjunction401.com/product/ariston-lemon-infused-olive-oil-8-45-fl-oz-250-ml/XOBOSPPYGC5GQ2JH3N5IWO5X?cs=true&cst=custom", "Best Food Pairings": "Pasta, chicken, veggies, seafood, fish"}, {"Category": "Olive Oil/Vinegar", "Food Style": "Mediterranean", "Brand": "Ariston", "Product Name": "Fig infused balsamic vinegar", "Pepper Type": "", "Heat Teir": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Fig", "Product URL": "https://www.pepperjunction401.com/product/ariston-fig-infused-balsamic-vinegar-8-45-fl-oz-250-ml/SUDG7OUSWFVZ2L2ZZW7M2RU3?cs=true&cst=custom", "Best Food Pairings": "Salad, veggies, pizza, Tuscan Bread, dipping, goat cheese"}, {"Category": "Olive Oil/Vinegar", "Food Style": "Mediterranean", "Brand": "Ariston", "Product Name": "Black Cherry infused balsamic vinegar", "Pepper Type": "", "Heat Teir": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Cherry", "Product URL": "https://www.pepperjunction401.com/product/ariston-black-cherry-infused-balsamic-vinegar-8-45-fl-oz-250-ml/366AOYM36S2KF7WYZN2ZX2DS?cs=true&cst=custom", "Best Food Pairings": "Salad, veggies, pizza, Tuscan Bread, dipping, goat cheese"}, {"Category": "Merch", "Food Style": "", "Brand": "Pepper Junction", "Product Name": "Trucker Hat", "Pepper Type": "", "Heat Teir": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "", "Product URL": "", "Best Food Pairings": ""}];
+   const PJ_DATA = [{"Category": "HOT SAUCE", "Food Style": "Asian", "Brand": "13 Stars", "Product Name": "Dragon’s Breath", "Pepper Type": "Jalapeño", "Heat Tier": "Mild", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Soy-ginger", "Product URL": "https://www.pepperjunction401.com/product/13starsbigredone/181?cs=true&cst=custom", "Product Image": "assets/sauces/13-stars-dragon-s-breath.png", "Best Food Pairings": "Veggies, salmon, shrimp, sushi, rice, ramen, dumplings, pho, fried rice, stir fry, lo mein, pad thai, curry, naan, spring rolls, fish, grain bowls, poke bowls, rice bowls, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Mexican", "Brand": "CaJohns", "Product Name": "La Segadora Carolina Reaper", "Pepper Type": "Reaper", "Heat Tier": "Extreme", "Heat Level": 9, "Heat Curve": "Immediate Hit", "Heat Finish": "Flash Fade", "Primary Flavor Notes": "Taco", "Product URL": "https://www.pepperjunction401.com/product/Cajohns-segadora-reaper/97?cs=true&cst=custom", "Product Image": "assets/sauces/cajohns-la-segadora-carolina-reaper.png", "Best Food Pairings": "Tacos, burritos, empanadas, nachos, quesadillas, fajitas, enchiladas, chicken, grain bowls, poke bowls, rice bowls"}, {"Category": "HOT SAUCE", "Food Style": "Caribbean", "Brand": "Dirty Dick's", "Product Name": "Hot Tropical Hot Sauce", "Pepper Type": "Habanero", "Heat Tier": "Very Hot", "Heat Level": 7, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Sweet tropical fruit", "Product URL": "https://www.pepperjunction401.com/product/Dirty-Dicks-Hot-Tropical/65?cs=true&cst=custom", "Product Image": "assets/sauces/dirty-dick-s-hot-tropical-hot-sauce.png", "Best Food Pairings": "Pork, chicken, eggs, shrimp, seafood, wings, sandwiches, chicken salad, grain bowls, poke bowls, rice bowls, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Southwestern", "Brand": "Ghost Scream", "Product Name": "Ghost Scream", "Pepper Type": "Ghost Pepper", "Heat Tier": "Super Hot", "Heat Level": 8, "Heat Curve": "Steady Build", "Heat Finish": "It Burns", "Primary Flavor Notes": "Roasted red pepper", "Product URL": "https://www.pepperjunction401.com/product/ghost-scream-/50?cs=true&cst=custom", "Product Image": "assets/sauces/ghost-scream-ghost-scream.png", "Best Food Pairings": "Tacos, eggs, pizza, chowder, chili, clam cakes, fish sandwich, stuffies, little necks, clams, breakfast sandwiches, omelets, hash browns, home fries, grain bowls, poke bowls, rice bowls, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Mexican", "Brand": "Heartbreaking Dawn's", "Product Name": "The Green", "Pepper Type": "Jalapeño", "Heat Tier": "Hot", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "Flash Fade", "Primary Flavor Notes": "Verde", "Product URL": "https://www.pepperjunction401.com/product/fire-roasted-jalape-o-verde-hot-sauce/63?cs=true&cst=custom", "Product Image": "assets/sauces/heartbreaking-dawn-s-the-green.png", "Best Food Pairings": "Tacos, veggies, avocado, pizza, nachos, burritos, empanadas, quesadillas, fajitas, enchiladas, chicken, burgers, grain bowls, poke bowls, rice bowls"}, {"Category": "HOT SAUCE", "Food Style": "Mexican", "Brand": "High River Sauces", "Product Name": "Hellacious", "Pepper Type": "Chipotle", "Heat Tier": "Hot", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Chipotle-Smokey", "Product URL": "https://www.pepperjunction401.com/product/high-river-hellacious-chipotle-hot-sauce-/200?cs=true&cst=custom", "Product Image": "assets/sauces/high-river-sauces-hellacious.png", "Best Food Pairings": "Tacos, burritos, empanadas, nachos, quesadillas, fajitas, enchiladas, chicken, chowder, clam cakes, fish sandwich, stuffies, fried clams, little necks, clams, mac and cheese, grain bowls, poke bowls, rice bowls, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Cajun", "Brand": "High River Sauces", "Product Name": "Psych Sauce", "Pepper Type": "Cayenne", "Heat Tier": "Hot", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cayenne black Pepper", "Product URL": "https://www.pepperjunction401.com/product/high-river-psych-sauce-cayenne-garlic-hot-sauce-/7CECSBCJRF2AROAXX3VNEPSO?cs=true&cst=custom", "Product Image": "assets/sauces/high-river-sauces-psych-sauce.png", "Best Food Pairings": "Tacos, eggs, seafood, clams, chowder, chili, clam cakes, fish sandwich, stuffies, fried clams, little necks, clams, breakfast sandwiches, omelets, hash browns, home fries, mac and cheese, grain bowls, poke bowls, rice bowls, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Asian", "Brand": "High River Sauces", "Product Name": "Foo Foo Mama Choo", "Pepper Type": "Reaper", "Heat Tier": "Extreme", "Heat Level": 9, "Heat Curve": "Delayed Escalation", "Heat Finish": "It Burns", "Primary Flavor Notes": "Asian sweet", "Product URL": "https://www.pepperjunction401.com/product/High-River-Foo-Foo-mama-choo/15?cs=true&cst=custom", "Product Image": "assets/sauces/high-river-sauces-foo-foo-mama-choo.png", "Best Food Pairings": "Veggies, salmon, shrimp, sushi, rice, ramen, dumplings, pho, fried rice, stir fry, lo mein, pad thai, curry, naan, spring rolls, fish, chicken salad, burritos, empanadas, quesadillas, fajitas, enchiladas, grain bowls, poke bowls, rice bowls, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Fruit", "Brand": "High River Sauces", "Product Name": "Peppers Up", "Pepper Type": "Apollo", "Heat Tier": "Nuclear", "Heat Level": 11, "Heat Curve": "Delayed Escalation", "Heat Finish": "Say Goodnight", "Primary Flavor Notes": "Black - Blue Berry", "Product URL": "https://www.pepperjunction401.com/product/high-river-peppers-up-hot-sauce-/218?cs=true&cst=custom", "Product Image": "assets/sauces/high-river-sauces-peppers-up.png", "Best Food Pairings": "Tacos, eggs, pork, Italian Grinder, coldcuts, oysters, stuffies, grain bowls, poke bowls, rice bowls, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Caribbean", "Brand": "High River Sauces", "Product Name": "Rogue", "Pepper Type": "Scorpion", "Heat Tier": "Super Hot", "Heat Level": 8, "Heat Curve": "Steady Build", "Heat Finish": "It Burns", "Primary Flavor Notes": "Blood Orange-Pear", "Product URL": "https://www.pepperjunction401.com/product/High-River-Rogue/3?cs=true&cst=custom", "Product Image": "assets/sauces/high-river-sauces-rogue.png", "Best Food Pairings": "Turkey, pork, sushi, fish, shrimp, oysters, grain bowls, poke bowls, rice bowls"}, {"Category": "HOT SAUCE", "Food Style": "Caribbean", "Brand": "High River Sauces", "Product Name": "Tears of the Sun", "Pepper Type": "Habanero", "Heat Tier": "Medium", "Heat Level": 4, "Heat Curve": "Immediate Hit", "Heat Finish": "No Hang", "Primary Flavor Notes": "Fruity", "Product URL": "https://www.pepperjunction401.com/product/high-river-tears-of-the-sun-tropical-hot-sauce-/1?cs=true&cst=custom", "Product Image": "assets/sauces/high-river-sauces-tears-of-the-sun.png", "Best Food Pairings": "Tacos, seafood, oysters, shrimp, fish, grain bowls, poke bowls, rice, burritos, empanadas, nachos, quesadillas, fajitas, enchiladas, chicken, breakfast, breakfast sandwiches, breakfast burritos, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Fruit", "Brand": "High River Sauces", "Product Name": "Thunder Juice", "Pepper Type": "Reaper", "Heat Tier": "Extreme", "Heat Level": 10, "Heat Curve": "Steady Build", "Heat Finish": "It Burns", "Primary Flavor Notes": "Fruit and berries", "Product URL": "https://www.pepperjunction401.com/product/High-River-Thunder-Juice/99?cs=true&cst=custom", "Product Image": "assets/sauces/high-river-sauces-thunder-juice.png", "Best Food Pairings": "Tacos, eggs, pork, chicken, beef, burritos, empanadas, nachos, quesadillas, fajitas, enchiladas"}, {"Category": "HOT SAUCE", "Food Style": "Mexican", "Brand": "High River Sauces", "Product Name": "Taco X", "Pepper Type": "Pepper X", "Heat Tier": "Nuclear", "Heat Level": 12, "Heat Curve": "Delayed Escalation", "Heat Finish": "Say Goodnight", "Primary Flavor Notes": "Taco", "Product URL": "https://www.pepperjunction401.com/product/high-river-pepper-x-taco-sauce-5oz-/JA7YBF77FWY2HJON5CR7KR4O?cs=true&cst=custom", "Product Image": "assets/sauces/high-river-sauces-taco-x.png", "Best Food Pairings": "Tacos, eggs, beef, mac and cheese, burritos, empanadas, nachos, quesadillas, fajitas, enchiladas, chicken"}, {"Category": "HOT SAUCE", "Food Style": "Indian", "Brand": "Hell’s Kitchen", "Product Name": "Cinnamon Ghost", "Pepper Type": "Ghost Pepper", "Heat Tier": "Super Hot", "Heat Level": 7, "Heat Curve": "Delayed Escalation", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cinnamon", "Product URL": "https://www.pepperjunction401.com/product/hell-s-kitchen-cinnamon-ghost-punch-hot-sauce-5oz-/E6VYVOI2666KH27HV2YEVJWO?cs=true&cst=custom", "Product Image": "assets/sauces/hell-s-kitchen-cinnamon-ghost.png", "Best Food Pairings": "Pork, ice cream, dumplings, naan, fried rice, stir fry, lo mein, pad thai, curry, vegetable samosa"}, {"Category": "HOT SAUCE", "Food Style": "Caribbean", "Brand": "Hell’s Kitchen", "Product Name": "Coconut Curry", "Pepper Type": "Scotch Bonnet", "Heat Tier": "Very Hot", "Heat Level": 6, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Coconut curry", "Product URL": "https://www.pepperjunction401.com/product/hell-s-kitchen-rockin-rasta-jamaican-coconut-curry-/533JZBWR6HXWICTZDBKRZPOV?cs=true&cst=custom", "Product Image": "assets/sauces/hell-s-kitchen-coconut-curry.png", "Best Food Pairings": "Pork, Indian, seafood, dumplings, empanadas, curry, shrimp, salmon, rice, ramen, fish, grain bowls, poke bowls, rice bowls, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Mediterranean", "Brand": "Hell’s Kitchen", "Product Name": "Black Forest", "Pepper Type": "Ghost Pepper", "Heat Tier": "Very Hot", "Heat Level": 6, "Heat Curve": "Delayed Escalation", "Heat Finish": "Flash Fade", "Primary Flavor Notes": "Black cherry-balsamic", "Product URL": "https://www.pepperjunction401.com/product/hell-s-kitchen-black-forest-black-cherry-balsamic-ghost-pepper-hot-sauce-/TZMMRDFB7WRZGYVLBVCHWIXZ?cs=true&cst=custom", "Product Image": "assets/sauces/hell-s-kitchen-black-forest.png", "Best Food Pairings": "Italian cold cuts, salads, Italian grinders, salad, veggies, pizza, Tuscan Bread, charcuterie, goat cheese, brie, parmesan, caprese salad, Greek salad, calzones"}, {"Category": "HOT SAUCE", "Food Style": "American", "Brand": "Sauce Crafters", "Product Name": "Hog's Ass Garlic Habanero Sauce", "Pepper Type": "Habanero", "Heat Tier": "Very Hot", "Heat Level": 7, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Garlic-forward", "Product URL": "https://www.pepperjunction401.com/product/hogs-ass-garlic-habanero/28?cs=true&cst=custom", "Product Image": "assets/sauces/sauce-crafters-hog-s-ass-garlic-habanero-sauce.png", "Best Food Pairings": "Tacos, eggs, pizza, burgers, nachos, chowder, clam cakes, fish sandwich, breakfast sandwiches, omelets, hash browns, home fries, mac and cheese, calzones, lasagna"}, {"Category": "HOT SAUCE", "Food Style": "Asian", "Brand": "Ashley Foods", "Product Name": "Mad Dog Sriracha", "Pepper Type": "Reaper", "Heat Tier": "Extreme", "Heat Level": 10, "Heat Curve": "Immediate Hit", "Heat Finish": "Say Goodnight", "Primary Flavor Notes": "Sriracha", "Product URL": "https://www.pepperjunction401.com/product/Mad-Dog-Sriracha-Reaper/59?cs=true&cst=custom", "Product Image": "assets/sauces/ashley-foods-mad-dog-sriracha.png", "Best Food Pairings": "Seafood, pork, sushi, Ramen, rice, salmon, shrimp, ramen, dumplings, pho, fried rice, stir fry, lo mein, pad thai, curry, naan, spring rolls, mac and cheese, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Fruit", "Brand": "Melinda's", "Product Name": "Mango Habanero", "Pepper Type": "Habanero", "Heat Tier": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Mango", "Product URL": "https://www.pepperjunction401.com/product/melinda-s-mango-habanero-hot-sauce-/57?cs=true&cst=custom", "Product Image": "assets/sauces/melinda-s-mango-habanero.png", "Best Food Pairings": "Chicken, shrimp, tacos, salsas, seafood"}, {"Category": "HOT SAUCE", "Food Style": "Caribbean", "Brand": "Melinda's", "Product Name": "Original Naga Jolokia", "Pepper Type": "Ghost Pepper", "Heat Tier": "Super Hot", "Heat Level": 8, "Heat Curve": "Delayed Escalation", "Heat Finish": "It Burns", "Primary Flavor Notes": "Fruity", "Product URL": "https://www.pepperjunction401.com/product/Melindas-Naga-Jolokia/13?cs=true&cst=custom", "Product Image": "assets/sauces/melinda-s-original-naga-jolokia.png", "Best Food Pairings": "Tacos, empanadas, quesadillas, fajitas, enchiladas, chicken, burritos, seafood, oysters, shrimp, fish, salsa, seafood salad, eggs, breakfast sandwiches, omelets, rice, fried chicken, sandwiches, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Caribbean", "Brand": "Melinda's", "Product Name": "Scotch Bonnet Sauce", "Pepper Type": "Scotch Bonnet", "Heat Tier": "Hot", "Heat Level": 6, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Fruity", "Product URL": "https://www.pepperjunction401.com/product/Melindas-Scotch-bonnet/18?cs=true&cst=custom", "Product Image": "assets/sauces/melinda-s-scotch-bonnet-sauce.png", "Best Food Pairings": "Tacos, empanadas, quesadillas, fajitas, enchiladas, chicken, burritos, seafood, oysters, shrimp, fish, salsa, seafood salad, eggs, breakfast sandwiches, omelets, rice, fried chicken, sandwiches, breakfast, breakfast burritos, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Mexican", "Brand": "Mikey V's", "Product Name": "I love Taco Sauce Hot", "Pepper Type": "Habanero", "Heat Tier": "Hot", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Taco", "Product URL": "https://www.pepperjunction401.com/product/mikey-v-s-i-love-taco-sauce-hot-5-oz/188?cs=true&cst=custom", "Product Image": "assets/sauces/mikey-v-s-i-love-taco-sauce-hot.png", "Best Food Pairings": "Tacos, burritos, empanadas, nachos, quesadillas, fajitas, enchiladas, chicken, mac and cheese, breakfast, breakfast burritos, eggs"}, {"Category": "HOT SAUCE", "Food Style": "Mexican", "Brand": "Mikey V's", "Product Name": "Jalapeno Dill Pickle", "Pepper Type": "Jalapeño", "Heat Tier": "Mild", "Heat Level": 1, "Heat Curve": "Immediate Hit", "Heat Finish": "Flash Fade", "Primary Flavor Notes": "Dill pickle tang", "Product URL": "https://www.pepperjunction401.com/product/mikey-v-s-jalapeno-dill-pickle-hot-sauce-5-fl-oz-/207?cs=true&cst=custom", "Product Image": "assets/sauces/mikey-v-s-jalapeno-dill-pickle.png", "Best Food Pairings": "Hot dogs, burgers, potato salad, eggs, chicken, sandwiches, chicken salad, egg salad, grain bowls, rice bowls, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "Mexican", "Brand": "Mikey V's", "Product Name": "Reaper Jalapeno Dill Pickle", "Pepper Type": "Reaper", "Heat Tier": "Extreme", "Heat Level": 9, "Heat Curve": "Immediate Hit", "Heat Finish": "It Burns", "Primary Flavor Notes": "Dill pickle tang", "Product URL": "https://www.pepperjunction401.com/product/mikey-v-s-carolina-reaper-dill-pickle-hot-sauce-5-oz/2L6BEUUPBPCFKPRI4OGULQVJ?cs=true&cst=custom", "Product Image": "assets/sauces/mikey-v-s-reaper-jalapeno-dill-pickle.png", "Best Food Pairings": "Hot dogs, burgers, potato salad, eggs, chicken, sandwiches, chicken salad, egg salad, grain bowls, rice bowls, crab cakes"}, {"Category": "HOT SAUCE", "Food Style": "American", "Brand": "Mikey V's", "Product Name": "Ghostly Garlic", "Pepper Type": "Ghost Pepper", "Heat Tier": "Super Hot", "Heat Level": 8, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Garlic-forward savory", "Product URL": "https://www.pepperjunction401.com/product/ghostly-garlic-ghost-pepper-hot-sauce-5-fl-oz-/206?cs=true&cst=custom", "Product Image": "assets/sauces/mikey-v-s-ghostly-garlic.png", "Best Food Pairings": "Pizza, wings, burgers, chili, pasta, meatballs, chowder, sandwiches, breakfast sandwiches, omelets, hash browns, home fries, mac and cheese, calzones, lasagna"}, {"Category": "HOT SAUCE", "Food Style": "American", "Brand": "Sauce Crafters", "Product Name": "Mountain Man Fire Roasted Habanero", "Pepper Type": "Habanero", "Heat Tier": "Very Hot", "Heat Level": 7, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Roasted", "Product URL": "https://www.pepperjunction401.com/product/Mouintainman-Fire-Roasted-Habanero/11?cs=true&cst=custom", "Product Image": "assets/sauces/sauce-crafters-mountain-man-fire-roasted-habanero.png", "Best Food Pairings": "burgers, cheeseburger, roast beef sandwich, steak and cheese, chili, steak and eggs, steaks, mac and cheese"}, {"Category": "HOT SAUCE", "Food Style": "American", "Brand": "Puckerbutt", "Product Name": "Puckerbutt Gator Sauce", "Pepper Type": "Pepper X", "Heat Tier": "Nuclear", "Heat Level": 12, "Heat Curve": "Immediate Hit", "Heat Finish": "It Burns", "Primary Flavor Notes": "Citrusy", "Product URL": "https://www.pepperjunction401.com/product/gator-hot-sauce-pepper-x-edition/199?cs=true&cst=custom", "Product Image": "assets/sauces/puckerbutt-puckerbutt-gator-sauce.png", "Best Food Pairings": "Tacos, eggs, chicken, pasta salad, grain bowls, poke bowls"}, {"Category": "HOT SAUCE", "Food Style": "Asian", "Brand": "Rhed's", "Product Name": "Deja Vu", "Pepper Type": "Habanero", "Heat Tier": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Smokey", "Product URL": "https://www.pepperjunction401.com/product/13starsbigredone/181?cs=true&cst=custom", "Product Image": "assets/sauces/rhed-s-deja-vu.png", "Best Food Pairings": "Veggies, salmon, shrimp, sushi, rice, ramen, dumplings, pho, fried rice, stir fry, lo mein, pad thai, curry, naan, spring rolls"}, {"Category": "HOT SAUCE", "Food Style": "Fruit", "Brand": "Rhed's", "Product Name": "Lemon Drop", "Pepper Type": "Aji Lemon Drop", "Heat Tier": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Lemon Citrus", "Product URL": "https://www.pepperjunction401.com/product/rhed-s-aji-lemon-drop-citrus-hot-sauce-/117?cs=true&cst=custom", "Product Image": "assets/sauces/rhed-s-lemon-drop.png", "Best Food Pairings": "Seafood, oysters, shrimp, veggies, lobster, butter, cod, haddock, tataug, salmon, swordfish, crab cakes, fried clams, clams, stuffies, asparagus"}, {"Category": "HOT SAUCE", "Food Style": "Cajun", "Brand": "Rhed’s", "Product Name": "Original", "Pepper Type": "Jalapeño", "Heat Tier": "Medium", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cajun", "Product URL": "https://www.pepperjunction401.com/product/rhed-s-rhode-island-farm-hot-sauce-/62?cs=true&cst=custom", "Product Image": "assets/sauces/rhed-s-original.png", "Best Food Pairings": "Tacos, eggs, clams, chowder, chili, clam cakes, fish sandwich, stuffies, little necks, crab cakes, mac and cheese"}, {"Category": "HOT SAUCE", "Food Style": "Cajun", "Brand": "Walker & Son", "Product Name": "Slap Ya Mama Hot Sauce", "Pepper Type": "Cayenne", "Heat Tier": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cajun", "Product URL": "https://www.pepperjunction401.com/product/Slap-ya-mama-cajun/55?cs=true&cst=custom", "Product Image": "assets/sauces/walker-and-son-slap-ya-mama-hot-sauce.png", "Best Food Pairings": "Tacos, eggs, clams, chowder, chili, clam cakes, fish sandwich, stuffies, little necks, mac and cheese"}, {"Category": "WING SAUCE", "Food Style": "Buffalo", "Brand": "Defcon", "Product Name": "Curbstomp", "Pepper Type": "Reaper", "Heat Tier": "Extreme", "Heat Level": 10, "Heat Curve": "Delayed Escalation", "Heat Finish": "It Burns", "Primary Flavor Notes": "Buffalo cayenne", "Product URL": "https://www.pepperjunction401.com/product/defcon-curbstomp-limited-edition-/121?cs=true&cst=custom", "Product Image": "assets/sauces/defcon-curbstomp.png", "Best Food Pairings": "Wings, buffalo chicken, buffalo dip, wraps, fried chicken, chili, bloody mary, stuffies, mac and cheese, chicken, chicken thighs, chicken wings, drums, chicken drums"}, {"Category": "WING SAUCE", "Food Style": "Buffalo", "Brand": "Defcon", "Product Name": "Cluckwing", "Pepper Type": "Scorpion", "Heat Tier": "Medium", "Heat Level": 8, "Heat Curve": "Immediate Hit", "Heat Finish": "It Burns", "Primary Flavor Notes": "Buffalo cayenne", "Product URL": "https://www.pepperjunction401.com/product/Defcon-Cluckwing-Orange/113?cs=true&cst=custom", "Product Image": "assets/sauces/defcon-cluckwing.png", "Best Food Pairings": "Wings, buffalo chicken, buffalo dip, wraps, fried chicken, chili, bloody mary, stuffies, mac and cheese, chicken, chicken thighs, chicken wings, drums, chicken drums"}, {"Category": "WING SAUCE", "Food Style": "Buffalo", "Brand": "Defcon", "Product Name": "Defense Condition #2", "Pepper Type": "Habanero", "Heat Tier": "Medium", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Buffalo cayenne", "Product URL": "https://www.pepperjunction401.com/product/Defcon-Defense-Condition-two-wing-sauce/111?cs=true&cst=custom", "Product Image": "assets/sauces/defcon-defense-condition-number-2.png", "Best Food Pairings": "Wings, buffalo chicken, buffalo dip, wraps, fried chicken, chili, bloody mary, stuffies, mac and cheese, chicken, chicken thighs, chicken wings, drums, chicken drums"}, {"Category": "WING SAUCE", "Food Style": "Buffalo", "Brand": "Defcon", "Product Name": "Defense Condition #3", "Pepper Type": "Cayenne", "Heat Tier": "Mild", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Buffalo cayenne", "Product URL": "https://www.pepperjunction401.com/product/Defcon-Defense-Three-Wing-Sauce-Mild/100?cs=true&cst=custom", "Product Image": "assets/sauces/defcon-defense-condition-number-3.png", "Best Food Pairings": "Wings, buffalo chicken, buffalo dip, wraps, fried chicken, chili, bloody mary, stuffies, mac and cheese, chicken, chicken thighs, chicken wings, drums, chicken drums"}, {"Category": "BBQ SAUCE", "Food Style": "BBQ", "Brand": "Sucklebusters", "Product Name": "Original BBQ", "Pepper Type": "Spices", "Heat Tier": "Mild", "Heat Level": 2, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "BBQ sauce", "Product URL": "https://www.pepperjunction401.com/product/suckelbusters-original-bbq/33?cs=true&cst=custom", "Product Image": "assets/sauces/sucklebusters-original-bbq.png", "Best Food Pairings": "BBQ, glaze, glazing, dipping, pork, mac and cheese, chicken, burgers, cheeseburgers, ribs, pork"}, {"Category": "BBQ SAUCE", "Food Style": "BBQ", "Brand": "Sucklebusters", "Product Name": "BBQ Chipotle", "Pepper Type": "Chipotle", "Heat Tier": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Smoky pepper", "Product URL": "https://www.pepperjunction401.com/product/sucklebusters-chipotle-bbq/9?cs=true&cst=custom", "Product Image": "assets/sauces/sucklebusters-bbq-chipotle.png", "Best Food Pairings": "BBQ, glaze, glazing, dipping, burgers, pork, mac and cheese, chicken, burgers, cheeseburgers, ribs, pork"}, {"Category": "CONDIMENTS", "Food Style": "Condiment", "Brand": "Sauce Crafters", "Product Name": "Colon Cleaner Mustard", "Pepper Type": "Habanero", "Heat Tier": "Hot", "Heat Level": 7, "Heat Curve": "Steady Build", "Heat Finish": "It Burns", "Primary Flavor Notes": "Mustard", "Product URL": "https://www.pepperjunction401.com/product/colon-cleaner-mustard-hot-sauce/5?cs=true&cst=custom", "Product Image": "assets/sauces/sauce-crafters-colon-cleaner-mustard.png", "Best Food Pairings": "Cole slaw, sausages, brats, kielbasa, pork, cold cuts"}, {"Category": "CONDIMENTS", "Food Style": "Condiment", "Brand": "Melinda's", "Product Name": "Chipotle Ketchup", "Pepper Type": "Chipotle", "Heat Tier": "Medium", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Smoky pepper", "Product URL": "https://www.pepperjunction401.com/product/melindas_chipotle_ketchup/66?cs=true&cst=custom", "Product Image": "assets/sauces/melinda-s-chipotle-ketchup.png", "Best Food Pairings": "Burgers, hot dogs, fries, cookout, clam cakes, tots, stuffies"}, {"Category": "CONDIMENTS", "Food Style": "Condiment", "Brand": "Melinda's", "Product Name": "Naga Jolokia Ketchup", "Pepper Type": "Ghost Pepper", "Heat Tier": "Very Hot", "Heat Level": 8, "Heat Curve": "Delayed Escalation", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Tomato", "Product URL": "https://www.pepperjunction401.com/product/melinda-s-naga-jolokia-ghost-pepper-ketchup-/12?cs=true&cst=custom", "Product Image": "assets/sauces/melinda-s-naga-jolokia-ketchup.png", "Best Food Pairings": "Burgers, hot dogs, fries, cookout, clam cakes, tots, stuffies"}, {"Category": "CONDIMENTS", "Food Style": "Condiment", "Brand": "The Spicy Shark", "Product Name": "Habanero Maple Syrup", "Pepper Type": "Habanero", "Heat Tier": "Medium", "Heat Level": 5, "Heat Curve": "Delayed Escalation", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Maple", "Product URL": "https://www.pepperjunction401.com/product/Spicy-Shark-Hot-Syrup/166?cs=true&cst=custom", "Product Image": "assets/sauces/the-spicy-shark-habanero-maple-syrup.png", "Best Food Pairings": "Ribs, fried chicken, chicken and waffles, pancakes, waffles, pork, bbq, oatmeal, breakfast"}, {"Category": "SNACKS", "Food Style": "Vegetable", "Brand": "Mikey V's", "Product Name": "Gator Toes - Spicy", "Pepper Type": "Red Pepper", "Heat Tier": "Medium", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Garlic cayenne", "Product URL": "https://www.pepperjunction401.com/product/gator-toes-fried-garlic-spicy-/187?cs=true&cst=custom", "Product Image": "assets/sauces/mikey-v-s-gator-toes-spicy.png", "Best Food Pairings": "Snack, salads, pasta"}, {"Category": "SNACKS", "Food Style": "Vegetable", "Brand": "Mikey V's", "Product Name": "Gator Toes - BBQ", "Pepper Type": "", "Heat Tier": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Garlic bbq", "Product URL": "https://www.pepperjunction401.com/product/gator-toes-fried-garlic-bbq-4oz/216?cs=true&cst=custom", "Product Image": "assets/sauces/mikey-v-s-gator-toes-bbq.png", "Best Food Pairings": "Snack, salads, burgers, hot dogs"}, {"Category": "SNACKS", "Food Style": "Vegetable", "Brand": "Mikey V's", "Product Name": "Gator Toes - Buffalo", "Pepper Type": "Paprika", "Heat Tier": "Medium", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Garlic buffalo", "Product URL": "https://www.pepperjunction401.com/product/gator-toes-fried-garlic-buffalo-wing-4oz-/221?cs=true&cst=custom", "Product Image": "assets/sauces/mikey-v-s-gator-toes-buffalo.png", "Best Food Pairings": "Snack, salads, pizza, burgers"}, {"Category": "SNACKS", "Food Style": "Vegetable", "Brand": "Mikey V's", "Product Name": "Gator Toes - Dill Pickle", "Pepper Type": "", "Heat Tier": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Garlic dill pickle", "Product URL": "https://www.pepperjunction401.com/product/gator-toes-fried-garlic-dill-pickle-3oz/UYTHBGZDW24MPZUMY3OYJ535?cs=true&cst=custom", "Product Image": "assets/sauces/mikey-v-s-gator-toes-dill-pickle.png", "Best Food Pairings": "Snack, salads, pasta, sandwiches"}, {"Category": "SNACKS", "Food Style": "Vegetable", "Brand": "Mikey V's", "Product Name": "Gator Toes - Loco Spice", "Pepper Type": "Reaper", "Heat Tier": "Extreme", "Heat Level": 10, "Heat Curve": "Immediate Hit", "Heat Finish": "It Burns", "Primary Flavor Notes": "Garlic", "Product URL": "https://www.pepperjunction401.com/product/gator-toes-fried-garlic-loco-spice-/219?cs=true&cst=custom", "Product Image": "assets/sauces/mikey-v-s-gator-toes-loco-spice.png", "Best Food Pairings": "Snack, salads, pasta, sandwiches"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "BBQ", "Brand": "2 Pig Mafia", "Product Name": "2 Pig Mafia Steak Seasoning 14oz", "Pepper Type": "Chili Peppers", "Heat Tier": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Pepper sweet", "Product URL": "https://www.pepperjunction401.com/product/2-pig-mafia-steak-seasoning-competition-grade-dry-rub-savory-blend-mild-heat/146?cs=true&cst=custom", "Product Image": "assets/sauces/2-pig-mafia-2-pig-mafia-steak-seasoning-14oz.png", "Best Food Pairings": "Smoking, grilling, steak, burgers, pork, pork chops, beef, tri tip, brisket, Filet, ribeye, prime rib, sirloin, tenderloin tips, flat iron"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "BBQ", "Brand": "Sucklebusters", "Product Name": "Sucklebusters Hogwaller 14oz", "Pepper Type": "Chili Peppers", "Heat Tier": "Mild", "Heat Level": 2, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "BBQ sweet", "Product URL": "https://www.pepperjunction401.com/product/Hogwaller-BBQ-Rub/48?cs=true&cst=custom", "Product Image": "assets/sauces/sucklebusters-sucklebusters-hogwaller-14oz.png", "Best Food Pairings": "Pork, pork butt, pork chops, ribs, baby back ribs, St. Louis ribs, chicken, chicken thighs, wings, chicken wings, drums, chicken drums, fries, potatoes"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "BBQ", "Brand": "Suckelbusters", "Product Name": "Suckelbusters 1836 14oz", "Pepper Type": "Spices", "Heat Tier": "Mild", "Heat Level": 2, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cracked Pepper", "Product URL": "https://www.pepperjunction401.com/product/sucklebustuers-1836-12-oz-/152?cs=true&cst=custom", "Product Image": "assets/sauces/suckelbusters-suckelbusters-1836-14oz.png", "Best Food Pairings": "Smoking, grilling, steak, burgers, pork, veggies, beef roasts, beef, tri tip, brisket, Filet, ribeye, prime rib, sirloin, tenderloin tips, flat iron"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "BBQ", "Brand": "Sucklebusters", "Product Name": "Sucklebusters Clucker Dust 14oz", "Pepper Type": "Chipotle", "Heat Tier": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "BBQ chipotle", "Product URL": "https://www.pepperjunction401.com/product/Sucklebusters-Cluckerdust-BBQ-Rub/54?cs=true&cst=custom", "Product Image": "assets/sauces/sucklebusters-sucklebusters-clucker-dust-14oz.png", "Best Food Pairings": "Smoking, grilling, steak, burgers, pork, pork chops, chicken, chicken thighs, wings, chicken wings, drums, chicken drums, turkey"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "BBQ", "Brand": "Sucklebusters", "Product Name": "Sucklebusters Bamm 14oz", "Pepper Type": "Habanero", "Heat Tier": "Hot", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "BBQ very sweet", "Product URL": "https://www.pepperjunction401.com/product/Sucklebusters-Bamm-BBQ-Rub/51?cs=true&cst=custom", "Product Image": "assets/sauces/sucklebusters-sucklebusters-bamm-14oz.png", "Best Food Pairings": "Smoking, grilling, steak, burgers, pork, chicken, chicken thighs, wings, chicken wings, drums, chicken drums, turkey"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "BBQ", "Brand": "Pepper Junction", "Product Name": "All Purpose SPG 14oz", "Pepper Type": "none", "Heat Tier": "Mild", "Heat Level": 1, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Salt pepper garlic", "Product URL": "https://www.pepperjunction401.com/product/pepper-junction-competition-spg-all-purpose-dry-rub/184?cs=true&cst=custom", "Product Image": "assets/sauces/pepper-junction-all-purpose-spg-14oz.png", "Best Food Pairings": "Smoking, grilling, steak, burgers, pork, soup, veggies, mashed potatoes, beef roasts, beef, tri tip, brisket, flat iron"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "Cajun", "Brand": "Walker & Son", "Product Name": "Slap Ya Mama Cajun Original", "Pepper Type": "Red Pepper", "Heat Tier": "Medium", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cajun", "Product URL": "https://www.pepperjunction401.com/product/Slap-Ya-Mama-Cajun-Seasoning/26?cs=true&cst=custom", "Product Image": "assets/sauces/walker-and-son-slap-ya-mama-cajun-original.png", "Best Food Pairings": "Wings, pasta, pork, chicken, mac and cheese, pasta salad, potato salad, chicken salad, egg salad, fish, salmon, shrimp, swordfish, tataug, tuna salad, corn, asparagus, veggies, fries, potatoes, roasted potatoes, hash brown, home fries"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "Cajun", "Brand": "Walker & Son", "Product Name": "Slap Ya Mama Cajun Hot", "Pepper Type": "Red Pepper", "Heat Tier": "Hot", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Cajun", "Product URL": "https://www.pepperjunction401.com/product/hot-blend-cajun-seasoning/XUEECP3DODT7BCI4ROKRNNKJ?cs=true&cst=custom", "Product Image": "assets/sauces/walker-and-son-slap-ya-mama-cajun-hot.png", "Best Food Pairings": "Wings, pasta, pork, chicken, mac and cheese, pasta salad, potato salad, chicken salad, egg salad, fish, salmon, shrimp, swordfish, tataug, tuna salad, corn, asparagus, veggies, fries, potatoes, roasted potatoes, hash brown, home fries"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "Cajun", "Brand": "Walker & Son", "Product Name": "Slap Ya Mama Cajun Low Sodium", "Pepper Type": "Red Pepper", "Heat Tier": "Medium", "Heat Level": 3, "Heat Curve": "Steady Build", "Heat Finish": "No Hang", "Primary Flavor Notes": "Cajun", "Product URL": "https://www.pepperjunction401.com/bbq-sauces-rubs-and-seasonings#doPYmD", "Product Image": "assets/sauces/walker-and-son-slap-ya-mama-cajun-low-sodium.png", "Best Food Pairings": "Wings, pasta, pork, chicken, mac and cheese, pasta salad, potato salad, chicken salad, egg salad, fish, salmon, shrimp, swordfish, tataug, tuna salad, corn, asparagus, veggies, fries, potatoes, roasted potatoes, hash brown, home fries"}, {"Category": "SEASONINGS/DRY RUBS", "Food Style": "Seasoning", "Brand": "Ass Kickin", "Product Name": "Habanero Garlic Salt", "Pepper Type": "Habanero", "Heat Tier": "Hot", "Heat Level": 5, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Garlic-forward savory", "Product URL": "https://www.pepperjunction401.com/product/Ass-Kickin-Garlic-Habanero-Salt/208?cs=true&cst=custom", "Product Image": "assets/sauces/ass-kickin-habanero-garlic-salt.png", "Best Food Pairings": "Pizza, wings, burgers, pasta, pork, chicken, mac and cheese, pasta salad, potato salad, chicken salad"}, {"Category": "Olive Oil/Vinegar", "Food Style": "Mediterranean", "Brand": "Ariston", "Product Name": "Chili Infused Olive Oil", "Pepper Type": "Chili Peppers", "Heat Tier": "Medium", "Heat Level": 4, "Heat Curve": "Steady Build", "Heat Finish": "Hangs Briefly", "Primary Flavor Notes": "Chili", "Product URL": "https://www.pepperjunction401.com/product/ariston-chili-infused-olive-oil-8-45-fl-oz-250-ml/B435RVFFOUIXS6MXOBOCDKF4?cs=true&cst=custom", "Product Image": "assets/sauces/ariston-chili-infused-olive-oil.png", "Best Food Pairings": "Pasta, pizza, Tuscan Bread, charcuterie, salad, aged sharp cheddar, parmesan, pecorino romano, chicken, pork"}, {"Category": "Olive Oil/Vinegar", "Food Style": "Mediterranean", "Brand": "Ariston", "Product Name": "Garlic Infused Olive Oil", "Pepper Type": "", "Heat Tier": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Garlic forward", "Product URL": "https://www.pepperjunction401.com/product/ariston-garlic-infused-olive-oil-8-45-fl-oz-250-ml/ALYUW7N6NOE2H2Q3QQFVDX77?cs=true&cst=custom", "Product Image": "assets/sauces/ariston-garlic-infused-olive-oil.png", "Best Food Pairings": "Pasta, pizza, Tuscan Bread, charcuterie, salad, aged sharp cheddar, parmesan, pecorino romano, chicken, pork"}, {"Category": "Olive Oil/Vinegar", "Food Style": "Mediterranean", "Brand": "Ariston", "Product Name": "Tuscan Herb Infused Olive Oil", "Pepper Type": "", "Heat Tier": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Herbs", "Product URL": "https://www.pepperjunction401.com/product/ariston-tuscan-herb-infused-olive-oil-8-45-fl-oz-250-ml/K5ATEQ55ZV57BHCFWJA2ZCVI?cs=true&cst=custom", "Product Image": "assets/sauces/ariston-tuscan-herb-infused-olive-oil.png", "Best Food Pairings": "Pasta, pizza, Tuscan Bread, charcuterie, salad, aged sharp cheddar, parmesan, pecorino romano, chicken, pork"}, {"Category": "Olive Oil/Vinegar", "Food Style": "Mediterranean", "Brand": "Ariston", "Product Name": "Lemon Infused Olive Oil", "Pepper Type": "", "Heat Tier": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Lemon", "Product URL": "https://www.pepperjunction401.com/product/ariston-lemon-infused-olive-oil-8-45-fl-oz-250-ml/XOBOSPPYGC5GQ2JH3N5IWO5X?cs=true&cst=custom", "Product Image": "assets/sauces/ariston-lemon-infused-olive-oil.png", "Best Food Pairings": "Pasta, charcuterie, salad, aged sharp cheddar, parmesan, pecorino romano, seafood salad, shrimp, salmon, tataug, cod, Cajun, haddock, swordfish, tuna, chicken, crab cakes"}, {"Category": "Olive Oil/Vinegar", "Food Style": "Mediterranean", "Brand": "Ariston", "Product Name": "Fig Infused Balsamic Vinegar", "Pepper Type": "", "Heat Tier": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Fig", "Product URL": "https://www.pepperjunction401.com/product/ariston-fig-infused-balsamic-vinegar-8-45-fl-oz-250-ml/SUDG7OUSWFVZ2L2ZZW7M2RU3?cs=true&cst=custom", "Product Image": "assets/sauces/ariston-fig-infused-balsamic-vinegar.png", "Best Food Pairings": "Salad, veggies, pizza, Tuscan Bread, charcuterie, goat cheese, brie, parmesan, caprese salad, Greek salad"}, {"Category": "Olive Oil/Vinegar", "Food Style": "Mediterranean", "Brand": "Ariston", "Product Name": "Black Cherry Infused Balsamic Vinegar", "Pepper Type": "", "Heat Tier": "", "Heat Level": 0, "Heat Curve": "", "Heat Finish": "", "Primary Flavor Notes": "Cherry", "Product URL": "https://www.pepperjunction401.com/product/ariston-black-cherry-infused-balsamic-vinegar-8-45-fl-oz-250-ml/366AOYM36S2KF7WYZN2ZX2DS?cs=true&cst=custom", "Product Image": "assets/sauces/ariston-black-cherry-infused-balsamic-vinegar.png", "Best Food Pairings": "Salad, veggies, pizza, Tuscan Bread, charcuterie, goat cheese, brie, parmesan, caprese salad, Greek salad"}];
     const PRODUCT_URL_COL = "Product URL";
+    const RECIPE_JSON_PATH = './data/PJ_Master_Recipe_Map_cleaned.json';
+    let recipeMap = [];
+    let activeMode = 'discovery';
+    let activeRecipe = null;
+    let recipeLockedProducts = [];
+
+
+    const LOCKED_PHRASES = [
+  "mac and cheese",
+  "steak and cheese",
+  "breakfast burritos",
+  "breakfast sandwiches",
+  "buffalo chicken",
+  "buffalo dip",
+  "fish sandwich",
+  "roast beef sandwich",
+  "clam cakes",
+  "fried clams",
+  "chicken and waffles",
+  "prime rib",
+  "home fries",
+  "egg salad",
+  "chicken salad",
+  "tuna salad",
+  "potato salad",
+  "pasta salad",
+  "lobster salad",
+  "beef roasts",
+  "mashed potatoes",
+  "italian grinder",
+  "italian grinders",
+  "cold cuts",
+  "seafood salad",
+  "breakfast burrito",
+  "breakfast sandwich"
+];
+
+const PROTECTED_WORDS = [
+  "brie"
+];
 
     const els = {
       search: document.getElementById('pj-search'),
@@ -147,45 +723,316 @@
       apply: document.getElementById('pj-apply'),
       reset: document.getElementById('pj-reset'),
       results: document.getElementById('pj-results'),
-      count: document.getElementById('pj-count')
+      count: document.getElementById('pj-count'),
+      recipeSelect: document.getElementById('pj-recipe-select'),
+      recipeOpen: document.getElementById('pj-recipe-open'),
+      recipeClear: document.getElementById('pj-clear-recipe')
     };
 
-    function matches(record) {
-      const q = els.search.value.trim().toLowerCase();
-      const category = els.category.value;
-      const heatTier = els.heatTier.value;
-      const foodStyle = els.foodStyle.value;
-      const pepperType = els.pepperType.value;
-      const heatCurve = els.heatCurve.value;
-      const heatFinish = els.heatFinish.value;
+    async function loadRecipeMap() {
+      try {
+        const res = await fetch(RECIPE_JSON_PATH, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`Failed to load recipe map: ${res.status}`);
 
-      if (category && record["Category"] !== category) return false;
-      if (heatTier && record["Heat Teir"] !== heatTier) return false;
-      if (foodStyle && record["Food Style"] !== foodStyle) return false;
-      if (pepperType && record["Pepper Type"] !== pepperType) return false;
-      if (heatCurve && record["Heat Curve"] !== heatCurve) return false;
-      if (heatFinish && record["Heat Finish"] !== heatFinish) return false;
+        const data = await res.json();
+        recipeMap = data.filter(r =>
+          String(r["Active?"] || '').trim().toUpperCase() === 'TRUE' &&
+          String(r["Recipe ID"] || '').trim() &&
+          String(r["Required Product 1"] || '').trim()
+        );
 
-      if (q) {
-        const searchable = [
-          record["Brand"],
-          record["Product Name"],
-          record["Category"],
-          record["Food Style"],
-          record["Pepper Type"],
-          record["Heat Teir"],
-          record["Heat Curve"],
-          record["Heat Finish"],
-          record["Primary Flavor Notes"],
-          record["Best Food Pairings"]
-        ].join(" | ").toLowerCase();
-
-        if (!searchable.includes(q)) return false;
+        populateRecipeDropdown();
+        console.log('Recipe map loaded:', recipeMap.length);
+      } catch (err) {
+        console.error('Recipe map load error:', err);
+        recipeMap = [];
+        if (els.recipeSelect) {
+          els.recipeSelect.innerHTML = '<option value=>Recipe list unavailable</option>';
+        }
       }
-
-      return true;
     }
 
+    function populateRecipeDropdown() {
+      if (!els.recipeSelect) return;
+      els.recipeSelect.innerHTML = '<option value="">Select a recipe</option>';
+
+      recipeMap.forEach(recipe => {
+        const opt = document.createElement('option');
+        opt.value = recipe["Recipe ID"];
+        opt.textContent = recipe["Dropdown Label"] || recipe["Recipe Name"];
+        els.recipeSelect.appendChild(opt);
+      });
+    }
+
+    function clearDiscoveryInputs() {
+      els.search.value = '';
+      els.category.value = '';
+      els.heatTier.value = '';
+      els.foodStyle.value = '';
+      els.pepperType.value = '';
+      els.heatCurve.value = '';
+      els.heatFinish.value = '';
+    }
+
+    function updateRecipeOpenLink(recipe) {
+      if (!els.recipeOpen) return;
+      const url = recipe && recipe["Recipe URL"] ? String(recipe["Recipe URL"]).trim() : '';
+      els.recipeOpen.href = url || '#';
+      els.recipeOpen.setAttribute('aria-disabled', url ? 'false' : 'true');
+    }
+
+    function clearRecipeMode(shouldRender = true) {
+      activeRecipe = null;
+      recipeLockedProducts = [];
+      activeMode = 'discovery';
+      if (els.recipeSelect) els.recipeSelect.value = '';
+      updateRecipeOpenLink(null);
+      if (shouldRender) render();
+    }
+
+    function activateDiscoveryMode() {
+      if (activeMode === 'recipe') {
+        activeRecipe = null;
+        recipeLockedProducts = [];
+        if (els.recipeSelect) els.recipeSelect.value = '';
+        updateRecipeOpenLink(null);
+      }
+      activeMode = 'discovery';
+    }
+
+    function containsRecipeIntent(query) {
+      return /\brecipes?\b/i.test(String(query || '').trim());
+    }
+
+    function normalizeKey(value) {
+      return String(value || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    }
+
+    function getRecipeProductEntries(recipe) {
+      return [
+        { role: 'Required Product', name: recipe["Required Product 1"] },
+        { role: 'Required Product', name: recipe["Required Product 2"] },
+        { role: 'Alternative Product', name: recipe["Alternative Product 1"] },
+        { role: 'Alternative Product', name: recipe["Alternative Product 2"] },
+        { role: 'Suggested Product', name: recipe["Suggested Product"] }
+      ].filter(entry => String(entry.name || '').trim());
+    }
+
+    function getLockedRecipeProducts(recipe) {
+      const byName = new Map(PJ_DATA.map(product => [normalizeKey(product["Product Name"]), product]));
+      return getRecipeProductEntries(recipe)
+        .map(entry => {
+          const product = byName.get(normalizeKey(entry.name));
+          return product ? { product, role: entry.role } : null;
+        })
+        .filter(Boolean);
+    }
+
+    function loadRecipeById(recipeId) {
+      const recipe = recipeMap.find(r => r["Recipe ID"] === recipeId);
+      if (!recipe) return;
+
+      clearDiscoveryInputs();
+      activeMode = 'recipe';
+      activeRecipe = recipe;
+      recipeLockedProducts = getLockedRecipeProducts(recipe);
+      updateRecipeOpenLink(recipe);
+      render();
+    }
+
+    function onDiscoveryInteraction() {
+      activateDiscoveryMode();
+      render();
+    }
+
+    function normalizeText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function escapeRegExp(str) {
+  return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getQueryVariants(term) {
+  const t = normalizeText(term);
+  if (!t) return [];
+
+  const variants = new Set([t]);
+
+  if (t.length > 3) {
+    if (t.endsWith("s")) {
+      variants.add(t.slice(0, -1));
+    } else {
+      variants.add(`${t}s`);
+    }
+  }
+
+  return [...variants];
+}
+
+function hasWholeWord(text, term) {
+  const normalized = normalizeText(text);
+  if (!normalized) return false;
+
+  return getQueryVariants(term).some((variant) => {
+    const pattern = new RegExp(`(^|[^a-z0-9])${escapeRegExp(variant)}($|[^a-z0-9])`, "i");
+    return pattern.test(normalized);
+  });
+}
+
+function hasWholePhrase(text, phrase) {
+  const normalized = normalizeText(text);
+  const target = normalizeText(phrase);
+  if (!normalized || !target) return false;
+
+  const pattern = new RegExp(`(^|[^a-z0-9])${escapeRegExp(target)}($|[^a-z0-9])`, "i");
+  return pattern.test(normalized);
+}
+
+function isLockedPhrase(query) {
+  const q = normalizeText(query);
+  return LOCKED_PHRASES.some((phrase) => normalizeText(phrase) === q);
+}
+
+function isProtectedWord(query) {
+  const q = normalizeText(query);
+  return PROTECTED_WORDS.some((word) => normalizeText(word) === q);
+}
+
+function recordFields(record) {
+  return {
+    brand: record["Brand"] || "",
+    productName: record["Product Name"] || "",
+    category: record["Category"] || "",
+    foodStyle: record["Food Style"] || "",
+    pepperType: record["Pepper Type"] || "",
+    heatTier: record["Heat Tier"] || "",
+    heatCurve: record["Heat Curve"] || "",
+    heatFinish: record["Heat Finish"] || "",
+    flavorNotes: record["Primary Flavor Notes"] || "",
+    pairings: record["Best Food Pairings"] || ""
+  };
+}
+
+function matchesSearch(record, query) {
+  const q = normalizeText(query);
+  if (!q) return true;
+
+  const fields = recordFields(record);
+
+  const priorityFields = [
+    fields.productName,
+    fields.pairings,
+    fields.flavorNotes,
+    fields.foodStyle,
+    fields.brand,
+    fields.category,
+    fields.pepperType
+  ];
+
+  const secondaryFields = [
+    fields.heatTier,
+    fields.heatCurve,
+    fields.heatFinish
+  ];
+
+  if (isLockedPhrase(q)) {
+    return [...priorityFields, ...secondaryFields].some((text) => hasWholePhrase(text, q));
+  }
+
+  if (isProtectedWord(q)) {
+    return [...priorityFields, ...secondaryFields].some((text) => hasWholeWord(text, q));
+  }
+
+  const parts = q.split(/\s+/).filter(Boolean);
+
+  if (parts.length > 1) {
+ const allText = [...priorityFields, ...secondaryFields]
+  .map((text) => normalizeText(text))
+  .join(" | ");
+
+return parts.every((part) => allText.includes(part));
+  }
+
+ return [...priorityFields, ...secondaryFields].some((text) =>
+  normalizeText(text).includes(q)
+);
+}
+
+function matches(record) {
+  const q = els.search.value.trim();
+  const category = els.category.value;
+  const heatTier = els.heatTier.value;
+  const foodStyle = els.foodStyle.value;
+  const pepperType = els.pepperType.value;
+  const heatCurve = els.heatCurve.value;
+  const heatFinish = els.heatFinish.value;
+
+  if (category && record["Category"] !== category) return false;
+  if (heatTier && record["Heat Tier"] !== heatTier) return false;
+  if (foodStyle && record["Food Style"] !== foodStyle) return false;
+  if (pepperType && record["Pepper Type"] !== pepperType) return false;
+  if (heatCurve && record["Heat Curve"] !== heatCurve) return false;
+  if (heatFinish && record["Heat Finish"] !== heatFinish) return false;
+
+  if (!matchesSearch(record, q)) return false;
+
+  return true;
+}
+
+function getRelevanceScore(record, query) {
+  let score = 0;
+  const q = normalizeText(query);
+  if (!q) return score;
+
+  const fields = recordFields(record);
+
+  if (isLockedPhrase(q)) {
+    if (hasWholePhrase(fields.productName, q)) score += 30;
+    if (hasWholePhrase(fields.pairings, q)) score += 40;
+    if (hasWholePhrase(fields.flavorNotes, q)) score += 18;
+    if (hasWholePhrase(fields.foodStyle, q)) score += 16;
+    if (hasWholePhrase(fields.brand, q)) score += 8;
+    if (hasWholePhrase(fields.category, q)) score += 6;
+    return score;
+  }
+
+  if (isProtectedWord(q)) {
+    if (hasWholeWord(fields.productName, q)) score += 22;
+    if (hasWholeWord(fields.pairings, q)) score += 28;
+    if (hasWholeWord(fields.flavorNotes, q)) score += 14;
+    if (hasWholeWord(fields.foodStyle, q)) score += 12;
+    if (hasWholeWord(fields.brand, q)) score += 6;
+    if (hasWholeWord(fields.category, q)) score += 4;
+    return score;
+  }
+
+  const parts = q.split(/\s+/).filter(Boolean);
+
+  if (parts.length > 1) {
+    parts.forEach((part) => {
+      if (hasWholeWord(fields.productName, part)) score += 10;
+      if (hasWholeWord(fields.pairings, part)) score += 12;
+      if (hasWholeWord(fields.flavorNotes, part)) score += 6;
+      if (hasWholeWord(fields.foodStyle, part)) score += 7;
+      if (hasWholeWord(fields.brand, part)) score += 3;
+      if (hasWholeWord(fields.category, part)) score += 2;
+    });
+    return score;
+  }
+
+  if (hasWholeWord(fields.productName, q)) score += 12;
+  if (hasWholeWord(fields.pairings, q)) score += 15;
+  if (hasWholeWord(fields.foodStyle, q)) score += 14;
+  if (hasWholeWord(fields.flavorNotes, q)) score += 8;
+  if (hasWholeWord(fields.pepperType, q)) score += 5;
+  if (hasWholeWord(fields.category, q)) score += 4;
+
+  return score;
+}
     function pill(text) {
       if (!text) return '';
       return `<span class="pj-pill">${escapeHtml(text)}</span>`;
@@ -200,56 +1047,149 @@
         .replace(/'/g, '&#39;');
     }
 
-    function card(record) {
-      const productUrl = PRODUCT_URL_COL ? String(record[PRODUCT_URL_COL] || '').trim() : '';
-      const action = productUrl
-        ? `<div class="pj-card-actions"><a class="pj-btn primary" href="${escapeHtml(productUrl)}" target="_blank" rel="noopener noreferrer">View Sauce</a></div>`
-        : '';
+function card(record, options = {}) {
+  const productUrl = PRODUCT_URL_COL ? String(record[PRODUCT_URL_COL] || '').trim() : '';
+  const action = productUrl
+    ? `<div class="pj-card-actions"><a class="pj-btn sauce" href="${escapeHtml(productUrl)}" target="_blank" rel="noopener noreferrer">View Sauce</a></div>`
+    : '';
 
-      return `
-        <article class="pj-card">
-          <div class="pj-brand">${escapeHtml(record["Brand"])}</div>
-          <h3 class="pj-name">${escapeHtml(record["Product Name"])}</h3>
+  const modePill = options.modeLabel
+    ? `<div class="pj-mode-pill">${escapeHtml(options.modeLabel)}</div>`
+    : '';
 
-          <div>
-            ${pill(record["Category"])}
-            ${pill(record["Food Style"])}
-            ${pill(record["Pepper Type"])}
-            ${pill(record["Heat Teir"])}
-          </div>
+  const note = options.note
+    ? `<p class="pj-card-note">${escapeHtml(options.note)}</p>`
+    : '';
 
-          <div class="pj-meta">
-            <div class="pj-section">
-              <span class="pj-k">Heat Level</span>
-              <div class="pj-v">${escapeHtml(record["Heat Level"])}</div>
-            </div>
-            <div class="pj-section">
-              <span class="pj-k">Heat Curve</span>
-              <div class="pj-v">${escapeHtml(record["Heat Curve"])}</div>
-            </div>
-          </div>
+  return `
+    <article class="pj-card${options.system ? ' pj-system-card' : ''}">
+      ${modePill}
+      <div class="pj-brand">${escapeHtml(record["Brand"] || 'Pepper Junction')}</div>
+      <h3 class="pj-name">${escapeHtml(record["Product Name"] || options.title || '')}</h3>
 
-          <div class="pj-section">
-            <span class="pj-k">Heat Finish</span>
-            <div class="pj-v">${escapeHtml(record["Heat Finish"])}</div>
-          </div>
+      <div>
+        ${pill(record["Category"])}
+        ${pill(record["Food Style"])}
+        ${pill(record["Pepper Type"])}
+        ${pill(record["Heat Tier"])}
+      </div>
 
-          <div class="pj-section">
-            <span class="pj-k">Flavor Notes</span>
-            <div class="pj-v">${escapeHtml(record["Primary Flavor Notes"])}</div>
-          </div>
+      <div class="pj-meta">
+        <div class="pj-section">
+          <span class="pj-k">Heat Level</span>
+          <div class="pj-v">${escapeHtml(record["Heat Level"])}</div>
+        </div>
+        <div class="pj-section">
+          <span class="pj-k">Heat Curve</span>
+          <div class="pj-v">${escapeHtml(record["Heat Curve"])}</div>
+        </div>
+      </div>
 
-          <div class="pj-section">
-            <span class="pj-k">Best Food Pairings</span>
-            <div class="pj-v">${escapeHtml(record["Best Food Pairings"])}</div>
-          </div>
+      <div class="pj-section">
+        <span class="pj-k">Heat Finish</span>
+        <div class="pj-v">${escapeHtml(record["Heat Finish"])}</div>
+      </div>
 
-          ${action}
-        </article>
-      `;
+      <div class="pj-section">
+        <span class="pj-k">Flavor Notes</span>
+        <div class="pj-v">${escapeHtml(record["Primary Flavor Notes"])}</div>
+      </div>
+
+      <div class="pj-section">
+        <span class="pj-k">Best Food Pairings</span>
+        <div class="pj-v">${escapeHtml(record["Best Food Pairings"])}</div>
+      </div>
+
+      ${note}
+      ${action}
+    </article>
+  `;
+}
+
+    function renderRecipeRedirectCard() {
+      els.count.textContent = 'Recipe redirect active';
+      els.results.innerHTML = card({
+        "Brand": 'Pepper Junction',
+        "Product Name": 'Looking for recipes?',
+        "Category": '',
+        "Food Style": '',
+        "Pepper Type": '',
+        "Heat Tier": '',
+        "Heat Level": '',
+        "Heat Curve": '',
+        "Heat Finish": '',
+        "Primary Flavor Notes": 'Recipe search detected',
+        "Best Food Pairings": 'Use the Pepper Junction recipe selector below the Discovery Engine controls.'
+      }, {
+        modeLabel: 'Recipe Redirect',
+        note: 'Recipes live in the Pepper Junction recipe widget. The Discovery Engine is reserved for product, flavor, heat, and pairing searches.',
+        system: true
+      });
     }
 
-    function render() {
+function renderRecipeResults() {
+  const recipeLabel = activeRecipe
+    ? (activeRecipe["Dropdown Label"] || activeRecipe["Recipe Name"] || "Selected Recipe")
+    : "Selected Recipe";
+
+  const recipeUrl = activeRecipe && activeRecipe["Recipe URL"]
+    ? String(activeRecipe["Recipe URL"]).trim()
+    : "";
+
+  const descriptorParts = [
+    activeRecipe && activeRecipe["Course"] ? String(activeRecipe["Course"]).trim() : "",
+    activeRecipe && activeRecipe["Food Type"] ? String(activeRecipe["Food Type"]).trim() : ""
+  ].filter(Boolean);
+
+  const descriptor = descriptorParts.join(" • ");
+
+  els.count.textContent = `${recipeLockedProducts.length} recipe product${recipeLockedProducts.length === 1 ? '' : 's'} loaded`;
+
+  const introCard = `
+    <article class="pj-card pj-system-card">
+      <div class="pj-mode-pill">Recipe</div>
+      <div class="pj-brand">Pepper Junction</div>
+      <h3 class="pj-name">${escapeHtml(recipeLabel)}</h3>
+
+      ${descriptor ? `<div><span class="pj-pill">${escapeHtml(descriptor)}</span></div>` : ""}
+
+      <div class="pj-section">
+        <div class="pj-v">
+          These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
+        </div>
+       <div class="pj-fineprint" style="color: #2b1d15;">
+  And depending on how bad you cook, we can't guarantee the results either.
+</div>
+      </div>
+
+      ${recipeUrl ? `
+        <div class="pj-card-actions">
+          <a class="pj-btn sauce" href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">View Recipe</a>
+        </div>
+      ` : ""}
+    </article>
+  `;
+
+  if (!recipeLockedProducts.length) {
+    els.results.innerHTML = introCard;
+    return;
+  }
+
+  const productCards = recipeLockedProducts.map(({ product, role }) =>
+    card(product, {
+      modeLabel: role,
+      note: role === 'Suggested Product'
+        ? 'Suggested supporting item for this recipe.'
+        : role === 'Alternative Product'
+          ? 'Approved backup option for this recipe.'
+          : 'Core product locked to this recipe.'
+    })
+  ).join('');
+
+  els.results.innerHTML = introCard + productCards;
+}
+
+    function renderDiscoveryResults() {
       const filtered = PJ_DATA.filter(matches);
       els.count.textContent = `${filtered.length} product${filtered.length === 1 ? '' : 's'} found`;
 
@@ -264,28 +1204,82 @@
       }
 
       filtered.sort((a, b) => {
-        const byHeat = Number(a["Heat Level"] || 0) - Number(b["Heat Level"] || 0);
-        if (byHeat !== 0) return byHeat;
+        const query = els.search.value.trim().toLowerCase();
+
+        if (query) {
+          const scoreA = getRelevanceScore(a, query);
+          const scoreB = getRelevanceScore(b, query);
+          if (scoreA !== scoreB) return scoreB - scoreA;
+        }
+
+        const heatA = Number(a["Heat Level"] || 0);
+        const heatB = Number(b["Heat Level"] || 0);
+        if (heatA !== heatB) return heatA - heatB;
+
         return String(a["Product Name"] || '').localeCompare(String(b["Product Name"] || ''));
       });
 
-      els.results.innerHTML = filtered.map(card).join('');
+      els.results.innerHTML = filtered.map(record => card(record)).join('');
     }
 
-    els.apply.addEventListener('click', render);
-    els.search.addEventListener('input', render);
-    [els.category, els.heatTier, els.foodStyle, els.pepperType, els.heatCurve, els.heatFinish].forEach(el => el.addEventListener('change', render));
-    els.reset.addEventListener('click', () => {
-      els.search.value = '';
-      els.category.value = '';
-      els.heatTier.value = '';
-      els.foodStyle.value = '';
-      els.pepperType.value = '';
-      els.heatCurve.value = '';
-      els.heatFinish.value = '';
-      render();
-    });
+    function render() {
+      const query = els.search.value.trim();
 
+      if (activeMode === 'recipe') {
+        renderRecipeResults();
+        return;
+      }
+
+      if (containsRecipeIntent(query)) {
+        renderRecipeRedirectCard();
+        return;
+      }
+
+      renderDiscoveryResults();
+    }
+
+els.apply.addEventListener('click', onDiscoveryInteraction);
+
+els.search.addEventListener('input', () => {
+  onDiscoveryInteraction();
+});
+
+els.search.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    onDiscoveryInteraction();
+  }
+});
+
+[els.category, els.heatTier, els.foodStyle, els.pepperType, els.heatCurve, els.heatFinish].forEach(el =>
+  el.addEventListener('change', onDiscoveryInteraction)
+);
+
+els.reset.addEventListener('click', () => {
+  clearDiscoveryInputs();
+  activateDiscoveryMode();
+  render();
+});
+
+    if (els.recipeSelect) {
+      els.recipeSelect.addEventListener('change', (e) => {
+        const recipeId = e.target.value;
+        if (!recipeId) {
+          clearRecipeMode();
+          return;
+        }
+        loadRecipeById(recipeId);
+      });
+    }
+
+    if (els.recipeClear) {
+      els.recipeClear.addEventListener('click', () => {
+        clearRecipeMode();
+      });
+    }
+
+    updateRecipeOpenLink(null);
+    loadRecipeMap();
     render();
   </script>
 </body>
