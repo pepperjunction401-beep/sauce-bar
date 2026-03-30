@@ -409,22 +409,16 @@ body {
     width: 100%;
   }
 
-  .pj-card-media {
-    margin-top: 8px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .pj-card-image-panel {
-    position: relative;
-  }
-
 .pj-card-media {
   margin-top: 4px;
   margin-left: -14px;
   margin-right: -14px;
   position: relative;
   z-index: 1;
+}
+
+.pj-card-image-panel {
+  position: relative;
 }
 
 .pj-card-image-shell {
@@ -443,6 +437,10 @@ body {
   object-fit: contain;
   display: block;
   margin: 0 auto;
+}
+
+.pj-card-image-panel.is-fallback .pj-card-image-shell img {
+  max-height: 190px;
 }
 
   .pj-card-image-caption {
