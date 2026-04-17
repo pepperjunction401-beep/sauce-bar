@@ -1,523 +1,960 @@
+Delivered-To: pepperjunction401@gmail.com
+Received: by 2002:a05:6214:4a88:b0:87f:ae85:c0a with SMTP id pi8csp3111271qvb;
+        Tue, 28 Oct 2025 11:04:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGl2nbwvEbLk4nYGTGNWF7nkZPOCTuq9DcjKLhm1n2vBO2YgkIUuMQG7Ni7ACyQPJf+aOMp
+X-Received: by 2002:a17:902:d2ce:b0:269:8f2d:5221 with SMTP id d9443c01a7336-294dee535c7mr852615ad.9.1761674644137;
+        Tue, 28 Oct 2025 11:04:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1761674644; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SIxO5KMk85aq7ZHatNOm0fDLn6LwzM05zRu18wLytU0xvrQGXcoJLVHZq225gC6JPx
+         xbwX9yEpj5vrofMSXLUqXwJV8T9QOP3dkgxrjnLSPP5NitW9rgceY4O51RFCe+jQjSrM
+         2KiOKgrOqquy61NiA5J2RHqtl1Lyje6unEUuUW/rzdDnxoVfnIc6Jqqf6NLx3+HZVPT6
+         MGKxeiIYUrjKxC+EM9jnCdtfaEKc+bbHNBIsikPz1/1smeQn0EtKdZyFN9JHVTxoseXv
+         Gb28ijccTAhhoMtJira4uoxyfdjhixojGqKvx7or/nWSnc3XKIuC4L0McPEF6Yw6F1wL
+         tSdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:message-id:subject:mime-version:list-unsubscribe:from:date
+         :content-transfer-encoding:dkim-signature:dkim-signature;
+        bh=9TfEguP4tHkTtAW9dhRxQXGMdFOTGVsR+qpTORdeaLg=;
+        fh=4uwyvsjSF1tuCZx5z1FBO+Ee742DTWU98SN05v0Drd8=;
+        b=VGw2r5aqqk8Cztj3bG/4aTqWqPPmnKs0GSR1QZtyTGTllViFd42TAJ+FPROGzj2c/B
+         PuuyHhDyik16maI3myvYKfK+5YIAUQTDnigg2DefGFl310gjaQUEeCVLtXrNyAe3TCEt
+         m/S5cJD3wNVM8EnyjbUoYrS1CmJ/PjxoIqCtc5Gy0NI2u0gXtxcJQYV967qUJYiksWB2
+         rcqLQ0V/tOv1HVWTDguqsd1MYNNKljb0aVhgz9m/1hSdq3p8PWJ7pY2rydQYVpR49Mpt
+         YiYirHwBDv15VddQs/AsLdlsVwlSVfnUzmROz0Mn3E7l6/xJrcaQFs5FA5c5wEg1tRA3
+         Luuw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@n.intuit.com header.s=s1 header.b=LEqO4wSI;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=ZZOBtqGV;
+       spf=pass (google.com: domain of bounces+8551759-b2d4-pepperjunction401=gmail.com@sg1.n.intuit.com designates 168.245.76.26 as permitted sender) smtp.mailfrom="bounces+8551759-b2d4-pepperjunction401=gmail.com@sg1.n.intuit.com";
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=notification.intuit.com
+Return-Path: <bounces+8551759-b2d4-pepperjunction401=gmail.com@sg1.n.intuit.com>
+Received: from o4.sg.n.intuit.com (o4.sg.n.intuit.com. [168.245.76.26])
+        by mx.google.com with ESMTPS id d9443c01a7336-2949ab241easi63581515ad.708.2025.10.28.11.04.03
+        for <pepperjunction401@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Oct 2025 11:04:04 -0700 (PDT)
+Received-SPF: pass (google.com: domain of bounces+8551759-b2d4-pepperjunction401=gmail.com@sg1.n.intuit.com designates 168.245.76.26 as permitted sender) client-ip=168.245.76.26;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@n.intuit.com header.s=s1 header.b=LEqO4wSI;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=ZZOBtqGV;
+       spf=pass (google.com: domain of bounces+8551759-b2d4-pepperjunction401=gmail.com@sg1.n.intuit.com designates 168.245.76.26 as permitted sender) smtp.mailfrom="bounces+8551759-b2d4-pepperjunction401=gmail.com@sg1.n.intuit.com";
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=notification.intuit.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=n.intuit.com;
+	h=content-transfer-encoding:content-type:date:from:list-unsubscribe:
+	mime-version:subject:to:cc:content-type:date:feedback-id:from:subject:to;
+	s=s1; bh=9TfEguP4tHkTtAW9dhRxQXGMdFOTGVsR+qpTORdeaLg=;
+	b=LEqO4wSID/5QiClMFW7q7PjMcctq2nw2+oRNQDNmMMUlr2ksiDZh1bp1HYewXZ4wJDmb
+	xrXyuTIoz6EZEdLP+kDXILSCLUdKnlERxSMjKyyTzFnt06Lbs5+ZLUgGCh8UWb2b0ucr0o
+	1G8H6Mj5umrBTpOs03c/MQ51M1f4Q1wsSDD+YhZdLrR0ZFLIfY6DdMYiZIvk7vMuqdDP0A
+	bsu1MbMFoanrH791lpMb70xRkbskUCoT36gHoynVnn9wfgpqGEbkcYPxUioqvWufx56bZ4
+	kLPk6FhLPScfQhix3lt9IpzvCpFusRVKvsyeSZkGRu4KDG8Xsc13jaDYj2OEG1Zw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sendgrid.info;
+	h=content-transfer-encoding:content-type:date:from:list-unsubscribe:
+	mime-version:subject:to:cc:content-type:date:feedback-id:from:subject:to;
+	s=smtpapi; bh=9TfEguP4tHkTtAW9dhRxQXGMdFOTGVsR+qpTORdeaLg=;
+	b=ZZOBtqGV58unRnqgNOuiUVc007BU+zF+A2GBk/GC5yFtiL4n/0CySJJn63gnjAB0V1Bs
+	P0BMD3YO47kBReK+6gkDSCzrs9YSuDyi/5teqgFi7qwCjUe5j/Ba03Dc+JQqa+aiNp0giH
+	DlBfu+KRylQRHKxr72DAqFs8tNK9NMI6M=
+Received: by recvd-6fc848bf8d-vtc4q with SMTP id recvd-6fc848bf8d-vtc4q-1-69010592-6F
+	2025-10-28 18:04:02.650708267 +0000 UTC m=+12619148.389475760
+Received: from ODU1MTc1OQ (unknown)
+	by geopod-ismtpd-14 (SG) with HTTP
+	id cuNDp5OUSWKuj-eeYqz2Fw
+	for <pepperjunction401@gmail.com>;
+	Tue, 28 Oct 2025 18:04:02.607 +0000 (UTC)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=iso-8859-1
+Date: Tue, 28 Oct 2025 18:04:02 +0000 (UTC)
+From: QuickBooks Payments <quickbooks@notification.intuit.com>
+List-Unsubscribe: 
+ =?us-ascii?Q?https=3A=2F=2Fintuit=2Ecom=2Funsubscribe=2Fpage=2Ehtm=3Fuid=3Dcp-cc372-33ba-4273?=
+ =?us-ascii?Q?-a66a-f58e879bbbc2?=
+Mime-Version: 1.0
+Subject: Payment confirmation: Invoice #3973-(Rheds, LLC)
+X-Accept-Language: en
+X-SenderName-ClientID: cp-cc372-33ba-4273-a66a-f58e879bbbc2
+Message-ID: <cuNDp5OUSWKuj-eeYqz2Fw@geopod-ismtpd-14>
+X-SG-EID: 
+ =?us-ascii?Q?u001=2Eldkq+HZWnJdDP=2FPGOQ43T6q4zlhpqaJ0JG9Qi79uchMEvDzGrOxErn8Dz?=
+ =?us-ascii?Q?R4iPEYOXEpZ2+T+31KJiKFsXhluN8f4d3n2hxk5?=
+ =?us-ascii?Q?4gzyWnP39lklytlFrOBC8bnGhJKABBgleVvb1RS?=
+ =?us-ascii?Q?gnB4OWiJYfn5C99jOLkrKGCi8qe3RiaS9LB8PCX?=
+ =?us-ascii?Q?ATZkJsF+Ul0G4RxZFJnQ+wM9P0ucNPHzy1m9S9S?=
+ =?us-ascii?Q?l6n2VnDT4Y1n+wC4D0a0tKIJLX1MNlkvhQza3Rh?=
+ =?us-ascii?Q?RYYiq789EYTBQHr1o1wfgB6MbQ=3D=3D?=
+X-SG-ID: 
+ =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3Bl5yH89KaHkEmBG+UZQCo=2Fr9Cvzz4OGg5GZc4?=
+ =?us-ascii?Q?w4wtyRROrMYEvdigz9UMABWEwwGnDJnKf2FCOEO?=
+ =?us-ascii?Q?0iHwFPAF190mAbQwYjlyic6frPn9pwZLRCcAQWV?=
+ =?us-ascii?Q?wJDKZhS2HmOEBsVSV+mzlewMfRhC=2FiOpYAa2XKd?=
+ =?us-ascii?Q?H56RZ=2FpkBE6jPjOhikBMBItqWJx4xJRp2yB8j3O?=
+ =?us-ascii?Q?I6F2S8ulWHta6s3LJmtpysVWxbJSFYo9XCYjlnA?=
+ =?us-ascii?Q?cHXHiTJ2Ep1WeBYwI5hHZ=2FdCRgNbd9JBCryu7Wp?=
+ =?us-ascii?Q?J=2FXXLhUrQOwCOSSryPYPlcWD1HOFOEyVXtZ21DI?=
+ =?us-ascii?Q?6X6u1XMt38sjsDSO3bjJFyoS0waHADCgQxtRNot?=
+ =?us-ascii?Q?SJkBq6yjD2Y2rtERO2=2FaQK5=2F+XovQN8XzlT4Mty?=
+ =?us-ascii?Q?a7vMe8pDkFyZT=2FOvjSP+c7i0ep8+jzWNtaYyJET?=
+ =?us-ascii?Q?n+EpXKUCWZGxzRa1huEovdc6j1X=2FgvI9AxV0Uym?=
+ =?us-ascii?Q?9kpL=2FeTrLlcIojS4P4hu3qG9yRtGyL76y97BrRY?=
+ =?us-ascii?Q?eQINfQTpY0e3s26smQMWLkCG9dMqx329d=2Fy6CI=2F?=
+ =?us-ascii?Q?eqxQ7Qh8By=2FWpJtALQ21RM8BYYnBAIQu4NKBNa7?=
+ =?us-ascii?Q?fPEMQs2hHH6ML9=2Fy34wUADSQlzasmK=2FcCy+wZC0?=
+ =?us-ascii?Q?ZipYEg8gbP+ghxATzL63pkH55ZtLt+b26pw+eg6?=
+ =?us-ascii?Q?3MpjYVv1PdKbg8O8M11ehLz=2FNXHTpojMyQdMGMi?=
+ =?us-ascii?Q?fjOM8DDSMA5bgSJZTDbvyhaZem6Fukb7JLGDV5Y?=
+ =?us-ascii?Q?t=2FFTXqIls?=
+To: pepperjunction401@gmail.com
+X-Entity-ID: u001.udyPHzJK+cTVC2IN1z5PmA==
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang=3D"">
+<!--assign parameters-->
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pepper Junction — Welcome Aboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
- 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
-    html, body {
+  <meta content=3D"text/html; charset=3Dutf-8" http-equiv=3D"Content-Type">
+  <meta content=3D"yes" name=3D"apple-mobile-web-app-capable">
+  <meta content=3D"yes" name=3D"apple-touch-fullscreen">
+  <meta content=3D"black" name=3D"apple-mobile-web-app-status-bar-style">
+  <meta content=3D"telephone=3Dno" name=3D"format-detection">
+  <meta content=3D"initial-scale=3D1, maximum-scale=3D1" name=3D"viewport">
+  <title></title>
+  <style type=3D"text/css">
+
+    .hideme {
+      display: none !important;
+      mso-hide: all;
+    }
+
+    div, p, a, li, td {
+      -webkit-text-size-adjust: none;
+      -ms-text-size-adjust: none;
+    }
+
+    body {
+      margin: 0 !important;
+      padding: 0;
+      min-width: 100%;
+    }
+
+    table td {
+      border-collapse: collapse;
+    }
+
+    .ExternalClass {
       width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #0d0700;
     }
- 
-    .stage {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
+
+    .ExternalClass * {
+      line-height: 110%;
     }
- 
-    .stage img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: #0d0700;
-      display: block;
+
+    img {
+      -ms-interpolation-mode: bicubic;
     }
- 
-    /* ── Greeting — center-right, just left of door/handrail ─── */
-    .greeting {
-      position: absolute;
-      top: 52%;
-      left: 22%;
-      text-align: left;
-      opacity: 0;
-      animation: rise 0.9s ease 0.3s forwards;
+
+    div[style*=3D"margin: 16px 0"] {
+      margin: 0 auto !important;
     }
- 
-    .greeting-main {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(32px, 4.5vw, 60px);
-      font-weight: 900;
-      font-style: italic;
-      color: #f4e8d0;
-      letter-spacing: 0.02em;
-      line-height: 1.1;
-      display: block;
-      margin-bottom: 12px;
-      text-shadow: 0 2px 14px rgba(0,0,0,0.8);
+
+    @font-face {
+      font-family: AvenirNextforINTUIT-Bold;
+      src: url('https://designsystem.intuit.com/wp-content/themes/ids-core/=
+fonts/AvenirNext forINTUIT W05 Bold_web.woff2') format("woff2"),
+      url('https://designsystem.intuit.com/wp-content/themes/ids-core/fonts=
+/AvenirNext forINTUIT W05 Bold_web.woff') format("woff");
     }
- 
-    .greeting-sub {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(16px, 2vw, 26px);
-      font-weight: 700;
-      font-style: italic;
-      color: #f4e8d0;
-      opacity: 0.85;
-      letter-spacing: 0.03em;
-      line-height: 1.4;
-      display: block;
-      white-space: nowrap;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+
+    @font-face {
+      font-family: AvenirNextforINTUIT-Demi;
+      src: url('https://designsystem.intuit.com/wp-content/themes/ids-core/=
+fonts/AvenirNext forINTUIT W05 Demi_web.woff2') format("woff2"),
+      url('https://designsystem.intuit.com/wp-content/themes/ids-core/fonts=
+/AvenirNext forINTUIT W05 Demi_web.woff') format("woff");
     }
- 
-    /* ── Buttons ──────────────────────────────────────────────── */
-   .buttons {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-  margin-top: 24px;
-  opacity: 0;
-  animation: rise 0.9s ease 0.6s forwards;
-}
- 
-    .btn {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
+
+    @font-face {
+      font-family: AvenirNextforINTUIT-Medium;
+      src: url('https://designsystem.intuit.com/wp-content/themes/ids-core/=
+fonts/AvenirNext forINTUIT W05 Mediu_web.woff2') format("woff2"),
+      url('https://designsystem.intuit.com/wp-content/themes/ids-core/fonts=
+/AvenirNext forINTUIT W05 Mediu_web.woff') format("woff");
+    }
+
+    @font-face {
+      font-family: AvenirNextforINTUIT-Regular;
+      src: url('https://designsystem.intuit.com/wp-content/themes/ids-core/=
+fonts/AvenirNext forINTUIT W05 Rg_web.woff2') format("woff2"),
+      url('https://designsystem.intuit.com/wp-content/themes/ids-core/fonts=
+/AvenirNext forINTUIT W05 Rg_web.woff') format("woff");
+    }
+
+    /*This resolves the issue when iphone puts links on dates, etc.*/
+    a[x-apple-data-detectors=3Dtrue] {
+      color: inherit !important;
+      text-decoration: none !important;
+    }
+
+    /*This resolves the issue when Samsung puts links on dates, etc.*/
+    #MessageViewBody a {
+      color: inherit;
       text-decoration: none;
-      color: #1a1008;
-      background: #c49a3c;
-      border: 1px solid #d4a832;
-      padding: 14px 38px;
-      border-radius: 2px;
-      cursor: pointer;
-      transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease;
-      white-space: nowrap;
+      font-size: inherit;
+      font-family: inherit;
+      font-weight: inherit;
+      line-height: inherit;
     }
- 
-    .btn:hover {
-      background: #d4a832;
-      color: #0d0700;
-      transform: translateY(-2px);
+
+    /*This resolves the issue when Gmail puts links on dates, etc.*/
+    u + #body a {
+      color: inherit;
+      text-decoration: none;
+      font-size: inherit;
+      font-family: inherit;
+      font-weight: inherit;
+      line-height: inherit;
     }
- 
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
- 
-    @keyframes rise-centered {
-      from { opacity: 0; transform: translateX(-50%) translateY(14px); }
-      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
- 
-    /* ── Mobile ───────────────────────────────────────────────── */
-    @media (max-width: 640px) {
-      html, body { overflow: auto; }
-      .stage { height: 100svh; }
-      .greeting {
-        top: 28%;
-        left: 5%;
+
+    @media only screen and (min-device-width: 320px) and (max-device-width:=
+ 1024px) {
+      a[href^=3D"tel"],
+      a[href^=3D"sms"],
+      a {
+        color: inherit;
+        cursor: default;
+        text-decoration: none;
       }
-      .greeting-sub { white-space: normal; }
-      .buttons {
-        flex-direction: column;
-        align-items: center;
-        bottom: 8%;
-        gap: 16px;
+    }
+
+    @media screen and (max-device-width: 600px), screen and (max-width: 640=
+px) {
+      *[class=3Dto100pc] {
+        width: 100% !important;
+        height: auto !important;
       }
-      .btn { width: 220px; text-align: center; }
+
+      *[class=3Dto95pc] {
+        width: 95% !important;
+        height: auto !important;
+      }
+
+      *[class=3Dnomob] {
+        display: none !important;
+      }
+
+      *[class=3Dnominwidth] {
+        min-width: 2px !important;
+      }
     }
- 
-    /* ── SPLIT-FLAP BOARD — added styles only ─────────────────── */
-    #board-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: all;
-      transition: opacity 1.4s ease;
+
+    @media screen and (max-width: 599px) {
+      .logo_mobile {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+      }
+
+      .logo_mobile_max320 {
+        display: block !important;
+        width: 95% !important;
+        height: auto !important;
+        max-width: 380px !important;
+      }
+
+      .hide {
+        display: none !important;
+        width: 1px !important;
+        height: 1px !important;
+      }
+
+      .text24to19 {
+        font-size: 19px !important;
+        line-height: 24px !important;
+      }
+
+      .text16to14 {
+        font-size: 14px !important;
+        line-height: 16px !important;
+      }
+
+      .textMobile32to24 {
+        font-size: 24px !important;
+        line-height: 26px !important;
+      }
+
+      .textMobile24to20 {
+        font-size: 20px !important;
+        line-height: 26px !important;
+      }
+
+      .textMobile24to18 {
+        font-size: 18px !important;
+        line-height: 26px !important;
+      }
+
+      .textMobile24to20Medium {
+        font-size: 20px !important;
+        line-height: 26px !important;
+      }
+
+      .textMobile20to16 {
+        font-size: 16px !important;
+        line-height: 20px !important;
+      }
+
+
+      .textMobile16to14 {
+        font-size: 16px !important;
+        line-height: 18px !important;
+      }
+
+      .textMobile16to16 {
+        font-size: 16px !important;
+        line-height: 18px !important;
+      }
+
+      .iconInMobile {
+        width: 40px;
+        height: 40px;
+      }
+
+
+      .text14to12 {
+        font-size: 12px !important;
+        line-height: 20px !important;
+      }
+
+      .shrinkto10 {
+        width: 1px;
+        height: 10px !important;
+      }
+
+      .shrinkMobileto16 {
+        width: 1px;
+        height: 16px !important;
+      }
+
+
+      .expandto49 {
+        width: 1px;
+        height: 49px !important;
+      }
+
+      .expandto25 {
+        width: 1px;
+        height: 30px !important;
+      }
+
+      .shrinkto20 {
+        width: 1px;
+        height: 20px !important;
+      }
+
+      .shrinkto24 {
+        width: 1px;
+        height: 24px !important;
+      }
+
+      .width20 {
+        width: 20px;
+        height: 6px !important;
+      }
+
+      .logo_merchant {
+        width: 20px;
+        height: 10px;
+      }
+
     }
- 
-    #board-overlay.fade-out {
-      opacity: 0;
-      pointer-events: none;
+
+    @media yahoo {
+      .desktopSection110 {
+        display: inline !important;
+      }
     }
- 
-    .board-wrap {
-      width: 85vw;
-      max-width: 920px;
-      background: #000;
-      border: 2px solid #f0ece4;
-      box-shadow: 0 40px 100px rgba(0,0,0,0.95);
-      padding: 24px 28px 36px;
-      position: relative;
-    }
- 
-    .board-station {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(240,236,228,0.1);
-    }
- 
-    .board-station-left {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.42em;
-      text-transform: uppercase;
-      color: #f0ece4;
-      opacity: 0.32;
-    }
- 
-    .board-station-right {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: #b8903a;
-      opacity: 0.52;
-    }
- 
-    .board-col-header {
-      display: grid;
-      grid-template-columns: 1fr 130px 80px;
-      gap: 0;
-      padding: 0 4px 8px 4px;
-      margin-bottom: 6px;
-      border-bottom: 1px solid rgba(184,144,58,0.3);
-    }
- 
-    .board-col-label {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: #b8903a;
-      opacity: 0.55;
-    }
- 
-    .board-divider {
-      height: 2px;
-      margin: 3px 0;
-      background: linear-gradient(90deg,
-        rgba(184,144,58,0.7) 0%,
-        rgba(184,144,58,0.7) 90%,
-        transparent 100%
-      );
-      opacity: 0;
-      transition: opacity 0.35s ease;
-    }
-    .board-divider.active { opacity: 1; }
- 
-    .board-row {
-      display: grid;
-      grid-template-columns: 1fr 130px 80px;
-      gap: 0;
-      align-items: center;
-      min-height: 52px;
-      visibility: hidden;
-      padding: 2px 0;
-    }
-    .board-row.active { visibility: visible; }
- 
-    .board-col {
-      display: flex;
-      gap: 2px;
-      align-items: center;
-    }
- 
-    .board-col:nth-child(3) {
-      padding-left: 18px;
-    }
- 
-    .board-col:nth-child(2) {
-      margin-left: -18px;
-    }
- 
-    .board-col-label:nth-child(2) {
-      padding-left: 18px;
-    }
- 
-    .board-col-label:nth-child(3) {
-      padding-left: 18px;
-    }
- 
-    .flap-cell {
-      width: 24px;
-      height: 42px;
-      background: #080808;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
- 
-    .flap-cell::after {
-      content: "";
-      position: absolute;
-      left: 0; right: 0;
-      top: 50%;
-      height: 1px;
-      background: #000;
-      z-index: 2;
-    }
- 
-    .flap-cell span {
-      font-family: 'Courier New', 'Courier', monospace;
-      font-size: 19px;
-      font-weight: 700;
-      color: #f0ece4;
-      line-height: 1;
-      position: relative;
-      z-index: 1;
-      user-select: none;
-      display: block;
-    }
- 
-    .flap-cell.is-space {
-      background: transparent;
-      border-color: transparent;
-      width: 10px;
-    }
-    .flap-cell.is-space::after { display: none; }
-    .flap-cell.is-punct { width: 16px; }
- 
-    .board-col:first-child .flap-cell span { color: #ffde52; }
- 
-    .board-skip {
-      position: absolute;
-      bottom: -28px;
-      right: 0;
-      background: none;
-      border: none;
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: rgba(240,236,228,0.22);
-      cursor: pointer;
-      padding: 6px 0;
-      transition: color 0.2s;
-    }
-    .board-skip:hover { color: rgba(240,236,228,0.6); }
- 
-    @media (max-width: 640px) {
-      .board-wrap { width: 92vw; padding: 16px 12px 28px; }
-      .board-col-header { grid-template-columns: 1fr 80px 42px; }
-      .board-row { grid-template-columns: 1fr 80px 42px; min-height: 40px; }
-      .flap-cell { width: 18px; height: 34px; }
-      .flap-cell span { font-size: 14px; }
-      .flap-cell.is-space { width: 7px; }
-    }
- 
   </style>
 </head>
-<body>
- 
-  <!-- ═══ SPLIT-FLAP BOARD ═══════════════════════════════════ -->
-  <div id="board-overlay">
-    <div class="board-wrap">
-      <div class="board-station">
-        <span class="board-station-left">Providence Union Station</span>
-        <span class="board-station-right">Pepper Junction · Est. 2014</span>
-      </div>
-      <div class="board-col-header">
-        <span class="board-col-label">Destination</span>
-        <span class="board-col-label">Time</span>
-        <span class="board-col-label">Trk</span>
-      </div>
-      <div id="board-rows" style="display:flex;flex-direction:column;gap:3px;"></div>
-      <button class="board-skip" id="board-skip">Skip ›</button>
-    </div>
-  </div>
- 
-  <div class="stage">
- 
-    <img src="assets/Landing_page_image_Pullman.png"
-         alt="NYNH&H Pullman parlor car conductor welcoming passengers aboard" />
- 
-   <div class="greeting">
-      <span class="greeting-main">Welcome Aboard!</span>
-      <span class="greeting-sub">Join us on the Main Page or the Pairing Bar.</span>
-      <div class="buttons">
-        <a class="btn" href="main.html">Main</a>
-        <a class="btn" href="index.html">Pairing Bar</a>
-      </div>
-    </div>
-   </div>
- 
-  <!-- ═══ BOARD SCRIPT ════════════════════════════════════════ -->
-  <script>
-  (function () {
- 
-    const DEPARTURES = [
-      { dest: 'PEPPER JUNCTION',    time: '1:00P', trk: '4' },
-      { dest: 'EST. 2014',    time: '3:15P', trk: '2' },
-      { dest: 'INSPIRED BY:',       time: '5:00P', trk: '6' },
-      { dest: 'SHORE LINE SERVICE', time: '7:22P', trk: '1' },
-      { dest: 'CIRCA 1930',         time: '9:08A', trk: '3' },
-      { dest: 'ALL ABOARD!',         time: '——',    trk: '——' },
-    ];
- 
-    const CHARS = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·:—APM';
- 
-    const overlay = document.getElementById('board-overlay');
-    const rowsEl  = document.getElementById('board-rows');
-    const skipBtn = document.getElementById('board-skip');
- 
-    function makeCell(ch) {
-      const isSpace = (ch === ' ');
-      const isPunct = ('·:—-'.indexOf(ch) >= 0);
-      const cell = document.createElement('div');
-      cell.className = 'flap-cell' +
-        (isSpace ? ' is-space' : '') +
-        (isPunct ? ' is-punct' : '');
-      if (!isSpace) {
-        const span = document.createElement('span');
-        span.textContent = CHARS[Math.floor(Math.random() * (CHARS.length - 1))];
-        cell.appendChild(span);
-      }
-      return cell;
-    }
- 
-    function makeCol(text) {
-      const col = document.createElement('div');
-      col.className = 'board-col';
-      Array.from(text).forEach(function (ch) { col.appendChild(makeCell(ch)); });
-      return col;
-    }
- 
-    function buildDOM() {
-      rowsEl.innerHTML = '';
-      const topDiv = document.createElement('div');
-      topDiv.className = 'board-divider';
-      rowsEl.appendChild(topDiv);
- 
-      DEPARTURES.forEach(function (dep, idx) {
-        const row = document.createElement('div');
-        row.className = 'board-row';
-        row.dataset.idx = idx;
-        row.appendChild(makeCol(dep.dest));
-        row.appendChild(makeCol(dep.time));
-        row.appendChild(makeCol(dep.trk));
-        rowsEl.appendChild(row);
- 
-        const div = document.createElement('div');
-        div.className = 'board-divider';
-        rowsEl.appendChild(div);
-      });
-    }
- 
-    function animateCell(cell, targetChar, startDelay, onDone) {
-      const span = cell.querySelector('span');
-      if (!span) { if (onDone) onDone(); return; }
- 
-      const curIdx    = Math.max(0, CHARS.indexOf(span.textContent));
-      const targetIdx = Math.max(0, CHARS.indexOf(targetChar));
- 
-      if (curIdx === targetIdx) { if (onDone) onDone(); return; }
- 
-      const steps = [];
-      let i = curIdx;
-      while (true) {
-        i = (i + 1) % CHARS.length;
-        steps.push(CHARS[i]);
-        if (i === targetIdx) break;
-        if (steps.length > CHARS.length + 2) break;
-      }
- 
-      let stepIdx = 0;
-      function tick() {
-        if (stepIdx >= steps.length) {
-          span.textContent = targetChar;
-          if (onDone) onDone();
-          return;
-        }
-        span.textContent = steps[stepIdx++];
-        const progress = stepIdx / steps.length;
-        const delay = 32 + Math.random() * 18 + (progress > 0.8 ? (progress - 0.8) * 100 : 0);
-        setTimeout(tick, delay);
-      }
-      setTimeout(tick, startDelay);
-    }
- 
-    function animateCol(colEl, targetText, baseDelay, onDone) {
-      const cells = colEl.querySelectorAll('.flap-cell:not(.is-space)');
-      const chars = Array.from(targetText).filter(function (ch) { return ch !== ' '; });
-      let done = 0;
-      const total = cells.length;
-      if (total === 0) { if (onDone) onDone(); return; }
-      cells.forEach(function (cell, i) {
-        animateCell(cell, chars[i] || ' ', baseDelay + i * 42, function () {
-          done++;
-          if (done === total && onDone) onDone();
-        });
-      });
-    }
- 
-    function revealRow(idx, onDone) {
-      const row = rowsEl.querySelector('.board-row[data-idx="' + idx + '"]');
-      if (!row) { if (onDone) onDone(); return; }
-      row.classList.add('active');
-      const dep  = DEPARTURES[idx];
-      const cols = row.querySelectorAll('.board-col');
-      let colsDone = 0;
-      function colDone() {
-        colsDone++;
-        if (colsDone === 3 && onDone) onDone();
-      }
-      animateCol(cols[0], dep.dest, 0,   colDone);
-      animateCol(cols[1], dep.time, 80,  colDone);
-      animateCol(cols[2], dep.trk,  140, colDone);
-    }
- 
-    function showDividers() {
-      rowsEl.querySelectorAll('.board-divider').forEach(function (d) {
-        d.classList.add('active');
-      });
-    }
- 
-    function runSequence() {
-      showDividers();
-      let rowIdx = 0;
-      function nextRow() {
-        if (rowIdx >= DEPARTURES.length) {
-          setTimeout(dismiss, 1800);
-          return;
-        }
-        revealRow(rowIdx++, function () {
-          setTimeout(nextRow, 280);
-        });
-      }
-      nextRow();
-    }
- 
-    function dismiss() {
-      overlay.classList.add('fade-out');
-      setTimeout(function () { overlay.style.display = 'none'; }, 1500);
-    }
- 
-    skipBtn.addEventListener('click', dismiss);
- 
-    buildDOM();
-    setTimeout(runSequence, 150);
- 
-  })();
-  </script>
- 
-</body>
+<body bgcolor=3D"#ECEEF1" id=3D"body" style=3D"min-width:100%; padding:0; m=
+argin:0; -webkit-text-size-adjust:none; background-color:#eceef1;">
+<table align=3D"center" bgcolor=3D"#ECEEF1" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" style=3D"margin: 0 auto;" width=3D"100%">
+  <tr>
+    <td align=3D"center" bgcolor=3D"#ECEEF1">
+      <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"to10=
+0pc" width=3D"100%">
+
+        <!-- Start logo -->
+        <tr>
+          <td align=3D"center">
+            <table align=3D"center" bgcolor=3D"#ECEEF1" border=3D"0" cellpa=
+dding=3D"0" cellspacing=3D"0" class=3D"to100pc" style=3D"max-width: 640px;"=
+ width=3D"640">
+              <tr>
+                <td align=3D"left" style=3D"padding-top:15px; padding-botto=
+m:15px; padding-left:20px;"><a href=3D"https://elink.prd.intuit.com/ss/c/u0=
+01.WVMg7PM6utnUYX1Yq78VGKAknLO2tewNMUQxsiblUyqYODQi1ZHYNGMVIyQDUQC2/4l4/yfG=
+QjCoARCKIUDt7aQkUZw/h0/h001.vvBjAqKARPWNP4haQEcUP1oO4wEDbOayxcDCef-MPvw" ta=
+rget=3D"_blank"><img alt=3D"Intuit QuickBooks" height=3D"40" src=3D"https:/=
+/offcnt.intuit.com/images/US/OINP/302/80/quickbooks_logo.png" style=3D"disp=
+lay:block;" width=3D"156" border=3D"0" class=3D"hide" /></a></td>
+              </tr>
+              <tr>
+                <td style=3D"line-height:1px;">
+                  <a href=3D"https://elink.prd.intuit.com/ss/c/u001.WVMg7PM=
+6utnUYX1Yq78VGKAknLO2tewNMUQxsiblUyqYODQi1ZHYNGMVIyQDUQC2/4l4/yfGQjCoARCKIU=
+Dt7aQkUZw/h1/h001.KCzwE2fqQmfKohspYUssK_Vr6WfdIh3-2yFI2KWqX8I" target=3D"_b=
+lank"><img alt=3D"" border=3D"0" class=3D"logo_mobile" src=3D"https://stati=
+c.cns-icn-prod.a.intuit.com/logo_mobile.gif" style=3D"display:none;"></a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- End upper logo -->
+
+
+        <!-- Main Table -->
+        <tr>
+          <td align=3D"center">
+            <table align=3D"center" bordercolor=3D"white" bgcolor=3D"#FFFFF=
+F" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"to95pc" style=
+=3D"max-width: 600px;" width=3D"600">
+              <tr>
+                <td align=3D"left" colspan=3D"2" height=3D"10" style=3D"lin=
+e-height:10px;max-height:10px;" valign=3D"top"><img alt=3D"" border=3D"0" h=
+eight=3D"10" src=3D"https://static.cns-icn-prod.a.intuit.com/corner1.gif" s=
+tyle=3D"display:block;" width=3D"10"></td>
+                <td align=3D"right" colspan=3D"2" height=3D"10" style=3D"li=
+ne-height:10px;max-height:10px;" valign=3D"top"><img alt=3D"" border=3D"0" =
+height=3D"10" src=3D"https://static.cns-icn-prod.a.intuit.com/corner2.gif" =
+style=3D"display:block;" width=3D"10"></td>
+              </tr><!-- Start header -->
+              <tr>
+                <td colspan=3D"4" style=3D"line-height:10px;"><img alt=3D""=
+ border=3D"0" class=3D"shrinkto10" height=3D"31" src=3D"https://static.cns-=
+icn-prod.a.intuit.com/spacer.gif" style=3D"display:block;" width=3D"1"></td=
+>
+              </tr>
+              <tr>
+                <td><img alt=3D"" border=3D"0" class=3D"width20" height=3D"=
+10" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=3D"di=
+splay:block;" width=3D"30"></td>
+                <td align=3D"left" style=3D"padding-top:0px;padding-bottom:=
+6px;"><span class=3D"text16to14" style=3D"font-size:16px; line-height:24px;=
+ font-family:AvenirNextforINTUIT-Regular, Avenir Next, Avenir, Helvetica, s=
+ans-serif; color:#393A3D;"></span>
+                </td>
+                <td align=3D"right" style=3D"padding-top:0px;padding-bottom=
+:6px;"><span class=3D"text16to14" style=3D"font-size:16px; line-height:24px=
+; font-family:AvenirNextforINTUIT-Regular, Avenir Next , Avenir, Helvetica,=
+ sans-serif; color:#393A3D;"><a href=3D"https://elink.prd.intuit.com/ss/c/u=
+001.2MaSWMaSMLUiGZIFCObO9BBWUutlJPgTD5bM-O1X-RTp7uCCs9JP_zR6T2fpq8c8s3rdiOd=
+nyIlnw4bu7mdGucXrKhXCC-lyM6vmZnEVxvAob6jhdKtfkJkVpZNOu-AEuJ70aNeHg1EGOyHzN2=
+rrsyMZLn7csq9OwdPfR8SmXrp1DTTJl4s2yOMtJhiLcb5gw7k7USNy3n7WgxgVsFJxS2eFA-chc=
+KFMpCYo0uDIcDrw-ViNryXZ95UQ53YNx_TU/4l4/yfGQjCoARCKIUDt7aQkUZw/h2/h001.rwL6=
+wjtXH_0bTMSkKUDD3NmD6YJ78awslAPojEGOZzI" style=3D"color:#077DC6;text-decora=
+tion:none!important;" target=3D"_blank">Manage payment</a></span></td>
+                <td><img alt=3D"" border=3D"0" class=3D"width20" height=3D"=
+10" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=3D"di=
+splay:block;" width=3D"30"></td>
+              </tr>
+              <tr>
+                <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"expan=
+dto25" height=3D"40" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer=
+.gif" style=3D"display:block;" width=3D"1"></td>
+              </tr>
+              <tr>
+                <td>=A0</td>
+                <td align=3D"left" class=3D"header" colspan=3D"2" style=3D"=
+border-collapse: collapse; padding:0px;">
+                  <table border=3D"0" style=3D"border-spacing:0pt;mso-table=
+-lspace: 0pt;mso-table-rspace: 0pt;">
+                    <tr>
+                      <td style=3D"border-collapse: collapse;">
+                        <table border=3D"0" style=3D"border-spacing:0;mso-t=
+able-lspace:0pt;mso-table-rspace:0pt;">
+                          <tr>
+                            <td style=3D"padding-right:14px;padding-bottom:=
+0px;pxborder-collapse:collapse;vertical-align:top">
+                              <img class=3D"iconInMobile" height=3D"48" src=
+=3D"https://static.cns-icn-prod.a.intuit.com/status_paid.png" width=3D"48">=
+</td>
+                            <td style=3D"border-collapse:collapse;">
+                              <span class=3D"textMobile32to24" style=3D"col=
+or:#393A3D; font-weight:500;font-family:AvenirNextforINTUIT-Demi, Avenir Ne=
+xt, Avenir, Helvetica ,sans-serif;font-size:36px;line-height:40px; margin:0=
+;">
+                          You paid $213.00
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>=A0</td>
+                      <td style=3D"padding-top:10px;border-collapse:collaps=
+e;">
+                        <span class=3D"textMobile16to16" style=3D"color:#39=
+3A3D; font-weight:500;font-family:AvenirNextforINTUIT-Regular, Avenir Next,=
+ Avenir, Helvetica ,sans-serif;font-size:16px;line-height:20px; margin:0;">=
+to</span>
+                        <span class=3D"textMobile16to16" style=3D"color:#39=
+3A3D; font-weight:600;font-family:AvenirNextforINTUIT-Demi, Avenir Next, Av=
+enir, Helvetica ,sans-serif;font-size:16px;line-height:20px; margin:0;">Rhe=
+ds, LLC</span>
+                        <span class=3D"textMobile16to16" style=3D"color:#39=
+3A3D; font-weight:500;font-family:AvenirNextforINTUIT-Regular, Avenir Next,=
+ Avenir, Helvetica ,sans-serif;font-size:16px;line-height:20px; margin:0;">=
+on 10/28/2025</span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>=A0</td>
+        </tr><!-- Space 20 -->
+        <tr>
+          <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"shrinkto24"=
+ height=3D"20" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" =
+style=3D"display:block;" width=3D"1"></td>
+        </tr><!-- Gray Line  -->
+        <tr>
+          <td height=3D"1" style=3D"line-height:1px;max-height:1px;height:1=
+px;">
+            <img alt=3D"" border=3D"0" height=3D"1" src=3D"https://static.c=
+ns-icn-prod.a.intuit.com/spacer.gif" style=3D"display:block;" width=3D"1"><=
+/td>
+          <td align=3D"left" bgcolor=3D"#E3E5E8" colspan=3D"2" height=3D"1"=
+ style=3D"line-height:1px;max-height:1px;height:1px;"><img alt=3D"" border=
+=3D"0" height=3D"1" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.=
+gif" style=3D"display:block;" width=3D"10">
+          </td>
+          <td height=3D"1" style=3D"line-height:1px;max-height:1px;height:1=
+px;">
+            <img alt=3D"" border=3D"0" height=3D"1" src=3D"https://static.c=
+ns-icn-prod.a.intuit.com/spacer.gif" style=3D"display:block;" width=3D"1"><=
+/td>
+        </tr><!-- End of Gray Line  -->
+        <!-- Space 20 -->
+        <tr>
+          <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"shrinkto24"=
+ height=3D"20" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" =
+style=3D"display:block;" width=3D"1"></td>
+        </tr>
+        <!-- Payment details  -->
+        <tr>
+          <td>=A0</td>
+          <td align=3D"left" colspan=3D"2" style=3D"padding-top:0px;padding=
+-bottom:0px;"><span class=3D"textMobile24to20Demi" style=3D"font-size:24px;=
+ line-height:26px; font-family:AvenirNextforINTUIT-Demi , Avenir Next, Aven=
+ir, Helvetica, sans-serif; color:#393A3D; font-weight:500;">Payment details=
+</span>
+          </td>
+          <td>=A0</td>
+        </tr><!-- Space 20 -->
+        <tr>
+          <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"shrinkto24"=
+ height=3D"20" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" =
+style=3D"display:block;" width=3D"1"></td>
+        </tr><!-- Start details -->
+        <!-- Invoice no -->
+        <tr>
+          <td>=A0</td>
+          <td align=3D"left" style=3D"padding-top:0px;padding-bottom:0px;">=
+<span class=3D"text16to14" style=3D"font-size:16px; line-height:24px; font-=
+family: AvenirNextforINTUIT-Regular, Avenir Next, Avenir, Helvetica, sans-s=
+erif; color:#393A3D;">Invoice no.</span>
+          </td>
+          <td align=3D"right" style=3D"padding-top:0px;padding-bottom:0px;"=
+><span class=3D"text16to14" style=3D"font-size:16px; line-height:24px; font=
+-family:AvenirNextforINTUIT-Regular,Avenir Next , Avenir, Helvetica, sans-s=
+erif; color:#393A3D;font-weight:500;"><a href=3D"https://elink.prd.intuit.c=
+om/ss/c/u001.2MaSWMaSMLUiGZIFCObO9BBWUutlJPgTD5bM-O1X-RTp7uCCs9JP_zR6T2fpq8=
+c8s3rdiOdnyIlnw4bu7mdGucXrKhXCC-lyM6vmZnEVxvAob6jhdKtfkJkVpZNOu-AEuJ70aNeHg=
+1EGOyHzN2rrsyMZLn7csq9OwdPfR8SmXrp1DTTJl4s2yOMtJhiLcb5gw7k7USNy3n7WgxgVsFJx=
+S2eFA-chcKFMpCYo0uDIcDrw-ViNryXZ95UQ53YNx_TU/4l4/yfGQjCoARCKIUDt7aQkUZw/h3/=
+h001.XJTcRcsSJUaIx5UUx_QWfBDIKOJLFtxDKTQIDLssfbc" style=3D"color:#077DC6;te=
+xt-decoration:none!important;" target=3D"_blank">3973</a></span></td>
+          <td>=A0</td>
+        </tr><!-- Space 10 -->
+        <tr>
+          <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"shrinkto24"=
+ height=3D"10" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" =
+style=3D"display:block;" width=3D"1"></td>
+        </tr><!-- Invoice amount -->
+        <tr>
+          <td>=A0</td>
+          <td align=3D"left" style=3D"padding-top:0px;padding-bottom:0px;">=
+<span class=3D"text16to14" style=3D"font-size:16px; line-height:24px; font-=
+family: AvenirNextforINTUIT-Regular, Avenir Next, Avenir, Helvetica, sans-s=
+erif; color:#393A3D;">Invoice amount</span>
+          </td>
+          <td align=3D"right" style=3D"padding-top:0px;padding-bottom:0px;"=
+><span class=3D"text16to14" style=3D"font-size:16px; line-height:24px; font=
+-family:AvenirNextforINTUIT-Regular,Avenir Next , Avenir, Helvetica, sans-s=
+erif; color:#393A3D;font-weight:500;">$213.00</span>
+          </td>
+          <td>=A0</td>
+        </tr><!-- Space 10 -->
+        <tr>
+          <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"shrinkto24"=
+ height=3D"10" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" =
+style=3D"display:block;" width=3D"1"></td>
+        </tr><!-- Invoice balance -->
+
+        <!-- ACH convenience fee  -->
+
+      <!-- Tip  -->
+
+<!-- Total amount -->
+<tr>
+  <td>=A0</td>
+  <td align=3D"left" style=3D"padding-top:0px;padding-bottom:0px;"><span cl=
+ass=3D"text16to14" style=3D"font-size:16px; line-height:24px; font-family: =
+AvenirNextforINTUIT-Demi, Avenir Next, Avenir, Helvetica, sans-serif; color=
+:#393A3D;font-weight:500;">Total amount</span>
+  </td>
+
+
+  <td align=3D"right" style=3D"padding-top:0px;padding-bottom:0px;"><span c=
+lass=3D"text16to14" style=3D"font-size:16px; line-height:24px; font-family:=
+AvenirNextforINTUIT-Demi,Avenir Next , Avenir, Helvetica, sans-serif; color=
+:#393A3D;font-weight:600;">$213.00</span>
+  </td>
+<td>=A0</td>
+</tr>
+<!-- Space 20 -->
+<tr>
+  <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"shrinkto24" height=
+=3D"20" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=
+=3D"display:block;" width=3D"1"></td>
+</tr><!-- Gray Line  -->
+<tr>
+  <td height=3D"1" style=3D"line-height:1px;max-height:1px;height:1px;">
+    <img alt=3D"" border=3D"0" height=3D"1" src=3D"https://static.cns-icn-p=
+rod.a.intuit.com/spacer.gif" style=3D"display:block;" width=3D"1"></td>
+  <td align=3D"left" bgcolor=3D"#E3E5E8" colspan=3D"2" height=3D"1" style=
+=3D"line-height:1px;max-height:1px;height:1px;"><img alt=3D"" border=3D"0" =
+height=3D"1" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" st=
+yle=3D"display:block;" width=3D"10">
+  </td>
+  <td height=3D"1" style=3D"line-height:1px;max-height:1px;height:1px;">
+    <img alt=3D"" border=3D"0" height=3D"1" src=3D"https://static.cns-icn-p=
+rod.a.intuit.com/spacer.gif" style=3D"display:block;" width=3D"1"></td>
+</tr><!-- End of Gray Line  -->
+<!-- Space 20 -->
+<tr>
+  <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"shrinkto24" height=
+=3D"20" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=
+=3D"display:block;" width=3D"1"></td>
+</tr>
+<!-- Status -->
+<tr>
+  <td>=A0</td>
+  <td align=3D"left" style=3D"padding-top:0px;padding-bottom:0px;"><span cl=
+ass=3D"text16to14" style=3D"font-size:16px; line-height:24px; font-family: =
+AvenirNextforINTUIT-Regular, Avenir Next, Avenir, Helvetica, sans-serif; co=
+lor:#393A3D;">Status</span>
+  </td>
+  <td align=3D"right" style=3D"padding-top:0px;padding-bottom:0px;"><span c=
+lass=3D"text16to14" style=3D"font-size:16px; line-height:24px; font-family:=
+AvenirNextforINTUIT-Regular,Avenir Next , Avenir, Helvetica, sans-serif; co=
+lor:#393A3D;font-weight:500;">Paid</span>
+  </td>
+  <td>=A0</td>
+</tr><!-- Space 10 -->
+<tr>
+  <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"shrinkto24" height=
+=3D"10" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=
+=3D"display:block;" width=3D"1"></td>
+</tr><!-- Payment method -->
+<tr>
+  <td>=A0</td>
+  <td align=3D"left" style=3D"padding-top:0px;padding-bottom:0px;"><span cl=
+ass=3D"text16to14" style=3D"font-size:16px; line-height:24px; font-family: =
+AvenirNextforINTUIT-Regular, Avenir Next, Avenir, Helvetica, sans-serif; co=
+lor:#393A3D;">Payment method</span>
+  </td>
+  <td align=3D"right" style=3D"padding-top:0px;padding-bottom:0px;"><span c=
+lass=3D"text16to14" style=3D"font-size:16px; line-height:24px; font-family:=
+AvenirNextforINTUIT-Regular,Avenir Next , Avenir, Helvetica, sans-serif; co=
+lor:#393A3D;font-weight:500;">Business checking *****3625</span>
+  </td>
+  <td>=A0</td>
+</tr><!-- Space 10 -->
+<tr>
+  <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"shrinkto24" height=
+=3D"10" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=
+=3D"display:block;" width=3D"1"></td>
+</tr><!-- Authorization -->
+<tr>
+  <td>=A0</td>
+  <td align=3D"left" style=3D"padding-top:0px;padding-bottom:0px;"><span cl=
+ass=3D"text16to14" style=3D"font-size:16px; line-height:24px; font-family: =
+AvenirNextforINTUIT-Regular, Avenir Next, Avenir, Helvetica, sans-serif; co=
+lor:#393A3D;">Authorization ID</span>
+  </td>
+  <td align=3D"right" style=3D"padding-top:0px;padding-bottom:0px;"><span c=
+lass=3D"text16to14" style=3D"font-size:16px; line-height:24px;text-transfor=
+m: uppercase; font-family:AvenirNextforINTUIT-Regular,Avenir Next , Avenir,=
+ Helvetica, sans-serif; color:#393A3D;font-weight:500;">1abg3nlf398g</span>
+  </td>
+  <td>=A0</td>
+</tr><!-- Space 40 -->
+<tr>
+  <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"shrinkto24" height=
+=3D"40" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=
+=3D"display:block;" width=3D"1"></td>
+</tr>
+
+<!--Please don't reply -->
+<tr>
+  <td>=A0</td>
+  <td align=3D"left" colspan=3D"2" style=3D"padding-top:6px;padding-bottom:=
+0px;"><span style=3D"font-size:16px; line-height:16px; font-family: AvenirN=
+extforINTUIT-Demi, Avenir Next, Avenir, Helvetica, sans-serif; color:#393A3=
+D; font-weight:500">
+      Please don&apos;t reply to this email, if you need any help regarding=
+ this message, please contact the business directly.
+    </span></td>
+    <td>=A0</td>
+</tr>
+<!-- Space 40 -->
+<tr>
+  <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"shrinkto24" height=
+=3D"40" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=
+=3D"display:block;" width=3D"1"></td>
+</tr>
+<!-- Start bottom half -->
+<tr>
+  <td>=A0</td>
+  <td align=3D"left" colspan=3D"2" style=3D"padding-top:6px;padding-bottom:=
+0px;"><span style=3D"font-size:16px; line-height:16px; font-family: AvenirN=
+extforINTUIT-Demi, Avenir Next, Avenir, Helvetica, sans-serif; color:#393A3=
+D; font-weight:500">Thank you,</span>
+  </td>
+  <td>=A0</td>
+</tr>
+<!-- Space 20 -->
+<tr>
+  <td colspan=3D"4"><img alt=3D"" border=3D"0" class=3D"shrinkto24" height=
+=3D"20" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=
+=3D"display:block;" width=3D"1"></td>
+</tr><!-- Merchant Details  -->
+<tr>
+  <td>=A0</td>
+  <td align=3D"left" colspan=3D"2"><img alt=3D"" src=3D""https://c6.qbo.int=
+uit.com/qbo6/ext/Image/show/541439611536929/1?15052497260001"" style=3D"max=
+-width:150px;
+                                                                  max-heigh=
+t:60px; width:auto;
+                                                                  height:au=
+to; margin-top:16px;">
+  </td>
+  <td>=A0</td>
+</tr>
+<tr>
+  <td>=A0</td>
+  <td align=3D"left" colspan=3D"2" style=3D"padding-top:8px;padding-bottom:=
+0px;"><span class=3D"textMobile24to20Medium" style=3D"font-size:20px; text-=
+transform: capitalize; line-height:26px; font-family:AvenirNextforINTUIT-De=
+mi, 'Avenir Next', Avenir, Helvetica, sans-serif; color:#393A3D;font-weight=
+:500;">Rheds, LLC</span>
+  </td>
+  <td>=A0</td>
+</tr>
+<tr>
+  <td>=A0</td>
+  <td align=3D"left" colspan=3D"2" style=3D"padding-top:8px;padding-bottom:=
+0px;"><span class=3D"textMobile16to16" style=3D"font-size:16px; line-height=
+:18px; font-family:'Avenir Next', Avenir, Helvetica, sans-serif; color:#393=
+A3D;">+14014873956</span>
+  </td>
+  <td>=A0</td>
+</tr>
+
+<tr>
+  <td>=A0</td>
+  <td align=3D"left" style=3D"padding-top:8px;padding-bottom:0px;" colspan=
+=3D"2"><span style=3D"font-size:14px; line-height:18px; font-family:AvenirN=
+extforINTUIT-Regular, Avenir Next, Avenir, Helvetica, sans-serif; color:#00=
+77C5;" class=3D"text16to14"> www.rhedshotsauce.com | rhedsri@gmail.com</spa=
+n>
+  </td>
+
+</tr>
+
+<tr>
+  <td>=A0</td>
+  <td align=3D"left" style=3D"padding-top:4px;padding-bottom:0px;" colspan=
+=3D"2"><span style=3D"font-size:14px; line-height:18px; font-family:AvenirN=
+extforINTUIT-Regular,Avenir Next, Avenir, Helvetica, sans-serif; color:#007=
+7C5;" class=3D"text16to14">10 Sims Ave., #108, Providence, RI, 02909, US</s=
+pan>
+  </td>
+  <td>=A0</td>
+</tr>
+
+
+<tr>
+  <td>=A0</td>
+  <td align=3D"left" colspan=3D"2" style=3D"padding-top:8px;padding-bottom:=
+0px;"><span class=3D"text16to14" style=3D"font-size:14px; line-height:18px;=
+ font-family:AvenirNextforINTUIT-Regular, Avenir Next, Avenir, Helvetica, s=
+ans-serif; color:#0077C5;"></span>
+  </td>
+</tr>
+<tr>
+  <td colspan=3D"2" align=3D"left" style=3D"line-height:10px;max-height:10p=
+x;" height=3D"10" valign=3D"bottom"><img alt=3D"" height=3D"10" src=3D"http=
+s://static.cns-icn-prod.a.intuit.com/corner3.gif" style=3D"display:block;" =
+width=3D"10" border=3D"0" /></td>
+  <td colspan=3D"2" align=3D"right" style=3D"line-height:9px;max-height:10p=
+x;" height=3D"10" valign=3D"bottom"><img alt=3D"" height=3D"10" src=3D"http=
+s://static.cns-icn-prod.a.intuit.com/corner4.gif" style=3D"display:block;" =
+width=3D"10" border=3D"0" /></td>
+</tr>
+</table>
+</td>
+</tr>
+<!-- Start legal -->
+<tr>
+  <td align=3D"center">
+    <table align=3D"center" bgcolor=3D"#ECEEF1" border=3D"0" cellpadding=3D=
+"0" cellspacing=3D"0" class=3D"to95pc" style=3D"max-width: 600px;" width=3D=
+"600">
+      <tr><!--Space 20-->
+        <td><img alt=3D"" border=3D"0" height=3D"20" src=3D"https://static.=
+cns-icn-prod.a.intuit.com/spacer.gif" style=3D"display:block;" width=3D"1">
+        </td>
+      </tr>
+      <!--Disclaimer-->
+
+      <tr>
+        <td style=3D"padding: 0 10px;">
+                    <span style=3D"display: block; margin-bottom: 10px;
+                       font-size:12px; line-height:16px; font-family: Aveni=
+rNextforINTUIT-Regular, Avenir Next , Avenir, Helvetica, sans-serif; color:=
+#6B6C72;">
+                    No additional transfer fees or taxes apply.</span>
+          <span style=3D"font-size:12px; line-height:16px; font-family: Ave=
+nirNextforINTUIT-Regular, Avenir Next , Avenir, Helvetica, sans-serif; colo=
+r:#6B6C72;">
+                    Intuit Payments Inc (IPI) processes payments as an agen=
+t of the business. Payments processed by IPI constitutes payment to the bus=
+iness and satisfies your obligation to pay the business, including in conne=
+ction with any dispute or case, in law or equity. Money movement services a=
+re provided by IPI pursuant to IPI&apos;s licenses (NMLS #1098819, https://=
+www.intuit.com/legal/licenses/payment-licenses). IPI is located at 2700 Coa=
+st Avenue, Mountain View, CA 94043, 1-888-536-4801.</br>
+                    </span>
+        </td>
+      </tr>
+      <!--End disclaimer-->
+      <tr><!--Space 40-->
+        <td style=3D"line-height:10px;"><img alt=3D"" border=3D"0" height=
+=3D"40" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=
+=3D"display:block;" width=3D"1">
+        </td>
+      </tr>
+
+
+      <tr>
+        <td align=3D"left" style=3D"padding-top:0px;padding-bottom:0px;padd=
+ing-left:10px;padding-right:10px;">
+                                    <span style=3D"font-size:12px; line-hei=
+ght:16px; font-family:AvenirNextforINTUIT-Regular, Avenir Next, Avenir, Hel=
+vetica, sans-serif; color:#6B6C72;"><a href=3D"https://elink.prd.intuit.com=
+/ss/c/u001.3UGN6hpUuP_Ij31NT3eCf_s_EBlC9VF1FLhNMBCWyKKrJSm14HbHaW95APPXnipl=
+/4l4/yfGQjCoARCKIUDt7aQkUZw/h4/h001.8KDUT5iz4rWg-0O0U2FIF6B60EM3sQTiTSe9loT=
+-EZA" style=3D"color:#077DC6;text-decoration:none!important;" target=3D"_bl=
+ank">Security</a>=A0=A0=A0|=A0=A0=A0<a href=3D"https://elink.prd.intuit.com=
+/ss/c/u001.3UGN6hpUuP_Ij31NT3eCf_s_EBlC9VF1FLhNMBCWyKK3vc_0F2Ui0jTDLL9hq7TP=
+BbCkxcBd0wh2BVieZSSTkQ/4l4/yfGQjCoARCKIUDt7aQkUZw/h5/h001.7yExnaWmZbNmrUOUg=
+2fD9soSENFWn8KtvtNMzsO6-b0" style=3D"color:#077DC6;text-decoration:none!imp=
+ortant;" target=3D"_blank">Privacy statement</a>=A0=A0=A0|=A0=A0=A0<a href=
+=3D"https://elink.prd.intuit.com/ss/c/u001.2MaSWMaSMLUiGZIFCObO9BBWUutlJPgT=
+D5bM-O1X-RQsLoHGmFdlfg3yJpmpPbBPoEhgysvVoC0oFqqLsktjVg/4l4/yfGQjCoARCKIUDt7=
+aQkUZw/h6/h001.0aICaiOtuSpP28vYg7ylB-LtMIchk4t54C2A5U0pEzs" style=3D"color:=
+#077DC6;text-decoration:none!important;" target=3D"_blank">Terms of Service=
+</a></span>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td style=3D"line-height:10px;"><img alt=3D"" border=3D"0" height=
+=3D"25" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=
+=3D"display:block;" width=3D"1">
+        </td>
+      </tr>
+
+
+      <tr>
+        <td align=3D"left" style=3D"padding-top:0px;padding-bottom:0px;padd=
+ing-left:10px;padding-right:10px;"><span style=3D"font-size:12px; line-heig=
+ht:16px; font-family: AvenirNextforINTUIT-Regular, Avenir Next , Avenir, He=
+lvetica, sans-serif; color:#6B6C72;">=A9 2025 Intuit Inc., All rights reser=
+ved. <a href=3D"https://elink.prd.intuit.com/ss/c/u001.HiknLRd2Wv82qs5XbGcP=
+mbruKXD_mUOSecUCgpi-B0Ttx7mS_AmNtt3yQQvsfuBw/4l4/yfGQjCoARCKIUDt7aQkUZw/h7/=
+h001.BW79siJHf2qSWcnHOeYcMTNjemNjEizzFIL5-HsVs7o" style=3D"color:#077DC6;te=
+xt-decoration:none!important;" target=3D"_blank">Trademarks.</a><br>
+                  2800 E. Commerce Center Place, Tucson, AZ 85706</span>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td style=3D"line-height:15px;"><img alt=3D"" border=3D"0" height=
+=3D"15" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=
+=3D"display:block;" width=3D"1">
+        </td>
+      </tr>
+
+
+      <tr>
+        <td style=3D"padding-left:10px;padding-right:10px;"><a href=3D"http=
+s://elink.prd.intuit.com/ss/c/u001.WVMg7PM6utnUYX1Yq78VGKAknLO2tewNMUQxsibl=
+UyqYODQi1ZHYNGMVIyQDUQC2/4l4/yfGQjCoARCKIUDt7aQkUZw/h8/h001.cFQ0n8fK4LHdF0l=
+bkcSWomAdVK26j7Mv261MD7f24a4" target=3D"_blank"><img alt=3D"Intuit - Poweri=
+ng prosperity" border=3D"0" class=3D"hide" height=3D"40" src=3D"https://sta=
+tic.cns-icn-prod.a.intuit.com/new_footer_desktop.png" style=3D"display:bloc=
+k;" width=3D"515"></a>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td style=3D"line-height:1px;padding-left:10px;padding-right:10px;"=
+><a href=3D"https://elink.prd.intuit.com/ss/c/u001.WVMg7PM6utnUYX1Yq78VGKAk=
+nLO2tewNMUQxsiblUyqYODQi1ZHYNGMVIyQDUQC2/4l4/yfGQjCoARCKIUDt7aQkUZw/h9/h001=
+.tlXZU5vH_pvQp3D_PYnx4ul2dHS5d2VkB5G15a70CAU" target=3D"_blank"><img alt=3D=
+"" border=3D"0" class=3D"logo_mobile_max320" src=3D"https://static.cns-icn-=
+prod.a.intuit.com/new_mobile_footer.png" style=3D"display:none;"></a>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td style=3D"line-height:20px;"><img alt=3D"" border=3D"0" height=
+=3D"20" src=3D"https://static.cns-icn-prod.a.intuit.com/spacer.gif" style=
+=3D"display:block;" width=3D"1">
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<!-- End legal -->
+</table>
+</td>
+</tr>
+</table>
+<img src=3D"https://elink.prd.intuit.com/ss/o/u001.UAdxVh8ph_Y1B39Ch5qvmQ/4=
+l4/yfGQjCoARCKIUDt7aQkUZw/ho.gif" alt=3D"" width=3D"1" height=3D"1" border=
+=3D"0" style=3D"height:1px !important;width:1px !important;border-width:0 !=
+important;margin-top:0 !important;margin-bottom:0 !important;margin-right:0=
+ !important;margin-left:0 !important;padding-top:0 !important;padding-botto=
+m:0 !important;padding-right:0 !important;padding-left:0 !important;"/></bo=
+dy>
 </html>
