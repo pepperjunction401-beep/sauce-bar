@@ -139,7 +139,7 @@
       align-items: center;
       justify-content: center;
       pointer-events: all;
-      transition: opacity 1.4s ease;
+      transition: opacity 0.6s ease;
     }
 
     #board-overlay.fade-out {
@@ -547,6 +547,7 @@
       // Play split flap chatter audio
       var flapAudio = document.getElementById('flap-audio');
       if (flapAudio) {
+        flapAudio.currentTime = 0;
         flapAudio.volume = 0.9;
         flapAudio.play().catch(function () {});
       }
@@ -568,7 +569,7 @@
 
     function dismiss() {
       overlay.classList.add('fade-out');
-      setTimeout(function () { overlay.style.display = 'none'; }, 1500);
+      setTimeout(function () { overlay.style.display = 'none'; }, 700);
 
       // Start platform audio when board dismisses
       var audio = document.getElementById('platform-audio');
@@ -601,7 +602,29 @@
 
     skipBtn.addEventListener('click', dismiss);
 
+    // Reset both audio elements on every page load
+    var platformAudio = document.getElementById('platform-audio');
+    var flapAudio2    = document.getElementById('flap-audio');
+    if (platformAudio) { platformAudio.currentTime = 0; }
+    if (flapAudio2)    { flapAudio2.currentTime = 0; }
+
+    // Unlock audio context on first user interaction then start board
+    var interacted = false;
+    function onFirstInteraction() {
+      if (interacted) return;
+      interacted = true;
+      document.removeEventListener('click',      onFirstInteraction);
+      document.removeEventListener('touchstart', onFirstInteraction);
+      document.removeEventListener('keydown',    onFirstInteraction);
+      setTimeout(runSequence, 150);
+    }
+
+    document.addEventListener('click',      onFirstInteraction);
+    document.addEventListener('touchstart', onFirstInteraction);
+    document.addEventListener('keydown',    onFirstInteraction);
+
     buildDOM();
+    // Start board visually immediately — audio fires on first interaction
     setTimeout(runSequence, 150);
 
   })();
