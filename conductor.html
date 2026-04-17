@@ -131,9 +131,202 @@
       .btn { width: 220px; text-align: center; }
     }
 
+    /* ── SPLIT-FLAP BOARD — added styles only ─────────────────── */
+    #board-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: all;
+      transition: opacity 1.4s ease;
+    }
+
+    #board-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .board-wrap {
+      width: 75vw;
+      max-width: 920px;
+      background: #000;
+      border: 2px solid #f0ece4;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.95);
+      padding: 24px 28px 36px;
+      position: relative;
+    }
+
+    .board-station {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(240,236,228,0.1);
+    }
+
+    .board-station-left {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: #f0ece4;
+      opacity: 0.32;
+    }
+
+    .board-station-right {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: #b8903a;
+      opacity: 0.52;
+    }
+
+    .board-col-header {
+      display: grid;
+      grid-template-columns: 1fr 110px 60px;
+      gap: 0;
+      padding: 0 4px 8px 4px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid rgba(184,144,58,0.3);
+    }
+
+    .board-col-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: #b8903a;
+      opacity: 0.55;
+    }
+
+    .board-divider {
+      height: 2px;
+      margin: 3px 0;
+      background: linear-gradient(90deg,
+        rgba(184,144,58,0.7) 0%,
+        rgba(184,144,58,0.7) 90%,
+        transparent 100%
+      );
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .board-divider.active { opacity: 1; }
+
+    .board-row {
+      display: grid;
+      grid-template-columns: 1fr 110px 60px;
+      gap: 0;
+      align-items: center;
+      min-height: 52px;
+      visibility: hidden;
+      padding: 2px 0;
+    }
+    .board-row.active { visibility: visible; }
+
+    .board-col {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+    }
+
+    .flap-cell {
+      width: 24px;
+      height: 42px;
+      background: #080808;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .flap-cell::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0;
+      top: 50%;
+      height: 1px;
+      background: #000;
+      z-index: 2;
+    }
+
+    .flap-cell span {
+      font-family: 'Courier New', 'Courier', monospace;
+      font-size: 19px;
+      font-weight: 700;
+      color: #f0ece4;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+      user-select: none;
+      display: block;
+    }
+
+    .flap-cell.is-space {
+      background: transparent;
+      border-color: transparent;
+      width: 10px;
+    }
+    .flap-cell.is-space::after { display: none; }
+    .flap-cell.is-punct { width: 16px; }
+
+    .board-skip {
+      position: absolute;
+      bottom: -28px;
+      right: 0;
+      background: none;
+      border: none;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(240,236,228,0.22);
+      cursor: pointer;
+      padding: 6px 0;
+      transition: color 0.2s;
+    }
+    .board-skip:hover { color: rgba(240,236,228,0.6); }
+
+    @media (max-width: 640px) {
+      .board-wrap { width: 92vw; padding: 16px 12px 28px; }
+      .board-col-header { grid-template-columns: 1fr 80px 42px; }
+      .board-row { grid-template-columns: 1fr 80px 42px; min-height: 40px; }
+      .flap-cell { width: 18px; height: 34px; }
+      .flap-cell span { font-size: 14px; }
+      .flap-cell.is-space { width: 7px; }
+    }
+
   </style>
 </head>
 <body>
+
+  <!-- ═══ SPLIT-FLAP BOARD ═══════════════════════════════════ -->
+  <div id="board-overlay">
+    <div class="board-wrap">
+      <div class="board-station">
+        <span class="board-station-left">Providence Union Station</span>
+        <span class="board-station-right">Pepper Junction · Est. 2014</span>
+      </div>
+      <div class="board-col-header">
+        <span class="board-col-label">Destination</span>
+        <span class="board-col-label">Time</span>
+        <span class="board-col-label">Trk</span>
+      </div>
+      <div id="board-rows" style="display:flex;flex-direction:column;gap:3px;"></div>
+      <button class="board-skip" id="board-skip">Skip ›</button>
+    </div>
+  </div>
 
   <div class="stage">
 
@@ -149,6 +342,165 @@
       </div>
     </div>
    </div>
+
+  <!-- ═══ BOARD SCRIPT ════════════════════════════════════════ -->
+  <script>
+  (function () {
+
+    const DEPARTURES = [
+      { dest: 'PEPPER JUNCTION',    time: '1:00P', trk: '4' },
+      { dest: 'PROVIDENCE · RI',    time: '3:15P', trk: '2' },
+      { dest: 'INSPIRED BY:',       time: '5:00P', trk: '6' },
+      { dest: 'SHORE LINE SERVICE', time: '7:22P', trk: '1' },
+      { dest: 'CIRCA 1930',         time: '9:08A', trk: '3' },
+      { dest: 'ALL ABOARD',         time: '——',    trk: '——' },
+    ];
+
+    const CHARS = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·:—APM';
+
+    const overlay = document.getElementById('board-overlay');
+    const rowsEl  = document.getElementById('board-rows');
+    const skipBtn = document.getElementById('board-skip');
+
+    function makeCell(ch) {
+      const isSpace = (ch === ' ');
+      const isPunct = ('·:—-'.indexOf(ch) >= 0);
+      const cell = document.createElement('div');
+      cell.className = 'flap-cell' +
+        (isSpace ? ' is-space' : '') +
+        (isPunct ? ' is-punct' : '');
+      if (!isSpace) {
+        const span = document.createElement('span');
+        span.textContent = CHARS[Math.floor(Math.random() * (CHARS.length - 1))];
+        cell.appendChild(span);
+      }
+      return cell;
+    }
+
+    function makeCol(text) {
+      const col = document.createElement('div');
+      col.className = 'board-col';
+      Array.from(text).forEach(function (ch) { col.appendChild(makeCell(ch)); });
+      return col;
+    }
+
+    function buildDOM() {
+      rowsEl.innerHTML = '';
+      const topDiv = document.createElement('div');
+      topDiv.className = 'board-divider';
+      rowsEl.appendChild(topDiv);
+
+      DEPARTURES.forEach(function (dep, idx) {
+        const row = document.createElement('div');
+        row.className = 'board-row';
+        row.dataset.idx = idx;
+        row.appendChild(makeCol(dep.dest));
+        row.appendChild(makeCol(dep.time));
+        row.appendChild(makeCol(dep.trk));
+        rowsEl.appendChild(row);
+
+        const div = document.createElement('div');
+        div.className = 'board-divider';
+        rowsEl.appendChild(div);
+      });
+    }
+
+    function animateCell(cell, targetChar, startDelay, onDone) {
+      const span = cell.querySelector('span');
+      if (!span) { if (onDone) onDone(); return; }
+
+      const curIdx    = Math.max(0, CHARS.indexOf(span.textContent));
+      const targetIdx = Math.max(0, CHARS.indexOf(targetChar));
+
+      if (curIdx === targetIdx) { if (onDone) onDone(); return; }
+
+      const steps = [];
+      let i = curIdx;
+      while (true) {
+        i = (i + 1) % CHARS.length;
+        steps.push(CHARS[i]);
+        if (i === targetIdx) break;
+        if (steps.length > CHARS.length + 2) break;
+      }
+
+      let stepIdx = 0;
+      function tick() {
+        if (stepIdx >= steps.length) {
+          span.textContent = targetChar;
+          if (onDone) onDone();
+          return;
+        }
+        span.textContent = steps[stepIdx++];
+        const progress = stepIdx / steps.length;
+        const delay = 32 + Math.random() * 18 + (progress > 0.8 ? (progress - 0.8) * 100 : 0);
+        setTimeout(tick, delay);
+      }
+      setTimeout(tick, startDelay);
+    }
+
+    function animateCol(colEl, targetText, baseDelay, onDone) {
+      const cells = colEl.querySelectorAll('.flap-cell:not(.is-space)');
+      const chars = Array.from(targetText).filter(function (ch) { return ch !== ' '; });
+      let done = 0;
+      const total = cells.length;
+      if (total === 0) { if (onDone) onDone(); return; }
+      cells.forEach(function (cell, i) {
+        animateCell(cell, chars[i] || ' ', baseDelay + i * 42, function () {
+          done++;
+          if (done === total && onDone) onDone();
+        });
+      });
+    }
+
+    function revealRow(idx, onDone) {
+      const row = rowsEl.querySelector('.board-row[data-idx="' + idx + '"]');
+      if (!row) { if (onDone) onDone(); return; }
+      row.classList.add('active');
+      const dep  = DEPARTURES[idx];
+      const cols = row.querySelectorAll('.board-col');
+      let colsDone = 0;
+      function colDone() {
+        colsDone++;
+        if (colsDone === 3 && onDone) onDone();
+      }
+      animateCol(cols[0], dep.dest, 0,   colDone);
+      animateCol(cols[1], dep.time, 80,  colDone);
+      animateCol(cols[2], dep.trk,  140, colDone);
+    }
+
+    function showDividers() {
+      rowsEl.querySelectorAll('.board-divider').forEach(function (d) {
+        d.classList.add('active');
+      });
+    }
+
+    function runSequence() {
+      showDividers();
+      let rowIdx = 0;
+      function nextRow() {
+        if (rowIdx >= DEPARTURES.length) {
+          setTimeout(dismiss, 1800);
+          return;
+        }
+        revealRow(rowIdx++, function () {
+          setTimeout(nextRow, 280);
+        });
+      }
+      nextRow();
+    }
+
+    function dismiss() {
+      overlay.classList.add('fade-out');
+      setTimeout(function () { overlay.style.display = 'none'; }, 1500);
+    }
+
+    skipBtn.addEventListener('click', dismiss);
+
+    buildDOM();
+    setTimeout(runSequence, 150);
+
+  })();
+  </script>
 
 </body>
 </html>
