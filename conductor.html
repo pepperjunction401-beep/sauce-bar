@@ -367,9 +367,46 @@
       display: none;
     }
 
+    /* ── ENTER BUTTON ─────────────────────────────────────────── */
+    #enter-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.82);
+    }
+
+    #enter-btn {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #1a1008;
+      background: linear-gradient(135deg, #d4a832, #c49a3c);
+      border: 2px solid #d4a832;
+      padding: 22px 64px;
+      border-radius: 2px;
+      cursor: pointer;
+      box-shadow: 0 0 40px rgba(212,168,50,0.5), 0 8px 32px rgba(0,0,0,0.6);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #enter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 60px rgba(212,168,50,0.7), 0 12px 40px rgba(0,0,0,0.6);
+    }
+
   </style>
 </head>
 <body>
+
+  <!-- ═══ ENTER BUTTON ══════════════════════════════════════ -->
+  <div id="enter-overlay">
+    <button id="enter-btn">Click to Enter</button>
+  </div>
 
   <!-- ═══ AUDIO ══════════════════════════════════════════════ -->
   <audio id="platform-audio" src="assets/audio/RR_Essex_3.mp3" preload="auto"></audio>
@@ -604,27 +641,34 @@
 
     buildDOM();
 
-    // Start board immediately — audio unlocks on first interaction
-    var audioUnlocked = false;
-    function unlockAudio() {
-      if (audioUnlocked) return;
-      audioUnlocked = true;
-      document.removeEventListener('click',      unlockAudio);
-      document.removeEventListener('touchstart', unlockAudio);
-      document.removeEventListener('keydown',    unlockAudio);
+    // Enter button — single interaction unlocks everything
+    var enterOverlay = document.getElementById('enter-overlay');
+    var enterBtn     = document.getElementById('enter-btn');
 
-      // Fire flap chatter on first interaction
+    function onEnter() {
+      // Hide enter overlay
+      enterOverlay.style.display = 'none';
+
+      // Unlock AudioContext for mobile Safari
+      try {
+        var ac = new (window.AudioContext || window.webkitAudioContext)();
+        ac.resume();
+      } catch(e) {}
+
+      // Fire flap chatter
       var flapAudio = document.getElementById('flap-audio');
       if (flapAudio) {
         flapAudio.currentTime = 0;
         flapAudio.volume = 0.9;
         flapAudio.play().catch(function () {});
       }
+
+      // Start board sequence
+      setTimeout(runSequence, 150);
     }
 
-    document.addEventListener('click',      unlockAudio);
-    document.addEventListener('touchstart', unlockAudio);
-    document.addEventListener('keydown',    unlockAudio);
+    enterBtn.addEventListener('click',      onEnter);
+    enterBtn.addEventListener('touchend',   function(e) { e.preventDefault(); onEnter(); });
 
     // Board animates immediately on page load
     setTimeout(runSequence, 150);
