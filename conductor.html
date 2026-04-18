@@ -423,7 +423,7 @@
       { dest: 'ALL ABOARD!',        time: '——',    trk: '——' },
     ];
 
-    const CHARS = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·:—APM';
+    const CHARS = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!·:—APM';
 
     const overlay = document.getElementById('board-overlay');
     const rowsEl  = document.getElementById('board-rows');
@@ -600,7 +600,10 @@
       });
     }
 
-    skipBtn.addEventListener('click', dismiss);
+    skipBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dismiss();
+    });
 
     // Reset both audio elements on every page load
     var platformAudio = document.getElementById('platform-audio');
@@ -608,23 +611,23 @@
     if (platformAudio) { platformAudio.currentTime = 0; }
     if (flapAudio2)    { flapAudio2.currentTime = 0; }
 
-    // Unlock audio context on first user interaction then start board
-    var interacted = false;
-    function onFirstInteraction() {
-      if (interacted) return;
-      interacted = true;
-      document.removeEventListener('click',      onFirstInteraction);
-      document.removeEventListener('touchstart', onFirstInteraction);
-      document.removeEventListener('keydown',    onFirstInteraction);
-      setTimeout(runSequence, 150);
+    buildDOM();
+
+    // Start board immediately — audio unlocks on first interaction
+    var audioUnlocked = false;
+    function unlockAudio() {
+      if (audioUnlocked) return;
+      audioUnlocked = true;
+      document.removeEventListener('click',      unlockAudio);
+      document.removeEventListener('touchstart', unlockAudio);
+      document.removeEventListener('keydown',    unlockAudio);
     }
 
-    document.addEventListener('click',      onFirstInteraction);
-    document.addEventListener('touchstart', onFirstInteraction);
-    document.addEventListener('keydown',    onFirstInteraction);
+    document.addEventListener('click',      unlockAudio);
+    document.addEventListener('touchstart', unlockAudio);
+    document.addEventListener('keydown',    unlockAudio);
 
-    buildDOM();
-    // Start board visually immediately — audio fires on first interaction
+    // Board animates immediately on page load
     setTimeout(runSequence, 150);
 
   })();
