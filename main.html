@@ -265,10 +265,9 @@
     }
 
     .bartender-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: start;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
     }
 
     .bartender-video-wrap {
@@ -277,6 +276,8 @@
       overflow: hidden;
       border: 1px solid rgba(184,137,57,0.3);
       box-shadow: var(--shadow);
+      width: 100%;
+      aspect-ratio: 1600 / 928;
     }
 
     .bartender-video-wrap::before {
@@ -291,10 +292,19 @@
 
     .bartender-video-wrap video {
       width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
     }
 
     .bartender-chat {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .bartender-chat-info {
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -899,7 +909,7 @@
 
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 900px) {
-      .bartender-inner { grid-template-columns: 1fr; gap: 36px; }
+      .bartender-chat { grid-template-columns: 1fr; gap: 24px; }
       .story-inner { grid-template-columns: 1fr; gap: 40px; }
       .location-inner { grid-template-columns: 1fr; gap: 36px; }
       .location-right { padding-top: 0; }
@@ -959,7 +969,7 @@
         <div class="bartender-video-wrap reveal">
           <video
             src="assets/video/Bartender-Welcome-Parlor-Car.mp4/Bartender-Welcome-Parlor-Car.mp4"
-            autoplay muted loop playsinline controls
+            autoplay muted playsinline controls
           ></video>
         </div>
 
