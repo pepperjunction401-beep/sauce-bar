@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pepper Junction — Welcome Aboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0d0700;
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .stage img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #0d0700;
+      display: block;
+    }
+
+    /* ── Greeting — center-right, just left of door/handrail ─── */
+    .greeting {
+      position: absolute;
+      top: 52%;
+      left: 22%;
+      text-align: left;
+      opacity: 0;
+      animation: rise 0.9s ease 0.3s forwards;
+    }
+
+    .greeting-main {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4.5vw, 60px);
+      font-weight: 900;
+      font-style: italic;
+      color: #f4e8d0;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      display: block;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.8);
+    }
+
+    .greeting-sub {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(16px, 2vw, 26px);
+      font-weight: 700;
+      font-style: italic;
+      color: #f4e8d0;
+      opacity: 0.85;
+      letter-spacing: 0.03em;
+      line-height: 1.4;
+      display: block;
+      white-space: nowrap;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    /* ── Buttons ──────────────────────────────────────────────── */
+   .buttons {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.6s forwards;
+}
+
+    .btn {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #1a1008;
+      background: #c49a3c;
+      border: 1px solid #d4a832;
+      padding: 14px 38px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: #d4a832;
+      color: #0d0700;
+      transform: translateY(-2px);
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes rise-centered {
+      from { opacity: 0; transform: translateX(-50%) translateY(14px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* ── Mobile ───────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      html, body { overflow: auto; }
+      .stage { height: 100svh; }
+      .greeting {
+        top: 28%;
+        left: 5%;
+      }
+      .greeting-sub { white-space: normal; }
+      .buttons {
+        flex-direction: column;
+        align-items: center;
+        bottom: 8%;
+        gap: 16px;
+      }
+      .btn { width: 220px; text-align: center; }
+    }
+
+    /* ── SPLIT-FLAP BOARD — added styles only ─────────────────── */
+    #board-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: all;
+      transition: opacity 0.6s ease;
+    }
+
+    #board-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .board-wrap {
+      width: 88vw;
+      max-width: none;
+      min-height: 72vh;
+      background: #000;
+      border: 2px solid #f0ece4;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.95);
+      padding: 36px 48px 52px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .board-station {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(240,236,228,0.1);
+    }
+
+    .board-station-left {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: #f0ece4;
+      opacity: 0.32;
+    }
+
+    .board-station-right {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: #b8903a;
+      opacity: 0.52;
+    }
+
+    .board-col-header {
+      display: grid;
+      grid-template-columns: 1fr 130px 80px;
+      gap: 0;
+      padding: 0 4px 8px 4px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid rgba(184,144,58,0.3);
+    }
+
+    .board-col-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: #b8903a;
+      opacity: 0.55;
+    }
+
+    .board-divider {
+      height: 2px;
+      margin: 3px 0;
+      background: linear-gradient(90deg,
+        rgba(184,144,58,0.7) 0%,
+        rgba(184,144,58,0.7) 90%,
+        transparent 100%
+      );
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .board-divider.active { opacity: 1; }
+
+    .board-row {
+      display: grid;
+      grid-template-columns: 1fr 130px 80px;
+      gap: 0;
+      align-items: center;
+      min-height: 66px;
+      visibility: hidden;
+      padding: 2px 0;
+    }
+    .board-row.active { visibility: visible; }
+
+    .board-col {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+    }
+
+    .board-col:nth-child(3) {
+      padding-left: 18px;
+    }
+
+    .board-col:nth-child(2) {
+      margin-left: -18px;
+    }
+
+    .board-col-label:nth-child(2) {
+      padding-left: 18px;
+    }
+
+    .board-col-label:nth-child(3) {
+      padding-left: 18px;
+    }
+
+    .flap-cell {
+      width: 28px;
+      height: 49px;
+      background: #080808;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .flap-cell::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0;
+      top: 50%;
+      height: 1px;
+      background: #000;
+      z-index: 2;
+    }
+
+    .flap-cell span {
+      font-family: 'Courier New', 'Courier', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: #f0ece4;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+      user-select: none;
+      display: block;
+    }
+
+    .flap-cell.is-space {
+      background: transparent;
+      border-color: transparent;
+      width: 10px;
+    }
+    .flap-cell.is-space::after { display: none; }
+    .flap-cell.is-punct { width: 16px; }
+
+    .board-col:first-child .flap-cell span { color: #ffde52; }
+
+    .board-skip {
+      position: absolute;
+      bottom: -28px;
+      right: 0;
+      background: none;
+      border: none;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(240,236,228,0.22);
+      cursor: pointer;
+      padding: 6px 0;
+      transition: color 0.2s;
+    }
+    .board-skip:hover { color: rgba(240,236,228,0.6); }
+
+    @media (max-width: 640px) {
+      .board-wrap { width: 92vw; padding: 16px 12px 28px; }
+      .board-col-header { grid-template-columns: 1fr 80px 42px; }
+      .board-row { grid-template-columns: 1fr 80px 42px; min-height: 40px; }
+      .flap-cell { width: 18px; height: 34px; }
+      .flap-cell span { font-size: 14px; }
+      .flap-cell.is-space { width: 7px; }
+    }
+
+    /* ── AUDIO CONTROLS — added styles only ──────────────────── */
+    #mute-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 950;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(240,236,228,0.18);
+      color: rgba(240,236,228,0.45);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 7px 13px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s;
+      display: none;
+    }
+    #mute-btn:hover {
+      color: rgba(240,236,228,0.85);
+      border-color: rgba(240,236,228,0.45);
+    }
+
+    #audio-credit {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 950;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(240,236,228,0.2);
+      display: none;
+    }
+
+    /* ── ENTER BUTTON ─────────────────────────────────────────── */
+    #enter-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.82);
+    }
+
+    #enter-btn {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #1a1008;
+      background: linear-gradient(135deg, #d4a832, #c49a3c);
+      border: 2px solid #d4a832;
+      padding: 22px 64px;
+      border-radius: 2px;
+      cursor: pointer;
+      box-shadow: 0 0 40px rgba(212,168,50,0.5), 0 8px 32px rgba(0,0,0,0.6);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #enter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 60px rgba(212,168,50,0.7), 0 12px 40px rgba(0,0,0,0.6);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══ ENTER BUTTON ══════════════════════════════════════ -->
+  <div id="enter-overlay">
+    <button id="enter-btn">Click to Enter<br><span style="font-size:11px;letter-spacing:0.45em;opacity:0.75;">Pepper Junction</span></button>
+  </div>
+
+  <!-- ═══ AUDIO ══════════════════════════════════════════════ -->
+  <audio id="platform-audio" src="assets/audio/RR_Essex_3.mp3" preload="auto"></audio>
+  <audio id="flap-audio" src="assets/audio/Split_Flap_Board_Chatter.mp3" preload="auto"></audio>
+  <button id="mute-btn">♪ Mute</button>
+  <div id="audio-credit">Platform audio · @connecticut_rail_films</div>
+
+  <!-- ═══ SPLIT-FLAP BOARD ═══════════════════════════════════ -->
+  <div id="board-overlay">
+    <div class="board-wrap">
+      <div class="board-station">
+        <span class="board-station-left">Providence Union Station</span>
+        <span class="board-station-right">Pepper Junction · Est. 2014</span>
+      </div>
+      <div class="board-col-header">
+        <span class="board-col-label">Destination</span>
+        <span class="board-col-label">Time</span>
+        <span class="board-col-label">Trk</span>
+      </div>
+      <div id="board-rows" style="display:flex;flex-direction:column;gap:3px;"></div>
+      <button class="board-skip" id="board-skip">Skip ›</button>
+    </div>
+  </div>
+
+  <div class="stage">
+
+    <img src="assets/Landing_page_image_Pullman.png"
+         alt="NYNH&H Pullman parlor car conductor welcoming passengers aboard" />
+
+   <div class="greeting">
+      <span class="greeting-main">Welcome Aboard!</span>
+      <span class="greeting-sub">Join us on the Main Page or the Pairing Bar.</span>
+      <div class="buttons">
+        <a class="btn" href="main.html">Main</a>
+        <a class="btn" href="index.html">Pairing Bar</a>
+      </div>
+    </div>
+   </div>
+
+  <!-- ═══ BOARD SCRIPT ════════════════════════════════════════ -->
+  <script>
+  (function () {
+
+    const DEPARTURES = [
+      { dest: 'INSPIRED BY:',       time: '9:08A', trk: '4'  },
+      { dest: 'RI RAIL ROAD',       time: '9:22A', trk: '2'  },
+      { dest: 'SHORE LINE SERVICE', time: '9:45A', trk: '6'  },
+      { dest: 'C. 1930S',           time: '9:13P', trk: '1'  },
+      { dest: 'PEPPER JUNCTION',    time: '7:11P', trk: '20' },
+      { dest: 'EST. 2014',          time: '4:15P', trk: '13' },
+      { dest: 'ALL ABOARD!',        time: '——',    trk: '——' },
+    ];
+
+    const CHARS = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!·:—APM';
+
+    const overlay = document.getElementById('board-overlay');
+    const rowsEl  = document.getElementById('board-rows');
+    const skipBtn = document.getElementById('board-skip');
+
+    function makeCell(ch) {
+      const isSpace = (ch === ' ');
+      const isPunct = ('·:—-'.indexOf(ch) >= 0);
+      const cell = document.createElement('div');
+      cell.className = 'flap-cell' +
+        (isSpace ? ' is-space' : '') +
+        (isPunct ? ' is-punct' : '');
+      if (!isSpace) {
+        const span = document.createElement('span');
+        span.textContent = CHARS[Math.floor(Math.random() * (CHARS.length - 1))];
+        cell.appendChild(span);
+      }
+      return cell;
+    }
+
+    function makeCol(text) {
+      const col = document.createElement('div');
+      col.className = 'board-col';
+      Array.from(text).forEach(function (ch) { col.appendChild(makeCell(ch)); });
+      return col;
+    }
+
+    function buildDOM() {
+      rowsEl.innerHTML = '';
+      const topDiv = document.createElement('div');
+      topDiv.className = 'board-divider';
+      rowsEl.appendChild(topDiv);
+
+      DEPARTURES.forEach(function (dep, idx) {
+        const row = document.createElement('div');
+        row.className = 'board-row';
+        row.dataset.idx = idx;
+        row.appendChild(makeCol(dep.dest));
+        row.appendChild(makeCol(dep.time));
+        row.appendChild(makeCol(dep.trk));
+        rowsEl.appendChild(row);
+
+        const div = document.createElement('div');
+        div.className = 'board-divider';
+        rowsEl.appendChild(div);
+      });
+    }
+
+    function animateCell(cell, targetChar, startDelay, onDone) {
+      const span = cell.querySelector('span');
+      if (!span) { if (onDone) onDone(); return; }
+
+      const curIdx    = Math.max(0, CHARS.indexOf(span.textContent));
+      const targetIdx = Math.max(0, CHARS.indexOf(targetChar));
+
+      if (curIdx === targetIdx) { if (onDone) onDone(); return; }
+
+      const steps = [];
+      let i = curIdx;
+      while (true) {
+        i = (i + 1) % CHARS.length;
+        steps.push(CHARS[i]);
+        if (i === targetIdx) break;
+        if (steps.length > CHARS.length + 2) break;
+      }
+
+      let stepIdx = 0;
+      function tick() {
+        if (stepIdx >= steps.length) {
+          span.textContent = targetChar;
+          if (onDone) onDone();
+          return;
+        }
+        span.textContent = steps[stepIdx++];
+        const progress = stepIdx / steps.length;
+        const delay = 32 + Math.random() * 18 + (progress > 0.8 ? (progress - 0.8) * 100 : 0);
+        setTimeout(tick, delay);
+      }
+      setTimeout(tick, startDelay);
+    }
+
+    function animateCol(colEl, targetText, baseDelay, onDone) {
+      const cells = colEl.querySelectorAll('.flap-cell:not(.is-space)');
+      const chars = Array.from(targetText).filter(function (ch) { return ch !== ' '; });
+      let done = 0;
+      const total = cells.length;
+      if (total === 0) { if (onDone) onDone(); return; }
+      cells.forEach(function (cell, i) {
+        animateCell(cell, chars[i] || ' ', baseDelay + i * 42, function () {
+          done++;
+          if (done === total && onDone) onDone();
+        });
+      });
+    }
+
+    function revealRow(idx, onDone) {
+      const row = rowsEl.querySelector('.board-row[data-idx="' + idx + '"]');
+      if (!row) { if (onDone) onDone(); return; }
+      row.classList.add('active');
+      const dep  = DEPARTURES[idx];
+      const cols = row.querySelectorAll('.board-col');
+      let colsDone = 0;
+      function colDone() {
+        colsDone++;
+        if (colsDone === 3 && onDone) onDone();
+      }
+      animateCol(cols[0], dep.dest, 0,   colDone);
+      animateCol(cols[1], dep.time, 80,  colDone);
+      animateCol(cols[2], dep.trk,  140, colDone);
+    }
+
+    function showDividers() {
+      rowsEl.querySelectorAll('.board-divider').forEach(function (d) {
+        d.classList.add('active');
+      });
+    }
+
+    function runSequence() {
+      showDividers();
+
+      let rowIdx = 0;
+      function nextRow() {
+        if (rowIdx >= DEPARTURES.length) {
+          setTimeout(dismiss, 1800);
+          return;
+        }
+        revealRow(rowIdx++, function () {
+          var delay = (rowIdx - 1 === 3) ? 1280 : 0;
+          setTimeout(nextRow, delay);
+        });
+      }
+      nextRow();
+    }
+
+    function dismiss() {
+      overlay.classList.add('fade-out');
+      setTimeout(function () { overlay.style.display = 'none'; }, 700);
+
+      // Start platform audio when board dismisses
+      var audio = document.getElementById('platform-audio');
+      var muteBtn = document.getElementById('mute-btn');
+      var creditEl = document.getElementById('audio-credit');
+
+      if (audio) {
+        audio.volume = 0.75;
+        audio.play().then(function () {
+          muteBtn.style.display = 'block';
+          creditEl.style.display = 'block';
+        }).catch(function () {
+          // Autoplay blocked — show mute button anyway for manual play
+          muteBtn.style.display = 'block';
+          muteBtn.textContent = '♪ Play';
+          creditEl.style.display = 'block';
+        });
+      }
+
+      muteBtn.addEventListener('click', function () {
+        if (audio.paused) {
+          audio.play();
+          muteBtn.textContent = '♪ Mute';
+        } else {
+          audio.pause();
+          muteBtn.textContent = '♪ Play';
+        }
+      });
+    }
+
+    skipBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dismiss();
+    });
+
+    // Reset both audio elements on every page load
+    var platformAudio = document.getElementById('platform-audio');
+    var flapAudio2    = document.getElementById('flap-audio');
+    if (platformAudio) { platformAudio.currentTime = 0; }
+    if (flapAudio2)    { flapAudio2.currentTime = 0; }
+
+    buildDOM();
+
+    // Enter button — single interaction unlocks everything
+    var enterOverlay = document.getElementById('enter-overlay');
+    var enterBtn     = document.getElementById('enter-btn');
+
+    function onEnter() {
+      // Hide enter overlay
+      enterOverlay.style.display = 'none';
+
+      // Unlock AudioContext for mobile Safari
+      try {
+        var ac = new (window.AudioContext || window.webkitAudioContext)();
+        ac.resume();
+      } catch(e) {}
+
+      // Fire flap chatter
+      var flapAudio = document.getElementById('flap-audio');
+      if (flapAudio) {
+        flapAudio.currentTime = 0;
+        flapAudio.volume = 0.9;
+        flapAudio.play().catch(function () {});
+      }
+
+      // Start board sequence
+      setTimeout(runSequence, 150);
+    }
+
+    enterBtn.addEventListener('click',      onEnter);
+    enterBtn.addEventListener('touchend',   function(e) { e.preventDefault(); onEnter(); });
+
+  })();
+  </script>
+
+</body>
+</html>
