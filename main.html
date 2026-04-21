@@ -35,39 +35,12 @@
 
     /* ── BODY — warm parlor car interior ─────────────────────── */
     body {
-      background-color: #7A4A2A;
-      background-image:
-        /* Vertical panel grooves */
-        repeating-linear-gradient(
-          90deg,
-          transparent          0px,
-          transparent          98px,
-          rgba(0,0,0,0.18)     98px,
-          rgba(0,0,0,0.22)     100px,
-          rgba(255,255,255,0.06) 100px,
-          rgba(255,255,255,0.06) 102px,
-          transparent          102px,
-          transparent          200px
-        ),
-        /* Subtle wood grain variation across panels */
-        repeating-linear-gradient(
-          90deg,
-          rgba(0,0,0,0.0)      0px,
-          rgba(0,0,0,0.04)     25px,
-          rgba(255,255,255,0.03) 50px,
-          rgba(0,0,0,0.03)     75px,
-          rgba(0,0,0,0.0)      100px
-        ),
-        /* Horizontal highlight to suggest raised panel depth */
-        repeating-linear-gradient(
-          180deg,
-          rgba(255,255,255,0.04) 0px,
-          transparent            2px,
-          transparent            120px,
-          rgba(0,0,0,0.06)       120px,
-          rgba(0,0,0,0.0)        122px,
-          transparent            240px
-        );
+      background-color: #8B5E3C;
+      background-image: url('assets/textures/wooden-texture.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-position: center top;
       color: var(--ink);
       font-family: 'Libre Baskerville', Georgia, serif;
       overflow-x: hidden;
