@@ -1343,6 +1343,164 @@
       z-index: 1;
     }
 
+    /* CHALKBOARD — Bartender Info Panel */
+    .chalkboard-wrap {
+      position: relative;
+      padding: 18px;
+      background: linear-gradient(135deg,
+        #5C3310 0%, #7A4A20 12%, #4A2808 25%,
+        #8B5E30 38%, #5C3310 50%, #6B4018 62%,
+        #9A6838 75%, #4A2808 88%, #6B4018 100%);
+      border-radius: 4px;
+      box-shadow:
+        inset 0 2px 8px rgba(255,200,120,0.2),
+        inset 0 -4px 10px rgba(0,0,0,0.6),
+        inset 4px 0 8px rgba(0,0,0,0.3),
+        inset -4px 0 8px rgba(0,0,0,0.3),
+        0 12px 40px rgba(0,0,0,0.6),
+        0 4px 12px rgba(0,0,0,0.4);
+      aspect-ratio: 3 / 4;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chalkboard-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 3px solid rgba(60,30,8,0.8);
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 3;
+      box-shadow:
+        inset 0 0 0 1px rgba(180,120,50,0.3),
+        0 0 0 1px rgba(180,120,50,0.15);
+    }
+
+    .chalkboard-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(180,120,50,0.2);
+      border-radius: 1px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .chalkboard-corner {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      z-index: 4;
+      background: linear-gradient(135deg,
+        #9A6838 0%, #6B4018 35%, #4A2808 60%, #7A4A20 100%);
+      box-shadow:
+        inset 1px 1px 3px rgba(180,130,60,0.4),
+        inset -1px -1px 3px rgba(0,0,0,0.5),
+        0 2px 6px rgba(0,0,0,0.5);
+    }
+    .chalkboard-corner.tl { top: 0; left: 0; border-radius: 4px 0 0 0; }
+    .chalkboard-corner.tr { top: 0; right: 0; border-radius: 0 4px 0 0; }
+    .chalkboard-corner.bl { bottom: 0; left: 0; border-radius: 0 0 0 4px; }
+    .chalkboard-corner.br { bottom: 0; right: 0; border-radius: 0 0 4px 0; }
+
+    .chalkboard-surface {
+      flex: 1;
+      margin: 18px;
+      background:
+        linear-gradient(160deg,
+          #1C1C1C 0%, #141414 30%,
+          #181818 60%, #101010 100%);
+      border-radius: 1px;
+      padding: 36px 28px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+      box-shadow:
+        inset 0 2px 8px rgba(0,0,0,0.8),
+        inset 0 -2px 8px rgba(0,0,0,0.6);
+    }
+
+    .chalkboard-surface::before {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 5%;
+      width: 50%;
+      height: 20%;
+      background: radial-gradient(ellipse,
+        rgba(255,255,255,0.025) 0%, transparent 70%);
+      transform: rotate(-6deg);
+      pointer-events: none;
+    }
+
+    .chalkboard-surface::after {
+      content: '';
+      position: absolute;
+      bottom: 20%;
+      right: 5%;
+      width: 40%;
+      height: 15%;
+      background: radial-gradient(ellipse,
+        rgba(255,255,255,0.018) 0%, transparent 70%);
+      transform: rotate(4deg);
+      pointer-events: none;
+    }
+
+    .chalkboard-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 3vw, 40px);
+      font-weight: 900;
+      font-style: italic;
+      color: #EEEAE0;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      text-shadow:
+        0 0 10px rgba(255,255,255,0.12),
+        0 1px 3px rgba(0,0,0,0.9);
+      position: relative;
+      z-index: 1;
+    }
+
+    .chalkboard-title::after {
+      content: '';
+      display: block;
+      margin-top: 12px;
+      height: 2px;
+      width: 75%;
+      background: linear-gradient(90deg,
+        rgba(230,226,210,0.6) 0%,
+        rgba(230,226,210,0.6) 70%, transparent);
+      border-radius: 1px;
+      filter: blur(0.5px);
+    }
+
+    .chalkboard-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(15px, 1.6vw, 20px);
+      font-style: italic;
+      color: #D0CCC0;
+      letter-spacing: 0.02em;
+      line-height: 1.5;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+      position: relative;
+      z-index: 1;
+    }
+
+    .chalkboard-desc {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(11px, 1.1vw, 13px);
+      font-weight: 400;
+      letter-spacing: 0.09em;
+      color: #A8A49A;
+      line-height: 1.8;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+      position: relative;
+      z-index: 1;
+    }
   </style>
 </head>
 <body>
@@ -1404,11 +1562,11 @@
         </div>
 
         <div class="bartender-chat reveal">
-          <span class="bartender-chat-label">The Bartender</span>
-          <h2 class="bartender-chat-title">Ask me anything about<br>Pepper Junction.</h2>
-          <p class="bartender-chat-desc">
-            Brand story, location, hours, events, shipping, returns — your guide to everything Pepper Junction. For sauce pairings and product recommendations, I'll send you to the Pairing Bar.
-          </p>
+          <img
+            src="assets/bartender-sign.png"
+            alt="The Bartender — Ask me anything about Pepper Junction"
+            style="width:100%;height:auto;display:block;"
+          />
 
           <div class="chat-window">
             <div class="chat-messages" id="chat-messages">
@@ -1565,16 +1723,11 @@
       </div>
       <div class="story-inner">
         <div class="story-left reveal">
-          <h2 class="story-heading">Sauce is the binder between food and the <em>experience.</em></h2>
-          <p class="story-body">
-            Pepper Junction was born from the same instinct that shaped a career in hospitality — helping people find the right fit. Thirty years working in Rhode Island's upscale restaurants. Pairing, balance, knowing how to guide someone toward the right choice. That service mindset became the foundation for everything here.
-          </p>
-          <p class="story-body">
-            This isn't about selling the hottest thing on the shelf. It's about building a better flavor experience for people who want something more thoughtful, more personal, and more exciting than grabbing a bottle off a grocery shelf.
-          </p>
-          <p class="story-body">
-            Every product has been personally evaluated. Nothing makes the shelf by accident or on a whim.
-          </p>
+          <img
+            src="assets/Philosphy_Board.png"
+            alt="Sauce is the binder between food and the experience — Pepper Junction philosophy"
+            style="width:100%;height:auto;display:block;"
+          />
         </div>
         <div class="story-right reveal">
           <div class="standard-card">
