@@ -1501,6 +1501,295 @@
       position: relative;
       z-index: 1;
     }
+
+    /* ═══════════════════════════════════
+       PJ CHALKBOARD FRAME — Reusable
+       ═══════════════════════════════════ */
+    .pj-chalkboard-frame {
+      --frame-w: 700px;
+      --frame-h: 1050px;
+      --brass-dark: #4d3112;
+      --brass-mid: #8b5b20;
+      --brass-light: #c78b3b;
+      --brass-highlight: #e0b76a;
+      --ornament: #cf984a;
+      --inner-line: rgba(224, 183, 106, 0.75);
+      --shadow: rgba(0, 0, 0, 0.35);
+      position: relative;
+      width: min(var(--frame-w), 92vw);
+      aspect-ratio: 2 / 3;
+      margin: 40px auto;
+    }
+    .pj-hanger {
+      position: absolute;
+      top: -6px;
+      width: 34px;
+      height: 34px;
+      border-radius: 14px 14px 10px 10px;
+      background: linear-gradient(180deg, var(--brass-highlight), var(--brass-mid));
+      border: 2px solid var(--brass-dark);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        0 2px 4px rgba(0,0,0,0.2);
+      z-index: 3;
+    }
+    .pj-hanger::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      right: 7px;
+      top: 4px;
+      height: 16px;
+      border: 3px solid var(--brass-dark);
+      border-bottom: none;
+      border-radius: 14px 14px 0 0;
+    }
+    .pj-hanger-left { left: 18%; }
+    .pj-hanger-right { right: 18%; }
+    .pj-frame-outer {
+      position: absolute;
+      inset: 18px 0 0;
+      border-radius: 28px;
+      padding: 14px;
+      background:
+        linear-gradient(135deg,
+          var(--brass-dark) 0%,
+          var(--brass-mid) 18%,
+          var(--brass-highlight) 35%,
+          var(--brass-mid) 52%,
+          #6e4518 70%,
+          var(--brass-dark) 100%);
+      box-shadow:
+        0 16px 30px var(--shadow),
+        inset 0 1px 0 rgba(255,255,255,0.2),
+        inset 0 -2px 0 rgba(0,0,0,0.28);
+    }
+    .pj-frame-middle {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 22px;
+      padding: 10px;
+      background:
+        linear-gradient(135deg,
+          #3b230c 0%,
+          #a66e2a 20%,
+          #d6a357 35%,
+          #9e6826 55%,
+          #5b3915 100%);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.08),
+        inset 0 0 0 3px rgba(90, 53, 18, 0.7);
+    }
+    .pj-frame-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #141414;
+      box-shadow:
+        inset 0 0 0 2px var(--inner-line),
+        inset 0 0 0 8px rgba(55, 33, 12, 0.95);
+    }
+    .pj-frame-inner::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(224, 183, 106, 0.8);
+      border-radius: 10px;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .pj-frame-inner::after {
+      content: "";
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(75, 45, 16, 0.85);
+      border-radius: 8px;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .pj-center {
+      position: absolute;
+      inset: 34px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+      overflow-y: auto;
+      padding: 8px 4px;
+    }
+    .pj-corner {
+      position: absolute;
+      width: 74px;
+      height: 74px;
+      display: grid;
+      place-items: center;
+      color: var(--ornament);
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 64px;
+      line-height: 1;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+      z-index: 4;
+      pointer-events: none;
+    }
+    .pj-corner-tl { top: 18px; left: 18px; }
+    .pj-corner-tr { top: 18px; right: 18px; transform: scaleX(-1); }
+    .pj-corner-bl { bottom: 18px; left: 18px; transform: scaleY(-1); }
+    .pj-corner-br { bottom: 18px; right: 18px; transform: scale(-1); }
+    .pj-divider {
+      position: absolute;
+      left: 18%;
+      right: 18%;
+      height: 18px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .pj-divider::before, .pj-divider::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--ornament), transparent);
+      transform: translateY(-50%);
+    }
+    .pj-divider::before { left: 0; }
+    .pj-divider::after { right: 0; }
+    .pj-divider-top { top: 18%; }
+    .pj-divider-mid { top: 50%; }
+    .pj-divider-bottom { top: 82%; }
+
+    /* Content inside frames */
+    .pj-frame-title {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(18px, 2.2vw, 28px);
+      color: #E0B76A;
+      letter-spacing: 0.04em;
+      text-align: center;
+      line-height: 1.2;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }
+    .pj-frame-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(13px, 1.4vw, 17px);
+      font-style: italic;
+      color: #C8A85A;
+      text-align: center;
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+    }
+    .pj-frame-body {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(11px, 1.1vw, 13px);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: #B8A888;
+      line-height: 1.75;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+    .pj-frame-rule {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--ornament), transparent);
+      margin: 4px 0;
+      flex-shrink: 0;
+    }
+    .pj-frame-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(9px, 0.9vw, 11px);
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #E0B76A;
+      text-align: center;
+      opacity: 0.75;
+    }
+    .pj-frame-input {
+      width: 100%;
+      padding: 10px 14px;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 13px;
+      color: #2B1D15;
+      background: rgba(240, 220, 170, 0.9);
+      border: 1px solid rgba(184,137,57,0.5);
+      border-radius: 2px;
+      outline: none;
+    }
+    .pj-frame-input:focus {
+      border-color: var(--brass-highlight);
+      background: rgba(253, 246, 232, 0.95);
+    }
+    .pj-frame-input::placeholder {
+      color: #6D5440;
+      opacity: 0.6;
+      font-style: italic;
+    }
+    .pj-frame-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--brass-mid), var(--brass-dark));
+      color: #F5ECD6;
+      border: 1px solid var(--brass-highlight);
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(14px, 1.4vw, 18px);
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.2s;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+    .pj-frame-btn:hover {
+      background: linear-gradient(135deg, var(--brass-light), var(--brass-mid));
+    }
+    .pj-location-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .pj-location-key {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(8px, 0.85vw, 10px);
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #E0B76A;
+      white-space: nowrap;
+      padding-top: 2px;
+      flex-shrink: 0;
+      width: 70px;
+    }
+    .pj-location-val {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(10px, 1vw, 12px);
+      letter-spacing: 0.06em;
+      color: #C8B898;
+      line-height: 1.6;
+    }
+    .pj-contact-link {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      padding: 8px 4px;
+      border-bottom: 1px solid rgba(207,152,74,0.2);
+      transition: border-color 0.2s;
+    }
+    .pj-contact-link:last-child { border-bottom: none; }
+    .pj-contact-link:hover { border-color: rgba(207,152,74,0.6); }
+
+    /* Wider frame for dispatch/location */
+    .pj-chalkboard-frame.wide {
+      --frame-w: 580px;
+      aspect-ratio: 3 / 4;
+    }
+
+    @media (max-width: 768px) {
+      .pj-corner { width: 54px; height: 54px; font-size: 46px; }
+      .pj-center { inset: 26px; }
+    }
+
   </style>
 </head>
 <body>
@@ -1671,33 +1960,35 @@
         </div>
         <div class="pic-light__glow"></div>
       </div>
-      <div class="dispatch-inner reveal">
-        <div class="dispatch-form-wrap">
-          <div class="dispatch-header">
-            <span class="dispatch-header-title">The Dispatch Board</span>
-          </div>
-          <div class="dispatch-body">
-            <p class="dispatch-desc">
-              Be the first to know when Pepper Junction pulls into your station — new arrivals, upcoming events, and exclusive dispatches direct to your inbox.
-            </p>
-            <div class="dispatch-fields">
-              <div class="dispatch-field">
-                <label for="dispatch-name">Name</label>
-                <input type="text" id="dispatch-name" placeholder="Your name" />
-              </div>
-              <div class="dispatch-field">
-                <label for="dispatch-email">Email Address</label>
-                <input type="email" id="dispatch-email" placeholder="your@email.com" />
-              </div>
-              <div class="dispatch-field">
-                <label for="dispatch-phone">Phone (optional · text alerts)</label>
-                <input type="tel" id="dispatch-phone" placeholder="(401) 000-0000" />
+        <div class="pj-chalkboard-frame wide reveal">
+          <div class="pj-hanger pj-hanger-left"></div>
+          <div class="pj-hanger pj-hanger-right"></div>
+          <div class="pj-frame-outer">
+            <div class="pj-frame-middle">
+              <div class="pj-frame-inner">
+                <div class="pj-corner pj-corner-tl">❧</div>
+                <div class="pj-corner pj-corner-tr">❧</div>
+                <div class="pj-corner pj-corner-bl">❧</div>
+                <div class="pj-corner pj-corner-br">❧</div>
+                <div class="pj-center">
+                  <div class="pj-frame-title">The Dispatch Board</div>
+                  <div class="pj-frame-rule"></div>
+                  <div class="pj-frame-subtitle">Stay on schedule with Pepper Junction</div>
+                  <div class="pj-frame-body">Be the first to know when Pepper Junction pulls into your station — new arrivals, upcoming events, and exclusive dispatches.</div>
+                  <div class="pj-frame-rule"></div>
+                  <div class="pj-frame-label">Name</div>
+                  <input class="pj-frame-input" type="text" id="dispatch-name" placeholder="Your name" />
+                  <div class="pj-frame-label">Email Address</div>
+                  <input class="pj-frame-input" type="email" id="dispatch-email" placeholder="your@email.com" />
+                  <div class="pj-frame-label">Phone (optional · text alerts)</div>
+                  <input class="pj-frame-input" type="tel" id="dispatch-phone" placeholder="(401) 000-0000" />
+                  <div class="pj-frame-rule"></div>
+                  <button class="pj-frame-btn">Send Dispatch</button>
+                </div>
               </div>
             </div>
-            <button class="dispatch-submit">Send Dispatch</button>
           </div>
         </div>
-      </div>
     </div>
   </section>
 
@@ -1760,62 +2051,54 @@
         </div>
         <div class="pic-light__glow"></div>
       </div>
-      <div class="location-inner">
-        <div class="location-left reveal">
-          <h2 class="location-heading">Jules Antiques & General Store</h2>
-          <div class="location-table">
-            <div class="location-row">
-              <span class="location-key">Address</span>
-              <span class="location-val">320 Kingstown Rd (Route 138)<br>Richmond, RI 02892</span>
-            </div>
-            <div class="location-row">
-              <span class="location-key">Hours</span>
-              <span class="location-val">Monday – Sunday<br>10:00 AM – 5:00 PM</span>
-            </div>
-            <div class="location-row">
-              <span class="location-key">Closed</span>
-              <span class="location-val">Easter Sunday · Christmas Day<br>New Year's Day · First week of January</span>
-            </div>
-            <div class="location-row">
-              <span class="location-key">Vendor Since</span>
-              <span class="location-val">2014</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;">
+        <div class="pj-chalkboard-frame wide reveal">
+          <div class="pj-hanger pj-hanger-left"></div>
+          <div class="pj-hanger pj-hanger-right"></div>
+          <div class="pj-frame-outer">
+            <div class="pj-frame-middle">
+              <div class="pj-frame-inner">
+                <div class="pj-corner pj-corner-tl">&#10087;</div>
+                <div class="pj-corner pj-corner-tr">&#10087;</div>
+                <div class="pj-corner pj-corner-bl">&#10087;</div>
+                <div class="pj-corner pj-corner-br">&#10087;</div>
+                <div class="pj-center">
+                  <div class="pj-frame-title">Jules Antiques &amp; General Store</div>
+                  <div class="pj-frame-rule"></div>
+                  <div class="pj-location-row"><span class="pj-location-key">Address</span><span class="pj-location-val">320 Kingstown Rd (Route 138)<br>Richmond, RI 02892</span></div>
+                  <div class="pj-location-row"><span class="pj-location-key">Hours</span><span class="pj-location-val">Monday &ndash; Sunday<br>10:00 AM &ndash; 5:00 PM</span></div>
+                  <div class="pj-location-row"><span class="pj-location-key">Closed</span><span class="pj-location-val">Easter Sunday &middot; Christmas Day<br>New Year&apos;s Day &middot; First week of January</span></div>
+                  <div class="pj-location-row"><span class="pj-location-key">Since</span><span class="pj-location-val">2014</span></div>
+                  <div class="pj-frame-rule"></div>
+                  <div class="pj-frame-body">The complete product line is always on the shelf &mdash; family-operated, 50+ dealers across 8,000 sq ft.</div>
+                </div>
+              </div>
             </div>
           </div>
-          <p class="location-note">
-            Pepper Junction is available every day Jules Antiques is open. The complete product line is always on the shelf — family-operated, 50+ dealers across 8,000 sq ft.
-          </p>
         </div>
-        <div class="location-right reveal">
-          <div class="contact-block">
-            <a class="contact-item" href="tel:4013001474">
-              <div>
-                <span class="contact-label">Phone</span>
-                <span class="contact-value">(401) 300-1474</span>
+        <div class="pj-chalkboard-frame wide reveal">
+          <div class="pj-hanger pj-hanger-left"></div>
+          <div class="pj-hanger pj-hanger-right"></div>
+          <div class="pj-frame-outer">
+            <div class="pj-frame-middle">
+              <div class="pj-frame-inner">
+                <div class="pj-corner pj-corner-tl">&#10087;</div>
+                <div class="pj-corner pj-corner-tr">&#10087;</div>
+                <div class="pj-corner pj-corner-bl">&#10087;</div>
+                <div class="pj-corner pj-corner-br">&#10087;</div>
+                <div class="pj-center">
+                  <div class="pj-frame-title">Get in Touch</div>
+                  <div class="pj-frame-rule"></div>
+                  <a class="pj-contact-link" href="tel:4013001474"><span class="pj-frame-label">Phone</span><div class="pj-frame-subtitle">(401) 300-1474</div></a>
+                  <a class="pj-contact-link" href="mailto:pepperjunction401@gmail.com"><span class="pj-frame-label">Email</span><div class="pj-frame-subtitle">pepperjunction401@gmail.com</div></a>
+                  <a class="pj-contact-link" href="https://www.instagram.com/pepperjunction401" target="_blank"><span class="pj-frame-label">Instagram</span><div class="pj-frame-subtitle">@pepperjunction401</div></a>
+                  <a class="pj-contact-link" href="https://www.pepperjunction401.com/wholesale" target="_blank"><span class="pj-frame-label">Wholesale</span><div class="pj-frame-subtitle">pepperjunction401.com/wholesale</div></a>
+                </div>
               </div>
-            </a>
-            <a class="contact-item" href="mailto:pepperjunction401@gmail.com">
-              <div>
-                <span class="contact-label">Email</span>
-                <span class="contact-value">pepperjunction401@gmail.com</span>
-              </div>
-            </a>
-            <a class="contact-item" href="https://www.instagram.com/pepperjunction401" target="_blank">
-              <div>
-                <span class="contact-label">Instagram</span>
-                <span class="contact-value">@pepperjunction401</span>
-              </div>
-            </a>
-            <a class="contact-item" href="https://www.pepperjunction401.com/wholesale" target="_blank">
-              <div>
-                <span class="contact-label">Wholesale</span>
-                <span class="contact-value">pepperjunction401.com/wholesale</span>
-              </div>
-            </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
   <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
   <footer class="site-footer">
