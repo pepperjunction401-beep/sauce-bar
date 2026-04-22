@@ -1790,6 +1790,256 @@
       .pj-center { inset: 26px; }
     }
 
+
+    /* ═══════════════════════════════════
+       PJ STANDARD BOARD — Reusable Frame
+       ═══════════════════════════════════ */
+    .pj-standard-board {
+      --board-width: 580px;
+      --frame-dark: #5c3716;
+      --frame-mid: #9a6429;
+      --frame-light: #d7ab61;
+      --frame-highlight: #f0cd84;
+      --gold: #cf984a;
+      --gold-soft: #d9ac63;
+      --inner-shadow: rgba(0, 0, 0, 0.28);
+      position: relative;
+      width: min(var(--board-width), 94vw);
+      aspect-ratio: 1024 / 1456;
+      margin: 24px auto;
+    }
+    .pj-ring {
+      position: absolute;
+      top: 14px;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #8e6b37;
+      border-radius: 50%;
+      z-index: 5;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset;
+    }
+    .pj-ring::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 12px;
+      width: 2px;
+      height: 10px;
+      background: #8e6b37;
+      transform: translateX(-50%);
+    }
+    .pj-ring-left { left: 17%; }
+    .pj-ring-right { right: 17%; }
+    .pj-board-frame {
+      position: absolute;
+      inset: 0;
+      border-radius: 2px;
+      padding: 18px;
+      background:
+        linear-gradient(135deg,
+          #593618 0%, #9c652a 12%, #e0b870 24%,
+          #8f5f29 38%, #6f451c 50%, #c99047 66%,
+          #f1cd87 82%, #7c4d20 100%);
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.24),
+        inset 0 0 0 1px rgba(255,255,255,0.2),
+        inset 0 0 0 3px rgba(83,49,18,0.6),
+        inset 0 0 0 7px rgba(218,170,96,0.55),
+        inset 0 0 0 10px rgba(88,54,21,0.7);
+    }
+    .pj-board-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #141414;
+      overflow: hidden;
+      box-shadow:
+        inset 0 0 0 2px rgba(49, 30, 11, 0.9),
+        inset 0 0 0 7px rgba(226, 188, 104, 0.58),
+        inset 0 0 0 9px rgba(62, 38, 14, 0.82);
+    }
+    .pj-board-inner::before,
+    .pj-board-inner::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .pj-board-inner::before {
+      inset: 26px;
+      border: 2px solid rgba(210, 154, 67, 0.9);
+    }
+    .pj-board-inner::after {
+      inset: 38px;
+      border: 1px solid rgba(230, 182, 92, 0.78);
+    }
+    .pj-content {
+      position: absolute;
+      inset: 54px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+      overflow-y: auto;
+      padding: 4px 8px;
+    }
+    .pj-ornament,
+    .pj-center-crest,
+    .pj-side {
+      color: var(--gold);
+      position: absolute;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .pj-ornament svg,
+    .pj-center-crest svg,
+    .pj-side svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .pj-top-left    { top: 34px; left: 36px; width: 92px; height: 92px; }
+    .pj-top-right   { top: 34px; right: 36px; width: 92px; height: 92px; transform: scaleX(-1); }
+    .pj-bottom-left { bottom: 34px; left: 36px; width: 92px; height: 92px; transform: scaleY(-1); }
+    .pj-bottom-right{ bottom: 34px; right: 36px; width: 92px; height: 92px; transform: scale(-1); }
+    .pj-center-crest-top {
+      top: 36px; left: 50%; width: 45%; height: 42px; transform: translateX(-50%);
+    }
+    .pj-center-crest-bottom {
+      bottom: 34px; left: 50%; width: 45%; height: 42px; transform: translateX(-50%);
+    }
+    .pj-side-left  { left: 52px;  top: 130px; width: 28px; height: 78%; }
+    .pj-side-right { right: 52px; top: 130px; width: 28px; height: 78%; }
+
+    /* Content styles inside board */
+    .pj-board-title {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(16px, 2vw, 24px);
+      color: #E0B76A;
+      letter-spacing: 0.04em;
+      text-align: center;
+      line-height: 1.2;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }
+    .pj-board-rule {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #cf984a, transparent);
+      margin: 2px 0;
+      flex-shrink: 0;
+    }
+    .pj-board-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(12px, 1.3vw, 16px);
+      font-style: italic;
+      color: #C8A85A;
+      text-align: center;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+    }
+    .pj-board-body {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(10px, 1vw, 12px);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: #B8A888;
+      line-height: 1.7;
+      text-align: center;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+    }
+    .pj-board-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(8px, 0.8vw, 10px);
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #E0B76A;
+      text-align: center;
+      opacity: 0.8;
+    }
+    .pj-board-input {
+      width: 100%;
+      padding: 8px 12px;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 12px;
+      color: #2B1D15;
+      background: rgba(240, 220, 170, 0.88);
+      border: 1px solid rgba(184,137,57,0.5);
+      border-radius: 2px;
+      outline: none;
+    }
+    .pj-board-input:focus {
+      border-color: #E0B76A;
+      background: rgba(253, 246, 232, 0.95);
+    }
+    .pj-board-input::placeholder {
+      color: #6D5440;
+      opacity: 0.6;
+      font-style: italic;
+    }
+    .pj-board-btn {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(135deg, #9a6429, #5c3716);
+      color: #F5ECD6;
+      border: 1px solid #E0B76A;
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(13px, 1.3vw, 17px);
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.2s;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+    .pj-board-btn:hover {
+      background: linear-gradient(135deg, #d7ab61, #9a6429);
+    }
+    .pj-loc-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .pj-loc-key {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(7px, 0.75vw, 9px);
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #E0B76A;
+      white-space: nowrap;
+      padding-top: 2px;
+      flex-shrink: 0;
+      width: 60px;
+    }
+    .pj-loc-val {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(9px, 0.9vw, 11px);
+      letter-spacing: 0.05em;
+      color: #C8B898;
+      line-height: 1.55;
+    }
+    .pj-contact-row {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      padding: 6px 4px;
+      border-bottom: 1px solid rgba(207,152,74,0.2);
+      transition: border-color 0.2s;
+    }
+    .pj-contact-row:last-child { border-bottom: none; }
+    .pj-contact-row:hover { border-color: rgba(207,152,74,0.6); }
+
+    @media (max-width: 700px) {
+      .pj-board-frame { padding: 12px; }
+      .pj-board-inner::before { inset: 18px; }
+      .pj-board-inner::after  { inset: 28px; }
+      .pj-content { inset: 40px; }
+      .pj-top-left, .pj-top-right,
+      .pj-bottom-left, .pj-bottom-right { width: 68px; height: 68px; }
+      .pj-side-left, .pj-side-right { top: 104px; height: 80%; }
+      .pj-center-crest-top,
+      .pj-center-crest-bottom { width: 54%; }
+    }
+
   </style>
 </head>
 <body>
@@ -1960,31 +2210,32 @@
         </div>
         <div class="pic-light__glow"></div>
       </div>
-        <div class="pj-chalkboard-frame wide reveal">
-          <div class="pj-hanger pj-hanger-left"></div>
-          <div class="pj-hanger pj-hanger-right"></div>
-          <div class="pj-frame-outer">
-            <div class="pj-frame-middle">
-              <div class="pj-frame-inner">
-                <div class="pj-corner pj-corner-tl">❧</div>
-                <div class="pj-corner pj-corner-tr">❧</div>
-                <div class="pj-corner pj-corner-bl">❧</div>
-                <div class="pj-corner pj-corner-br">❧</div>
-                <div class="pj-center">
-                  <div class="pj-frame-title">The Dispatch Board</div>
-                  <div class="pj-frame-rule"></div>
-                  <div class="pj-frame-subtitle">Stay on schedule with Pepper Junction</div>
-                  <div class="pj-frame-body">Be the first to know when Pepper Junction pulls into your station — new arrivals, upcoming events, and exclusive dispatches.</div>
-                  <div class="pj-frame-rule"></div>
-                  <div class="pj-frame-label">Name</div>
-                  <input class="pj-frame-input" type="text" id="dispatch-name" placeholder="Your name" />
-                  <div class="pj-frame-label">Email Address</div>
-                  <input class="pj-frame-input" type="email" id="dispatch-email" placeholder="your@email.com" />
-                  <div class="pj-frame-label">Phone (optional · text alerts)</div>
-                  <input class="pj-frame-input" type="tel" id="dispatch-phone" placeholder="(401) 000-0000" />
-                  <div class="pj-frame-rule"></div>
-                  <button class="pj-frame-btn">Send Dispatch</button>
-                </div>
+<div class="pj-standard-board reveal">
+          <div class="pj-ring pj-ring-left"></div>
+          <div class="pj-ring pj-ring-right"></div>
+          <div class="pj-board-frame">
+            <div class="pj-board-inner">
+              <div class="pj-ornament pj-top-left"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M108 22c-12-8-31-9-43 0 9 2 18 8 22 16-10-5-22-8-34-6-17 3-31 18-31 35 9-9 21-14 34-14-9 7-15 17-17 28-2 12 2 25 10 34 2-13 9-24 19-31-1 12 2 24 9 34 7-9 11-20 10-31 9 5 20 7 31 5-9-7-15-17-16-28-2-16 7-33 22-42-6-1-12-1-16 0z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-ornament pj-top-right"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M108 22c-12-8-31-9-43 0 9 2 18 8 22 16-10-5-22-8-34-6-17 3-31 18-31 35 9-9 21-14 34-14-9 7-15 17-17 28-2 12 2 25 10 34 2-13 9-24 19-31-1 12 2 24 9 34 7-9 11-20 10-31 9 5 20 7 31 5-9-7-15-17-16-28-2-16 7-33 22-42-6-1-12-1-16 0z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-ornament pj-bottom-left"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M108 22c-12-8-31-9-43 0 9 2 18 8 22 16-10-5-22-8-34-6-17 3-31 18-31 35 9-9 21-14 34-14-9 7-15 17-17 28-2 12 2 25 10 34 2-13 9-24 19-31-1 12 2 24 9 34 7-9 11-20 10-31 9 5 20 7 31 5-9-7-15-17-16-28-2-16 7-33 22-42-6-1-12-1-16 0z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-ornament pj-bottom-right"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M108 22c-12-8-31-9-43 0 9 2 18 8 22 16-10-5-22-8-34-6-17 3-31 18-31 35 9-9 21-14 34-14-9 7-15 17-17 28-2 12 2 25 10 34 2-13 9-24 19-31-1 12 2 24 9 34 7-9 11-20 10-31 9 5 20 7 31 5-9-7-15-17-16-28-2-16 7-33 22-42-6-1-12-1-16 0z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-center-crest pj-center-crest-top"><svg viewBox="0 0 420 50" aria-hidden="true"><path d="M10 25h140c22 0 28-16 38-16 9 0 14 9 22 21 8-12 13-21 22-21 10 0 16 16 38 16h140" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M195 24c7-2 11-7 15-14 4 7 8 12 15 14-7 2-11 7-15 14-4-7-8-12-15-14z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/></svg></div>
+              <div class="pj-center-crest pj-center-crest-bottom"><svg viewBox="0 0 420 50" aria-hidden="true"><path d="M10 25h140c22 0 28-16 38-16 9 0 14 9 22 21 8-12 13-21 22-21 10 0 16 16 38 16h140" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M195 24c7-2 11-7 15-14 4 7 8 12 15 14-7 2-11 7-15 14-4-7-8-12-15-14z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/></svg></div>
+              <div class="pj-side pj-side-left"><svg viewBox="0 0 36 360" aria-hidden="true"><path d="M18 8v268" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 8v268" fill="none" stroke="currentColor" stroke-width="3"/><path d="M5 292c10 0 18 8 18 18s-8 18-18 18c8 2 15 7 20 15" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-side pj-side-right"><svg viewBox="0 0 36 360" aria-hidden="true"><path d="M18 8v268" fill="none" stroke="currentColor" stroke-width="3"/><path d="M30 8v268" fill="none" stroke="currentColor" stroke-width="3"/><path d="M31 292c-10 0-18 8-18 18s8 18 18 18c-8 2-15 7-20 15" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-content">
+                <div class="pj-board-title">The Dispatch Board</div>
+                <div class="pj-board-rule"></div>
+                <div class="pj-board-body">Be the first to know when Pepper Junction pulls into your station — new arrivals, upcoming events, and exclusive dispatches.</div>
+                <div class="pj-board-rule"></div>
+                <div class="pj-board-label">Name</div>
+                <input class="pj-board-input" type="text" id="dispatch-name" placeholder="Your name" />
+                <div class="pj-board-label">Email Address</div>
+                <input class="pj-board-input" type="email" id="dispatch-email" placeholder="your@email.com" />
+                <div class="pj-board-label">Phone (optional · text alerts)</div>
+                <input class="pj-board-input" type="tel" id="dispatch-phone" placeholder="(401) 000-0000" />
+                <div class="pj-board-rule"></div>
+                <button class="pj-board-btn">Send Dispatch</button>
               </div>
             </div>
           </div>
@@ -2051,54 +2302,62 @@
         </div>
         <div class="pic-light__glow"></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;">
-        <div class="pj-chalkboard-frame wide reveal">
-          <div class="pj-hanger pj-hanger-left"></div>
-          <div class="pj-hanger pj-hanger-right"></div>
-          <div class="pj-frame-outer">
-            <div class="pj-frame-middle">
-              <div class="pj-frame-inner">
-                <div class="pj-corner pj-corner-tl">&#10087;</div>
-                <div class="pj-corner pj-corner-tr">&#10087;</div>
-                <div class="pj-corner pj-corner-bl">&#10087;</div>
-                <div class="pj-corner pj-corner-br">&#10087;</div>
-                <div class="pj-center">
-                  <div class="pj-frame-title">Jules Antiques &amp; General Store</div>
-                  <div class="pj-frame-rule"></div>
-                  <div class="pj-location-row"><span class="pj-location-key">Address</span><span class="pj-location-val">320 Kingstown Rd (Route 138)<br>Richmond, RI 02892</span></div>
-                  <div class="pj-location-row"><span class="pj-location-key">Hours</span><span class="pj-location-val">Monday &ndash; Sunday<br>10:00 AM &ndash; 5:00 PM</span></div>
-                  <div class="pj-location-row"><span class="pj-location-key">Closed</span><span class="pj-location-val">Easter Sunday &middot; Christmas Day<br>New Year&apos;s Day &middot; First week of January</span></div>
-                  <div class="pj-location-row"><span class="pj-location-key">Since</span><span class="pj-location-val">2014</span></div>
-                  <div class="pj-frame-rule"></div>
-                  <div class="pj-frame-body">The complete product line is always on the shelf &mdash; family-operated, 50+ dealers across 8,000 sq ft.</div>
-                </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
+        <div class="pj-standard-board reveal">
+          <div class="pj-ring pj-ring-left"></div>
+          <div class="pj-ring pj-ring-right"></div>
+          <div class="pj-board-frame">
+            <div class="pj-board-inner">
+              <div class="pj-ornament pj-top-left"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M108 22c-12-8-31-9-43 0 9 2 18 8 22 16-10-5-22-8-34-6-17 3-31 18-31 35 9-9 21-14 34-14-9 7-15 17-17 28-2 12 2 25 10 34 2-13 9-24 19-31-1 12 2 24 9 34 7-9 11-20 10-31 9 5 20 7 31 5-9-7-15-17-16-28-2-16 7-33 22-42-6-1-12-1-16 0z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-ornament pj-top-right"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M108 22c-12-8-31-9-43 0 9 2 18 8 22 16-10-5-22-8-34-6-17 3-31 18-31 35 9-9 21-14 34-14-9 7-15 17-17 28-2 12 2 25 10 34 2-13 9-24 19-31-1 12 2 24 9 34 7-9 11-20 10-31 9 5 20 7 31 5-9-7-15-17-16-28-2-16 7-33 22-42-6-1-12-1-16 0z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-ornament pj-bottom-left"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M108 22c-12-8-31-9-43 0 9 2 18 8 22 16-10-5-22-8-34-6-17 3-31 18-31 35 9-9 21-14 34-14-9 7-15 17-17 28-2 12 2 25 10 34 2-13 9-24 19-31-1 12 2 24 9 34 7-9 11-20 10-31 9 5 20 7 31 5-9-7-15-17-16-28-2-16 7-33 22-42-6-1-12-1-16 0z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-ornament pj-bottom-right"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M108 22c-12-8-31-9-43 0 9 2 18 8 22 16-10-5-22-8-34-6-17 3-31 18-31 35 9-9 21-14 34-14-9 7-15 17-17 28-2 12 2 25 10 34 2-13 9-24 19-31-1 12 2 24 9 34 7-9 11-20 10-31 9 5 20 7 31 5-9-7-15-17-16-28-2-16 7-33 22-42-6-1-12-1-16 0z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-center-crest pj-center-crest-top"><svg viewBox="0 0 420 50" aria-hidden="true"><path d="M10 25h140c22 0 28-16 38-16 9 0 14 9 22 21 8-12 13-21 22-21 10 0 16 16 38 16h140" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M195 24c7-2 11-7 15-14 4 7 8 12 15 14-7 2-11 7-15 14-4-7-8-12-15-14z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/></svg></div>
+              <div class="pj-center-crest pj-center-crest-bottom"><svg viewBox="0 0 420 50" aria-hidden="true"><path d="M10 25h140c22 0 28-16 38-16 9 0 14 9 22 21 8-12 13-21 22-21 10 0 16 16 38 16h140" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M195 24c7-2 11-7 15-14 4 7 8 12 15 14-7 2-11 7-15 14-4-7-8-12-15-14z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/></svg></div>
+              <div class="pj-side pj-side-left"><svg viewBox="0 0 36 360" aria-hidden="true"><path d="M18 8v268" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 8v268" fill="none" stroke="currentColor" stroke-width="3"/><path d="M5 292c10 0 18 8 18 18s-8 18-18 18c8 2 15 7 20 15" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-side pj-side-right"><svg viewBox="0 0 36 360" aria-hidden="true"><path d="M18 8v268" fill="none" stroke="currentColor" stroke-width="3"/><path d="M30 8v268" fill="none" stroke="currentColor" stroke-width="3"/><path d="M31 292c-10 0-18 8-18 18s8 18 18 18c-8 2-15 7-20 15" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-content">
+                <div class="pj-board-title">Jules Antiques &amp; General Store</div>
+                <div class="pj-board-rule"></div>
+                <div class="pj-loc-row"><span class="pj-loc-key">Address</span><span class="pj-loc-val">320 Kingstown Rd (Route 138)<br>Richmond, RI 02892</span></div>
+                <div class="pj-loc-row"><span class="pj-loc-key">Hours</span><span class="pj-loc-val">Monday &ndash; Sunday · 10:00 AM &ndash; 5:00 PM</span></div>
+                <div class="pj-loc-row"><span class="pj-loc-key">Closed</span><span class="pj-loc-val">Easter Sunday · Christmas Day<br>New Year&apos;s Day · First week of January</span></div>
+                <div class="pj-loc-row"><span class="pj-loc-key">Since</span><span class="pj-loc-val">2014</span></div>
+                <div class="pj-board-rule"></div>
+                <div class="pj-board-body">Complete product line always on the shelf &mdash; family-operated, 50+ dealers across 8,000 sq ft.</div>
               </div>
             </div>
           </div>
         </div>
-        <div class="pj-chalkboard-frame wide reveal">
-          <div class="pj-hanger pj-hanger-left"></div>
-          <div class="pj-hanger pj-hanger-right"></div>
-          <div class="pj-frame-outer">
-            <div class="pj-frame-middle">
-              <div class="pj-frame-inner">
-                <div class="pj-corner pj-corner-tl">&#10087;</div>
-                <div class="pj-corner pj-corner-tr">&#10087;</div>
-                <div class="pj-corner pj-corner-bl">&#10087;</div>
-                <div class="pj-corner pj-corner-br">&#10087;</div>
-                <div class="pj-center">
-                  <div class="pj-frame-title">Get in Touch</div>
-                  <div class="pj-frame-rule"></div>
-                  <a class="pj-contact-link" href="tel:4013001474"><span class="pj-frame-label">Phone</span><div class="pj-frame-subtitle">(401) 300-1474</div></a>
-                  <a class="pj-contact-link" href="mailto:pepperjunction401@gmail.com"><span class="pj-frame-label">Email</span><div class="pj-frame-subtitle">pepperjunction401@gmail.com</div></a>
-                  <a class="pj-contact-link" href="https://www.instagram.com/pepperjunction401" target="_blank"><span class="pj-frame-label">Instagram</span><div class="pj-frame-subtitle">@pepperjunction401</div></a>
-                  <a class="pj-contact-link" href="https://www.pepperjunction401.com/wholesale" target="_blank"><span class="pj-frame-label">Wholesale</span><div class="pj-frame-subtitle">pepperjunction401.com/wholesale</div></a>
-                </div>
+        <div class="pj-standard-board reveal">
+          <div class="pj-ring pj-ring-left"></div>
+          <div class="pj-ring pj-ring-right"></div>
+          <div class="pj-board-frame">
+            <div class="pj-board-inner">
+              <div class="pj-ornament pj-top-left"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M108 22c-12-8-31-9-43 0 9 2 18 8 22 16-10-5-22-8-34-6-17 3-31 18-31 35 9-9 21-14 34-14-9 7-15 17-17 28-2 12 2 25 10 34 2-13 9-24 19-31-1 12 2 24 9 34 7-9 11-20 10-31 9 5 20 7 31 5-9-7-15-17-16-28-2-16 7-33 22-42-6-1-12-1-16 0z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-ornament pj-top-right"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M108 22c-12-8-31-9-43 0 9 2 18 8 22 16-10-5-22-8-34-6-17 3-31 18-31 35 9-9 21-14 34-14-9 7-15 17-17 28-2 12 2 25 10 34 2-13 9-24 19-31-1 12 2 24 9 34 7-9 11-20 10-31 9 5 20 7 31 5-9-7-15-17-16-28-2-16 7-33 22-42-6-1-12-1-16 0z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-ornament pj-bottom-left"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M108 22c-12-8-31-9-43 0 9 2 18 8 22 16-10-5-22-8-34-6-17 3-31 18-31 35 9-9 21-14 34-14-9 7-15 17-17 28-2 12 2 25 10 34 2-13 9-24 19-31-1 12 2 24 9 34 7-9 11-20 10-31 9 5 20 7 31 5-9-7-15-17-16-28-2-16 7-33 22-42-6-1-12-1-16 0z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-ornament pj-bottom-right"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M108 22c-12-8-31-9-43 0 9 2 18 8 22 16-10-5-22-8-34-6-17 3-31 18-31 35 9-9 21-14 34-14-9 7-15 17-17 28-2 12 2 25 10 34 2-13 9-24 19-31-1 12 2 24 9 34 7-9 11-20 10-31 9 5 20 7 31 5-9-7-15-17-16-28-2-16 7-33 22-42-6-1-12-1-16 0z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-center-crest pj-center-crest-top"><svg viewBox="0 0 420 50" aria-hidden="true"><path d="M10 25h140c22 0 28-16 38-16 9 0 14 9 22 21 8-12 13-21 22-21 10 0 16 16 38 16h140" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M195 24c7-2 11-7 15-14 4 7 8 12 15 14-7 2-11 7-15 14-4-7-8-12-15-14z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/></svg></div>
+              <div class="pj-center-crest pj-center-crest-bottom"><svg viewBox="0 0 420 50" aria-hidden="true"><path d="M10 25h140c22 0 28-16 38-16 9 0 14 9 22 21 8-12 13-21 22-21 10 0 16 16 38 16h140" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M195 24c7-2 11-7 15-14 4 7 8 12 15 14-7 2-11 7-15 14-4-7-8-12-15-14z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/></svg></div>
+              <div class="pj-side pj-side-left"><svg viewBox="0 0 36 360" aria-hidden="true"><path d="M18 8v268" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 8v268" fill="none" stroke="currentColor" stroke-width="3"/><path d="M5 292c10 0 18 8 18 18s-8 18-18 18c8 2 15 7 20 15" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-side pj-side-right"><svg viewBox="0 0 36 360" aria-hidden="true"><path d="M18 8v268" fill="none" stroke="currentColor" stroke-width="3"/><path d="M30 8v268" fill="none" stroke="currentColor" stroke-width="3"/><path d="M31 292c-10 0-18 8-18 18s8 18 18 18c-8 2-15 7-20 15" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="pj-content">
+                <div class="pj-board-title">Get in Touch</div>
+                <div class="pj-board-rule"></div>
+                <a class="pj-contact-row" href="tel:4013001474"><div class="pj-board-label">Phone</div><div class="pj-board-subtitle">(401) 300-1474</div></a>
+                <a class="pj-contact-row" href="mailto:pepperjunction401@gmail.com"><div class="pj-board-label">Email</div><div class="pj-board-subtitle">pepperjunction401@gmail.com</div></a>
+                <a class="pj-contact-row" href="https://www.instagram.com/pepperjunction401" target="_blank"><div class="pj-board-label">Instagram</div><div class="pj-board-subtitle">@pepperjunction401</div></a>
+                <a class="pj-contact-row" href="https://www.pepperjunction401.com/wholesale" target="_blank"><div class="pj-board-label">Wholesale</div><div class="pj-board-subtitle">pepperjunction401.com/wholesale</div></a>
               </div>
             </div>
           </div>
         </div>
       </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
   <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
   <footer class="site-footer">
