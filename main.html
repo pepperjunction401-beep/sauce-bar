@@ -1189,6 +1189,160 @@
       .pic-light__plate { width: 140px; }
     }
 
+
+    /* ═══════════════════════════════════
+       CHALKBOARD — Bartender Info Panel
+       ═══════════════════════════════════ */
+    .chalkboard-wrap {
+      position: relative;
+      padding: 14px;
+      background: linear-gradient(145deg,
+        #8B6914 0%, #A07820 15%, #6B4F0E 30%,
+        #C49A2A 45%, #8B6914 60%, #7A5C10 75%,
+        #B08020 90%, #6B4F0E 100%);
+      border-radius: 4px;
+      box-shadow:
+        inset 0 2px 6px rgba(255,220,100,0.3),
+        inset 0 -3px 8px rgba(0,0,0,0.5),
+        0 8px 32px rgba(0,0,0,0.5),
+        0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    /* Decorative frame corner details */
+    .chalkboard-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 2px solid rgba(212,168,50,0.5);
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Brass corner accents */
+    .chalkboard-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(255,220,100,0.2);
+      border-radius: 3px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .chalkboard-corner {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      z-index: 4;
+      background: radial-gradient(circle at 40% 40%,
+        #e8c96e 0%, #c8a84b 40%, #8a6010 80%, #5a3c08 100%);
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6), inset -1px -1px 3px rgba(0,0,0,0.4);
+    }
+    .chalkboard-corner.tl { top: 4px; left: 4px; }
+    .chalkboard-corner.tr { top: 4px; right: 4px; }
+    .chalkboard-corner.bl { bottom: 4px; left: 4px; }
+    .chalkboard-corner.br { bottom: 4px; right: 4px; }
+
+    .chalkboard-surface {
+      background:
+        /* chalk dust texture */
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
+        linear-gradient(160deg,
+          #2A3828 0%, #1E2E1E 25%,
+          #243222 50%, #1A2818 75%,
+          #223020 100%);
+      border-radius: 2px;
+      padding: 36px 32px 40px;
+      position: relative;
+      overflow: hidden;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* Chalk smudge/erase marks */
+    .chalkboard-surface::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 10%;
+      width: 40%;
+      height: 30%;
+      background: radial-gradient(ellipse,
+        rgba(255,255,255,0.03) 0%, transparent 70%);
+      transform: rotate(-8deg);
+      pointer-events: none;
+    }
+
+    .chalkboard-surface::after {
+      content: '';
+      position: absolute;
+      bottom: 15%;
+      right: 8%;
+      width: 35%;
+      height: 25%;
+      background: radial-gradient(ellipse,
+        rgba(255,255,255,0.02) 0%, transparent 70%);
+      transform: rotate(5deg);
+      pointer-events: none;
+    }
+
+    .chalkboard-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.2vw, 42px);
+      font-weight: 900;
+      font-style: italic;
+      color: #F0EDE0;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      text-shadow:
+        0 0 12px rgba(255,255,255,0.15),
+        0 1px 3px rgba(0,0,0,0.8);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Decorative chalk underline */
+    .chalkboard-title::after {
+      content: '';
+      display: block;
+      margin-top: 10px;
+      height: 2px;
+      width: 80%;
+      background: linear-gradient(90deg,
+        transparent, rgba(240,237,224,0.5) 20%,
+        rgba(240,237,224,0.5) 80%, transparent);
+      border-radius: 1px;
+    }
+
+    .chalkboard-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(16px, 1.8vw, 22px);
+      font-style: italic;
+      color: #D8D4C0;
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+      position: relative;
+      z-index: 1;
+    }
+
+    .chalkboard-desc {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(12px, 1.2vw, 14px);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: #B8B4A0;
+      line-height: 1.75;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+      position: relative;
+      z-index: 1;
+    }
+
   </style>
 </head>
 <body>
@@ -1411,7 +1565,7 @@
       </div>
       <div class="story-inner">
         <div class="story-left reveal">
-          <h2 class="story-heading">The sauce is the binder between food and <em>wine.</em></h2>
+          <h2 class="story-heading">Sauce is the binder between food and the <em>experience.</em></h2>
           <p class="story-body">
             Pepper Junction was born from the same instinct that shaped a career in hospitality — helping people find the right fit. Thirty years working in Rhode Island's upscale restaurants. Pairing, balance, knowing how to guide someone toward the right choice. That service mindset became the foundation for everything here.
           </p>
