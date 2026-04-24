@@ -405,37 +405,43 @@
       position: absolute;
       bottom: 10px;
       left: 10px;
-      background: rgba(30,48,32,0.88);
-      border: 1px solid rgba(184,137,57,0.5);
+      right: 10px;
+      background: rgba(20,36,22,0.92);
+      border: 1px solid rgba(184,137,57,0.55);
       border-radius: 2px;
-      padding: 4px 10px;
+      padding: 6px 12px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: space-between;
       backdrop-filter: blur(4px);
     }
 
     .heat-badge-emoji {
-      font-size: 11px;
+      font-size: 14px;
       line-height: 1;
+      flex-shrink: 0;
     }
 
     .heat-badge-text {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
+      font-size: 9px;
       font-weight: 700;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--cream);
       white-space: nowrap;
+      flex: 1;
+      text-align: center;
     }
 
     .heat-badge-num {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 7px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--brass);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #FFD700;
+      text-shadow: 0 0 8px rgba(255,215,0,0.5);
+      flex-shrink: 0;
     }
 
     /* Card body */
@@ -737,7 +743,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-hot-sauce.png" alt="Slap Ya Mama Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Medium</span>
               <span class="heat-badge-num">4/10</span>
             </div>
@@ -757,7 +763,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-heartbreaking-dawns-the-green-hot-sauce.png" alt="Fire Roasted Jalapeño Verde Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Medium–Hot</span>
               <span class="heat-badge-num">5/10</span>
             </div>
@@ -777,7 +783,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-high-river-psych-hot-sauce.png" alt="High River Psych Sauce Cayenne Garlic" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Medium–Hot</span>
               <span class="heat-badge-num">4–5/10</span>
             </div>
@@ -877,7 +883,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-high-river-tears-of-the-sun-hot-sauce.png" alt="High River Tears of the Sun Tropical Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Medium–Hot</span>
               <span class="heat-badge-num">5/10</span>
             </div>
@@ -922,7 +928,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-melindas-scotch-bonnet-hot-sauce.png" alt="Melinda's Original Scotch Bonnet Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Medium–Hot</span>
               <span class="heat-badge-num">6–7/10</span>
             </div>
@@ -942,7 +948,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-dirty-dicks-hot-tropical-hot-sauce.png" alt="Dirty Dick's Exotic Tropical Habanero Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Hot</span>
               <span class="heat-badge-num">6–7/10</span>
             </div>
@@ -962,7 +968,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-hells-kitchen-rockin-rasta-coconut-curry-hot-sauce.png" alt="Hell's Kitchen Rockin' Rasta Jamaican Coconut Curry" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Medium–Hot</span>
               <span class="heat-badge-num">6/10</span>
             </div>
@@ -982,7 +988,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-hogs-ass-garlic-habanero-hot-sauce.png" alt="Hog's Ass Garlic Habanero" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Medium–Hot</span>
               <span class="heat-badge-num">6–7/10</span>
             </div>
@@ -1002,7 +1008,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-mikey-vs-i-love-taco-hot-sauce-hot.png" alt="Mikey V's I Love Taco Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Hot</span>
               <span class="heat-badge-num">5/10</span>
             </div>
@@ -1022,7 +1028,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-high-river-hellacious-hot-sauce.png" alt="High River Hellacious Chipotle Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Medium–Hot</span>
               <span class="heat-badge-num">5/10</span>
             </div>
@@ -1042,7 +1048,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-moutain-man-fire-roasted-habanero-hot-sauce.png" alt="Mountain Man Fire Roasted Habanero" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Medium–Hot</span>
               <span class="heat-badge-num">7/10</span>
             </div>
@@ -1062,7 +1068,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-hells-kitchen-black-forest-black-cherry-balsamic-ghost-hot-sauce.png" alt="Hell's Kitchen Black Forest Ghost Pepper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Hot</span>
               <span class="heat-badge-num">7/10</span>
             </div>
@@ -1107,7 +1113,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-ghost-scream-hot-sauce.png" alt="Ghost Scream Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Super Hot</span>
               <span class="heat-badge-num">8/10</span>
             </div>
@@ -1127,7 +1133,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-mikey-vs-ghostly-garlic-hot-sauce.png" alt="Ghostly Garlic Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Super Hot</span>
               <span class="heat-badge-num">8–9/10</span>
             </div>
@@ -1147,7 +1153,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-melindas-naga-jolokia-ghost-pepper-hot-sauce.png" alt="Melinda's Naga Jolokia Ghost Pepper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Super Hot</span>
               <span class="heat-badge-num">9/10</span>
             </div>
@@ -1167,7 +1173,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-high-river-rogue-hot-sauce.png" alt="High River Rogue Scorpion-Ghost Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Super Hot</span>
               <span class="heat-badge-num">8–9/10</span>
             </div>
@@ -1187,7 +1193,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-cajohns-segadora-reaper-hot-sauce.png" alt="CaJohn's La Segadory Reaper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Extreme</span>
               <span class="heat-badge-num">8–9/10</span>
             </div>
@@ -1207,7 +1213,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-high-river-foo-foo-mam-choo-hot-sauce.png" alt="High River Foo Foo Mama Choo Reaper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Extreme</span>
               <span class="heat-badge-num">10/10</span>
             </div>
@@ -1227,7 +1233,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-mikey-vs-dill-pickle-reaper-hot-sauce.png" alt="Mikey V's Carolina Reaper Jalapeno Dill Pickle Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Extreme</span>
               <span class="heat-badge-num">9/10</span>
             </div>
@@ -1247,7 +1253,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-mad-dog-357-sriracha-reaper-hot-sauce.png" alt="Mad Dog 357 Sriracha Reaper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Extreme</span>
               <span class="heat-badge-num">10/10</span>
             </div>
@@ -1267,7 +1273,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-high-river-peppers-up-hot-sauce.png" alt="High River Peppers Up Apollo Pepper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Nuclear</span>
               <span class="heat-badge-num">11/10</span>
             </div>
@@ -1287,7 +1293,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-high-river-thunder-juice-hot-sauce.png" alt="High River Thunder Juice Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Extreme</span>
               <span class="heat-badge-num">9/10</span>
             </div>
@@ -1307,7 +1313,7 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-high-river-pepper-x-hot-sauce.png" alt="High River Taco X Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Nuclear</span>
               <span class="heat-badge-num">10/10</span>
             </div>
@@ -1327,7 +1333,110 @@
           <div class="product-card-image">
             <img src="assets/pullman-product-display/cat-puckerbutt-gator-hot-sauce.png" alt="Pucker Butt Gator Sauce Pepper X Edition" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶🌶🌶</span>
+              <span class="heat-badge-emoji">🌶</span>
+              <span class="heat-badge-text">Nuclear</span>
+              <span class="heat-badge-num">10/10</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">Pucker Butt Gator Sauce Pepper X Edition</div>
+            <p class="product-card-teaser">Ed Curlin's Pepper X — bred to be the world's hottest — in Pucker Butt's Gator Sauce format. Southern Louisiana-style flavor foundation with a Pepper X payload. The name is accurate. You've been warned.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">5 fl oz · $14.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+      </div><!-- /product-grid extreme-inferno -->
+    </div>
+  </section>
+
+  <!-- ═══ BACK TO TOP + OTHER CATEGORIES ══════════════════════ -->
+  <div class="back-top">
+    <a class="back-top-link" href="main.html#categories">← All Categories</a>
+  </div>
+
+  <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-left">
+      <span class="footer-item"><a href="https://www.pepperjunction401.com">pepperjunction401.com</a></span>
+      <span class="footer-sep"></span>
+      <span class="footer-item">320 Kingstown Rd · Richmond, RI</span>
+      <span class="footer-sep"></span>
+      <span class="footer-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+    </div>
+    <div class="footer-right">© Pepper Junction · Est. 2014</div>
+  </footer>
+
+  <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
+  <script>
+  (function () {
+    /* ── SCROLL REVEAL ── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    revealEls.forEach(function (el) { observer.observe(el); });
+
+    /* ── ACTIVE JUMP LINK (highlights current section in nav) ── */
+    const sections = [
+      document.getElementById('mild-medium'),
+      document.getElementById('hot-very-hot'),
+      document.getElementById('extreme-inferno')
+    ];
+    const jumpLinks = document.querySelectorAll('.jump-link');
+
+    const sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          jumpLinks.forEach(function (link) {
+            const active = link.getAttribute('href') === '#' + id;
+            link.style.opacity = active ? '1' : '0.55';
+            link.style.borderColor = active ? 'rgba(184,137,57,0.65)' : 'rgba(184,137,57,0.2)';
+            link.style.background = active ? 'rgba(184,137,57,0.12)' : '';
+          });
+        }
+      });
+    }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
+
+    sections.forEach(function (s) { if (s) sectionObserver.observe(s); });
+  })();
+  </script>
+
+</body>
+</html>        <!-- High River Taco X -->
+        <a class="product-card reveal" href="products/high-river-taco-x-hot-sauce.html">
+          <div class="product-card-image">
+            <img src="assets/pullman-product-display/cat-high-river-pepper-x-hot-sauce.png" alt="High River Taco X Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="heat-badge">
+              <span class="heat-badge-emoji">🌶</span>
+              <span class="heat-badge-text">Nuclear</span>
+              <span class="heat-badge-num">10/10</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">High River Taco X Hot Sauce</div>
+            <p class="product-card-teaser">What happens when you take a taco sauce profile and add extreme pepper heat? High River's answer. Taco-ready flavors — cumin, garlic, tomato — pushed to their thermal limit by Pepper X and Reaper.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">5 fl oz · $14.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+        <!-- Pucker Butt Gator Sauce Pepper X -->
+        <a class="product-card reveal" href="products/pucker-butt-gator-sauce-pepper-x-edition.html">
+          <div class="product-card-image">
+            <img src="assets/pullman-product-display/cat-puckerbutt-gator-hot-sauce.png" alt="Pucker Butt Gator Sauce Pepper X Edition" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="heat-badge">
+              <span class="heat-badge-emoji">🌶</span>
               <span class="heat-badge-text">Nuclear</span>
               <span class="heat-badge-num">10/10</span>
             </div>
