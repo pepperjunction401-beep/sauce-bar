@@ -267,13 +267,13 @@
 
     /* ── CATALOG SECTION — steel panel background ─────────────── */
     .catalog-section {
-      padding: 52px 0 60px;
+      padding: 40px 0 48px;
       position: relative;
       z-index: 1;
       background-image: url('assets/textures/green-steel-panel-bg.png');
-      background-size: cover;
-      background-position: center top;
-      background-repeat: no-repeat;
+      background-size: 100% auto;
+      background-position: left top;
+      background-repeat: repeat-y;
     }
 
     /* Thin brass border top and bottom to frame the steel section */
@@ -354,7 +354,7 @@
     .product-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      gap: 16px;
       margin-bottom: 16px;
     }
 
@@ -496,29 +496,28 @@
 
     /* Card body */
     .product-card-body {
-      padding: 18px 18px 16px;
+      padding: 10px 14px 8px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 4px;
       flex: 1;
     }
 
     .product-card-name {
       font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(14px, 1.5vw, 17px);
+      font-size: clamp(12px, 1.3vw, 15px);
       color: var(--ink);
       line-height: 1.2;
       letter-spacing: 0.03em;
     }
 
     .product-card-teaser {
-      font-size: 12px;
-      line-height: 1.65;
+      font-size: 10px;
+      line-height: 1.5;
       color: var(--ink-soft);
       flex: 1;
-      /* Clamp to 3 lines */
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -527,7 +526,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 18px 14px;
+      padding: 8px 14px 10px;
       border-top: 1px solid rgba(184,137,57,0.18);
       background: rgba(184,137,57,0.04);
     }
