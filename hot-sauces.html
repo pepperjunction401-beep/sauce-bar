@@ -145,24 +145,22 @@
 
     /* ── PAGE HERO / BREADCRUMB ───────────────────────────────── */
     .page-hero {
-      background: var(--green-dark);
+      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
+      background-size: cover;
+      background-position: center;
       padding: 52px 48px 56px;
       position: relative;
       overflow: hidden;
-      border-bottom: 1px solid rgba(184,137,57,0.3);
+      border-bottom: 2px solid var(--brass);
     }
 
+    /* Dark vignette so text reads cleanly over the wood */
     .page-hero::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 3px,
-        rgba(184,137,57,0.03) 3px,
-        rgba(184,137,57,0.03) 4px
-      );
+      background: rgba(0,0,0,0.45);
+      pointer-events: none;
     }
 
     .page-hero-inner {
