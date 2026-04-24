@@ -378,6 +378,35 @@
       border-color: rgba(184,137,57,0.65);
     }
 
+
+    /* ── MAKER BANNER (top of card image) ────────────────────── */
+    .maker-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      background: rgba(30,48,32,0.88);
+      border: 1px solid rgba(184,137,57,0.5);
+      border-radius: 2px;
+      padding: 4px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      z-index: 2;
+    }
+
+    .maker-badge-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      white-space: nowrap;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    }
+
     /* Pullman window frame image */
     .product-card-image {
       position: relative;
@@ -696,6 +725,7 @@
         <!-- Mikey V's Jalapeno Dill Pickle -->
         <a class="product-card reveal" href="products/mikey-vs-jalapeno-dill-pickle-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-dill-pickle-jalapeno-hot-sauce.png" alt="Mikey V's Jalapeno Dill Pickle Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -704,7 +734,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Mikey V's Jalapeno Dill Pickle Hot Sauce</div>
+            <div class="product-card-name">Jalapeño Dill Pickle</div>
             <p class="product-card-teaser">If you're a pickle person, this one's going to grab your attention right away. Dill-forward, tangy, and refreshingly mild — an easy go-to for hot dogs, burgers, and deviled eggs.</p>
           </div>
           <div class="product-card-footer">
@@ -716,6 +746,7 @@
         <!-- Rhed's Rhode Island Farm -->
         <a class="product-card reveal" href="products/rheds-rhode-island-farm-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Rhed's</span></div>
             <img src="assets/pullman-product-display/cat-rheds-original-hot-sauce.png" alt="Rhed's Rhode Island Farm Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -724,7 +755,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Rhed's Rhode Island Farm Hot Sauce</div>
+            <div class="product-card-name">Rhed's Original</div>
             <p class="product-card-teaser">Small-batch, fermented hot sauce crafted with peppers sourced from local Rhode Island farms. Layered heat, savory vegetable depth, and balanced acidity — built for coastal cooking.</p>
           </div>
           <div class="product-card-footer">
@@ -736,6 +767,7 @@
         <!-- Slap Ya Mama -->
         <a class="product-card reveal" href="products/slap-ya-mama-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
             <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-hot-sauce.png" alt="Slap Ya Mama Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -744,7 +776,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Slap Ya Mama Hot Sauce</div>
+            <div class="product-card-name">Slap Ya Mama Cajun</div>
             <p class="product-card-teaser">Straight out of the Louisiana playbook. Classic vinegar tang up front, garlic and pepper heat right behind it. Bold and built for everyday Cajun-style use on wings, fried chicken, and gumbo.</p>
           </div>
           <div class="product-card-footer">
@@ -756,6 +788,7 @@
         <!-- Fire Roasted Jalapeño Verde -->
         <a class="product-card reveal" href="products/fire-roasted-jalapeno-verde-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Heartbreaking Dawns</span></div>
             <img src="assets/pullman-product-display/cat-heartbreaking-dawns-the-green-hot-sauce.png" alt="Fire Roasted Jalapeño Verde Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -764,7 +797,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Fire Roasted Jalapeño Verde Hot Sauce</div>
+            <div class="product-card-name">The Green</div>
             <p class="product-card-teaser">A verde sauce with backbone. Fire-roasted jalapeños and tomatillos open fresh, with lime, cilantro, garlic, and a ghost pepper finish that adds just enough glow. Ideal for tacos, grilled fish, and rice bowls.</p>
           </div>
           <div class="product-card-footer">
@@ -776,6 +809,7 @@
         <!-- High River Psych Sauce -->
         <a class="product-card reveal" href="products/high-river-psych-sauce-cayenne-garlic.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-psych-hot-sauce.png" alt="High River Psych Sauce Cayenne Garlic" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -784,7 +818,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">High River Psych Sauce — Cayenne Garlic</div>
+            <div class="product-card-name">Psych Sauce</div>
             <p class="product-card-teaser">Keeps things simple in the best way. Cayenne heat up front, fresh garlic and black pepper right behind it. Clean, punchy, and easy on pizza, wings, pasta, and burgers.</p>
           </div>
           <div class="product-card-footer">
@@ -796,6 +830,7 @@
         <!-- 13 Stars Dragon Breath -->
         <a class="product-card reveal" href="products/13-stars-dragon-breath.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">13 Stars</span></div>
             <img src="assets/pullman-product-display/cat-13-stars-dragons-breath-hot-sauce.png" alt="13 Stars Dragon Breath" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -804,7 +839,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">13 Stars Dragon Breath</div>
+            <div class="product-card-name">Dragon's Breath</div>
             <p class="product-card-teaser">Soy-driven umami with brown sugar sweetness, fresh ginger, and mild serrano heat. An Asian-inspired sauce built for dipping, drizzling, and anything that needs depth without fire.</p>
           </div>
           <div class="product-card-footer">
@@ -816,6 +851,7 @@
         <!-- Rhed's Deja Vu -->
         <a class="product-card reveal" href="products/rheds-deja-vu.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Rhed's</span></div>
             <img src="assets/pullman-product-display/cat-rheds-deja-vu-hot-sauce.png" alt="Rhed's Deja Vu" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -824,7 +860,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Rhed's Deja Vu</div>
+            <div class="product-card-name">Deja Vu</div>
             <p class="product-card-teaser">Tangy tamarind with pineapple sweetness, black garlic umami, and charred onion depth. Thai chile, habanero, and guajillo bring a steady, building heat with a smooth lingering finish.</p>
           </div>
           <div class="product-card-footer">
@@ -836,6 +872,7 @@
         <!-- Melinda's Mango Habanero -->
         <a class="product-card reveal" href="products/melindas-mango-habanero-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
             <img src="assets/pullman-product-display/cat-melindas-mango-hot-sauce.png" alt="Melinda's Mango Habanero Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -844,7 +881,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Melinda's Mango Habanero Hot Sauce</div>
+            <div class="product-card-name">Mango Habanero</div>
             <p class="product-card-teaser">Tropical sweetness meets Caribbean heat. Ripe mango carries the flavor, habanero delivers the finish. Bright, fruity, and approachable — excellent on grilled chicken and fish tacos.</p>
           </div>
           <div class="product-card-footer">
@@ -856,6 +893,7 @@
         <!-- Rhed's Aji Lemon Drop -->
         <a class="product-card reveal" href="products/rheds-aji-lemon-drop-citrus-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Rhed's</span></div>
             <img src="assets/pullman-product-display/cat-rheds-lemon-drop-hot-sauce.png" alt="Rhed's Aji Lemon Drop Citrus Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -864,7 +902,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Rhed's Aji Lemon Drop Citrus Hot Sauce</div>
+            <div class="product-card-name">Lemon Drop</div>
             <p class="product-card-teaser">Bright lemon-forward heat from the Aji Lemon Drop pepper — crisp, citrusy, and clean. A Rhode Island original built for seafood, oysters, and anything that benefits from citrus acidity with a kick.</p>
           </div>
           <div class="product-card-footer">
@@ -876,6 +914,7 @@
         <!-- High River Tears of the Sun -->
         <a class="product-card reveal" href="products/high-river-tears-of-the-sun-tropical-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-tears-of-the-sun-hot-sauce.png" alt="High River Tears of the Sun Tropical Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -884,7 +923,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">High River Tears of the Sun Tropical Hot Sauce</div>
+            <div class="product-card-name">Tears of the Sun</div>
             <p class="product-card-teaser">A Caribbean-influenced tropical sauce with mango, pineapple, and habanero heat. Fruit-forward and aromatic with a clean spicy finish that lingers without overwhelming.</p>
           </div>
           <div class="product-card-footer">
@@ -921,6 +960,7 @@
         <!-- Melinda's Original Scotch Bonnet -->
         <a class="product-card reveal" href="products/melindas-original-scotch-bonnet-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
             <img src="assets/pullman-product-display/cat-melindas-scotch-bonnet-hot-sauce.png" alt="Melinda's Original Scotch Bonnet Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -929,7 +969,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Melinda's Original Scotch Bonnet Hot Sauce</div>
+            <div class="product-card-name">Scotch Bonnet</div>
             <p class="product-card-teaser">The classic Caribbean benchmark. Scotch bonnet pepper heat with a fruity, aromatic backbone. Bold, bright, and built for jerk chicken, fried plantains, and island-style cooking.</p>
           </div>
           <div class="product-card-footer">
@@ -941,6 +981,7 @@
         <!-- Dirty Dick's Exotic Tropical Habanero -->
         <a class="product-card reveal" href="products/dirty-dicks-exotic-tropical-habanero-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Dirty Dick's</span></div>
             <img src="assets/pullman-product-display/cat-dirty-dicks-hot-tropical-hot-sauce.png" alt="Dirty Dick's Exotic Tropical Habanero Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -949,7 +990,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Dirty Dick's Exotic Tropical Habanero</div>
+            <div class="product-card-name">Exotic Tropical Habanero</div>
             <p class="product-card-teaser">Tropical fruit sweetness with habanero bite. A bold, playfully named sauce that delivers serious flavor layering — sweet, fruity, and hot enough to mean business on any grilled protein.</p>
           </div>
           <div class="product-card-footer">
@@ -961,6 +1002,7 @@
         <!-- Hell's Kitchen Rockin' Rasta -->
         <a class="product-card reveal" href="products/hells-kitchen-rockin-rasta-jamaican-coconut-curry.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Hell's Kitchen</span></div>
             <img src="assets/pullman-product-display/cat-hells-kitchen-rockin-rasta-coconut-curry-hot-sauce.png" alt="Hell's Kitchen Rockin' Rasta Jamaican Coconut Curry" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -969,7 +1011,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Hell's Kitchen Rockin' Rasta: Jamaican Coconut Curry</div>
+            <div class="product-card-name">Rockin' Rasta: Jamaican Coconut Curry</div>
             <p class="product-card-teaser">Coconut cream, curry spice, and Jamaican scotch bonnet heat in one bottle. Rich, aromatic, and unlike anything else on the shelf — exceptional on shrimp, rice dishes, and grilled vegetables.</p>
           </div>
           <div class="product-card-footer">
@@ -981,6 +1023,7 @@
         <!-- Hog's Ass Garlic Habanero -->
         <a class="product-card reveal" href="products/hogs-ass-garlic-habanero.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Hog's Ass</span></div>
             <img src="assets/pullman-product-display/cat-hogs-ass-garlic-habanero-hot-sauce.png" alt="Hog's Ass Garlic Habanero" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -989,7 +1032,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Hog's Ass Garlic Habanero</div>
+            <div class="product-card-name">Garlic Habanero</div>
             <p class="product-card-teaser">Bold roasted garlic and habanero heat in a savory, no-nonsense bottle. Deep, smoky, and direct — this one belongs on pork, grilled chicken, and anything that needs a savory-spicy kick with zero apology.</p>
           </div>
           <div class="product-card-footer">
@@ -1001,6 +1044,7 @@
         <!-- Mikey V's I Love Taco Sauce -->
         <a class="product-card reveal" href="products/mikey-vs-i-love-taco-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-i-love-taco-hot-sauce-hot.png" alt="Mikey V's I Love Taco Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1009,7 +1053,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Mikey V's I Love Taco Sauce</div>
+            <div class="product-card-name">I Love Taco Sauce</div>
             <p class="product-card-teaser">A taco sauce built to do more than sit on a shelf. Smoky, savory, and designed for Mexican-inspired cooking — works as a marinade, a finishing sauce, and a straight-up taco topper.</p>
           </div>
           <div class="product-card-footer">
@@ -1021,6 +1065,7 @@
         <!-- High River Hellacious Chipotle -->
         <a class="product-card reveal" href="products/high-river-hellacious-chipotle-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-hellacious-hot-sauce.png" alt="High River Hellacious Chipotle Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1029,7 +1074,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">High River Hellacious Chipotle Hot Sauce</div>
+            <div class="product-card-name">Hellacious</div>
             <p class="product-card-teaser">Smoky chipotle depth meets controlled habanero heat. Rich and roasted, with a long, warming finish. Exceptional on smoked meats, breakfast burritos, and anything that benefits from a deep smoke-and-spice layer.</p>
           </div>
           <div class="product-card-footer">
@@ -1041,6 +1086,7 @@
         <!-- Mountain Man Fire Roasted Habanero -->
         <a class="product-card reveal" href="products/mountain-man-fire-roasted-habanero.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Mountain Man</span></div>
             <img src="assets/pullman-product-display/cat-moutain-man-fire-roasted-habanero-hot-sauce.png" alt="Mountain Man Fire Roasted Habanero" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1049,7 +1095,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Mountain Man Fire Roasted Habanero</div>
+            <div class="product-card-name">Fire Roasted Habanero</div>
             <p class="product-card-teaser">Fire-roasted habanero with a bold, charred intensity and a clean, direct heat. Rustic, uncompromising, and versatile — made for grilling season and anyone who likes their heat with some character.</p>
           </div>
           <div class="product-card-footer">
@@ -1061,6 +1107,7 @@
         <!-- Hell's Kitchen Black Forest Ghost Pepper -->
         <a class="product-card reveal" href="products/hells-kitchen-black-forest-ghost-pepper-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Hell's Kitchen</span></div>
             <img src="assets/pullman-product-display/cat-hells-kitchen-black-forest-black-cherry-balsamic-ghost-hot-sauce.png" alt="Hell's Kitchen Black Forest Ghost Pepper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1069,7 +1116,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Hell's Kitchen Black Forest: Black Cherry Balsamic Ghost Pepper</div>
+            <div class="product-card-name">Black Forest: Black Cherry Balsamic</div>
             <p class="product-card-teaser">Black cherry and balsamic meet ghost pepper heat in one sophisticated, unexpected bottle. Dark, complex, and surprising — best on duck, pork, aged cheese boards, and anywhere bold acidity earns its place.</p>
           </div>
           <div class="product-card-footer">
@@ -1106,6 +1153,7 @@
         <!-- Ghost Scream -->
         <a class="product-card reveal" href="products/ghost-scream-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Ghost Scream</span></div>
             <img src="assets/pullman-product-display/cat-ghost-scream-hot-sauce.png" alt="Ghost Scream Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1114,7 +1162,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Ghost Scream Hot Sauce</div>
+            <div class="product-card-name">Ghost Scream</div>
             <p class="product-card-teaser">Ghost pepper heat with a fruity, tangy base that makes the fire sneak up on you. Accessible entry point to the extreme tier — the flavor is there right up until the heat reminds you who's in charge.</p>
           </div>
           <div class="product-card-footer">
@@ -1126,6 +1174,7 @@
         <!-- Ghostly Garlic -->
         <a class="product-card reveal" href="products/ghostly-garlic-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-ghostly-garlic-hot-sauce.png" alt="Ghostly Garlic Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1134,7 +1183,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Ghostly Garlic Hot Sauce</div>
+            <div class="product-card-name">Ghostly Garlic</div>
             <p class="product-card-teaser">Deep roasted garlic flavor collides with ghost pepper intensity. Savory and aromatic until it isn't — for heat-seekers who want their extreme sauce to taste like something while it sets them on fire.</p>
           </div>
           <div class="product-card-footer">
@@ -1146,6 +1195,7 @@
         <!-- Melinda's Naga Jolokia Ghost Pepper -->
         <a class="product-card reveal" href="products/melindas-naga-jolokia-ghost-pepper-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
             <img src="assets/pullman-product-display/cat-melindas-naga-jolokia-ghost-pepper-hot-sauce.png" alt="Melinda's Naga Jolokia Ghost Pepper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1154,7 +1204,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Melinda's Naga Jolokia (Ghost Pepper) Hot Sauce</div>
+            <div class="product-card-name">Naga Jolokia</div>
             <p class="product-card-teaser">One of the world's hottest peppers in Melinda's reliable, flavor-first format. Intense ghost pepper heat delivered with enough structure and balance to still function as a culinary sauce, not just a dare.</p>
           </div>
           <div class="product-card-footer">
@@ -1166,6 +1216,7 @@
         <!-- High River Rogue Scorpion-Ghost -->
         <a class="product-card reveal" href="products/high-river-rogue-scorpion-ghost-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-rogue-hot-sauce.png" alt="High River Rogue Scorpion-Ghost Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1174,7 +1225,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">High River Rogue Scorpion-Ghost Hot Sauce</div>
+            <div class="product-card-name">Rogue</div>
             <p class="product-card-teaser">Trinidad Moruga Scorpion and ghost pepper in a single bottle. Two of the heaviest hitters in the pepper world, combined by one of the most respected names in craft hot sauce. Not for the casual visitor.</p>
           </div>
           <div class="product-card-footer">
@@ -1186,6 +1237,7 @@
         <!-- CaJohn's La Segadory Reaper -->
         <a class="product-card reveal" href="products/cajohns-la-segadory-reaper-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">CaJohn's</span></div>
             <img src="assets/pullman-product-display/cat-cajohns-segadora-reaper-hot-sauce.png" alt="CaJohn's La Segadory Reaper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1194,7 +1246,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">CaJohn's La Segadory Reaper Hot Sauce</div>
+            <div class="product-card-name">La Segadora</div>
             <p class="product-card-teaser">Carolina Reaper from the award-winning CaJohn's label. "The Reaper" in a sauce with culinary intention — intense heat, real flavor, and no shortcuts. A serious bottle for serious heat-seekers.</p>
           </div>
           <div class="product-card-footer">
@@ -1206,6 +1258,7 @@
         <!-- High River Foo Foo Mama Choo Reaper -->
         <a class="product-card reveal" href="products/high-river-foo-foo-mama-choo-reaper-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-foo-foo-mam-choo-hot-sauce.png" alt="High River Foo Foo Mama Choo Reaper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1214,7 +1267,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">High River Foo Foo Mama Choo Reaper Hot Sauce</div>
+            <div class="product-card-name">Foo Foo Mama Choo</div>
             <p class="product-card-teaser">The full Carolina Reaper experience from High River — one of the genre's most acclaimed producers. Maximum Scoville territory wrapped in a sauce that somehow still has flavor underneath the heat. Use sparingly.</p>
           </div>
           <div class="product-card-footer">
@@ -1226,6 +1279,7 @@
         <!-- Mikey V's Carolina Reaper-Dill Pickle -->
         <a class="product-card reveal" href="products/mikey-vs-carolina-reaper-jalapeno-dill-pickle-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-dill-pickle-reaper-hot-sauce.png" alt="Mikey V's Carolina Reaper Jalapeno Dill Pickle Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1234,7 +1288,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Mikey V's Carolina Reaper–Dill Pickle Hot Sauce</div>
+            <div class="product-card-name">Dill Pickle Reaper</div>
             <p class="product-card-teaser">The dill pickle sauce you tried in the Mild section, now with a Carolina Reaper. The tangy brine is still there. The Reaper makes sure you remember it. An evil twist on a fan favorite.</p>
           </div>
           <div class="product-card-footer">
@@ -1246,6 +1300,7 @@
         <!-- Mad Dog 357 Sriracha Reaper -->
         <a class="product-card reveal" href="products/mad-dog-357-sriracha-reaper-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Mad Dog</span></div>
             <img src="assets/pullman-product-display/cat-mad-dog-357-sriracha-reaper-hot-sauce.png" alt="Mad Dog 357 Sriracha Reaper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1254,7 +1309,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Mad Dog 357 Sriracha Reaper Hot Sauce</div>
+            <div class="product-card-name">357 Reaper Sriracha</div>
             <p class="product-card-teaser">Mad Dog's legendary heat weaponized in a Sriracha-meets-Reaper format. Familiar, approachable flavor profile right up until the 357,000 Scovilles take over. The heat lingers. Plan accordingly.</p>
           </div>
           <div class="product-card-footer">
@@ -1266,6 +1321,7 @@
         <!-- High River Peppers Up Apollo -->
         <a class="product-card reveal" href="products/high-river-peppers-up-apollo-pepper-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-peppers-up-hot-sauce.png" alt="High River Peppers Up Apollo Pepper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1274,7 +1330,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">High River Peppers Up Apollo Pepper Hot Sauce</div>
+            <div class="product-card-name">Peppers Up</div>
             <p class="product-card-teaser">The Apollo pepper — a Pepper X and Carolina Reaper cross — delivers heat that goes beyond the chart. 11/10 is not marketing. High River made it culinary anyway. Not a casual purchase.</p>
           </div>
           <div class="product-card-footer">
@@ -1286,6 +1342,7 @@
         <!-- High River Thunder Juice -->
         <a class="product-card reveal" href="products/high-river-thunder-juice-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-thunder-juice-hot-sauce.png" alt="High River Thunder Juice Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1294,7 +1351,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">High River Thunder Juice Hot Sauce</div>
+            <div class="product-card-name">Thunder Juice</div>
             <p class="product-card-teaser">Aggressive heat in High River's signature balanced format. Named for a reason — the heat hits like a storm and rolls through. Deep pepper character, sustained burn, and just enough flavor to keep you coming back.</p>
           </div>
           <div class="product-card-footer">
@@ -1306,6 +1363,7 @@
         <!-- High River Taco X -->
         <a class="product-card reveal" href="products/high-river-taco-x-hot-sauce.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-pepper-x-hot-sauce.png" alt="High River Taco X Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1314,7 +1372,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">High River Taco X Hot Sauce</div>
+            <div class="product-card-name">Taco X</div>
             <p class="product-card-teaser">What happens when you take a taco sauce profile and add extreme pepper heat? High River's answer. Taco-ready flavors — cumin, garlic, tomato — pushed to their thermal limit by Pepper X and Reaper.</p>
           </div>
           <div class="product-card-footer">
@@ -1326,6 +1384,7 @@
         <!-- Pucker Butt Gator Sauce Pepper X -->
         <a class="product-card reveal" href="products/pucker-butt-gator-sauce-pepper-x-edition.html">
           <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Pucker Butt</span></div>
             <img src="assets/pullman-product-display/cat-puckerbutt-gator-hot-sauce.png" alt="Pucker Butt Gator Sauce Pepper X Edition" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="heat-badge">
               <span class="heat-badge-emoji">🌶</span>
@@ -1334,7 +1393,7 @@
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Pucker Butt Gator Sauce Pepper X Edition</div>
+            <div class="product-card-name">Gator Sauce</div>
             <p class="product-card-teaser">Ed Curlin's Pepper X — bred to be the world's hottest — in Pucker Butt's Gator Sauce format. Southern Louisiana-style flavor foundation with a Pepper X payload. The name is accurate. You've been warned.</p>
           </div>
           <div class="product-card-footer">
