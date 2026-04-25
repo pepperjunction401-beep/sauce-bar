@@ -360,7 +360,7 @@
 
     .product-card {
       position: relative;
-      background: transparent;
+      background: var(--cream-warm);
       border: none;
       border-radius: 0;
       overflow: hidden;
@@ -369,7 +369,7 @@
       flex-direction: column;
       transition: transform 0.25s ease;
       text-decoration: none;
-      color: var(--cream-warm);
+      color: var(--ink);
     }
 
     .product-card:hover {
@@ -380,7 +380,7 @@
     /* ── MAKER BANNER (top of card image) ────────────────────── */
     .maker-badge {
       position: absolute;
-      top: 18px;
+      top: 54px;
       left: 48px;
       background: rgba(30,48,32,0.88);
       border: 1px solid rgba(184,137,57,0.5);
@@ -407,7 +407,7 @@
     /* ── AWARD BADGE ──────────────────────────────────────────── */
     .award-badge {
       position: absolute;
-      top: 44px;
+      top: 80px;
       left: 48px;
       background: rgba(160,20,10,0.92);
       border: 1px solid rgba(255,215,0,0.5);
@@ -456,7 +456,7 @@
     /* Heat badge overlay on image */
     .heat-badge {
       position: absolute;
-      bottom: 10px;
+      bottom: 36px;
       left: 10px;
       background: rgba(30,48,32,0.88);
       border: 1px solid rgba(184,137,57,0.5);
@@ -499,29 +499,26 @@
       flex-direction: column;
       gap: 3px;
       flex: 1;
-      background: transparent;
+      background: var(--cream-warm);
     }
 
     .product-card-name {
       font-family: 'BlackRiver', 'Playfair Display', serif;
       font-size: clamp(11px, 1.1vw, 13px);
-      color: var(--cream-warm);
+      color: var(--ink);
       line-height: 1.15;
       letter-spacing: 0.03em;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
     }
 
     .product-card-teaser {
       font-size: 9px;
       line-height: 1.45;
-      color: var(--cream);
-      opacity: 0.75;
+      color: var(--ink-soft);
       flex: 1;
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
     }
 
     .product-card-footer {
@@ -529,8 +526,8 @@
       align-items: center;
       justify-content: space-between;
       padding: 6px 12px 8px;
-      border-top: 1px solid rgba(184,137,57,0.3);
-      background: transparent;
+      border-top: 1px solid rgba(184,137,57,0.18);
+      background: var(--cream-warm);
     }
 
     .product-card-price {
