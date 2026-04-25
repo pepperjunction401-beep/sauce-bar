@@ -295,19 +295,32 @@
     .wood-divider__label {
       position: relative;
       z-index: 2;
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: var(--cream-warm);
-      text-shadow:
-        0 1px 6px rgba(0,0,0,0.8),
-        0 0 20px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
       padding: 10px 28px;
       border-top: 1px solid rgba(184,137,57,0.4);
       border-bottom: 1px solid rgba(184,137,57,0.4);
       background: rgba(0,0,0,0.18);
+    }
+
+    .wood-divider__line1 {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 22px;
+      letter-spacing: 0.18em;
+      color: var(--cream-warm);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.6);
+      line-height: 1.2;
+    }
+
+    .wood-divider__line2 {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 15px;
+      letter-spacing: 0.18em;
+      color: var(--brass-bright);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+      line-height: 1.2;
     }
 
     /* ── CATALOG SECTION — steel panel background ─────────────── */
@@ -772,6 +785,10 @@
 
   <!-- ═══ WOOD DIVIDER — MILD / MEDIUM ═══════════════════════ -->
   <div class="wood-divider" id="mild-medium">
+    <div class="wood-divider__label">
+      <div class="wood-divider__line1">Find Your Heat</div>
+      <div class="wood-divider__line2">Find Your Flavor</div>
+    </div>
   </div>
 
   <!-- ═══ MILD / MEDIUM CATALOG ════════════════════════════════ -->
