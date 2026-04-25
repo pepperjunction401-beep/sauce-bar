@@ -265,6 +265,51 @@
       background: rgba(184,137,57,0.08);
     }
 
+    /* ── WOOD PLANK SECTION DIVIDER ──────────────────────────── */
+    .wood-divider {
+      width: 100%;
+      height: 160px;
+      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wood-divider::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg,
+        rgba(0,0,0,0.35) 0%,
+        rgba(0,0,0,0.08) 30%,
+        rgba(0,0,0,0.08) 70%,
+        rgba(0,0,0,0.35) 100%);
+      pointer-events: none;
+    }
+
+    /* ── WOOD DIVIDER LABEL ──────────────────────────────────── */
+    .wood-divider__label {
+      position: relative;
+      z-index: 2;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--cream-warm);
+      text-shadow:
+        0 1px 6px rgba(0,0,0,0.8),
+        0 0 20px rgba(0,0,0,0.6);
+      padding: 10px 28px;
+      border-top: 1px solid rgba(184,137,57,0.4);
+      border-bottom: 1px solid rgba(184,137,57,0.4);
+      background: rgba(0,0,0,0.18);
+    }
+
     /* ── CATALOG SECTION — steel panel background ─────────────── */
     .catalog-section {
       padding: 116px 0 48px;
