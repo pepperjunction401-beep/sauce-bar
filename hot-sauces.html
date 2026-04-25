@@ -360,7 +360,7 @@
 
     .product-card {
       position: relative;
-      background: var(--cream-warm);
+      background: transparent;
       border: none;
       border-radius: 0;
       overflow: hidden;
@@ -369,7 +369,7 @@
       flex-direction: column;
       transition: transform 0.25s ease;
       text-decoration: none;
-      color: var(--ink);
+      color: var(--cream-warm);
     }
 
     .product-card:hover {
@@ -499,25 +499,29 @@
       flex-direction: column;
       gap: 3px;
       flex: 1;
+      background: transparent;
     }
 
     .product-card-name {
       font-family: 'BlackRiver', 'Playfair Display', serif;
       font-size: clamp(11px, 1.1vw, 13px);
-      color: var(--ink);
+      color: var(--cream-warm);
       line-height: 1.15;
       letter-spacing: 0.03em;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
     }
 
     .product-card-teaser {
       font-size: 9px;
       line-height: 1.45;
-      color: var(--ink-soft);
+      color: var(--cream);
+      opacity: 0.75;
       flex: 1;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
     }
 
     .product-card-footer {
@@ -525,8 +529,8 @@
       align-items: center;
       justify-content: space-between;
       padding: 6px 12px 8px;
-      border-top: 1px solid rgba(184,137,57,0.18);
-      background: rgba(184,137,57,0.04);
+      border-top: 1px solid rgba(184,137,57,0.3);
+      background: transparent;
     }
 
     .product-card-price {
@@ -755,7 +759,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Jalapeño Dill Pickle</div>
-            <p class="product-card-teaser">If you're a pickle person, this one's going to grab your attention right away. Dill-forward, tangy, and refreshingly mild — an easy go-to for hot dogs, burgers, and deviled eggs.</p>
+            <p class="product-card-teaser">If you're a pickle person, this one's going to grab your attention right away.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz</span>
@@ -774,7 +778,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Rhed's Original</div>
-            <p class="product-card-teaser">Small-batch, fermented hot sauce crafted with peppers sourced from local Rhode Island farms. Layered heat, savory vegetable depth, and balanced acidity — built for coastal cooking.</p>
+            <p class="product-card-teaser">Small-batch, fermented hot sauce crafted with peppers sourced from local Rhode Island farms.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $8.99</span>
@@ -794,7 +798,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Deja Vu</div>
-            <p class="product-card-teaser">Tangy tamarind with pineapple sweetness, black garlic umami, and charred onion depth. Thai chile, habanero, and guajillo bring a steady, building heat with a smooth lingering finish.</p>
+            <p class="product-card-teaser">This one pulls you into that deep, layered umami lane right away.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $9.99</span>
@@ -813,7 +817,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Slap Ya Mama Cajun</div>
-            <p class="product-card-teaser">Straight out of the Louisiana playbook. Classic vinegar tang up front, garlic and pepper heat right behind it. Bold and built for everyday Cajun-style use on wings, fried chicken, and gumbo.</p>
+            <p class="product-card-teaser">This one comes straight out of the Louisiana playbook.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $7.99</span>
@@ -832,7 +836,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Mango Habanero</div>
-            <p class="product-card-teaser">Tropical sweetness meets Caribbean heat. Ripe mango carries the flavor, habanero delivers the finish. Bright, fruity, and approachable — excellent on grilled chicken and fish tacos.</p>
+            <p class="product-card-teaser">This one opens with ripe mango right out of the gate — sweet, bright, and tropical.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $8.00</span>
@@ -851,7 +855,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Psych Sauce</div>
-            <p class="product-card-teaser">Keeps things simple in the best way. Cayenne heat up front, fresh garlic and black pepper right behind it. Clean, punchy, and easy on pizza, wings, pasta, and burgers.</p>
+            <p class="product-card-teaser">This one keeps things simple in the best way.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $8.99</span>
@@ -870,7 +874,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Dragon's Breath</div>
-            <p class="product-card-teaser">Soy-driven umami with brown sugar sweetness, fresh ginger, and mild serrano heat. An Asian-inspired sauce built for dipping, drizzling, and anything that needs depth without fire.</p>
+            <p class="product-card-teaser">This one leans hard into that savory, umami-driven lane.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $9.99</span>
@@ -889,7 +893,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Lemon Drop</div>
-            <p class="product-card-teaser">Bright lemon-forward heat from the Aji Lemon Drop pepper — crisp, citrusy, and clean. A Rhode Island original built for seafood, oysters, and anything that benefits from citrus acidity with a kick.</p>
+            <p class="product-card-teaser">This one leads with bright citrus right away, thanks to the Aji Lemon Drop chili.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $9.99</span>
@@ -908,7 +912,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">The Green</div>
-            <p class="product-card-teaser">A verde sauce with backbone. Fire-roasted jalapeños and tomatillos open fresh, with lime, cilantro, garlic, and a ghost pepper finish that adds just enough glow. Ideal for tacos, grilled fish, and rice bowls.</p>
+            <p class="product-card-teaser">Looking for a verde sauce with some backbone? Go ahead and drop this one in the cart.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $9.00</span>
@@ -927,7 +931,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Tears of the Sun</div>
-            <p class="product-card-teaser">A Caribbean-influenced tropical sauce with mango, pineapple, and habanero heat. Fruit-forward and aromatic with a clean spicy finish that lingers without overwhelming.</p>
+            <p class="product-card-teaser">A Caribbean-influenced tropical sauce with mango, pineapple, and habanero heat.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $9.00</span>
@@ -968,7 +972,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Hellacious</div>
-            <p class="product-card-teaser">Smoky chipotle depth meets controlled habanero heat. Rich and roasted, with a long, warming finish. Exceptional on smoked meats, breakfast burritos, and anything that benefits from a deep smoke-and-spice layer.</p>
+            <p class="product-card-teaser">If you're a fan of smoky chipotle sauces, this one doesn't hold back.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $9.00</span>
@@ -987,7 +991,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">I Love Taco Sauce</div>
-            <p class="product-card-teaser">A taco sauce built to do more than sit on a shelf. Smoky, savory, and designed for Mexican-inspired cooking — works as a marinade, a finishing sauce, and a straight-up taco topper.</p>
+            <p class="product-card-teaser">Have taco vibes anytime, any place with this one.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $9.99</span>
@@ -1006,7 +1010,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Scotch Bonnet</div>
-            <p class="product-card-teaser">The classic Caribbean benchmark. Scotch bonnet pepper heat with a fruity, aromatic backbone. Bold, bright, and built for jerk chicken, fried plantains, and island-style cooking.</p>
+            <p class="product-card-teaser">This one brings classic Caribbean flavor to the table.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $9.00</span>
@@ -1026,7 +1030,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Exotic Tropical Habanero</div>
-            <p class="product-card-teaser">Tropical fruit sweetness with habanero bite. A bold, playfully named sauce that delivers serious flavor layering — sweet, fruity, and hot enough to mean business on any grilled protein.</p>
+            <p class="product-card-teaser">This one is definitely for the sweet-heat fans.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $9.99</span>
@@ -1045,7 +1049,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Rockin' Rasta: Jamaican Coconut Curry</div>
-            <p class="product-card-teaser">Coconut cream, curry spice, and Jamaican scotch bonnet heat in one bottle. Rich, aromatic, and unlike anything else on the shelf — exceptional on shrimp, rice dishes, and grilled vegetables.</p>
+            <p class="product-card-teaser">Jamaican Coconut Curry Scotch Bonnet blends fruity heat with rich coconut and aromatic Caribbean curry spices.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $10.99</span>
@@ -1064,7 +1068,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Garlic Habanero</div>
-            <p class="product-card-teaser">Bold roasted garlic and habanero heat in a savory, no-nonsense bottle. Deep, smoky, and direct — this one belongs on pork, grilled chicken, and anything that needs a savory-spicy kick with zero apology.</p>
+            <p class="product-card-teaser">Garlic lovers are going to feel right at home with some Hog's Ass habanero garlic hot sauce.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $8.99</span>
@@ -1083,7 +1087,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Fire Roasted Habanero</div>
-            <p class="product-card-teaser">Fire-roasted habanero with a bold, charred intensity and a clean, direct heat. Rustic, uncompromising, and versatile — made for grilling season and anyone who likes their heat with some character.</p>
+            <p class="product-card-teaser">A smoke-kissed hot sauce built around the bold warmth of fire-roasted habanero peppers.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $9.99</span>
@@ -1102,7 +1106,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Black Forest: Black Cherry Balsamic</div>
-            <p class="product-card-teaser">Black cherry and balsamic meet ghost pepper heat in one sophisticated, unexpected bottle. Dark, complex, and surprising — best on duck, pork, aged cheese boards, and anywhere bold acidity earns its place.</p>
+            <p class="product-card-teaser">Blends rich black cherry sweetness with fiery ghost pepper heat and aromatic sage.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $10.99</span>
@@ -1144,7 +1148,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Cinnamon Ghost Punch</div>
-            <p class="product-card-teaser">Super hot chilies layered with savory cinnamon warmth. Bold, unexpected, and competition-proven — NYC Hot Sauce Expo Hot Sauce of the Year 2024. Use sparingly.</p>
+            <p class="product-card-teaser">A super hot pepper blend layered with savory cinnamon warmth for a bold, unexpected flavor experience.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz</span>
@@ -1164,7 +1168,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Ghost Scream</div>
-            <p class="product-card-teaser">Ghost pepper heat with a fruity, tangy base that makes the fire sneak up on you. Accessible entry point to the extreme tier — the flavor is there right up until the heat reminds you who's in charge.</p>
+            <p class="product-card-teaser">A lightly smoked ghost pepper hot sauce crowned 2016 Hot Sauce of the Year at the NYC Hot Sauce Expo.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $12.00</span>
@@ -1183,7 +1187,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Ghostly Garlic</div>
-            <p class="product-card-teaser">Deep roasted garlic flavor collides with ghost pepper intensity. Savory and aromatic until it isn't — for heat-seekers who want their extreme sauce to taste like something while it sets them on fire.</p>
+            <p class="product-card-teaser">It opens with big roasted garlic flavor right out of the gate, then the ghost pepper shows up letting you know it means business.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $12.00</span>
@@ -1202,7 +1206,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Rogue</div>
-            <p class="product-card-teaser">Trinidad Moruga Scorpion and ghost pepper in a single bottle. Two of the heaviest hitters in the pepper world, combined by one of the most respected names in craft hot sauce. Not for the casual visitor.</p>
+            <p class="product-card-teaser">A blood orange-pear scorpion-ghost pepper hot sauce featured on Hot Ones Season 2.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $12.00</span>
@@ -1222,7 +1226,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">La Segadora</div>
-            <p class="product-card-teaser">Carolina Reaper from the award-winning CaJohn's label. "The Reaper" in a sauce with culinary intention — intense heat, real flavor, and no shortcuts. A serious bottle for serious heat-seekers.</p>
+            <p class="product-card-teaser">The amazing thing about this sauce is the Carolina Reaper heat doesn't linger forever — it shows up strong, then begins fading.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $14.00</span>
@@ -1241,7 +1245,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Naga Jolokia</div>
-            <p class="product-card-teaser">One of the world's hottest peppers in Melinda's reliable, flavor-first format. Intense ghost pepper heat delivered with enough structure and balance to still function as a culinary sauce, not just a dare.</p>
+            <p class="product-card-teaser">Designed for serious chili pepper enthusiasts — one of my all-time favs.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $12.00</span>
@@ -1260,7 +1264,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Dill Pickle Reaper</div>
-            <p class="product-card-teaser">The dill pickle sauce you tried in the Mild section, now with a Carolina Reaper. The tangy brine is still there. The Reaper makes sure you remember it. An evil twist on a fan favorite.</p>
+            <p class="product-card-teaser">If you love Mikey V's Jalapeño Dill Pickle but need serious heat, this one turns the dial way up.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $12.00</span>
@@ -1279,7 +1283,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Thunder Juice</div>
-            <p class="product-card-teaser">Aggressive heat in High River's signature balanced format. Named for a reason — the heat hits like a storm and rolls through. Deep pepper character, sustained burn, and just enough flavor to keep you coming back.</p>
+            <p class="product-card-teaser">A full-bodied, tequila-infused hot sauce built around explosive superhot peppers and layered fruit complexity.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $12.00</span>
@@ -1298,7 +1302,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Foo Foo Mama Choo</div>
-            <p class="product-card-teaser">The full Carolina Reaper experience from High River — one of the genre's most acclaimed producers. Maximum Scoville territory wrapped in a sauce that somehow still has flavor underneath the heat. Use sparingly.</p>
+            <p class="product-card-teaser">Foo Foo Mama Choo is a deceptive one — the sweetness makes the first taste feel smooth and approachable.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $12.00</span>
@@ -1317,7 +1321,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">357 Reaper Sriracha</div>
-            <p class="product-card-teaser">Mad Dog's legendary heat weaponized in a Sriracha-meets-Reaper format. Familiar, approachable flavor profile right up until the 357,000 Scovilles take over. The heat lingers. Plan accordingly.</p>
+            <p class="product-card-teaser">The Reaper Sriracha achieves a rare balance of inferno heat and true sriracha-style flavor.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $12.00</span>
@@ -1336,7 +1340,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Taco X</div>
-            <p class="product-card-teaser">What happens when you take a taco sauce profile and add extreme pepper heat? High River's answer. Taco-ready flavors — cumin, garlic, tomato — pushed to their thermal limit by Pepper X and Reaper.</p>
+            <p class="product-card-teaser">Opens with bold classic taco sauce flavor — then the Pepper X heat lights the fuse and the fire begins to build fast.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $14.99</span>
@@ -1355,7 +1359,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Gator Sauce</div>
-            <p class="product-card-teaser">Ed Curlin's Pepper X — bred to be the world's hottest — in Pucker Butt's Gator Sauce format. Southern Louisiana-style flavor foundation with a Pepper X payload. The name is accurate. You've been warned.</p>
+            <p class="product-card-teaser">Designed for extreme heat enthusiasts who demand record-level intensity without sacrificing flavor integrity.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $14.99</span>
@@ -1375,7 +1379,7 @@
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Peppers Up</div>
-            <p class="product-card-teaser">The Apollo pepper — a Pepper X and Carolina Reaper cross — delivers heat that goes beyond the chart. 11/10 is not marketing. High River made it culinary anyway. Not a casual purchase.</p>
+            <p class="product-card-teaser">Peppers Up! greets you with Apollo pepper heat right away — just enough to say hello.</p>
           </div>
           <div class="product-card-footer">
             <span class="product-card-price">5 fl oz · $14.00</span>
