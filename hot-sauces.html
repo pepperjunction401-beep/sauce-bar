@@ -361,21 +361,19 @@
     .product-card {
       position: relative;
       background: var(--cream-warm);
-      border: 1px solid rgba(184,137,57,0.3);
-      border-radius: 3px;
+      border: none;
+      border-radius: 0;
       overflow: hidden;
-      box-shadow: var(--shadow-card);
+      box-shadow: none;
       display: flex;
       flex-direction: column;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      transition: transform 0.25s ease;
       text-decoration: none;
       color: var(--ink);
     }
 
     .product-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 36px rgba(43,29,21,0.22);
-      border-color: rgba(184,137,57,0.65);
     }
 
 
