@@ -656,6 +656,59 @@
     }
     .back-top-link:hover { opacity: 0.9; border-color: rgba(184,137,57,0.5); }
 
+    /* ── SECTION JUMP NAV ─────────────────────────────────────── */
+    .section-jump {
+      background: rgba(30,48,32,0.85);
+      border-bottom: 1px solid rgba(184,137,57,0.25);
+      padding: 14px 48px;
+      position: sticky;
+      top: 92px;
+      z-index: 90;
+      backdrop-filter: blur(4px);
+    }
+
+    .section-jump-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .jump-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.6;
+      margin-right: 8px;
+      white-space: nowrap;
+    }
+
+    .jump-link {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.55;
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid rgba(184,137,57,0.2);
+      border-radius: 2px;
+      transition: opacity 0.2s, border-color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .jump-link:hover {
+      opacity: 1;
+      border-color: rgba(184,137,57,0.55);
+      background: rgba(184,137,57,0.08);
+    }
+
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -665,6 +718,7 @@
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
       .page-hero { padding: 36px 20px 40px; }
+      .section-jump { padding: 12px 20px; top: 84px; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .wood-divider { height: 120px; }
       .header-nav { display: none; }
@@ -705,171 +759,40 @@
     </div>
   </section>
 
-  <!-- ═══ WOOD DIVIDER ═════════════════════════════════════════ -->
-  <div class="wood-divider">
+  <!-- ═══ WOOD DIVIDER — BBQ SAUCES & DRY RUBS ════════════════ -->
+  <div class="wood-divider" id="bbq-rubs">
     <div class="wood-divider__label">
       <div class="wood-divider__line1">Season It Right</div>
       <div class="wood-divider__line2">Smoke It Proud</div>
     </div>
   </div>
 
-  <!-- ═══ FULL CATALOG ═════════════════════════════════════════ -->
+  <!-- ═══ SECTION JUMP NAV ═════════════════════════════════════ -->
+  <nav class="section-jump" aria-label="Jump to category section">
+    <div class="section-jump-inner">
+      <span class="jump-label">Jump to:</span>
+      <a class="jump-link" href="#bbq-rubs">🍖 BBQ Sauces &amp; Dry Rubs</a>
+      <a class="jump-link" href="#seasonings">🧂 Seasonings</a>
+    </div>
+  </nav>
+
+  <!-- ═══ BBQ SAUCES & DRY RUBS CATALOG ════════════════════════ -->
   <section class="catalog-section">
     <div class="container">
 
+      <!-- BBQ Sauces sub-header -->
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
-          <span class="cat-divider-emoji">🔥</span>
-          <span class="cat-divider-text">Seasonings, Dry Rubs &amp; BBQ Sauces</span>
-          <span class="cat-divider-count">12 Products</span>
+          <span class="cat-divider-emoji">🍖</span>
+          <span class="cat-divider-text">BBQ Sauces</span>
+          <span class="cat-divider-count">2 Sauces</span>
         </div>
         <div class="cat-divider-line right"></div>
       </div>
 
-      <div class="product-grid">
-
-        <!-- ── Slap Ya Mama Cajun Seasoning Original ── -->
-        <a class="product-card reveal" href="products/slap-ya-mama-cajun-seasoning-original.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
-            <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-seasoning-original.png" alt="Slap Ya Mama Cajun Seasoning Original" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🧂</span>
-              <span class="type-badge-text">Seasoning</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Cajun Seasoning Original</div>
-            <p class="product-card-teaser">A great mixture of spices that can be used on any dish. Not too spicy and full of flavor.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">8 oz · $5.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Slap Ya Mama Cajun Seasoning Hot ── -->
-        <a class="product-card reveal" href="products/slap-ya-mama-cajun-seasoning-hot.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
-            <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-seasoning-hot.png" alt="Slap Ya Mama Cajun Seasoning Hot" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🧂</span>
-              <span class="type-badge-text">Seasoning</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Cajun Seasoning Hot</div>
-            <p class="product-card-teaser">Same great Cajun flavor as the Original — just kicks up the heat to set your mouth on fire.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">8 oz · $5.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Slap Ya Mama Cajun Seasoning Low Sodium ── -->
-        <a class="product-card reveal" href="products/slap-ya-mama-cajun-seasoning-low-sodium.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
-            <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-seasoning-low-sodium.png" alt="Slap Ya Mama Cajun Seasoning Low Sodium" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🧂</span>
-              <span class="type-badge-text">Seasoning</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Cajun Seasoning Low Sodium</div>
-            <p class="product-card-teaser">The Cajun flavor you love — crafted for a low-sodium lifestyle without sacrificing anything.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">8 oz · $5.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Sucklebusters 1836 Beef Rub ── -->
-        <a class="product-card reveal" href="products/sucklebusters-1836-beef-rub.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-1836-beef-rub.png" alt="Sucklebusters 1836 Beef Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🥩</span>
-              <span class="type-badge-text">Dry Rub</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">1836 Beef Rub</div>
-            <p class="product-card-teaser">Authentic Texas-style beef rub. Cracked peppercorns build a hardy bark on brisket during low-slow cooks.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Sucklebusters BAMM BBQ Dry Rub ── -->
-        <a class="product-card reveal" href="products/sucklebusters-bamm-bbq-dry-rub.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-bamm-bbq-dry-rub.png" alt="Sucklebusters BAMM BBQ Dry Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🥩</span>
-              <span class="type-badge-text">Dry Rub</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">BAMM! Habanero BBQ Rub</div>
-            <p class="product-card-teaser">Elevated sweetness meets habanero heat. The fruity kick perfectly amplifies the natural sweetness of chicken and pork.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Sucklebusters Hogwaller BBQ Dry Rub ── -->
-        <a class="product-card reveal" href="products/sucklebusters-hogwaller-bbq-dry-rub.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-hogwaller-bbq-dry-rub.png" alt="Sucklebusters Hogwaller BBQ Dry Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🥩</span>
-              <span class="type-badge-text">Dry Rub</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Hog Waller Pork &amp; Rib Rub</div>
-            <p class="product-card-teaser">The infamous Hog Waller — known to smoke pork shoulders and ribs right off the bone.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Sucklebusters Cluckerdust Chipotle BBQ Dry Rub ── -->
-        <a class="product-card reveal" href="products/sucklebusters-cluckerdust-chipotle-bbq-dry-rub.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-cluckerdust-chipotle-bbq-dry-rub.png" alt="Sucklebusters Cluckerdust Chipotle BBQ Dry Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🍗</span>
-              <span class="type-badge-text">Dry Rub</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Clucker Dust Chipotle Rub</div>
-            <p class="product-card-teaser">Pepper Junction's #1 best seller. Nationally award-winning and built specifically for chicken and turkey.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
+      <!-- 2 sauces, 3-col grid, left-aligned -->
+      <div class="product-grid" style="margin-bottom: 48px;">
 
         <!-- ── Sucklebusters Original BBQ Sauce ── -->
         <a class="product-card reveal" href="products/sucklebusters-original-bbq-sauce.html">
@@ -913,6 +836,63 @@
           </div>
         </a>
 
+      </div><!-- /bbq sauces grid -->
+
+      <!-- Dry Rubs sub-header -->
+      <div class="cat-divider">
+        <div class="cat-divider-line left"></div>
+        <div class="cat-divider-badge">
+          <span class="cat-divider-emoji">🥩</span>
+          <span class="cat-divider-text">Dry Rubs</span>
+          <span class="cat-divider-count">6 Rubs</span>
+        </div>
+        <div class="cat-divider-line right"></div>
+      </div>
+
+      <!-- 6 dry rubs: Hogwaller, 1836, 2 Pig Mafia, All Purpose, Clucker Dust, BAMM -->
+      <div class="product-grid">
+
+        <!-- ── Sucklebusters Hogwaller ── -->
+        <a class="product-card reveal" href="products/sucklebusters-hogwaller-bbq-dry-rub.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
+            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
+            <img src="assets/pullman-product-display/cat-sucklebusters-hogwaller-bbq-dry-rub.png" alt="Sucklebusters Hogwaller BBQ Dry Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🥩</span>
+              <span class="type-badge-text">Dry Rub</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">Hog Waller Pork &amp; Rib Rub</div>
+            <p class="product-card-teaser">The infamous Hog Waller — known to smoke pork shoulders and ribs right off the bone.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">14 oz · $14.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+        <!-- ── Sucklebusters 1836 Beef Rub ── -->
+        <a class="product-card reveal" href="products/sucklebusters-1836-beef-rub.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
+            <img src="assets/pullman-product-display/cat-sucklebusters-1836-beef-rub.png" alt="Sucklebusters 1836 Beef Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🥩</span>
+              <span class="type-badge-text">Dry Rub</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">1836 Beef Rub</div>
+            <p class="product-card-teaser">Authentic Texas-style beef rub. Cracked peppercorns build a hardy bark on brisket during low-slow cooks.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">14 oz · $14.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
         <!-- ── 2 Pig Mafia Steak Seasoning ── -->
         <a class="product-card reveal" href="products/two-pig-mafia-steak-seasoning.html">
           <div class="product-card-image">
@@ -921,7 +901,7 @@
             <img src="assets/pullman-product-display/cat-two-pig-mafia-steak-seasoning.png" alt="2 Pig Mafia Steak Seasoning" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🥩</span>
-              <span class="type-badge-text">Seasoning</span>
+              <span class="type-badge-text">Dry Rub</span>
             </div>
           </div>
           <div class="product-card-body">
@@ -954,27 +934,152 @@
           </div>
         </a>
 
-        <!-- ── Mikey V's Fried Garlic BBQ ── -->
-        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-bbq.html">
+        <!-- ── Sucklebusters Clucker Dust ── -->
+        <a class="product-card reveal" href="products/sucklebusters-cluckerdust-chipotle-bbq-dry-rub.html">
           <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
-            <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-bbq.png" alt="Mikey V's Fried Garlic BBQ" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
+            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
+            <img src="assets/pullman-product-display/cat-sucklebusters-cluckerdust-chipotle-bbq-dry-rub.png" alt="Sucklebusters Cluckerdust Chipotle BBQ Dry Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🍗</span>
+              <span class="type-badge-text">Dry Rub</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">Clucker Dust Chipotle Rub</div>
+            <p class="product-card-teaser">Pepper Junction's #1 best seller. Nationally award-winning and built specifically for chicken and turkey.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">14 oz · $14.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+        <!-- ── Sucklebusters BAMM ── -->
+        <a class="product-card reveal" href="products/sucklebusters-bamm-bbq-dry-rub.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
+            <img src="assets/pullman-product-display/cat-sucklebusters-bamm-bbq-dry-rub.png" alt="Sucklebusters BAMM BBQ Dry Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🥩</span>
+              <span class="type-badge-text">Dry Rub</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">BAMM! Habanero BBQ Rub</div>
+            <p class="product-card-teaser">Elevated sweetness meets habanero heat. The fruity kick perfectly amplifies the natural sweetness of chicken and pork.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">14 oz · $14.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+      </div><!-- /dry rubs grid -->
+    </div>
+  </section>
+
+  <!-- ═══ WOOD DIVIDER — SEASONINGS ════════════════════════════ -->
+  <div class="wood-divider" id="seasonings">
+  </div>
+
+  <!-- ═══ SEASONINGS CATALOG ════════════════════════════════════ -->
+  <section class="catalog-section">
+    <div class="container">
+
+      <div class="cat-divider">
+        <div class="cat-divider-line left"></div>
+        <div class="cat-divider-badge">
+          <span class="cat-divider-emoji">🧂</span>
+          <span class="cat-divider-text">Seasonings</span>
+          <span class="cat-divider-count">4 Products</span>
+        </div>
+        <div class="cat-divider-line right"></div>
+      </div>
+
+      <div class="product-grid">
+
+        <!-- ── Slap Ya Mama Original ── -->
+        <a class="product-card reveal" href="products/slap-ya-mama-cajun-seasoning-original.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
+            <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-seasoning-original.png" alt="Slap Ya Mama Cajun Seasoning Original" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🧂</span>
+              <span class="type-badge-text">Seasoning</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">Cajun Seasoning Original</div>
+            <p class="product-card-teaser">A great mixture of spices that can be used on any dish. Not too spicy and full of flavor.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">8 oz · $5.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+        <!-- ── Slap Ya Mama Hot Blend ── -->
+        <a class="product-card reveal" href="products/slap-ya-mama-cajun-seasoning-hot.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
+            <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-seasoning-hot.png" alt="Slap Ya Mama Cajun Seasoning Hot" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🧂</span>
+              <span class="type-badge-text">Seasoning</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">Cajun Seasoning Hot Blend</div>
+            <p class="product-card-teaser">Same great Cajun flavor as the Original — just kicks up the heat to set your mouth on fire.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">8 oz · $5.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+        <!-- ── Slap Ya Mama Low Sodium ── -->
+        <a class="product-card reveal" href="products/slap-ya-mama-cajun-seasoning-low-sodium.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
+            <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-seasoning-low-sodium.png" alt="Slap Ya Mama Cajun Seasoning Low Sodium" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🧂</span>
+              <span class="type-badge-text">Seasoning</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">Cajun Seasoning Low Sodium</div>
+            <p class="product-card-teaser">The Cajun flavor you love — crafted for a low-sodium lifestyle without sacrificing anything.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">8 oz · $5.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+        <!-- ── Ass Kickin' Habanero Garlic Salt ── -->
+        <a class="product-card reveal" href="products/ass-kickin-habanero-garlic-salt.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Ass Kickin'</span></div>
+            <img src="assets/pullman-product-display/cat-ass-kickin-habanero-garlic-salt.png" alt="Ass Kickin' Habanero Garlic Salt" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🧄</span>
               <span class="type-badge-text">Seasoning</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Fried Garlic BBQ</div>
-            <p class="product-card-teaser">Bold fried garlic meets BBQ seasoning — deep savory crunch with smoky, sweet spice built for grilling and finishing.</p>
+            <div class="product-card-name">Habanero Garlic Salt</div>
+            <p class="product-card-teaser">Spicy habanero and garlic blended into the ultimate flavored salt — an amazing layer of flavor and heat on everything it touches.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">Mikey V's</span>
+            <span class="product-card-price">4 oz · $8.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-      </div><!-- /product-grid -->
+      </div><!-- /seasonings grid -->
     </div>
   </section>
 
@@ -1009,6 +1114,29 @@
       });
     }, { threshold: 0.08 });
     revealEls.forEach(function (el) { observer.observe(el); });
+
+    /* ── ACTIVE JUMP LINK ── */
+    const sections = [
+      document.getElementById('bbq-rubs'),
+      document.getElementById('seasonings')
+    ];
+    const jumpLinks = document.querySelectorAll('.jump-link');
+
+    const sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          jumpLinks.forEach(function (link) {
+            const active = link.getAttribute('href') === '#' + id;
+            link.style.opacity = active ? '1' : '0.55';
+            link.style.borderColor = active ? 'rgba(184,137,57,0.65)' : 'rgba(184,137,57,0.2)';
+            link.style.background = active ? 'rgba(184,137,57,0.12)' : '';
+          });
+        }
+      });
+    }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
+
+    sections.forEach(function (s) { if (s) sectionObserver.observe(s); });
   })();
   </script>
 
