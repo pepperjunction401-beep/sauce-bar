@@ -675,6 +675,35 @@
     }
     .back-top-link:hover { opacity: 0.9; border-color: rgba(184,137,57,0.5); }
 
+    /* ── OUT OF STOCK RIBBON ─────────────────────────────────── */
+    .ribbon-oos {
+      position: absolute;
+      top: 28px;
+      right: -32px;
+      width: 140px;
+      background: var(--crimson);
+      color: var(--cream-warm);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 6px 0;
+      transform: rotate(45deg);
+      transform-origin: center;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* Dim the card image when out of stock */
+    .product-card.oos .product-card-image img {
+      filter: grayscale(40%) brightness(0.8);
+    }
+
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -887,9 +916,10 @@
         </a>
 
         <!-- ── Melinda's Chipotle Ketchup ── -->
-        <a class="product-card reveal" href="products/melindas-chipotle-ketchup.html">
+        <a class="product-card oos reveal" href="products/melindas-chipotle-ketchup.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
+            <div class="ribbon-oos">Out of Stock</div>
             <img src="assets/pullman-product-display/cat-melindas-chipotle-ketchup.png" alt="Melinda's Chipotle Ketchup" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🍅</span>
@@ -907,9 +937,10 @@
         </a>
 
         <!-- ── Melinda's Ghost Pepper Ketchup ── -->
-        <a class="product-card reveal" href="products/melindas-ghost-pepper-ketchup.html">
+        <a class="product-card oos reveal" href="products/melindas-ghost-pepper-ketchup.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
+            <div class="ribbon-oos">Out of Stock</div>
             <img src="assets/pullman-product-display/cat-melindas-ghost-pepper-ketchup.png" alt="Melinda's Ghost Pepper Ketchup" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🍅</span>
