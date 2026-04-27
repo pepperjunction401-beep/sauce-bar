@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Olive Oils &amp; Vinegar — Pepper Junction</title>
-  <meta name="description" content="Ariston Mediterranean olive oils and balsamic vinegars at Pepper Junction — infused with chili, garlic, lemon, Tuscan herbs, fig, and black cherry. Rhode Island's specialty sauce destination since 2014." />
+  <title>Snacks — Pepper Junction</title>
+  <meta name="description" content="Mikey V's Gator Toes fried garlic snacks at Pepper Junction — five bold flavors from mild BBQ to extreme Loco Spice. Rhode Island's specialty sauce destination since 2014." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
 
-    /* ── CSS VARIABLES (exact match to main.html) ─────────────── */
+    /* ── CSS VARIABLES (exact match) ─────────────────────────── */
     :root {
       --cream:        #F5ECD6;
       --cream-deep:   #EDD9B4;
@@ -84,10 +84,7 @@
       text-decoration: none;
     }
 
-    .header-logo img {
-      height: 52px;
-      width: auto;
-    }
+    .header-logo img { height: 52px; width: auto; }
 
     .header-wordmark {
       display: flex;
@@ -145,24 +142,21 @@
 
     /* ── PAGE HERO ────────────────────────────────────────────── */
     .page-hero {
-      background: var(--green-dark);
+      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
+      background-size: cover;
+      background-position: center;
       padding: 52px 48px 56px;
       position: relative;
       overflow: hidden;
-      border-bottom: 1px solid rgba(184,137,57,0.3);
+      border-bottom: 2px solid var(--brass);
     }
 
     .page-hero::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 3px,
-        rgba(184,137,57,0.03) 3px,
-        rgba(184,137,57,0.03) 4px
-      );
+      background: rgba(0,0,0,0.45);
+      pointer-events: none;
     }
 
     .page-hero-inner {
@@ -197,7 +191,7 @@
 
     .page-hero-headline {
       font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(32px, 5vw, 64px);
+      font-size: clamp(28px, 4.5vw, 58px);
       color: var(--cream-warm);
       line-height: 1.1;
       letter-spacing: 0.02em;
@@ -214,15 +208,72 @@
       line-height: 1.6;
     }
 
+    /* ── WOOD PLANK SECTION DIVIDER ──────────────────────────── */
+    .wood-divider {
+      width: 100%;
+      height: 220px;
+      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wood-divider::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg,
+        rgba(0,0,0,0.35) 0%,
+        rgba(0,0,0,0.08) 30%,
+        rgba(0,0,0,0.08) 70%,
+        rgba(0,0,0,0.35) 100%);
+      pointer-events: none;
+    }
+
+    .wood-divider__label {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 28px;
+      border-top: 1px solid rgba(184,137,57,0.4);
+      border-bottom: 1px solid rgba(184,137,57,0.4);
+      background: rgba(0,0,0,0.18);
+    }
+
+    .wood-divider__line1 {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(22px, 4vw, 54px);
+      letter-spacing: 0.02em;
+      color: var(--cream-warm);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.6);
+      line-height: 1.2;
+    }
+
+    .wood-divider__line2 {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(22px, 4vw, 54px);
+      letter-spacing: 0.02em;
+      color: var(--brass-bright);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+      line-height: 1.2;
+    }
+
     /* ── CATALOG SECTION ──────────────────────────────────────── */
     .catalog-section {
-      padding: 52px 0 60px;
+      padding: 64px 0 48px;
       position: relative;
       z-index: 1;
       background-image: url('assets/textures/green-steel-panel-bg.png');
       background-size: cover;
-      background-position: center top;
-      background-repeat: no-repeat;
+      background-position: -8px top;
+      background-repeat: repeat-y;
     }
 
     .catalog-section::before {
@@ -242,8 +293,8 @@
       opacity: 0.5;
     }
 
-    /* ── SECTION DIVIDER ──────────────────────────────────────── */
-    .heat-divider {
+    /* ── CATEGORY DIVIDER ─────────────────────────────────────── */
+    .cat-divider {
       display: flex;
       align-items: center;
       gap: 20px;
@@ -251,18 +302,11 @@
       padding: 0 4px;
     }
 
-    .heat-divider-line {
-      flex: 1;
-      height: 1px;
-    }
-    .heat-divider-line.left {
-      background: linear-gradient(90deg, transparent, var(--brass));
-    }
-    .heat-divider-line.right {
-      background: linear-gradient(90deg, var(--brass), transparent);
-    }
+    .cat-divider-line { flex: 1; height: 1px; }
+    .cat-divider-line.left  { background: linear-gradient(90deg, transparent, var(--brass)); }
+    .cat-divider-line.right { background: linear-gradient(90deg, var(--brass), transparent); }
 
-    .heat-divider-badge {
+    .cat-divider-badge {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -274,14 +318,11 @@
       white-space: nowrap;
     }
 
-    .heat-divider-emoji {
-      font-size: 14px;
-      line-height: 1;
-    }
+    .cat-divider-emoji { font-size: 14px; line-height: 1; }
 
-    .heat-divider-text {
+    .cat-divider-text {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
+      font-size: 18px;
       font-weight: 700;
       letter-spacing: 0.32em;
       text-transform: uppercase;
@@ -289,9 +330,9 @@
       text-shadow: 0 1px 6px rgba(0,0,0,0.5);
     }
 
-    .heat-divider-count {
+    .cat-divider-count {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
+      font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.2em;
       color: var(--brass);
@@ -301,43 +342,59 @@
     /* ── PRODUCT CARD GRID ────────────────────────────────────── */
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
       margin-bottom: 16px;
-    }
-
-    /* 6-card layout: 4 top row + 2 centered on bottom row */
-    .product-grid.six-up {
-      grid-template-columns: repeat(4, 1fr);
-    }
-    .product-grid.six-up .product-card:nth-child(5) {
-      grid-column: 2 / 3;
     }
 
     .product-card {
       position: relative;
       background: var(--cream-warm);
-      border: 1px solid rgba(184,137,57,0.3);
-      border-radius: 3px;
+      border: none;
+      border-radius: 0;
       overflow: hidden;
-      box-shadow: var(--shadow-card);
+      box-shadow: none;
       display: flex;
       flex-direction: column;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      transition: transform 0.25s ease;
       text-decoration: none;
       color: var(--ink);
     }
 
-    .product-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 36px rgba(43,29,21,0.22);
-      border-color: rgba(184,137,57,0.65);
+    .product-card:hover { transform: translateY(-4px); }
+
+    /* ── MAKER BADGE ─────────────────────────────────────────── */
+    .maker-badge {
+      position: absolute;
+      top: 54px;
+      left: 48px;
+      background: rgba(30,48,32,0.88);
+      border: 1px solid rgba(184,137,57,0.5);
+      border-radius: 2px;
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(4px);
+      z-index: 2;
     }
 
+    .maker-badge-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      white-space: nowrap;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    }
+
+    /* Card image */
     .product-card-image {
       position: relative;
       width: 100%;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 4 / 5;
       overflow: hidden;
       background: var(--green-dark);
       flex-shrink: 0;
@@ -351,14 +408,12 @@
       transition: transform 0.35s ease;
     }
 
-    .product-card:hover .product-card-image img {
-      transform: scale(1.04);
-    }
+    .product-card:hover .product-card-image img { transform: scale(1.04); }
 
-    /* Type badge (Olive Oil / Balsamic Vinegar — no heat badge) */
+    /* ── TYPE BADGE ──────────────────────────────────────────── */
     .type-badge {
       position: absolute;
-      bottom: 10px;
+      bottom: 36px;
       left: 10px;
       background: rgba(30,48,32,0.88);
       border: 1px solid rgba(184,137,57,0.5);
@@ -370,10 +425,7 @@
       backdrop-filter: blur(4px);
     }
 
-    .type-badge-emoji {
-      font-size: 11px;
-      line-height: 1;
-    }
+    .type-badge-emoji { font-size: 11px; line-height: 1; }
 
     .type-badge-text {
       font-family: 'Josefin Sans', sans-serif;
@@ -387,28 +439,29 @@
 
     /* Card body */
     .product-card-body {
-      padding: 18px 18px 16px;
+      padding: 8px 12px 6px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 3px;
       flex: 1;
+      background: var(--cream-warm);
     }
 
     .product-card-name {
       font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(14px, 1.5vw, 17px);
+      font-size: clamp(11px, 1.1vw, 13px);
       color: var(--ink);
-      line-height: 1.2;
+      line-height: 1.15;
       letter-spacing: 0.03em;
     }
 
     .product-card-teaser {
-      font-size: 12px;
-      line-height: 1.65;
+      font-size: 9px;
+      line-height: 1.45;
       color: var(--ink-soft);
       flex: 1;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -417,9 +470,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 18px 14px;
+      padding: 6px 12px 8px;
       border-top: 1px solid rgba(184,137,57,0.18);
-      background: rgba(184,137,57,0.04);
+      background: var(--cream-warm);
     }
 
     .product-card-price {
@@ -459,33 +512,7 @@
       transition: transform 0.2s;
     }
 
-    .product-card:hover .product-card-btn-arrow {
-      transform: translateX(3px);
-    }
-
-    /* ── WOOD DIVIDER ─────────────────────────────────────────── */
-    .wood-divider {
-      position: relative;
-      width: 100%;
-      height: 140px;
-      background-image: url('assets/textures/wood-divider.png');
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-    }
-
-    .wood-divider__label {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(18px, 2.5vw, 28px);
-      color: var(--cream-warm);
-      letter-spacing: 0.08em;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.6);
-      text-align: center;
-      padding: 0 24px;
-    }
+    .product-card:hover .product-card-btn-arrow { transform: translateX(3px); }
 
     /* ── FOOTER ───────────────────────────────────────────────── */
     .site-footer {
@@ -518,18 +545,10 @@
       opacity: 0.4;
     }
 
-    .footer-item a {
-      color: inherit;
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
+    .footer-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
     .footer-item a:hover { opacity: 1; }
 
-    .footer-sep {
-      width: 1px;
-      height: 12px;
-      background: rgba(184,137,57,0.3);
-    }
+    .footer-sep { width: 1px; height: 12px; background: rgba(184,137,57,0.3); }
 
     .footer-right {
       font-family: 'Josefin Sans', sans-serif;
@@ -547,10 +566,7 @@
       transform: translateY(24px);
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ── BACK TO TOP ──────────────────────────────────────────── */
     .back-top {
@@ -583,7 +599,6 @@
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-      .product-grid.six-up .product-card:nth-child(5) { grid-column: auto; }
     }
 
     @media (max-width: 640px) {
@@ -591,7 +606,6 @@
       .site-header { padding: 16px 20px; }
       .page-hero { padding: 36px 20px 40px; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .product-grid.six-up .product-card:nth-child(5) { grid-column: auto; }
       .wood-divider { height: 120px; }
       .header-nav { display: none; }
       .site-footer { padding: 20px; }
@@ -624,144 +638,133 @@
       <div class="breadcrumb">
         <a href="main.html">Main Street Station</a>
         <span class="breadcrumb-sep">›</span>
-        <span>Olive Oils &amp; Vinegar</span>
+        <span>Snacks</span>
       </div>
-      <h1 class="page-hero-headline">Olive Oils &amp; Vinegar</h1>
-      <p class="page-hero-sub">Ariston infused olive oils and oak-matured balsamics from Greece and Italy — crafted to finish, drizzle, and elevate everything on the table.</p>
+      <h1 class="page-hero-headline">Snacks</h1>
+      <p class="page-hero-sub">Whole deep-fried garlic cloves. Five bold flavors. Impossible to put down — straight from the bag or crushed over everything.</p>
     </div>
   </section>
 
   <!-- ═══ WOOD DIVIDER ════════════════════════════════════════ -->
-  <div class="wood-divider" id="ariston">
-    <div class="wood-divider__label">🫒 Ariston Mediterranean Collection</div>
+  <div class="wood-divider" id="fried-garlic">
+    <div class="wood-divider__label">
+      <div class="wood-divider__line1">Mikey V's Gator Toes</div>
+      <div class="wood-divider__line2">Fried Garlic Cloves</div>
+    </div>
   </div>
 
-  <!-- ═══ OLIVE OILS & VINEGAR CATALOG ════════════════════════ -->
+  <!-- ═══ SNACKS CATALOG ═══════════════════════════════════════ -->
   <section class="catalog-section">
     <div class="container">
 
-      <div class="heat-divider">
-        <div class="heat-divider-line left"></div>
-        <div class="heat-divider-badge">
-          <span class="heat-divider-emoji">🫒</span>
-          <span class="heat-divider-text">Ariston · Greece &amp; Italy</span>
-          <span class="heat-divider-count">4 Olive Oils · 2 Balsamics · 8.45 fl oz</span>
+      <div class="cat-divider">
+        <div class="cat-divider-line left"></div>
+        <div class="cat-divider-badge">
+          <span class="cat-divider-emoji">🧄</span>
+          <span class="cat-divider-text">Deep-Fried Whole Garlic Cloves</span>
+          <span class="cat-divider-count">5 Flavors · Small Batch · Texas Made</span>
         </div>
-        <div class="heat-divider-line right"></div>
+        <div class="cat-divider-line right"></div>
       </div>
 
-      <div class="product-grid six-up">
+      <div class="product-grid">
 
-        <!-- Ariston Chili Infused Olive Oil -->
-        <a class="product-card reveal" href="products/ariston-chili-infused-olive-oil.html">
+        <!-- ── Fried Garlic Dill Pickle ── -->
+        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-dill-pickle.html">
           <div class="product-card-image">
-            <img src="assets/pullman-product-display/cat-ariston-chili-infused-olive-oil.png" alt="Ariston Chili Infused Olive Oil" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
+            <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-dill-pickle.png" alt="Mikey V's Fried Garlic Dill Pickle" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🫒</span>
-              <span class="type-badge-text">Olive Oil</span>
+              <span class="type-badge-emoji">🥒</span>
+              <span class="type-badge-text">Fried Garlic · Dill Pickle</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Ariston Chili Infused Olive Oil</div>
-            <p class="product-card-teaser">Silky Koroneiki olive oil from Greece, infused with chili peppers that lend a gentle, balanced warmth. The heat builds slowly and stays clean — just enough spark to elevate pizza, pasta, grilled vegetables, and fresh bread.</p>
+            <div class="product-card-name">Gator Toes Dill Pickle</div>
+            <p class="product-card-teaser">Bright acidity hits first, followed by smooth garlic richness that rounds out every bite.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8.45 fl oz · $15.99</span>
+            <span class="product-card-price">3 oz · $9.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- Ariston Garlic Infused Olive Oil -->
-        <a class="product-card reveal" href="products/ariston-garlic-infused-olive-oil.html">
+        <!-- ── Fried Garlic BBQ ── -->
+        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-bbq.html">
           <div class="product-card-image">
-            <img src="assets/pullman-product-display/cat-ariston-garlic-infused-olive-oil.png" alt="Ariston Garlic Infused Olive Oil" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
+            <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-bbq.png" alt="Mikey V's Fried Garlic BBQ" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🫒</span>
-              <span class="type-badge-text">Olive Oil</span>
+              <span class="type-badge-emoji">🍖</span>
+              <span class="type-badge-text">Fried Garlic · BBQ</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Ariston Garlic Infused Olive Oil</div>
-            <p class="product-card-teaser">Fresh garlic slowly infused into smooth, buttery Koroneiki olive oil — allowing the flavor to open up and round out rather than hit sharp or harsh. Deep, savory garlic character with a clean finish. Essential for pasta, bread dipping, and grilled meats.</p>
+            <div class="product-card-name">Gator Toes BBQ</div>
+            <p class="product-card-teaser">Smoky, savory Texas-style BBQ with a touch of sweetness meets rich garlic crunch. Made for charcuterie boards and cold beer.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8.45 fl oz · $15.99</span>
+            <span class="product-card-price">3 oz · $9.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- Ariston Lemon Infused Olive Oil -->
-        <a class="product-card reveal" href="products/ariston-lemon-infused-olive-oil.html">
+        <!-- ── Fried Garlic Buffalo ── -->
+        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-buffalo.html">
           <div class="product-card-image">
-            <img src="assets/pullman-product-display/cat-ariston-lemon-infused-olive-oil.png" alt="Ariston Lemon Infused Olive Oil" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
+            <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-buffalo.png" alt="Mikey V's Fried Garlic Buffalo" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🫒</span>
-              <span class="type-badge-text">Olive Oil</span>
+              <span class="type-badge-emoji">🔥</span>
+              <span class="type-badge-text">Fried Garlic · Buffalo</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Ariston Lemon Infused Olive Oil</div>
-            <p class="product-card-teaser">Fresh lemon infused into smooth Greek olive oil — bright citrus lift without overpowering the olive. Silky and aromatic, with clean lemon freshness that naturally wakes up seafood, salads, and Mediterranean dishes. Sunshine in a bottle.</p>
+            <div class="product-card-name">Gator Toes Buffalo</div>
+            <p class="product-card-teaser">Tangy buffalo wing heat wrapped around crispy whole garlic cloves. Wing lovers will recognize it instantly.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8.45 fl oz · $15.99</span>
+            <span class="product-card-price">3 oz · $9.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- Ariston Tuscan Herb Infused Olive Oil -->
-        <a class="product-card reveal" href="products/ariston-tuscan-herb-infused-olive-oil.html">
+        <!-- ── Fried Garlic Spicy ── -->
+        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-spicy.html">
           <div class="product-card-image">
-            <img src="assets/pullman-product-display/cat-ariston-tuscan-herb-infused-olive-oil.png" alt="Ariston Tuscan Herb Infused Olive Oil" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
+            <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-spicy.png" alt="Mikey V's Fried Garlic Spicy" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🫒</span>
-              <span class="type-badge-text">Olive Oil</span>
+              <span class="type-badge-emoji">🌶</span>
+              <span class="type-badge-text">Fried Garlic · Spicy</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Ariston Tuscan Herb Infused Olive Oil</div>
-            <p class="product-card-teaser">Oregano, basil, garlic, and rosemary slowly infused into Koroneiki olive oil — herbal oils releasing their aroma into the oil rather than sitting on top. Savory, herb-forward, and earthy. Designed to live on your counter, not in the back of the pantry.</p>
+            <div class="product-card-name">Gator Toes Spicy</div>
+            <p class="product-card-teaser">Cajun-style seasoning brings warm spice and savory heat that pairs perfectly with bold garlic intensity.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8.45 fl oz · $15.99</span>
+            <span class="product-card-price">3 oz · $9.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- Ariston Black Cherry Balsamic -->
-        <a class="product-card reveal" href="products/ariston-black-cherry-balsamic.html">
+        <!-- ── Fried Garlic Loco ── -->
+        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-loco.html">
           <div class="product-card-image">
-            <img src="assets/pullman-product-display/cat-ariston-black-cherry-balsamic.png" alt="Ariston Black Cherry Balsamic" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
+            <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-loco.png" alt="Mikey V's Fried Garlic Loco" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🍷</span>
-              <span class="type-badge-text">Balsamic Vinegar</span>
+              <span class="type-badge-emoji">🌶🌶🌶</span>
+              <span class="type-badge-text">Fried Garlic · Extreme</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Ariston Black Cherry Balsamic</div>
-            <p class="product-card-teaser">Italian grape must and red wine vinegar aged 60 days in oak barrels, infused with natural black cherry must. Rich and fruit-forward, with gentle oak warmth and bright, structured acidity. Exceptional over salads, aged cheeses, pork, and vanilla ice cream.</p>
+            <div class="product-card-name">Gator Toes Loco Spice</div>
+            <p class="product-card-teaser">Carolina Reaper, Scorpion, and Ghost — garlic hits first, then the trio of superhots take over. Heat lovers only.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8.45 fl oz · $15.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- Ariston Fig Balsamic -->
-        <a class="product-card reveal" href="products/ariston-fig-balsamic.html">
-          <div class="product-card-image">
-            <img src="assets/pullman-product-display/cat-ariston-fig-balsamic.png" alt="Ariston Fig Balsamic" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🍷</span>
-              <span class="type-badge-text">Balsamic Vinegar</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Ariston Fig Balsamic</div>
-            <p class="product-card-teaser">Italian grape must fermented with red wine vinegar and rested in oak barrels — a rich, jammy fig infusion bringing lush sweetness and layered depth. Velvety and fruit-forward, with soft oak warmth. Ideal over burrata, arugula, roasted pork, and cheese boards.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">8.45 fl oz · $15.99</span>
+            <span class="product-card-price">3 oz · $10.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
@@ -770,9 +773,9 @@
     </div>
   </section>
 
-  <!-- ═══ BACK TO TOP + OTHER CATEGORIES ══════════════════════ -->
+  <!-- ═══ BACK TO TOP ══════════════════════════════════════════ -->
   <div class="back-top">
-    <a class="back-top-link" href="main.html#categories">← All Categories</a>
+    <a class="back-top-link" href="#top">↑ &nbsp; Back to Top</a>
   </div>
 
   <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
@@ -790,7 +793,6 @@
   <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
   <script>
   (function () {
-    /* ── SCROLL REVEAL ── */
     const revealEls = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
