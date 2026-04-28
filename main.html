@@ -35,9 +35,10 @@
 
     /* ── BODY — warm parlor car interior ─────────────────────── */
     body {
-      background-color: #5C3A1E;
+      background-color: #8B5E3C;
       background-image: url('assets/textures/wooden-texture.jpg');
       background-size: cover;
+      background-attachment: fixed;
       background-repeat: no-repeat;
       background-position: center top;
       color: var(--ink);
@@ -181,15 +182,24 @@
 
     /* ── HERO ─────────────────────────────────────────────────── */
     .hero {
-      background-color: #5C3A1E;
-      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center center;
+      background: var(--green-dark);
       padding: 72px 48px 80px;
       position: relative;
       overflow: hidden;
-      border-bottom: 2px solid var(--brass);
+      border-bottom: 1px solid rgba(184,137,57,0.3);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 3px,
+        rgba(184,137,57,0.03) 3px,
+        rgba(184,137,57,0.03) 4px
+      );
     }
 
     .hero-inner {
@@ -2248,37 +2258,37 @@
         <div class="pic-light__glow"></div>
       </div>
       <div class="panels-grid">
-        <a class="panel-card reveal" href="hot-sauces.html#mild-medium">
+        <a class="panel-card reveal" href="index.html?category=hot-sauce-mild">
           <img src="assets/category-panels/Hot-Sauces-Mild-Medium.png" alt="Hot Sauces Mild Medium" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="hot-sauces.html#hot-very-hot">
+        <a class="panel-card reveal" href="index.html?category=hot-sauce-hot">
           <img src="assets/category-panels/Hot-Sauces-Hot-Very-Hot.png" alt="Hot Sauces Hot Very Hot" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="hot-sauces.html#extreme-inferno">
+        <a class="panel-card reveal" href="index.html?category=hot-sauce-inferno">
           <img src="assets/category-panels/Hot-Sauces-Extreme-Heat-Inferno.png" alt="Hot Sauces Extreme Heat Inferno" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="seasonings-bbq.html">
+        <a class="panel-card reveal" href="index.html?category=seasonings">
           <img src="assets/category-panels/Seasonings-Dry-Rubs-BBQ-Sauces.png" alt="Seasonings Dry Rubs BBQ Sauces" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="buffalo-condiments.html#buffalo">
+        <a class="panel-card reveal" href="index.html?category=buffalo-sauce">
           <img src="assets/category-panels/Buffalo-Sauce.png" alt="Buffalo Sauce" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="buffalo-condiments.html#condiments">
+        <a class="panel-card reveal" href="index.html?category=condiments">
           <img src="assets/category-panels/Condiments-With-A-Kick.png" alt="Condiments With a Kick" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="snacks.html">
+        <a class="panel-card reveal" href="index.html?category=snacks">
           <img src="assets/category-panels/Snacks-Fried-Garlic.png" alt="Snacks Fried Garlic" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="olive-oils-vinegar.html">
+        <a class="panel-card reveal" href="index.html?category=olive-oil-vinegar">
           <img src="assets/category-panels/Specialty-Olive-Oils-Vinegar.png" alt="Specialty Olive Oils Vinegar" loading="lazy" />
         </a>
         <a class="panel-card reveal" href="index.html?category=recipes">
           <img src="assets/category-panels/Recipes-Home-Made.png" alt="Recipes Home Made" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="#">
+        <a class="panel-card reveal" href="index.html?category=elite-wings">
           <img src="assets/category-panels/Elite-Wings-RI-Restaurants.png" alt="Elite Wings RI Restaurants" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="#">
+        <a class="panel-card reveal" href="index.html?category=merch">
           <img src="assets/category-panels/Merch.png" alt="Merch" loading="lazy" />
         </a>
       </div>
