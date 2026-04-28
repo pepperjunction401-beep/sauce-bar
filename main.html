@@ -199,53 +199,45 @@
       inset: 0;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
+      text-align: center;
       padding: 0 8%;
       z-index: 1;
     }
 
-    .hero-eyebrow {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: var(--brass);
-      margin-bottom: 20px;
-      display: block;
-    }
-
     .hero-headline {
       font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(18px, 4.5vw, 72px);
+      font-size: clamp(14px, 2.2vw, 36px);
       color: var(--cream-warm);
       line-height: 1.2;
       letter-spacing: 0.02em;
-      margin-bottom: 20px;
+      margin-bottom: 8px;
       white-space: nowrap;
-      padding: 8px 0;
+      padding: 4px 0;
     }
 
     .hero-sub {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(14px, 2vw, 22px);
+      font-size: clamp(10px, 1.2vw, 16px);
       font-style: italic;
       color: var(--cream);
       opacity: 0.72;
       max-width: 560px;
-      line-height: 1.6;
-      margin-bottom: 16px;
+      line-height: 1.4;
+      margin-bottom: 0;
+      white-space: nowrap;
     }
 
     .hero-tag {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: clamp(13px, 1.5vw, 16px);
+      font-size: clamp(11px, 1.8vw, 22px);
       font-weight: 700;
       letter-spacing: 0.32em;
       text-transform: uppercase;
       color: var(--brass-bright);
       opacity: 0.85;
+      margin-bottom: 10px;
     }
 
     /* ── BARTENDER SECTION ────────────────────────────────────── */
@@ -2165,10 +2157,9 @@
   <!-- ═══ HERO ════════════════════════════════════════════════ -->
   <section class="hero">
     <div class="hero-inner">
-      <span class="hero-eyebrow">Rhode Island · Est. 2014</span>
+      <span class="hero-tag">Find Your Heat · Find Your Flavor</span>
       <h1 class="hero-headline">We're Sauce Enthusiasts First.</h1>
       <p class="hero-sub">Each item carefully selected with a Flavor First priority.</p>
-      <span class="hero-tag">Find Your Heat · Find Your Flavor</span>
     </div>
   </section>
 
