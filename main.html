@@ -182,24 +182,23 @@
 
     /* ── HERO ─────────────────────────────────────────────────── */
     .hero {
-      background: var(--green-dark);
+      background-color: #8B5E3C;
+      background-image: url('assets/textures/wooden-texture.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-position: center top;
       padding: 72px 48px 80px;
       position: relative;
       overflow: hidden;
-      border-bottom: 1px solid rgba(184,137,57,0.3);
+      border-bottom: 2px solid var(--brass);
     }
 
     .hero::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 3px,
-        rgba(184,137,57,0.03) 3px,
-        rgba(184,137,57,0.03) 4px
-      );
+      background: rgba(0,0,0,0.35);
     }
 
     .hero-inner {
