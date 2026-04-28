@@ -182,7 +182,7 @@
 
     /* ── HERO ─────────────────────────────────────────────────── */
     .hero {
-      background: var(--green-dark);
+      background: url('assets/Hero-Banner-Pullman-Burgandy.png') center center / cover no-repeat;
       padding: 72px 48px 80px;
       position: relative;
       overflow: hidden;
@@ -190,16 +190,7 @@
     }
 
     .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 3px,
-        rgba(184,137,57,0.03) 3px,
-        rgba(184,137,57,0.03) 4px
-      );
+      content: none;
     }
 
     .hero-inner {
