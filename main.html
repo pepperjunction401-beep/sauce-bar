@@ -182,8 +182,9 @@
 
     /* ── HERO ─────────────────────────────────────────────────── */
     .hero {
-      background: url('assets/textures/Hero-Banner-Pullman-Burgandy.png') center center / cover no-repeat;
-      padding: 72px 48px 80px;
+      background: url('assets/textures/Hero-Banner-Pullman-Burgandy.png') center center / 100% 100% no-repeat;
+      aspect-ratio: 2 / 1;
+      padding: 0;
       position: relative;
       overflow: hidden;
       border-bottom: 1px solid rgba(184,137,57,0.3);
@@ -194,9 +195,13 @@
     }
 
     .hero-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      position: relative;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 0 8%;
       z-index: 1;
     }
 
@@ -904,7 +909,7 @@
     @media (max-width: 640px) {
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
-      .hero { padding: 48px 20px 56px; }
+      .hero { aspect-ratio: 2 / 1; }
       .panels-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
       .header-nav { display: none; }
       .dispatch-body { padding: 24px 20px; }
