@@ -240,6 +240,37 @@
       margin-bottom: 10px;
     }
 
+    /* ── BARTENDER PANORAMA ───────────────────────────────────── */
+    .bartender-panorama-wrap {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .bartender-panorama {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .bartender-video-overlay {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bartender-video-overlay video {
+      height: 100%;
+      width: auto;
+      display: block;
+    }
+
     /* ── BARTENDER SECTION ────────────────────────────────────── */
     .bartender-section {
       padding: 80px 0 72px;
@@ -2196,11 +2227,14 @@
     <div class="container">
       <div class="bartender-inner">
 
-        <div class="bartender-video-wrap reveal">
-          <video
-            src="assets/video/Bartender-Welcome-Parlor-Car.mp4/Bartender-Welcome-Parlor-Car.mp4"
-            autoplay muted playsinline controls
-          ></video>
+        <div class="bartender-panorama-wrap reveal">
+          <img class="bartender-panorama" src="assets/textures/Welcome-Panoramic-Pairing-Bar.png" alt="Pepper Junction Pairing Bar" />
+          <div class="bartender-video-overlay">
+            <video
+              src="assets/video/Bartender-Welcome-Parlor-Car.mp4/Bartender-Welcome-Parlor-Car.mp4"
+              autoplay muted playsinline controls
+            ></video>
+          </div>
         </div>
 
         <div class="bartender-chat reveal">
