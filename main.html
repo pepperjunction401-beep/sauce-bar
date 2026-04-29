@@ -879,6 +879,34 @@
       opacity: 0.45;
     }
 
+    /* ── COMING SOON RIBBON ───────────────────────────────────── */
+    .panel-card.coming-soon {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .panel-card.coming-soon::after {
+      content: 'Coming Soon';
+      position: absolute;
+      top: 22px;
+      right: -32px;
+      width: 140px;
+      padding: 7px 0;
+      background: #8F1F0D;
+      color: var(--cream-warm);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-align: center;
+      transform: rotate(45deg);
+      transform-origin: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      z-index: 10;
+      pointer-events: none;
+    }
+
     /* ── SCROLL REVEAL ────────────────────────────────────────── */
     .reveal {
       opacity: 0;
@@ -2272,12 +2300,12 @@
         <a class="panel-card reveal" href="index.html?category=recipes">
           <img src="assets/category-panels/Recipes-Home-Made.png" alt="Recipes Home Made" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="index.html?category=elite-wings">
+        <div class="panel-card coming-soon reveal">
           <img src="assets/category-panels/Elite-Wings-RI-Restaurants.png" alt="Elite Wings RI Restaurants" loading="lazy" />
-        </a>
-        <a class="panel-card reveal" href="index.html?category=merch">
+        </div>
+        <div class="panel-card coming-soon reveal">
           <img src="assets/category-panels/Merch.png" alt="Merch" loading="lazy" />
-        </a>
+        </div>
       </div>
     </div>
   </section>
