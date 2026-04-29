@@ -240,66 +240,6 @@
       margin-bottom: 10px;
     }
 
-    /* ── COMING SOON RIBBON ───────────────────────────────────── */
-    .panel-card.coming-soon {
-      cursor: default;
-      pointer-events: none;
-    }
-
-    .panel-card.coming-soon::after {
-      content: 'Coming Soon';
-      position: absolute;
-      top: 36px;
-      right: -36px;
-      width: 160px;
-      padding: 8px 0;
-      background: #8F1F0D;
-      color: var(--cream-warm);
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      text-align: center;
-      transform: rotate(45deg);
-      transform-origin: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-      z-index: 10;
-      pointer-events: none;
-    }
-
-    /* ── BARTENDER PANORAMA ───────────────────────────────────── */
-    .bartender-panorama-wrap {
-      position: relative;
-      width: calc(100vw);
-      margin-left: calc(-50vw + 50%);
-      overflow: hidden;
-      line-height: 0;
-    }
-
-    .bartender-panorama {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .bartender-video-overlay {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .bartender-video-overlay video {
-      height: 100%;
-      width: auto;
-      display: block;
-    }
-
     /* ── BARTENDER SECTION ────────────────────────────────────── */
     .bartender-section {
       padding: 80px 0 72px;
@@ -2226,16 +2166,30 @@
   <!-- ═══ BARTENDER ════════════════════════════════════════════ -->
   <section class="bartender-section">
     <div class="container">
+      <div class="pic-light">
+        <div class="pic-light__plate"></div>
+        <div class="pic-light__arms">
+          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
+          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
+        </div>
+        <div class="pic-light__bar-wrap">
+          <div class="pic-light__finial"></div>
+          <div class="pic-light__collar"></div>
+          <div class="pic-light__tube">
+            <div class="pic-light__label"><span>Your Host</span></div>
+          </div>
+          <div class="pic-light__collar"></div>
+          <div class="pic-light__finial"></div>
+        </div>
+        <div class="pic-light__glow"></div>
+      </div>
       <div class="bartender-inner">
 
-        <div class="bartender-panorama-wrap reveal">
-          <img class="bartender-panorama" src="assets/textures/Welcome-Panoramic-Pairing-Bar.png" alt="Pepper Junction Pairing Bar" />
-          <div class="bartender-video-overlay">
-            <video
-              src="assets/video/Bartender-Welcome-Parlor-Car.mp4/Bartender-Welcome-Parlor-Car.mp4"
-              autoplay muted playsinline controls
-            ></video>
-          </div>
+        <div class="bartender-video-wrap reveal">
+          <video
+            src="assets/video/Bartender-Welcome-Parlor-Car.mp4/Bartender-Welcome-Parlor-Car.mp4"
+            autoplay muted playsinline controls
+          ></video>
         </div>
 
         <div class="bartender-chat reveal">
@@ -2318,12 +2272,12 @@
         <a class="panel-card reveal" href="index.html?category=recipes">
           <img src="assets/category-panels/Recipes-Home-Made.png" alt="Recipes Home Made" loading="lazy" />
         </a>
-        <div class="panel-card coming-soon reveal">
+        <a class="panel-card reveal" href="index.html?category=elite-wings">
           <img src="assets/category-panels/Elite-Wings-RI-Restaurants.png" alt="Elite Wings RI Restaurants" loading="lazy" />
-        </div>
-        <div class="panel-card coming-soon reveal">
+        </a>
+        <a class="panel-card reveal" href="index.html?category=merch">
           <img src="assets/category-panels/Merch.png" alt="Merch" loading="lazy" />
-        </div>
+        </a>
       </div>
     </div>
   </section>
