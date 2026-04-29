@@ -4,13 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hot Sauces — Pepper Junction</title>
-  <meta name="description" content="Browse Pepper Junction's full hot sauce selection — Mild & Medium, Hot & Very Hot, and Extreme Inferno. Rhode Island's specialty sauce destination since 2014." />
+  <meta name="description" content="Browse Pepper Junction's full hot sauce selection — Mild &amp; Medium, Hot &amp; Very Hot, and Extreme Inferno. Rhode Island's specialty sauce destination since 2014." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
-
-    /* ── CSS VARIABLES (exact match to main.html) ─────────────── */
     :root {
       --cream:        #F5ECD6;
       --cream-deep:   #EDD9B4;
@@ -26,17 +24,14 @@
       --shadow:       0 8px 32px rgba(43,29,21,0.18);
       --shadow-card:  0 4px 20px rgba(43,29,21,0.14);
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
     body {
       background-color: var(--green-dark);
       color: var(--ink);
       font-family: 'Libre Baskerville', Georgia, serif;
       overflow-x: hidden;
     }
-
     body::before {
       content: "";
       position: fixed;
@@ -46,7 +41,6 @@
       z-index: 0;
       opacity: 0.4;
     }
-
     @font-face {
       font-family: 'BlackRiver';
       src: url('assets/fonts/Blackriver-Bold.ttf') format('truetype');
@@ -54,17 +48,7 @@
       font-style: normal;
       font-display: swap;
     }
-
-    /* ── SHARED UTILITIES ─────────────────────────────────────── */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 48px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ── HEADER (identical to main.html) ──────────────────────── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 48px; position: relative; z-index: 1; }
     .site-header {
       background: var(--green-dark);
       border-bottom: 2px solid var(--brass);
@@ -76,657 +60,84 @@
       top: 0;
       z-index: 100;
     }
-
-    .header-logo {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      text-decoration: none;
-    }
-
-    .header-logo img {
-      height: 52px;
-      width: auto;
-    }
-
-    .header-wordmark {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .header-name {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: 22px;
-      color: var(--cream-warm);
-      line-height: 1;
-      letter-spacing: 0.04em;
-    }
-
-    .header-tagline {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--brass);
-      opacity: 0.8;
-    }
-
-    .header-nav {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-    }
-
-    .header-nav a {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.65;
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
+    .header-logo { display: flex; align-items: center; gap: 16px; text-decoration: none; }
+    .header-logo img { height: 52px; width: auto; }
+    .header-wordmark { display: flex; flex-direction: column; gap: 2px; }
+    .header-name { font-family: 'BlackRiver', 'Playfair Display', serif; font-size: 22px; color: var(--cream-warm); line-height: 1; letter-spacing: 0.04em; }
+    .header-tagline { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; color: var(--brass); opacity: 0.8; }
+    .header-nav { display: flex; align-items: center; gap: 32px; }
+    .header-nav a { font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--cream); opacity: 0.65; text-decoration: none; transition: opacity 0.2s; }
     .header-nav a:hover { opacity: 1; }
-
-    .header-nav .nav-cta {
-      background: var(--crimson);
-      color: var(--cream-warm);
-      opacity: 1;
-      padding: 8px 20px;
-      border-radius: 2px;
-      border: 1px solid rgba(143,31,13,0.5);
-      transition: background 0.2s;
-    }
+    .header-nav .nav-cta { background: var(--crimson); color: var(--cream-warm); opacity: 1; padding: 8px 20px; border-radius: 2px; border: 1px solid rgba(143,31,13,0.5); transition: background 0.2s; }
     .header-nav .nav-cta:hover { background: var(--crimson-dim); }
-
-    /* ── PAGE HERO / BREADCRUMB ───────────────────────────────── */
-    .page-hero {
-      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
-      background-size: cover;
-      background-position: center;
-      padding: 52px 48px 56px;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 2px solid var(--brass);
-    }
-
-    /* Dark vignette so text reads cleanly over the wood */
-    .page-hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      pointer-events: none;
-    }
-
-    .page-hero-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    .breadcrumb {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      color: var(--brass);
-      opacity: 0.75;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .breadcrumb a {
-      color: inherit;
-      text-decoration: none;
-      opacity: 0.7;
-      transition: opacity 0.2s;
-    }
+    .page-hero { background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg'); background-size: cover; background-position: center; padding: 52px 48px 56px; position: relative; overflow: hidden; border-bottom: 2px solid var(--brass); }
+    .page-hero::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.45); pointer-events: none; }
+    .page-hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+    .breadcrumb { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass); opacity: 0.75; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .breadcrumb a { color: inherit; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; }
     .breadcrumb a:hover { opacity: 1; }
     .breadcrumb-sep { opacity: 0.45; }
-
-    .page-hero-headline {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(32px, 5vw, 64px);
-      color: var(--cream-warm);
-      line-height: 1.1;
-      letter-spacing: 0.02em;
-      margin-bottom: 12px;
-    }
-
-    .page-hero-sub {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(14px, 1.8vw, 20px);
-      font-style: italic;
-      color: var(--cream);
-      opacity: 0.7;
-      max-width: 520px;
-      line-height: 1.6;
-    }
-
-    /* ── SECTION JUMP NAV ─────────────────────────────────────── */
-    .section-jump {
-      background: rgba(30,48,32,0.85);
-      border-bottom: 1px solid rgba(184,137,57,0.25);
-      padding: 14px 48px;
-      position: sticky;
-      top: 92px;
-      z-index: 90;
-      backdrop-filter: blur(4px);
-    }
-
-    .section-jump-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .jump-label {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--brass);
-      opacity: 0.6;
-      margin-right: 8px;
-      white-space: nowrap;
-    }
-
-    .jump-link {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.55;
-      text-decoration: none;
-      padding: 6px 14px;
-      border: 1px solid rgba(184,137,57,0.2);
-      border-radius: 2px;
-      transition: opacity 0.2s, border-color 0.2s, background 0.2s;
-      white-space: nowrap;
-    }
-    .jump-link:hover {
-      opacity: 1;
-      border-color: rgba(184,137,57,0.55);
-      background: rgba(184,137,57,0.08);
-    }
-
-    /* ── WOOD PLANK SECTION DIVIDER ──────────────────────────── */
-    .wood-divider {
-      width: 100%;
-      height: 220px;
-      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .wood-divider::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg,
-        rgba(0,0,0,0.35) 0%,
-        rgba(0,0,0,0.08) 30%,
-        rgba(0,0,0,0.08) 70%,
-        rgba(0,0,0,0.35) 100%);
-      pointer-events: none;
-    }
-
-    /* ── WOOD DIVIDER LABEL ──────────────────────────────────── */
-    .wood-divider__label {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      padding: 10px 28px;
-      border-top: 1px solid rgba(184,137,57,0.4);
-      border-bottom: 1px solid rgba(184,137,57,0.4);
-      background: rgba(0,0,0,0.18);
-    }
-
-    .wood-divider__line1 {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(22px, 4vw, 54px);
-      letter-spacing: 0.02em;
-      color: var(--cream-warm);
-      text-shadow: 0 1px 6px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.6);
-      line-height: 1.2;
-    }
-
-    .wood-divider__line2 {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(22px, 4vw, 54px);
-      letter-spacing: 0.02em;
-      color: var(--brass-bright);
-      text-shadow: 0 1px 6px rgba(0,0,0,0.8);
-      line-height: 1.2;
-    }
-
-    /* ── CATALOG SECTION — steel panel background ─────────────── */
-    .catalog-section {
-      padding: 64px 0 48px;
-      position: relative;
-      z-index: 1;
-      background-image: url('assets/textures/green-steel-panel-bg.png');
-      background-size: cover;
-      background-position: -8px top;
-      background-repeat: repeat-y;
-    }
-
-    /* Thin brass border top and bottom to frame the steel section */
-    .catalog-section::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--brass), transparent);
-      opacity: 0.5;
-    }
-    .catalog-section::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--brass), transparent);
-      opacity: 0.5;
-    }
-
-    /* ── SECTION DIVIDER (heat tier header) ───────────────────── */
-    .heat-divider {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 40px;
-      padding: 0 4px;
-    }
-
-    .heat-divider-line {
-      flex: 1;
-      height: 1px;
-    }
-    .heat-divider-line.left {
-      background: linear-gradient(90deg, transparent, var(--brass));
-    }
-    .heat-divider-line.right {
-      background: linear-gradient(90deg, var(--brass), transparent);
-    }
-
-    .heat-divider-badge {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 20px;
-      border: 1px solid rgba(184,137,57,0.45);
-      border-radius: 2px;
-      background: rgba(30,48,32,0.7);
-      backdrop-filter: blur(4px);
-      white-space: nowrap;
-    }
-
-    .heat-divider-emoji {
-      font-size: 14px;
-      line-height: 1;
-    }
-
-    .heat-divider-text {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      color: var(--cream-warm);
-      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
-    }
-
-    .heat-divider-count {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      color: var(--brass);
-      opacity: 0.7;
-    }
-
-    /* ── PRODUCT CARD GRID ────────────────────────────────────── */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
-    .product-card {
-      position: relative;
-      background: var(--cream-warm);
-      border: none;
-      border-radius: 0;
-      overflow: hidden;
-      box-shadow: none;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.25s ease;
-      text-decoration: none;
-      color: var(--ink);
-    }
-
-    .product-card:hover {
-      transform: translateY(-4px);
-    }
-
-
-    /* ── MAKER BANNER (top of card image) ────────────────────── */
-    .maker-badge {
-      position: absolute;
-      top: 54px;
-      left: 48px;
-      background: rgba(30,48,32,0.88);
-      border: 1px solid rgba(184,137,57,0.5);
-      border-radius: 2px;
-      padding: 4px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      backdrop-filter: blur(4px);
-      z-index: 2;
-    }
-
-    .maker-badge-text {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 7px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--brass-bright);
-      white-space: nowrap;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-    }
-
-    /* ── AWARD BADGE ──────────────────────────────────────────── */
-    .award-badge {
-      position: absolute;
-      top: 80px;
-      left: 48px;
-      background: rgba(160,20,10,0.92);
-      border: 1px solid rgba(255,215,0,0.5);
-      border-radius: 2px;
-      padding: 4px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      backdrop-filter: blur(4px);
-      z-index: 2;
-    }
-
-    .award-badge-text {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #FFD700;
-      white-space: nowrap;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-    }
-
-    /* Pullman window frame image */
-    .product-card-image {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      overflow: hidden;
-      background: var(--green-dark);
-      flex-shrink: 0;
-    }
-
-    .product-card-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.35s ease;
-    }
-
-    .product-card:hover .product-card-image img {
-      transform: scale(1.04);
-    }
-
-    /* Heat badge overlay on image */
-    .heat-badge {
-      position: absolute;
-      bottom: 36px;
-      left: 10px;
-      background: rgba(30,48,32,0.88);
-      border: 1px solid rgba(184,137,57,0.5);
-      border-radius: 2px;
-      padding: 4px 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      backdrop-filter: blur(4px);
-    }
-
-    .heat-badge-emoji {
-      font-size: 11px;
-      line-height: 1;
-    }
-
-    .heat-badge-text {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--cream);
-      white-space: nowrap;
-    }
-
-    .heat-badge-num {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: #FFD700;
-      text-shadow: 0 0 6px rgba(255,215,0,0.4);
-    }
-
-    /* Card body */
-    .product-card-body {
-      padding: 8px 12px 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      flex: 1;
-      background: var(--cream-warm);
-    }
-
-    .product-card-name {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(11px, 1.1vw, 13px);
-      color: var(--ink);
-      line-height: 1.15;
-      letter-spacing: 0.03em;
-    }
-
-    .product-card-teaser {
-      font-size: 9px;
-      line-height: 1.45;
-      color: var(--ink-soft);
-      flex: 1;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .product-card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 12px 8px;
-      border-top: 1px solid rgba(184,137,57,0.18);
-      background: var(--cream-warm);
-    }
-
-    .product-card-price {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      color: var(--ink-mid);
-    }
-
-    .product-card-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 16px;
-      background: var(--green-dark);
-      color: var(--cream-warm);
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 2px;
-      border: 1px solid rgba(184,137,57,0.3);
-      transition: background 0.2s, border-color 0.2s;
-    }
-
-    .product-card-btn:hover {
-      background: var(--crimson);
-      border-color: var(--crimson);
-    }
-
-    .product-card-btn-arrow {
-      font-size: 10px;
-      line-height: 1;
-      transition: transform 0.2s;
-    }
-
-    .product-card:hover .product-card-btn-arrow {
-      transform: translateX(3px);
-    }
-
-    /* ── FOOTER (identical to main.html) ─────────────────────── */
-    .site-footer {
-      background: var(--green-dark);
-      border-top: 2px solid var(--brass);
-      padding: 28px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
-    .footer-item {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.4;
-    }
-
-    .footer-item a {
-      color: inherit;
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
+    .page-hero-headline { font-family: 'BlackRiver', 'Playfair Display', serif; font-size: clamp(32px, 5vw, 64px); color: var(--cream-warm); line-height: 1.1; letter-spacing: 0.02em; margin-bottom: 12px; }
+    .page-hero-sub { font-family: 'Playfair Display', serif; font-size: clamp(14px, 1.8vw, 20px); font-style: italic; color: var(--cream); opacity: 0.7; max-width: 520px; line-height: 1.6; }
+    .section-jump { background: rgba(30,48,32,0.85); border-bottom: 1px solid rgba(184,137,57,0.25); padding: 14px 48px; position: sticky; top: 92px; z-index: 90; backdrop-filter: blur(4px); }
+    .section-jump-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .jump-label { font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--brass); opacity: 0.6; margin-right: 8px; white-space: nowrap; }
+    .jump-link { font-family: 'Josefin Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream); opacity: 0.55; text-decoration: none; padding: 6px 14px; border: 1px solid rgba(184,137,57,0.2); border-radius: 2px; transition: opacity 0.2s, border-color 0.2s, background 0.2s; white-space: nowrap; }
+    .jump-link:hover { opacity: 1; border-color: rgba(184,137,57,0.55); background: rgba(184,137,57,0.08); }
+    .wood-divider { width: 100%; height: 220px; background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg'); background-size: cover; background-position: center; position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; }
+    .wood-divider::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.08) 70%, rgba(0,0,0,0.35) 100%); pointer-events: none; }
+    .wood-divider__label { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 28px; border-top: 1px solid rgba(184,137,57,0.4); border-bottom: 1px solid rgba(184,137,57,0.4); background: rgba(0,0,0,0.18); }
+    .wood-divider__line1 { font-family: 'BlackRiver', 'Playfair Display', serif; font-size: clamp(22px, 4vw, 54px); letter-spacing: 0.02em; color: var(--cream-warm); text-shadow: 0 1px 6px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.6); line-height: 1.2; }
+    .wood-divider__line2 { font-family: 'BlackRiver', 'Playfair Display', serif; font-size: clamp(22px, 4vw, 54px); letter-spacing: 0.02em; color: var(--brass-bright); text-shadow: 0 1px 6px rgba(0,0,0,0.8); line-height: 1.2; }
+    /* ── SLIM WOOD DIVIDER (inter-section, no label) ─────────── */
+    .wood-divider--slim { height: 72px; }
+    .catalog-section { padding: 64px 0 48px; position: relative; z-index: 1; background-image: url('assets/textures/green-steel-panel-bg.png'); background-size: cover; background-position: -8px top; background-repeat: repeat-y; }
+    .catalog-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--brass), transparent); opacity: 0.5; }
+    .catalog-section::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--brass), transparent); opacity: 0.5; }
+    .heat-divider { display: flex; align-items: center; gap: 20px; margin-bottom: 40px; padding: 0 4px; }
+    .heat-divider-line { flex: 1; height: 1px; }
+    .heat-divider-line.left { background: linear-gradient(90deg, transparent, var(--brass)); }
+    .heat-divider-line.right { background: linear-gradient(90deg, var(--brass), transparent); }
+    .heat-divider-badge { display: flex; align-items: center; gap: 10px; padding: 8px 20px; border: 1px solid rgba(184,137,57,0.45); border-radius: 2px; background: rgba(30,48,32,0.7); backdrop-filter: blur(4px); white-space: nowrap; }
+    .heat-divider-emoji { font-size: 14px; line-height: 1; }
+    .heat-divider-text { font-family: 'Josefin Sans', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--cream-warm); text-shadow: 0 1px 6px rgba(0,0,0,0.5); }
+    .heat-divider-count { font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; color: var(--brass); opacity: 0.7; }
+    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+    .product-card { position: relative; background: var(--cream-warm); border: none; border-radius: 0; overflow: hidden; box-shadow: none; display: flex; flex-direction: column; transition: transform 0.25s ease; text-decoration: none; color: var(--ink); }
+    .product-card:hover { transform: translateY(-4px); }
+    .maker-badge { position: absolute; top: 54px; left: 48px; background: rgba(30,48,32,0.88); border: 1px solid rgba(184,137,57,0.5); border-radius: 2px; padding: 4px 10px; display: inline-flex; align-items: center; gap: 6px; backdrop-filter: blur(4px); z-index: 2; }
+    .maker-badge-text { font-family: 'Josefin Sans', sans-serif; font-size: 7px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brass-bright); white-space: nowrap; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+    .award-badge { position: absolute; top: 80px; left: 48px; background: rgba(160,20,10,0.92); border: 1px solid rgba(255,215,0,0.5); border-radius: 2px; padding: 4px 10px; display: inline-flex; align-items: center; gap: 5px; backdrop-filter: blur(4px); z-index: 2; }
+    .award-badge-text { font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #FFD700; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+    .product-card-image { position: relative; width: 100%; aspect-ratio: 4 / 5; overflow: hidden; background: var(--green-dark); flex-shrink: 0; }
+    .product-card-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.35s ease; }
+    .product-card:hover .product-card-image img { transform: scale(1.04); }
+    .heat-badge { position: absolute; bottom: 36px; left: 10px; background: rgba(30,48,32,0.88); border: 1px solid rgba(184,137,57,0.5); border-radius: 2px; padding: 4px 10px; display: flex; align-items: center; gap: 6px; backdrop-filter: blur(4px); }
+    .heat-badge-emoji { font-size: 11px; line-height: 1; }
+    .heat-badge-text { font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream); white-space: nowrap; }
+    .heat-badge-num { font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: #FFD700; text-shadow: 0 0 6px rgba(255,215,0,0.4); }
+    .product-card-body { padding: 8px 12px 6px; display: flex; flex-direction: column; gap: 3px; flex: 1; background: var(--cream-warm); }
+    .product-card-name { font-family: 'BlackRiver', 'Playfair Display', serif; font-size: clamp(11px, 1.1vw, 13px); color: var(--ink); line-height: 1.15; letter-spacing: 0.03em; }
+    .product-card-teaser { font-size: 9px; line-height: 1.45; color: var(--ink-soft); flex: 1; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    .product-card-footer { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px 8px; border-top: 1px solid rgba(184,137,57,0.18); background: var(--cream-warm); }
+    .product-card-price { font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; color: var(--ink-mid); }
+    .product-card-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; background: var(--green-dark); color: var(--cream-warm); font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase; text-decoration: none; border-radius: 2px; border: 1px solid rgba(184,137,57,0.3); transition: background 0.2s, border-color 0.2s; }
+    .product-card-btn:hover { background: var(--crimson); border-color: var(--crimson); }
+    .product-card-btn-arrow { font-size: 10px; line-height: 1; transition: transform 0.2s; }
+    .product-card:hover .product-card-btn-arrow { transform: translateX(3px); }
+    .site-footer { background: var(--green-dark); border-top: 2px solid var(--brass); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; position: relative; z-index: 1; }
+    .footer-left { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .footer-item { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.4; }
+    .footer-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
     .footer-item a:hover { opacity: 1; }
-
-    .footer-sep {
-      width: 1px;
-      height: 12px;
-      background: rgba(184,137,57,0.3);
-    }
-
-    .footer-right {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--brass);
-      opacity: 0.45;
-    }
-
-    /* ── SCROLL REVEAL ────────────────────────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── BACK TO TOP ──────────────────────────────────────────── */
-    .back-top {
-      display: flex;
-      justify-content: center;
-      padding: 24px 0 60px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .back-top-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.45;
-      text-decoration: none;
-      transition: opacity 0.2s;
-      padding: 10px 20px;
-      border: 1px solid rgba(184,137,57,0.2);
-      border-radius: 2px;
-    }
+    .footer-sep { width: 1px; height: 12px; background: rgba(184,137,57,0.3); }
+    .footer-right { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); opacity: 0.45; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .back-top { display: flex; justify-content: center; padding: 24px 0 60px; position: relative; z-index: 1; }
+    .back-top-link { display: inline-flex; align-items: center; gap: 8px; font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cream); opacity: 0.45; text-decoration: none; transition: opacity 0.2s; padding: 10px 20px; border: 1px solid rgba(184,137,57,0.2); border-radius: 2px; }
     .back-top-link:hover { opacity: 0.9; border-color: rgba(184,137,57,0.5); }
-
-    /* ── RESPONSIVE ───────────────────────────────────────────── */
-    @media (max-width: 900px) {
-      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-    }
-
+    @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
     @media (max-width: 640px) {
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
@@ -736,14 +147,10 @@
       .wood-divider { height: 120px; }
       .header-nav { display: none; }
       .site-footer { padding: 20px; }
-
     }
-
   </style>
 </head>
 <body>
-
-  <!-- ═══ HEADER ══════════════════════════════════════════════ -->
   <header class="site-header">
     <a class="header-logo" href="conductor.html">
       <img src="assets/PJ-logo.png" alt="Pepper Junction" />
@@ -760,7 +167,6 @@
     </nav>
   </header>
 
-  <!-- ═══ PAGE HERO ════════════════════════════════════════════ -->
   <section class="page-hero">
     <div class="page-hero-inner">
       <div class="breadcrumb">
@@ -773,7 +179,6 @@
     </div>
   </section>
 
-  <!-- ═══ SECTION JUMP NAV ═════════════════════════════════════ -->
   <nav class="section-jump" aria-label="Jump to heat section">
     <div class="section-jump-inner">
       <span class="jump-label">Jump to:</span>
@@ -783,7 +188,7 @@
     </div>
   </nav>
 
-  <!-- ═══ WOOD DIVIDER — MILD / MEDIUM ═══════════════════════ -->
+  <!-- ═══ WOOD DIVIDER — MILD / MEDIUM (full 220px with label) ═ -->
   <div class="wood-divider" id="mild-medium">
     <div class="wood-divider__label">
       <div class="wood-divider__line1">Find Your Heat</div>
@@ -791,7 +196,6 @@
     </div>
   </div>
 
-  <!-- ═══ MILD / MEDIUM CATALOG ════════════════════════════════ -->
   <section class="catalog-section">
     <div class="container">
       <div class="heat-divider">
@@ -803,16 +207,12 @@
         </div>
         <div class="heat-divider-line right"></div>
       </div>
-
-<div class="product-grid">        <a class="product-card reveal" href="products/mikey-vs-jalapeno-dill-pickle-hot-sauce.html">
+      <div class="product-grid">
+        <a class="product-card reveal" href="products/mikey-vs-jalapeno-dill-pickle-hot-sauce.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-dill-pickle-jalapeno-hot-sauce.png" alt="Mikey V's Jalapeno Dill Pickle Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Mild–Medium</span>
-              <span class="heat-badge-num">1/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Mild–Medium</span><span class="heat-badge-num">1/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Jalapeño Dill Pickle</div>
@@ -827,11 +227,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Rhed's</span></div>
             <img src="assets/pullman-product-display/cat-rheds-original-hot-sauce.png" alt="Rhed's Rhode Island Farm Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium</span>
-              <span class="heat-badge-num">2/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium</span><span class="heat-badge-num">2/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Rhed's Original</div>
@@ -847,11 +243,7 @@
             <div class="maker-badge"><span class="maker-badge-text">Rhed's</span></div>
             <img src="assets/pullman-product-display/cat-rheds-deja-vu-hot-sauce.png" alt="Rhed's Deja Vu" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="award-badge"><span class="award-badge-text">🏆 Screaming Mimi Award</span></div>
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium</span>
-              <span class="heat-badge-num">2/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium</span><span class="heat-badge-num">2/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Deja Vu</div>
@@ -866,11 +258,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
             <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-hot-sauce.png" alt="Slap Ya Mama Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium</span>
-              <span class="heat-badge-num">3/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium</span><span class="heat-badge-num">3/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Slap Ya Mama Cajun</div>
@@ -885,11 +273,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
             <img src="assets/pullman-product-display/cat-melindas-mango-hot-sauce.png" alt="Melinda's Mango Habanero Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium</span>
-              <span class="heat-badge-num">4/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium</span><span class="heat-badge-num">4/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Mango Habanero</div>
@@ -904,11 +288,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-psych-hot-sauce.png" alt="High River Psych Sauce Cayenne Garlic" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium–Hot</span>
-              <span class="heat-badge-num">4–5/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium–Hot</span><span class="heat-badge-num">4–5/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Psych Sauce</div>
@@ -923,11 +303,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">13 Stars</span></div>
             <img src="assets/pullman-product-display/cat-13-stars-dragons-breath-hot-sauce.png" alt="13 Stars Dragon Breath" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Mild</span>
-              <span class="heat-badge-num">4/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Mild</span><span class="heat-badge-num">4/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Dragon's Breath</div>
@@ -942,11 +318,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Rhed's</span></div>
             <img src="assets/pullman-product-display/cat-rheds-lemon-drop-hot-sauce.png" alt="Rhed's Aji Lemon Drop Citrus Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium</span>
-              <span class="heat-badge-num">4/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium</span><span class="heat-badge-num">4/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Lemon Drop</div>
@@ -961,11 +333,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Heartbreaking Dawns</span></div>
             <img src="assets/pullman-product-display/cat-heartbreaking-dawns-the-green-hot-sauce.png" alt="Fire Roasted Jalapeño Verde Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium–Hot</span>
-              <span class="heat-badge-num">5/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium–Hot</span><span class="heat-badge-num">5/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">The Green</div>
@@ -980,11 +348,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-tears-of-the-sun-hot-sauce.png" alt="High River Tears of the Sun Tropical Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium–Hot</span>
-              <span class="heat-badge-num">5/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium–Hot</span><span class="heat-badge-num">5/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Tears of the Sun</div>
@@ -994,15 +358,14 @@
             <span class="product-card-price">5 fl oz · $9.00</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
-        </a></div><!-- /product-grid mild-medium -->
+        </a>
+      </div><!-- /product-grid mild-medium -->
     </div>
   </section>
 
-  <!-- ═══ WOOD DIVIDER — HOT / VERY HOT ══════════════════════ -->
-  <div class="wood-divider" id="hot-very-hot">
-  </div>
+  <!-- ═══ WOOD DIVIDER — HOT / VERY HOT (slim 72px) ══════════ -->
+  <div class="wood-divider wood-divider--slim" id="hot-very-hot"></div>
 
-  <!-- ═══ HOT / VERY HOT CATALOG ══════════════════════════════ -->
   <section class="catalog-section">
     <div class="container">
       <div class="heat-divider">
@@ -1014,16 +377,12 @@
         </div>
         <div class="heat-divider-line right"></div>
       </div>
-
-<div class="product-grid">        <a class="product-card reveal" href="products/high-river-hellacious-chipotle-hot-sauce.html">
+      <div class="product-grid">
+        <a class="product-card reveal" href="products/high-river-hellacious-chipotle-hot-sauce.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-hellacious-hot-sauce.png" alt="High River Hellacious Chipotle Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium–Hot</span>
-              <span class="heat-badge-num">5/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium–Hot</span><span class="heat-badge-num">5/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Hellacious</div>
@@ -1038,11 +397,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-i-love-taco-hot-sauce-hot.png" alt="Mikey V's I Love Taco Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Hot</span>
-              <span class="heat-badge-num">5/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Hot</span><span class="heat-badge-num">5/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">I Love Taco Sauce</div>
@@ -1057,11 +412,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
             <img src="assets/pullman-product-display/cat-melindas-scotch-bonnet-hot-sauce.png" alt="Melinda's Original Scotch Bonnet Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium–Hot</span>
-              <span class="heat-badge-num">6–7/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium–Hot</span><span class="heat-badge-num">6–7/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Scotch Bonnet</div>
@@ -1077,11 +428,7 @@
             <div class="maker-badge"><span class="maker-badge-text">Dirty Dick's</span></div>
             <img src="assets/pullman-product-display/cat-dirty-dicks-hot-tropical-hot-sauce.png" alt="Dirty Dick's Exotic Tropical Habanero Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="award-badge"><span class="award-badge-text">🏆 Hot Sauce of the Year '17 &amp; '18</span></div>
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Hot</span>
-              <span class="heat-badge-num">6–7/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Hot</span><span class="heat-badge-num">6–7/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Exotic Tropical Habanero</div>
@@ -1096,11 +443,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Hell's Kitchen</span></div>
             <img src="assets/pullman-product-display/cat-hells-kitchen-rockin-rasta-coconut-curry-hot-sauce.png" alt="Hell's Kitchen Rockin' Rasta Jamaican Coconut Curry" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium–Hot</span>
-              <span class="heat-badge-num">6/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium–Hot</span><span class="heat-badge-num">6/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Rockin' Rasta: Jamaican Coconut Curry</div>
@@ -1115,11 +458,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Hog's Ass</span></div>
             <img src="assets/pullman-product-display/cat-hogs-ass-garlic-habanero-hot-sauce.png" alt="Hog's Ass Garlic Habanero" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium–Hot</span>
-              <span class="heat-badge-num">6–7/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium–Hot</span><span class="heat-badge-num">6–7/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Garlic Habanero</div>
@@ -1134,11 +473,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Mountain Man</span></div>
             <img src="assets/pullman-product-display/cat-moutain-man-fire-roasted-habanero-hot-sauce.png" alt="Mountain Man Fire Roasted Habanero" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Medium–Hot</span>
-              <span class="heat-badge-num">7/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Medium–Hot</span><span class="heat-badge-num">7/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Fire Roasted Habanero</div>
@@ -1153,11 +488,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Hell's Kitchen</span></div>
             <img src="assets/pullman-product-display/cat-hells-kitchen-black-forest-black-cherry-balsamic-ghost-hot-sauce.png" alt="Hell's Kitchen Black Forest Ghost Pepper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Hot</span>
-              <span class="heat-badge-num">7/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Hot</span><span class="heat-badge-num">7/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Black Forest: Black Cherry Balsamic</div>
@@ -1167,15 +498,14 @@
             <span class="product-card-price">5 fl oz · $10.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
-        </a></div><!-- /product-grid hot-very-hot -->
+        </a>
+      </div><!-- /product-grid hot-very-hot -->
     </div>
   </section>
 
-  <!-- ═══ WOOD DIVIDER — EXTREME / INFERNO ════════════════════ -->
-  <div class="wood-divider" id="extreme-inferno">
-  </div>
+  <!-- ═══ WOOD DIVIDER — EXTREME / INFERNO (slim 72px) ════════ -->
+  <div class="wood-divider wood-divider--slim" id="extreme-inferno"></div>
 
-  <!-- ═══ EXTREME / INFERNO CATALOG ════════════════════════════ -->
   <section class="catalog-section">
     <div class="container">
       <div class="heat-divider">
@@ -1187,17 +517,13 @@
         </div>
         <div class="heat-divider-line right"></div>
       </div>
-
-<div class="product-grid">        <a class="product-card reveal" href="products/hells-kitchen-cinnamon-ghost-punch.html">
+      <div class="product-grid">
+        <a class="product-card reveal" href="products/hells-kitchen-cinnamon-ghost-punch.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Hell's Kitchen</span></div>
             <div class="award-badge"><span class="award-badge-text">🏆 Hot Sauce of the Year '24</span></div>
             <img src="assets/pullman-product-display/cat-hells-kitchen-cinnamon-ghost-punch-hot-sauce.png" alt="Hell's Kitchen Cinnamon Ghost Punch" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Super Hot</span>
-              <span class="heat-badge-num">7–8/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Super Hot</span><span class="heat-badge-num">7–8/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Cinnamon Ghost Punch</div>
@@ -1213,11 +539,7 @@
             <div class="maker-badge"><span class="maker-badge-text">Ghost Scream</span></div>
             <img src="assets/pullman-product-display/cat-ghost-scream-hot-sauce.png" alt="Ghost Scream Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="award-badge"><span class="award-badge-text">🏆 Hot Sauce of the Year '16</span></div>
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Super Hot</span>
-              <span class="heat-badge-num">8/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Super Hot</span><span class="heat-badge-num">8/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Ghost Scream</div>
@@ -1232,11 +554,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-ghostly-garlic-hot-sauce.png" alt="Ghostly Garlic Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Super Hot</span>
-              <span class="heat-badge-num">8–9/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Super Hot</span><span class="heat-badge-num">8–9/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Ghostly Garlic</div>
@@ -1251,11 +569,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-rogue-hot-sauce.png" alt="High River Rogue Scorpion-Ghost Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Super Hot</span>
-              <span class="heat-badge-num">8–9/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Super Hot</span><span class="heat-badge-num">8–9/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Rogue</div>
@@ -1271,11 +585,7 @@
             <div class="maker-badge"><span class="maker-badge-text">CaJohn's</span></div>
             <img src="assets/pullman-product-display/cat-cajohns-segadora-reaper-hot-sauce.png" alt="CaJohn's La Segadory Reaper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="award-badge"><span class="award-badge-text">🏆 Screaming Mimi Award</span></div>
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Extreme</span>
-              <span class="heat-badge-num">8–9/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Extreme</span><span class="heat-badge-num">8–9/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">La Segadora</div>
@@ -1290,11 +600,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
             <img src="assets/pullman-product-display/cat-melindas-naga-jolokia-ghost-pepper-hot-sauce.png" alt="Melinda's Naga Jolokia Ghost Pepper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Super Hot</span>
-              <span class="heat-badge-num">9/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Super Hot</span><span class="heat-badge-num">9/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Naga Jolokia</div>
@@ -1309,11 +615,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-dill-pickle-reaper-hot-sauce.png" alt="Mikey V's Carolina Reaper Jalapeno Dill Pickle Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Extreme</span>
-              <span class="heat-badge-num">9/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Extreme</span><span class="heat-badge-num">9/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Dill Pickle Reaper</div>
@@ -1328,11 +630,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-thunder-juice-hot-sauce.png" alt="High River Thunder Juice Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Extreme</span>
-              <span class="heat-badge-num">9/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Extreme</span><span class="heat-badge-num">9/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Thunder Juice</div>
@@ -1347,11 +645,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-foo-foo-mam-choo-hot-sauce.png" alt="High River Foo Foo Mama Choo Reaper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Extreme</span>
-              <span class="heat-badge-num">10/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Extreme</span><span class="heat-badge-num">10/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Foo Foo Mama Choo</div>
@@ -1366,11 +660,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Mad Dog</span></div>
             <img src="assets/pullman-product-display/cat-mad-dog-357-sriracha-reaper-hot-sauce.png" alt="Mad Dog 357 Sriracha Reaper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Extreme</span>
-              <span class="heat-badge-num">10/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Extreme</span><span class="heat-badge-num">10/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">357 Reaper Sriracha</div>
@@ -1385,11 +675,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-pepper-x-hot-sauce.png" alt="High River Taco X Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Nuclear</span>
-              <span class="heat-badge-num">11/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Nuclear</span><span class="heat-badge-num">11/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Taco X</div>
@@ -1404,11 +690,7 @@
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Pucker Butt</span></div>
             <img src="assets/pullman-product-display/cat-puckerbutt-gator-hot-sauce.png" alt="Pucker Butt Gator Sauce Pepper X Edition" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Nuclear</span>
-              <span class="heat-badge-num">11/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Nuclear</span><span class="heat-badge-num">11/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Gator Sauce</div>
@@ -1424,11 +706,7 @@
             <div class="maker-badge"><span class="maker-badge-text">High River</span></div>
             <img src="assets/pullman-product-display/cat-high-river-peppers-up-hot-sauce.png" alt="High River Peppers Up Apollo Pepper Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="award-badge"><span class="award-badge-text">🔥 Hot Ones Season 24</span></div>
-            <div class="heat-badge">
-              <span class="heat-badge-emoji">🌶</span>
-              <span class="heat-badge-text">Nuclear</span>
-              <span class="heat-badge-num">11/10</span>
-            </div>
+            <div class="heat-badge"><span class="heat-badge-emoji">🌶</span><span class="heat-badge-text">Nuclear</span><span class="heat-badge-num">11/10</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Peppers Up</div>
@@ -1438,10 +716,11 @@
             <span class="product-card-price">5 fl oz · $14.00</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
-        </a></div><!-- /product-grid extreme-inferno -->
+        </a>
+      </div><!-- /product-grid extreme-inferno -->
     </div>
   </section>
-<!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
+
   <footer class="site-footer">
     <div class="footer-left">
       <span class="footer-item"><a href="https://www.pepperjunction401.com">pepperjunction401.com</a></span>
@@ -1453,10 +732,8 @@
     <div class="footer-right">© Pepper Junction · Est. 2014</div>
   </footer>
 
-  <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
   <script>
   (function () {
-    /* ── SCROLL REVEAL ── */
     const revealEls = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -1468,14 +745,12 @@
     }, { threshold: 0.08 });
     revealEls.forEach(function (el) { observer.observe(el); });
 
-    /* ── ACTIVE JUMP LINK (highlights current section in nav) ── */
     const sections = [
       document.getElementById('mild-medium'),
       document.getElementById('hot-very-hot'),
       document.getElementById('extreme-inferno')
     ];
     const jumpLinks = document.querySelectorAll('.jump-link');
-
     const sectionObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -1489,10 +764,8 @@
         }
       });
     }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
-
     sections.forEach(function (s) { if (s) sectionObserver.observe(s); });
   })();
   </script>
-
 </body>
 </html>

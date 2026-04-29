@@ -182,74 +182,139 @@
 
     /* ── HERO ─────────────────────────────────────────────────── */
     .hero {
-      background: var(--green-dark);
-      padding: 72px 48px 80px;
+      background: url('assets/textures/Hero-Banner-Pullman-Burgandy.png') center center / 100% 100% no-repeat;
+      aspect-ratio: 4 / 1;
+      padding: 0;
       position: relative;
       overflow: hidden;
       border-bottom: 1px solid rgba(184,137,57,0.3);
     }
 
     .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 3px,
-        rgba(184,137,57,0.03) 3px,
-        rgba(184,137,57,0.03) 4px
-      );
+      content: none;
     }
 
     .hero-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      position: relative;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 8%;
       z-index: 1;
-    }
-
-    .hero-eyebrow {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: var(--brass);
-      margin-bottom: 20px;
-      display: block;
     }
 
     .hero-headline {
       font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(18px, 4.5vw, 72px);
+      font-size: clamp(20px, 4.1vw, 64px);
       color: var(--cream-warm);
       line-height: 1.2;
       letter-spacing: 0.02em;
-      margin-bottom: 20px;
+      margin-bottom: 8px;
       white-space: nowrap;
-      padding: 8px 0;
+      padding: 4px 0;
     }
 
     .hero-sub {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(14px, 2vw, 22px);
+      font-size: clamp(20px, 2.2vw, 26px);
       font-style: italic;
       color: var(--cream);
       opacity: 0.72;
       max-width: 560px;
-      line-height: 1.6;
-      margin-bottom: 16px;
+      line-height: 1.4;
+      margin-bottom: 0;
+      white-space: nowrap;
     }
 
     .hero-tag {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: clamp(13px, 1.5vw, 16px);
+      font-size: clamp(11px, 1.8vw, 22px);
       font-weight: 700;
       letter-spacing: 0.32em;
       text-transform: uppercase;
       color: var(--brass-bright);
       opacity: 0.85;
+      margin-bottom: 10px;
+    }
+
+    /* ── COMING SOON RIBBON ───────────────────────────────────── */
+    .panel-card.coming-soon {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .panel-card.coming-soon::after {
+      content: 'Coming Soon';
+      position: absolute;
+      top: 36px;
+      right: -36px;
+      width: 160px;
+      padding: 8px 0;
+      background: #8F1F0D;
+      color: var(--cream-warm);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-align: center;
+      transform: rotate(45deg);
+      transform-origin: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* ── PANORAMA SECTION ─────────────────────────────────────── */
+    .panorama-section {
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+      font-size: 0;
+    }
+
+    /* ── BARTENDER PANORAMA ───────────────────────────────────── */
+    .bartender-panorama-wrap {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .bartender-panorama {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .bartender-video-overlay {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .bartender-video-overlay video {
+      height: 100%;
+      width: auto;
+      max-width: 100%;
+      display: block;
+      margin: 0;
+      padding: 0;
+      border: none;
+      outline: none;
+      vertical-align: top;
     }
 
     /* ── BARTENDER SECTION ────────────────────────────────────── */
@@ -913,7 +978,7 @@
     @media (max-width: 640px) {
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
-      .hero { padding: 48px 20px 56px; }
+      .hero { aspect-ratio: 4 / 1; }
       .panels-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
       .header-nav { display: none; }
       .dispatch-body { padding: 24px 20px; }
@@ -2169,41 +2234,29 @@
   <!-- ═══ HERO ════════════════════════════════════════════════ -->
   <section class="hero">
     <div class="hero-inner">
-      <span class="hero-eyebrow">Rhode Island · Est. 2014</span>
-      <h1 class="hero-headline">We're Sauce Enthusiasts First.</h1>
-      <p class="hero-sub">Each item carefully selected with a Flavor First priority.</p>
       <span class="hero-tag">Find Your Heat · Find Your Flavor</span>
+      <h1 class="hero-headline">We're Sauce Enthusiasts First</h1>
+      <p class="hero-sub">Each item carefully selected with a Flavor First priority.</p>
+    </div>
+  </section>
+
+  <!-- ═══ PANORAMA ═════════════════════════════════════════════ -->
+  <section class="panorama-section">
+    <div class="bartender-panorama-wrap">
+      <img class="bartender-panorama" src="assets/textures/Welcome-Panoramic-Pairing-Bar.png" alt="Pepper Junction Pairing Bar" />
+      <div class="bartender-video-overlay">
+        <video
+          src="assets/video/Bartender-Welcome-Parlor-Car.mp4/Bartender-Welcome-Parlor-Car.mp4"
+          autoplay muted playsinline controls
+        ></video>
+      </div>
     </div>
   </section>
 
   <!-- ═══ BARTENDER ════════════════════════════════════════════ -->
   <section class="bartender-section">
     <div class="container">
-      <div class="pic-light">
-        <div class="pic-light__plate"></div>
-        <div class="pic-light__arms">
-          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
-          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
-        </div>
-        <div class="pic-light__bar-wrap">
-          <div class="pic-light__finial"></div>
-          <div class="pic-light__collar"></div>
-          <div class="pic-light__tube">
-            <div class="pic-light__label"><span>Your Host</span></div>
-          </div>
-          <div class="pic-light__collar"></div>
-          <div class="pic-light__finial"></div>
-        </div>
-        <div class="pic-light__glow"></div>
-      </div>
       <div class="bartender-inner">
-
-        <div class="bartender-video-wrap reveal">
-          <video
-            src="assets/video/Bartender-Welcome-Parlor-Car.mp4/Bartender-Welcome-Parlor-Car.mp4"
-            autoplay muted playsinline controls
-          ></video>
-        </div>
 
         <div class="bartender-chat reveal">
           <img
@@ -2285,12 +2338,12 @@
         <a class="panel-card reveal" href="index.html?category=recipes">
           <img src="assets/category-panels/Recipes-Home-Made.png" alt="Recipes Home Made" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="index.html?category=elite-wings">
+        <div class="panel-card coming-soon reveal">
           <img src="assets/category-panels/Elite-Wings-RI-Restaurants.png" alt="Elite Wings RI Restaurants" loading="lazy" />
-        </a>
-        <a class="panel-card reveal" href="index.html?category=merch">
+        </div>
+        <div class="panel-card coming-soon reveal">
           <img src="assets/category-panels/Merch.png" alt="Merch" loading="lazy" />
-        </a>
+        </div>
       </div>
     </div>
   </section>

@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Seasonings, Dry Rubs &amp; BBQ Sauces — Pepper Junction</title>
-  <meta name="description" content="Shop Pepper Junction's full selection of dry rubs, BBQ seasonings, and sauces — Slap Ya Mama, Sucklebusters, 2 Pig Mafia, and our own PJ All Purpose SPG. Rhode Island's specialty sauce destination since 2014." />
+  <title>Olive Oils &amp; Vinegar — Pepper Junction</title>
+  <meta name="description" content="Ariston Mediterranean olive oils and balsamic vinegars at Pepper Junction — infused with chili, garlic, lemon, Tuscan herbs, fig, and black cherry. Rhode Island's specialty sauce destination since 2014." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
 
-    /* ── CSS VARIABLES (exact match to hot-sauces.html) ──────── */
+    /* ── CSS VARIABLES (exact match) ─────────────────────────── */
     :root {
       --cream:        #F5ECD6;
       --cream-deep:   #EDD9B4;
@@ -84,10 +84,7 @@
       text-decoration: none;
     }
 
-    .header-logo img {
-      height: 52px;
-      width: auto;
-    }
+    .header-logo img { height: 52px; width: auto; }
 
     .header-wordmark {
       display: flex;
@@ -151,7 +148,7 @@
       padding: 52px 48px 56px;
       position: relative;
       overflow: hidden;
-      border-bottom: 2px solid var(--brass);
+      border-bottom: none;
     }
 
     .page-hero::before {
@@ -160,6 +157,26 @@
       inset: 0;
       background: rgba(0,0,0,0.45);
       pointer-events: none;
+    }
+
+    /* ── BRASS BAND — between hero and wood divider ───────────── */
+    .brass-band {
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(184,137,57,0.4) 8%,
+        var(--brass) 30%,
+        var(--brass-bright) 50%,
+        var(--brass) 70%,
+        rgba(184,137,57,0.4) 92%,
+        transparent 100%);
+      box-shadow:
+        0 0 12px rgba(212,168,50,0.55),
+        0 0 28px rgba(212,168,50,0.25),
+        0 2px 4px rgba(0,0,0,0.4);
+      position: relative;
+      z-index: 2;
     }
 
     .page-hero-inner {
@@ -207,14 +224,14 @@
       font-style: italic;
       color: var(--cream);
       opacity: 0.7;
-      max-width: 560px;
+      max-width: 520px;
       line-height: 1.6;
     }
 
     /* ── WOOD PLANK SECTION DIVIDER ──────────────────────────── */
     .wood-divider {
       width: 100%;
-      height: 220px;
+      height: 160px;
       background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
       background-size: cover;
       background-position: center;
@@ -244,7 +261,7 @@
       flex-direction: column;
       align-items: center;
       gap: 4px;
-      padding: 10px 28px;
+      padding: 20px 28px;
       border-top: 1px solid rgba(184,137,57,0.4);
       border-bottom: 1px solid rgba(184,137,57,0.4);
       background: rgba(0,0,0,0.18);
@@ -273,7 +290,7 @@
       height: 72px;
     }
 
-    /* ── CATALOG SECTION — steel panel background ─────────────── */
+    /* ── CATALOG SECTION ──────────────────────────────────────── */
     .catalog-section {
       padding: 64px 0 48px;
       position: relative;
@@ -301,7 +318,7 @@
       opacity: 0.5;
     }
 
-    /* ── CATEGORY DIVIDER (replaces heat-divider) ─────────────── */
+    /* ── CATEGORY DIVIDER ─────────────────────────────────────── */
     .cat-divider {
       display: flex;
       align-items: center;
@@ -310,16 +327,9 @@
       padding: 0 4px;
     }
 
-    .cat-divider-line {
-      flex: 1;
-      height: 1px;
-    }
-    .cat-divider-line.left {
-      background: linear-gradient(90deg, transparent, var(--brass));
-    }
-    .cat-divider-line.right {
-      background: linear-gradient(90deg, var(--brass), transparent);
-    }
+    .cat-divider-line { flex: 1; height: 1px; }
+    .cat-divider-line.left  { background: linear-gradient(90deg, transparent, var(--brass)); }
+    .cat-divider-line.right { background: linear-gradient(90deg, var(--brass), transparent); }
 
     .cat-divider-badge {
       display: flex;
@@ -333,10 +343,7 @@
       white-space: nowrap;
     }
 
-    .cat-divider-emoji {
-      font-size: 14px;
-      line-height: 1;
-    }
+    .cat-divider-emoji { font-size: 14px; line-height: 1; }
 
     .cat-divider-text {
       font-family: 'Josefin Sans', sans-serif;
@@ -379,9 +386,7 @@
       color: var(--ink);
     }
 
-    .product-card:hover {
-      transform: translateY(-4px);
-    }
+    .product-card:hover { transform: translateY(-4px); }
 
     /* ── MAKER BADGE ─────────────────────────────────────────── */
     .maker-badge {
@@ -410,34 +415,7 @@
       text-shadow: 0 1px 4px rgba(0,0,0,0.6);
     }
 
-    /* ── AWARD BADGE ─────────────────────────────────────────── */
-    .award-badge {
-      position: absolute;
-      top: 80px;
-      left: 48px;
-      background: rgba(160,20,10,0.92);
-      border: 1px solid rgba(255,215,0,0.5);
-      border-radius: 2px;
-      padding: 4px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      backdrop-filter: blur(4px);
-      z-index: 2;
-    }
-
-    .award-badge-text {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #FFD700;
-      white-space: nowrap;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-    }
-
-    /* Pullman window frame image */
+    /* Card image */
     .product-card-image {
       position: relative;
       width: 100%;
@@ -455,11 +433,9 @@
       transition: transform 0.35s ease;
     }
 
-    .product-card:hover .product-card-image img {
-      transform: scale(1.04);
-    }
+    .product-card:hover .product-card-image img { transform: scale(1.04); }
 
-    /* ── TYPE BADGE (replaces heat badge) ───────────────────── */
+    /* ── TYPE BADGE ──────────────────────────────────────────── */
     .type-badge {
       position: absolute;
       bottom: 36px;
@@ -474,10 +450,7 @@
       backdrop-filter: blur(4px);
     }
 
-    .type-badge-emoji {
-      font-size: 11px;
-      line-height: 1;
-    }
+    .type-badge-emoji { font-size: 11px; line-height: 1; }
 
     .type-badge-text {
       font-family: 'Josefin Sans', sans-serif;
@@ -564,9 +537,7 @@
       transition: transform 0.2s;
     }
 
-    .product-card:hover .product-card-btn-arrow {
-      transform: translateX(3px);
-    }
+    .product-card:hover .product-card-btn-arrow { transform: translateX(3px); }
 
     /* ── FOOTER ───────────────────────────────────────────────── */
     .site-footer {
@@ -599,18 +570,10 @@
       opacity: 0.4;
     }
 
-    .footer-item a {
-      color: inherit;
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
+    .footer-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
     .footer-item a:hover { opacity: 1; }
 
-    .footer-sep {
-      width: 1px;
-      height: 12px;
-      background: rgba(184,137,57,0.3);
-    }
+    .footer-sep { width: 1px; height: 12px; background: rgba(184,137,57,0.3); }
 
     .footer-right {
       font-family: 'Josefin Sans', sans-serif;
@@ -628,10 +591,7 @@
       transform: translateY(24px);
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ── BACK TO TOP ──────────────────────────────────────────── */
     .back-top {
@@ -661,59 +621,6 @@
     }
     .back-top-link:hover { opacity: 0.9; border-color: rgba(184,137,57,0.5); }
 
-    /* ── SECTION JUMP NAV ─────────────────────────────────────── */
-    .section-jump {
-      background: rgba(30,48,32,0.85);
-      border-bottom: 1px solid rgba(184,137,57,0.25);
-      padding: 14px 48px;
-      position: sticky;
-      top: 92px;
-      z-index: 90;
-      backdrop-filter: blur(4px);
-    }
-
-    .section-jump-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .jump-label {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--brass);
-      opacity: 0.6;
-      margin-right: 8px;
-      white-space: nowrap;
-    }
-
-    .jump-link {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.55;
-      text-decoration: none;
-      padding: 6px 14px;
-      border: 1px solid rgba(184,137,57,0.2);
-      border-radius: 2px;
-      transition: opacity 0.2s, border-color 0.2s, background 0.2s;
-      white-space: nowrap;
-    }
-    .jump-link:hover {
-      opacity: 1;
-      border-color: rgba(184,137,57,0.55);
-      background: rgba(184,137,57,0.08);
-    }
-
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -723,9 +630,8 @@
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
       .page-hero { padding: 36px 20px 40px; }
-      .section-jump { padding: 12px 20px; top: 84px; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .wood-divider { height: 120px; }
+      .wood-divider { height: 90px; }
       .header-nav { display: none; }
       .site-footer { padding: 20px; }
     }
@@ -757,333 +663,184 @@
       <div class="breadcrumb">
         <a href="main.html">Main Street Station</a>
         <span class="breadcrumb-sep">›</span>
-        <span>Seasonings, Dry Rubs &amp; BBQ Sauces</span>
+        <span>Olive Oils &amp; Vinegar</span>
       </div>
-      <h1 class="page-hero-headline">Seasonings, Dry Rubs &amp; BBQ Sauces</h1>
-      <p class="page-hero-sub">Competition-grade rubs, all-natural BBQ sauces, and everyday seasonings — built for the backyard pitmaster and the kitchen counter alike.</p>
+      <h1 class="page-hero-headline">Olive Oils &amp; Vinegar</h1>
+      <p class="page-hero-sub">Ariston infused olive oils and oak-matured balsamics from Greece and Italy — crafted to finish, drizzle, and elevate everything on the table.</p>
     </div>
   </section>
 
-  <!-- ═══ SECTION JUMP NAV ═════════════════════════════════════ -->
-  <nav class="section-jump" aria-label="Jump to category section">
-    <div class="section-jump-inner">
-      <span class="jump-label">Jump to:</span>
-      <a class="jump-link" href="#bbq-rubs">🍖 BBQ Sauces &amp; Dry Rubs</a>
-      <a class="jump-link" href="#seasonings">🧂 Seasonings</a>
-    </div>
-  </nav>
+  <!-- ═══ BRASS BAND ══════════════════════════════════════════ -->
+  <div class="brass-band"></div>
 
-  <!-- ═══ WOOD DIVIDER — BBQ SAUCES & DRY RUBS ════════════════ -->
-  <div class="wood-divider" id="bbq-rubs">
+  <!-- ═══ WOOD DIVIDER ════════════════════════════════════════ -->
+  <div class="wood-divider" id="collection">
     <div class="wood-divider__label">
-      <div class="wood-divider__line1">Season It Right</div>
-      <div class="wood-divider__line2">Smoke It Proud</div>
+      <div class="wood-divider__line1">Mediterranean Collection</div>
+      <div class="wood-divider__line2">Greece &amp; Italy</div>
     </div>
   </div>
 
-  <!-- ═══ BBQ SAUCES & DRY RUBS CATALOG ════════════════════════ -->
-  <section class="catalog-section">
+  <!-- ═══ INFUSED OLIVE OILS CATALOG ══════════════════════════ -->
+  <section class="catalog-section" id="olive-oils">
     <div class="container">
 
-      <!-- BBQ Sauces sub-header -->
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
-          <span class="cat-divider-emoji">🍖</span>
-          <span class="cat-divider-text">BBQ Sauces</span>
-          <span class="cat-divider-count">2 Sauces</span>
+          <span class="cat-divider-emoji">🫒</span>
+          <span class="cat-divider-text">Infused Olive Oils</span>
+          <span class="cat-divider-count">4 Oils · 8.45 fl oz</span>
         </div>
         <div class="cat-divider-line right"></div>
       </div>
 
-      <!-- 2 sauces, 3-col grid, left-aligned -->
-      <div class="product-grid" style="margin-bottom: 48px;">
-
-        <!-- ── Sucklebusters Original BBQ Sauce ── -->
-        <a class="product-card reveal" href="products/sucklebusters-original-bbq-sauce.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-original-bbq-sauce.png" alt="Sucklebusters Original BBQ Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🍖</span>
-              <span class="type-badge-text">BBQ Sauce</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Original BBQ Sauce</div>
-            <p class="product-card-teaser">All-natural. No HFCS. Balanced sweetness from molasses and sugar, tang from vinegar, mild spice — and a reason it wins awards.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">12 fl oz · $8.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Sucklebusters Chipotle BBQ Sauce ── -->
-        <a class="product-card reveal" href="products/sucklebusters-chipotle-bbq-sauce.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-chipotle-bbq-sauce.png" alt="Sucklebusters Chipotle BBQ Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🍖</span>
-              <span class="type-badge-text">BBQ Sauce</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Chipotle BBQ Sauce</div>
-            <p class="product-card-teaser">All-natural. No HFCS. Smoky chipotle and sweet tomato base built for Texas-style barbecue where smoke and sauce work in harmony.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">12 fl oz · $9.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-      </div><!-- /bbq sauces grid -->
-
-      <!-- Dry Rubs sub-header -->
-      <div class="cat-divider">
-        <div class="cat-divider-line left"></div>
-        <div class="cat-divider-badge">
-          <span class="cat-divider-emoji">🥩</span>
-          <span class="cat-divider-text">Dry Rubs</span>
-          <span class="cat-divider-count">6 Rubs</span>
-        </div>
-        <div class="cat-divider-line right"></div>
-      </div>
-
-      <!-- 6 dry rubs: Hogwaller, 1836, 2 Pig Mafia, All Purpose, Clucker Dust, BAMM -->
       <div class="product-grid">
 
-        <!-- ── Sucklebusters Hogwaller ── -->
-        <a class="product-card reveal" href="products/sucklebusters-hogwaller-bbq-dry-rub.html">
+        <!-- Chile Infused Olive Oil -->
+        <a class="product-card reveal" href="products/ariston-chili-infused-olive-oil.html">
           <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-hogwaller-bbq-dry-rub.png" alt="Sucklebusters Hogwaller BBQ Dry Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Ariston</span></div>
+            <img src="assets/pullman-product-display/cat-ariston-chili-infused-olive-oil.png" alt="Ariston Chile Infused Olive Oil" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🥩</span>
-              <span class="type-badge-text">Dry Rub</span>
+              <span class="type-badge-emoji">🫒</span>
+              <span class="type-badge-text">Olive Oil</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Hog Waller Pork &amp; Rib Rub</div>
-            <p class="product-card-teaser">The infamous Hog Waller — known to smoke pork shoulders and ribs right off the bone.</p>
+            <div class="product-card-name">Chile Infused Olive Oil</div>
+            <p class="product-card-teaser">Silky Koroneiki olive oil from Greece with balanced chili warmth — just enough spark to elevate pizza, pasta, and fresh bread.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
+            <span class="product-card-price">8.45 fl oz · $15.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- ── Sucklebusters 1836 Beef Rub ── -->
-        <a class="product-card reveal" href="products/sucklebusters-1836-beef-rub.html">
+        <!-- Garlic Infused Olive Oil -->
+        <a class="product-card reveal" href="products/ariston-garlic-infused-olive-oil.html">
           <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-1836-beef-rub.png" alt="Sucklebusters 1836 Beef Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Ariston</span></div>
+            <img src="assets/pullman-product-display/cat-ariston-garlic-infused-olive-oil.png" alt="Ariston Garlic Infused Olive Oil" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🥩</span>
-              <span class="type-badge-text">Dry Rub</span>
+              <span class="type-badge-emoji">🫒</span>
+              <span class="type-badge-text">Olive Oil</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">1836 Beef Rub</div>
-            <p class="product-card-teaser">Authentic Texas-style beef rub. Cracked peppercorns build a hardy bark on brisket during low-slow cooks.</p>
+            <div class="product-card-name">Garlic Infused Olive Oil</div>
+            <p class="product-card-teaser">Fresh garlic slowly infused into smooth, buttery Koroneiki olive oil. Deep savory character, clean finish — essential for pasta and grilled meats.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
+            <span class="product-card-price">8.45 fl oz · $15.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- ── 2 Pig Mafia Steak Seasoning ── -->
-        <a class="product-card reveal" href="products/two-pig-mafia-steak-seasoning.html">
+        <!-- Tuscan Herb Infused Olive Oil -->
+        <a class="product-card reveal" href="products/ariston-tuscan-herb-infused-olive-oil.html">
           <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">2 Pig Mafia</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 2019 World Steak Championship</span></div>
-            <img src="assets/pullman-product-display/cat-two-pig-mafia-steak-seasoning.png" alt="2 Pig Mafia Steak Seasoning" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Ariston</span></div>
+            <img src="assets/pullman-product-display/cat-ariston-tuscan-herb-infused-olive-oil.png" alt="Ariston Tuscan Herb Infused Olive Oil" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🥩</span>
-              <span class="type-badge-text">Dry Rub</span>
+              <span class="type-badge-emoji">🫒</span>
+              <span class="type-badge-text">Olive Oil</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Steak Seasoning</div>
-            <p class="product-card-teaser">Competition-grade. Built to enhance natural beef flavor and develop a steakhouse-quality crust over open flame or cast iron.</p>
+            <div class="product-card-name">Tuscan Herb Infused Olive Oil</div>
+            <p class="product-card-teaser">Oregano, basil, garlic, and rosemary in Koroneiki olive oil — savory, herb-forward, and earthy. Built to live on your counter.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">13 oz · $14.99</span>
+            <span class="product-card-price">8.45 fl oz · $15.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- ── PJ All Purpose SPG ── -->
-        <a class="product-card reveal" href="products/pj-all-purpose-spg.html">
+        <!-- Lemon Infused Olive Oil -->
+        <a class="product-card reveal" href="products/ariston-lemon-infused-olive-oil.html">
           <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Pepper Junction</span></div>
-            <img src="assets/pullman-product-display/cat-pj-all-purpose-spg.png" alt="PJ All Purpose SPG" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Ariston</span></div>
+            <img src="assets/pullman-product-display/cat-ariston-lemon-infused-olive-oil.png" alt="Ariston Lemon Infused Olive Oil" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🧂</span>
-              <span class="type-badge-text">Dry Rub</span>
+              <span class="type-badge-emoji">🫒</span>
+              <span class="type-badge-text">Olive Oil</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">PJ Competition SPG</div>
-            <p class="product-card-teaser">Texas competition-style SPG developed with a championship barbecue team. Sea salt, cracked pepper, bold garlic — the workhorse rub.</p>
+            <div class="product-card-name">Lemon Infused Olive Oil</div>
+            <p class="product-card-teaser">Bright citrus lift without overpowering the olive — silky and aromatic. Wakes up seafood, salads, and Mediterranean dishes naturally.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
+            <span class="product-card-price">8.45 fl oz · $15.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- ── Sucklebusters Clucker Dust ── -->
-        <a class="product-card reveal" href="products/sucklebusters-cluckerdust-chipotle-bbq-dry-rub.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-cluckerdust-chipotle-bbq-dry-rub.png" alt="Sucklebusters Cluckerdust Chipotle BBQ Dry Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🍗</span>
-              <span class="type-badge-text">Dry Rub</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Clucker Dust Chipotle Rub</div>
-            <p class="product-card-teaser">Pepper Junction's #1 best seller. Nationally award-winning and built specifically for chicken and turkey.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Sucklebusters BAMM ── -->
-        <a class="product-card reveal" href="products/sucklebusters-bamm-bbq-dry-rub.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-bamm-bbq-dry-rub.png" alt="Sucklebusters BAMM BBQ Dry Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🥩</span>
-              <span class="type-badge-text">Dry Rub</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">BAMM! Habanero BBQ Rub</div>
-            <p class="product-card-teaser">Elevated sweetness meets habanero heat. The fruity kick perfectly amplifies the natural sweetness of chicken and pork.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-      </div><!-- /dry rubs grid -->
+      </div><!-- /olive oils grid -->
     </div>
   </section>
 
-  <!-- ═══ WOOD DIVIDER — SEASONINGS ════════════════════════════ -->
-  <div class="wood-divider wood-divider--slim" id="seasonings"></div>
+  <!-- ═══ SLIM WOOD DIVIDER ════════════════════════════════════ -->
+  <div class="wood-divider wood-divider--slim" id="balsamics"></div>
 
-  <!-- ═══ SEASONINGS CATALOG ════════════════════════════════════ -->
+  <!-- ═══ BALSAMIC VINEGARS CATALOG ════════════════════════════ -->
   <section class="catalog-section">
     <div class="container">
 
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
-          <span class="cat-divider-emoji">🧂</span>
-          <span class="cat-divider-text">Seasonings</span>
-          <span class="cat-divider-count">4 Products</span>
+          <span class="cat-divider-emoji">🍷</span>
+          <span class="cat-divider-text">Balsamic Vinegars</span>
+          <span class="cat-divider-count">2 Vinegars · 8.45 fl oz · Oak Aged</span>
         </div>
         <div class="cat-divider-line right"></div>
       </div>
 
       <div class="product-grid">
 
-        <!-- ── Slap Ya Mama Original ── -->
-        <a class="product-card reveal" href="products/slap-ya-mama-cajun-seasoning-original.html">
+        <!-- Fig Balsamic Vinegar -->
+        <a class="product-card reveal" href="products/ariston-fig-balsamic.html">
           <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
-            <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-seasoning-original.png" alt="Slap Ya Mama Cajun Seasoning Original" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Ariston</span></div>
+            <img src="assets/pullman-product-display/cat-ariston-fig-balsamic.png" alt="Ariston Fig Balsamic Vinegar" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🧂</span>
-              <span class="type-badge-text">Seasoning</span>
+              <span class="type-badge-emoji">🍷</span>
+              <span class="type-badge-text">Balsamic Vinegar</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Cajun Seasoning Original</div>
-            <p class="product-card-teaser">A great mixture of spices that can be used on any dish. Not too spicy and full of flavor.</p>
+            <div class="product-card-name">Fig Balsamic Vinegar</div>
+            <p class="product-card-teaser">Oak-aged grape must with lush fig infusion — velvety, fruit-forward, with soft warmth. Ideal over burrata, arugula, and cheese boards.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8 oz · $5.99</span>
+            <span class="product-card-price">8.45 fl oz · $15.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- ── Slap Ya Mama Hot Blend ── -->
-        <a class="product-card reveal" href="products/slap-ya-mama-cajun-seasoning-hot.html">
+        <!-- Black Cherry Balsamic Vinegar -->
+        <a class="product-card reveal" href="products/ariston-black-cherry-balsamic.html">
           <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
-            <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-seasoning-hot.png" alt="Slap Ya Mama Cajun Seasoning Hot" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Ariston</span></div>
+            <img src="assets/pullman-product-display/cat-ariston-black-cherry-balsamic.png" alt="Ariston Black Cherry Balsamic Vinegar" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🧂</span>
-              <span class="type-badge-text">Seasoning</span>
+              <span class="type-badge-emoji">🍷</span>
+              <span class="type-badge-text">Balsamic Vinegar</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Cajun Seasoning Hot Blend</div>
-            <p class="product-card-teaser">Same great Cajun flavor as the Original — just kicks up the heat to set your mouth on fire.</p>
+            <div class="product-card-name">Black Cherry Balsamic Vinegar</div>
+            <p class="product-card-teaser">60-day oak-aged Italian grape must with natural black cherry must — rich, fruit-forward, bright acidity. Exceptional over salads, pork, and aged cheeses.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8 oz · $5.99</span>
+            <span class="product-card-price">8.45 fl oz · $15.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- ── Slap Ya Mama Low Sodium ── -->
-        <a class="product-card reveal" href="products/slap-ya-mama-cajun-seasoning-low-sodium.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
-            <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-seasoning-low-sodium.png" alt="Slap Ya Mama Cajun Seasoning Low Sodium" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🧂</span>
-              <span class="type-badge-text">Seasoning</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Cajun Seasoning Low Sodium</div>
-            <p class="product-card-teaser">The Cajun flavor you love — crafted for a low-sodium lifestyle without sacrificing anything.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">8 oz · $5.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Ass Kickin' Habanero Garlic Salt ── -->
-        <a class="product-card reveal" href="products/ass-kickin-habanero-garlic-salt.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Ass Kickin'</span></div>
-            <img src="assets/pullman-product-display/cat-ass-kickin-habanero-garlic-salt.png" alt="Ass Kickin' Habanero Garlic Salt" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🧄</span>
-              <span class="type-badge-text">Seasoning</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Habanero Garlic Salt</div>
-            <p class="product-card-teaser">Spicy habanero and garlic blended into the ultimate flavored salt — an amazing layer of flavor and heat on everything it touches.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">4 oz · $8.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-      </div><!-- /seasonings grid -->
+      </div><!-- /balsamics grid -->
     </div>
   </section>
 
@@ -1107,7 +864,6 @@
   <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
   <script>
   (function () {
-    /* ── SCROLL REVEAL ── */
     const revealEls = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -1118,29 +874,6 @@
       });
     }, { threshold: 0.08 });
     revealEls.forEach(function (el) { observer.observe(el); });
-
-    /* ── ACTIVE JUMP LINK ── */
-    const sections = [
-      document.getElementById('bbq-rubs'),
-      document.getElementById('seasonings')
-    ];
-    const jumpLinks = document.querySelectorAll('.jump-link');
-
-    const sectionObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          jumpLinks.forEach(function (link) {
-            const active = link.getAttribute('href') === '#' + id;
-            link.style.opacity = active ? '1' : '0.55';
-            link.style.borderColor = active ? 'rgba(184,137,57,0.65)' : 'rgba(184,137,57,0.2)';
-            link.style.background = active ? 'rgba(184,137,57,0.12)' : '';
-          });
-        }
-      });
-    }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
-
-    sections.forEach(function (s) { if (s) sectionObserver.observe(s); });
   })();
   </script>
 

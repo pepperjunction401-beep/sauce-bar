@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Buffalo &amp; Wing Sauces, Condiments — Pepper Junction</title>
-  <meta name="description" content="Shop Pepper Junction's Buffalo &amp; Wing Sauces and Condiments With a Kick — Defcon, Melinda's, Colon Cleaner, and Spicy Shark. Rhode Island's specialty sauce destination since 2014." />
+  <title>Snacks — Pepper Junction</title>
+  <meta name="description" content="Mikey V's Gator Toes fried garlic snacks at Pepper Junction — five bold flavors from mild BBQ to extreme Loco Spice. Rhode Island's specialty sauce destination since 2014." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -148,7 +148,7 @@
       padding: 52px 48px 56px;
       position: relative;
       overflow: hidden;
-      border-bottom: 2px solid var(--brass);
+      border-bottom: none;
     }
 
     .page-hero::before {
@@ -157,6 +157,26 @@
       inset: 0;
       background: rgba(0,0,0,0.45);
       pointer-events: none;
+    }
+
+    /* ── BRASS BAND — between hero and wood divider ───────────── */
+    .brass-band {
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(184,137,57,0.4) 8%,
+        var(--brass) 30%,
+        var(--brass-bright) 50%,
+        var(--brass) 70%,
+        rgba(184,137,57,0.4) 92%,
+        transparent 100%);
+      box-shadow:
+        0 0 12px rgba(212,168,50,0.55),
+        0 0 28px rgba(212,168,50,0.25),
+        0 2px 4px rgba(0,0,0,0.4);
+      position: relative;
+      z-index: 2;
     }
 
     .page-hero-inner {
@@ -204,67 +224,14 @@
       font-style: italic;
       color: var(--cream);
       opacity: 0.7;
-      max-width: 560px;
+      max-width: 520px;
       line-height: 1.6;
-    }
-
-    /* ── SECTION JUMP NAV ─────────────────────────────────────── */
-    .section-jump {
-      background: rgba(30,48,32,0.85);
-      border-bottom: 1px solid rgba(184,137,57,0.25);
-      padding: 14px 48px;
-      position: sticky;
-      top: 92px;
-      z-index: 90;
-      backdrop-filter: blur(4px);
-    }
-
-    .section-jump-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .jump-label {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--brass);
-      opacity: 0.6;
-      margin-right: 8px;
-      white-space: nowrap;
-    }
-
-    .jump-link {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.55;
-      text-decoration: none;
-      padding: 6px 14px;
-      border: 1px solid rgba(184,137,57,0.2);
-      border-radius: 2px;
-      transition: opacity 0.2s, border-color 0.2s, background 0.2s;
-      white-space: nowrap;
-    }
-    .jump-link:hover {
-      opacity: 1;
-      border-color: rgba(184,137,57,0.55);
-      background: rgba(184,137,57,0.08);
     }
 
     /* ── WOOD PLANK SECTION DIVIDER ──────────────────────────── */
     .wood-divider {
       width: 100%;
-      height: 220px;
+      height: 160px;
       background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
       background-size: cover;
       background-position: center;
@@ -294,7 +261,7 @@
       flex-direction: column;
       align-items: center;
       gap: 4px;
-      padding: 10px 28px;
+      padding: 20px 28px;
       border-top: 1px solid rgba(184,137,57,0.4);
       border-bottom: 1px solid rgba(184,137,57,0.4);
       background: rgba(0,0,0,0.18);
@@ -316,11 +283,6 @@
       color: var(--brass-bright);
       text-shadow: 0 1px 6px rgba(0,0,0,0.8);
       line-height: 1.2;
-    }
-
-    /* ── SLIM WOOD DIVIDER (inter-section, no label) ─────────── */
-    .wood-divider--slim {
-      height: 72px;
     }
 
     /* ── CATALOG SECTION ──────────────────────────────────────── */
@@ -411,6 +373,7 @@
       border: none;
       border-radius: 0;
       overflow: hidden;
+      box-shadow: none;
       display: flex;
       flex-direction: column;
       transition: transform 0.25s ease;
@@ -445,33 +408,6 @@
       color: var(--brass-bright);
       white-space: nowrap;
       text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-    }
-
-    /* ── AWARD BADGE ─────────────────────────────────────────── */
-    .award-badge {
-      position: absolute;
-      top: 80px;
-      left: 48px;
-      background: rgba(160,20,10,0.92);
-      border: 1px solid rgba(255,215,0,0.5);
-      border-radius: 2px;
-      padding: 4px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      backdrop-filter: blur(4px);
-      z-index: 2;
-    }
-
-    .award-badge-text {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #FFD700;
-      white-space: nowrap;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
     }
 
     /* Card image */
@@ -680,35 +616,6 @@
     }
     .back-top-link:hover { opacity: 0.9; border-color: rgba(184,137,57,0.5); }
 
-    /* ── OUT OF STOCK RIBBON ─────────────────────────────────── */
-    .ribbon-oos {
-      position: absolute;
-      top: 28px;
-      right: -32px;
-      width: 140px;
-      background: var(--crimson);
-      color: var(--cream-warm);
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      text-align: center;
-      padding: 6px 0;
-      transform: rotate(45deg);
-      transform-origin: center;
-      border-top: 1px solid rgba(255,255,255,0.2);
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    /* Dim the card image when out of stock */
-    .product-card.oos .product-card-image img {
-      filter: grayscale(40%) brightness(0.8);
-    }
-
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -718,7 +625,6 @@
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
       .page-hero { padding: 36px 20px 40px; }
-      .section-jump { padding: 12px 20px; top: 84px; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .wood-divider { height: 120px; }
       .header-nav { display: none; }
@@ -752,236 +658,141 @@
       <div class="breadcrumb">
         <a href="main.html">Main Street Station</a>
         <span class="breadcrumb-sep">›</span>
-        <span>Buffalo &amp; Condiments</span>
+        <span>Snacks</span>
       </div>
-      <h1 class="page-hero-headline">Buffalo &amp; Condiments</h1>
-      <p class="page-hero-sub">Competition-winning wing sauces and bold condiments that earn their place on your table — from mild Buffalo to ghost pepper ketchup.</p>
+      <h1 class="page-hero-headline">Snacks</h1>
+      <p class="page-hero-sub">Whole deep-fried garlic cloves. Five bold flavors. Impossible to put down — straight from the bag or crushed over everything.</p>
     </div>
   </section>
 
-  <!-- ═══ SECTION JUMP NAV ═════════════════════════════════════ -->
-  <nav class="section-jump" aria-label="Jump to category section">
-    <div class="section-jump-inner">
-      <span class="jump-label">Jump to:</span>
-      <a class="jump-link" href="#buffalo-wing">🐃 Buffalo &amp; Wing Sauces</a>
-      <a class="jump-link" href="#condiments">🍯 Condiments With a Kick</a>
-    </div>
-  </nav>
+  <!-- ═══ BRASS BAND ══════════════════════════════════════════ -->
+  <div class="brass-band"></div>
 
-  <!-- ═══ WOOD DIVIDER — BUFFALO & WING ════════════════════════ -->
-  <div class="wood-divider" id="buffalo-wing">
+  <!-- ═══ WOOD DIVIDER ════════════════════════════════════════ -->
+  <div class="wood-divider" id="fried-garlic">
     <div class="wood-divider__label">
-      <div class="wood-divider__line1">Toss 'Em Right</div>
-      <div class="wood-divider__line2">Every Time</div>
+      <div class="wood-divider__line1">Mikey V's Gator Toes</div>
+      <div class="wood-divider__line2">Fried Garlic Cloves</div>
     </div>
   </div>
 
-  <!-- ═══ BUFFALO & WING SAUCES CATALOG ════════════════════════ -->
+  <!-- ═══ SNACKS CATALOG ═══════════════════════════════════════ -->
   <section class="catalog-section">
     <div class="container">
 
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
-          <span class="cat-divider-emoji">🐃</span>
-          <span class="cat-divider-text">Buffalo &amp; Wing Sauces</span>
-          <span class="cat-divider-count">4 Sauces</span>
+          <span class="cat-divider-emoji">🧄</span>
+          <span class="cat-divider-text">Deep-Fried Whole Garlic Cloves</span>
+          <span class="cat-divider-count">5 Flavors · Small Batch · Texas Made</span>
         </div>
         <div class="cat-divider-line right"></div>
       </div>
 
       <div class="product-grid">
 
-        <!-- ── Defcon Defense Condition #3 Mild ── -->
-        <a class="product-card reveal" href="products/defcon-defense-condition-3-mild.html">
+        <!-- ── Fried Garlic Dill Pickle ── -->
+        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-dill-pickle.html">
           <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Screaming MiMi Award '16 &amp; '17</span></div>
-            <img src="assets/pullman-product-display/cat-defcon-defense-condition-3-mild.png" alt="Defcon Defense Condition #3 Mild Wing Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
+            <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-dill-pickle.png" alt="Mikey V's Fried Garlic Dill Pickle" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🐃</span>
-              <span class="type-badge-text">Wing Sauce</span>
+              <span class="type-badge-emoji">🥒</span>
+              <span class="type-badge-text">Fried Garlic · Dill Pickle</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Defense Condition #3 Mild</div>
-            <p class="product-card-teaser">The original Defcon pillar — classic Buffalo tang with approachable heat designed to be enjoyed by everyone.</p>
+            <div class="product-card-name">Gator Toes Dill Pickle</div>
+            <p class="product-card-teaser">Bright acidity hits first, followed by smooth garlic richness that rounds out every bite.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8 fl oz · $8.99</span>
+            <span class="product-card-price">3 oz · $9.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- ── Defcon Defense Condition #2 Medium ── -->
-        <a class="product-card reveal" href="products/defcon-defense-condition-2-medium.html">
+        <!-- ── Fried Garlic BBQ ── -->
+        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-bbq.html">
           <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Screaming MiMi Award '15 &amp; '23</span></div>
-            <img src="assets/pullman-product-display/cat-defcon-defense-condition-2-medium.png" alt="Defcon Defense Condition #2 Medium Wing Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
+            <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-bbq.png" alt="Mikey V's Fried Garlic BBQ" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🐃</span>
-              <span class="type-badge-text">Wing Sauce</span>
+              <span class="type-badge-emoji">🍖</span>
+              <span class="type-badge-text">Fried Garlic · BBQ</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Defense Condition #2 Medium</div>
-            <p class="product-card-teaser">Classic Buffalo tang with balanced heat and depth — consistently ranking among the best at the NYC Hot Sauce Expo.</p>
+            <div class="product-card-name">Gator Toes BBQ</div>
+            <p class="product-card-teaser">Smoky, savory Texas-style BBQ with a touch of sweetness meets rich garlic crunch. Made for charcuterie boards and cold beer.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8 fl oz · $8.99</span>
+            <span class="product-card-price">3 oz · $9.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- ── Defcon Cluckwing Orange ── -->
-        <a class="product-card reveal" href="products/defcon-cluckwing-orange.html">
+        <!-- ── Fried Garlic Buffalo ── -->
+        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-buffalo.html">
           <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Screaming MiMi Award</span></div>
-            <img src="assets/pullman-product-display/cat-defcon-cluckwing-orange.png" alt="Defcon Cluckwing Orange Wing Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
+            <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-buffalo.png" alt="Mikey V's Fried Garlic Buffalo" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🐃</span>
-              <span class="type-badge-text">Wing Sauce</span>
+              <span class="type-badge-emoji">🔥</span>
+              <span class="type-badge-text">Fried Garlic · Buffalo</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Cluckwing Orange</div>
-            <p class="product-card-teaser">Defcon's second hottest — cayenne and habanero layered with Peri-Peri, African Bird Pepper, and Trinidad Scorpion fire.</p>
+            <div class="product-card-name">Gator Toes Buffalo</div>
+            <p class="product-card-teaser">Tangy buffalo wing heat wrapped around crispy whole garlic cloves. Wing lovers will recognize it instantly.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8 fl oz · $9.99</span>
+            <span class="product-card-price">3 oz · $9.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- ── Defcon Curbstomp ── -->
-        <a class="product-card reveal" href="products/defcon-curbstomp.html">
+        <!-- ── Fried Garlic Spicy ── -->
+        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-spicy.html">
           <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Screaming MiMi Award</span></div>
-            <img src="assets/pullman-product-display/cat-defcon-curbstomp.png" alt="Defcon Curbstomp Wing Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
+            <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-spicy.png" alt="Mikey V's Fried Garlic Spicy" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🐃</span>
-              <span class="type-badge-text">Wing Sauce</span>
+              <span class="type-badge-emoji">🌶</span>
+              <span class="type-badge-text">Fried Garlic · Spicy</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Curbstomp</div>
-            <p class="product-card-teaser">Limited-edition superhot engineered for those who don't just enjoy heat — they chase it. Relentless inferno intensity.</p>
+            <div class="product-card-name">Gator Toes Spicy</div>
+            <p class="product-card-teaser">Cajun-style seasoning brings warm spice and savory heat that pairs perfectly with bold garlic intensity.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8 fl oz · $12.00</span>
+            <span class="product-card-price">3 oz · $9.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-      </div><!-- /buffalo-wing grid -->
-    </div>
-  </section>
-
-  <!-- ═══ WOOD DIVIDER — CONDIMENTS ════════════════════════════ -->
-  <div class="wood-divider wood-divider--slim" id="condiments"></div>
-
-  <!-- ═══ CONDIMENTS CATALOG ════════════════════════════════════ -->
-  <section class="catalog-section">
-    <div class="container">
-
-      <div class="cat-divider">
-        <div class="cat-divider-line left"></div>
-        <div class="cat-divider-badge">
-          <span class="cat-divider-emoji">🍯</span>
-          <span class="cat-divider-text">Condiments With a Kick</span>
-          <span class="cat-divider-count">4 Products</span>
-        </div>
-        <div class="cat-divider-line right"></div>
-      </div>
-
-      <div class="product-grid">
-
-        <!-- ── Colon Cleaner Mustard Sauce ── -->
-        <a class="product-card reveal" href="products/colon-cleaner-mustard-sauce.html">
+        <!-- ── Fried Garlic Loco ── -->
+        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-loco.html">
           <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Colon Cleaner</span></div>
-            <img src="assets/pullman-product-display/cat-colon-cleaner-mustard-hot-sauce.png" alt="Colon Cleaner Mustard Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
+            <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-loco.png" alt="Mikey V's Fried Garlic Loco" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
-              <span class="type-badge-emoji">🌭</span>
-              <span class="type-badge-text">Mustard Sauce</span>
+              <span class="type-badge-emoji">🌶🌶🌶</span>
+              <span class="type-badge-text">Fried Garlic · Extreme</span>
             </div>
           </div>
           <div class="product-card-body">
-            <div class="product-card-name">Habanero Mustard Sauce</div>
-            <p class="product-card-teaser">Dijon and yellow mustard with fresh garlic and habanero heat — bold mustard that actually shows up.</p>
+            <div class="product-card-name">Gator Toes Loco Spice</div>
+            <p class="product-card-teaser">Carolina Reaper, Scorpion, and Ghost — garlic hits first, then the trio of superhots take over. Heat lovers only.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">5.7 oz · $11.99</span>
+            <span class="product-card-price">3 oz · $10.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
-        <!-- ── Melinda's Chipotle Ketchup ── -->
-        <a class="product-card oos reveal" href="products/melindas-chipotle-ketchup.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
-            <div class="ribbon-oos">Out of Stock</div>
-            <img src="assets/pullman-product-display/cat-melindas-chipotle-ketchup.png" alt="Melinda's Chipotle Ketchup" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🍅</span>
-              <span class="type-badge-text">Ketchup</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Chipotle Ketchup</div>
-            <p class="product-card-teaser">Ketchup with a little more attitude — familiar tomato sweetness with a slow, smoky chipotle backbone.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $7.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Melinda's Ghost Pepper Ketchup ── -->
-        <a class="product-card oos reveal" href="products/melindas-ghost-pepper-ketchup.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
-            <div class="ribbon-oos">Out of Stock</div>
-            <img src="assets/pullman-product-display/cat-melindas-ghost-pepper-ketchup.png" alt="Melinda's Ghost Pepper Ketchup" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🍅</span>
-              <span class="type-badge-text">Ketchup</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Ghost Pepper Ketchup</div>
-            <p class="product-card-teaser">Classic ketchup sweetness — pure cane sugar, garlic, cinnamon — then Naga Jolokia ghost pepper rises with sustained, warming intensity.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $8.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Spicy Shark Habanero Maple Syrup ── -->
-        <a class="product-card reveal" href="products/spicy-shark-habanero-maple-syrup.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Spicy Shark</span></div>
-            <img src="assets/pullman-product-display/cat-spicy-shark-hot-maple-syrup.png" alt="Spicy Shark Habanero Maple Syrup" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🍁</span>
-              <span class="type-badge-text">Maple Syrup</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Habanero Maple Syrup</div>
-            <p class="product-card-teaser">Grade A dark maple infused with fresh ginger and habanero — bridges breakfast indulgence and bold savory pairings.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">8 oz · $15.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-      </div><!-- /condiments grid -->
+      </div><!-- /product-grid -->
     </div>
   </section>
 
@@ -1005,7 +816,6 @@
   <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
   <script>
   (function () {
-    /* ── SCROLL REVEAL ── */
     const revealEls = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -1016,29 +826,6 @@
       });
     }, { threshold: 0.08 });
     revealEls.forEach(function (el) { observer.observe(el); });
-
-    /* ── ACTIVE JUMP LINK ── */
-    const sections = [
-      document.getElementById('buffalo-wing'),
-      document.getElementById('condiments')
-    ];
-    const jumpLinks = document.querySelectorAll('.jump-link');
-
-    const sectionObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          jumpLinks.forEach(function (link) {
-            const active = link.getAttribute('href') === '#' + id;
-            link.style.opacity = active ? '1' : '0.55';
-            link.style.borderColor = active ? 'rgba(184,137,57,0.65)' : 'rgba(184,137,57,0.2)';
-            link.style.background = active ? 'rgba(184,137,57,0.12)' : '';
-          });
-        }
-      });
-    }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
-
-    sections.forEach(function (s) { if (s) sectionObserver.observe(s); });
   })();
   </script>
 
