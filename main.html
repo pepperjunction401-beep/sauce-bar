@@ -240,12 +240,39 @@
       margin-bottom: 10px;
     }
 
+    /* ── COMING SOON RIBBON ───────────────────────────────────── */
+    .panel-card.coming-soon {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .panel-card.coming-soon::after {
+      content: 'Coming Soon';
+      position: absolute;
+      top: 36px;
+      right: -36px;
+      width: 160px;
+      padding: 8px 0;
+      background: #8F1F0D;
+      color: var(--cream-warm);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-align: center;
+      transform: rotate(45deg);
+      transform-origin: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      z-index: 10;
+      pointer-events: none;
+    }
+
     /* ── BARTENDER PANORAMA ───────────────────────────────────── */
     .bartender-panorama-wrap {
       position: relative;
       width: calc(100vw);
       margin-left: calc(-50vw + 50%);
-      margin-right: calc(-50vw + 50%);
       overflow: hidden;
       line-height: 0;
     }
@@ -910,34 +937,6 @@
       text-transform: uppercase;
       color: var(--brass);
       opacity: 0.45;
-    }
-
-    /* ── COMING SOON RIBBON ───────────────────────────────────── */
-    .panel-card.coming-soon {
-      cursor: default;
-      pointer-events: none;
-    }
-
-    .panel-card.coming-soon::after {
-      content: 'Coming Soon';
-      position: absolute;
-      top: 36px;
-      right: -36px;
-      width: 160px;
-      padding: 8px 0;
-      background: #8F1F0D;
-      color: var(--cream-warm);
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      text-align: center;
-      transform: rotate(45deg);
-      transform-origin: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-      z-index: 10;
-      pointer-events: none;
     }
 
     /* ── SCROLL REVEAL ────────────────────────────────────────── */
