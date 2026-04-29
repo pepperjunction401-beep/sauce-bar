@@ -35,10 +35,11 @@
 
     /* ── BODY — warm parlor car interior ─────────────────────── */
     body {
-      background-color: #5C3A1E;
+      background-color: #8B5E3C;
       background-image: url('assets/textures/wooden-texture.jpg');
-      background-size: 400px auto;
-      background-repeat: repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
       background-position: center top;
       color: var(--ink);
       font-family: 'Libre Baskerville', Georgia, serif;
@@ -181,65 +182,62 @@
 
     /* ── HERO ─────────────────────────────────────────────────── */
     .hero {
-      background-color: #5C3A1E;
-      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center center;
-      padding: 72px 48px 80px;
+      background: url('assets/textures/Hero-Banner-Pullman-Burgandy.png') center center / 100% 100% no-repeat;
+      aspect-ratio: 4 / 1;
+      padding: 0;
       position: relative;
       overflow: hidden;
-      border-bottom: 2px solid var(--brass);
+      border-bottom: 1px solid rgba(184,137,57,0.3);
+    }
+
+    .hero::before {
+      content: none;
     }
 
     .hero-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      position: relative;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 8%;
       z-index: 1;
-    }
-
-    .hero-eyebrow {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: var(--brass);
-      margin-bottom: 20px;
-      display: block;
     }
 
     .hero-headline {
       font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(18px, 4.5vw, 72px);
+      font-size: clamp(20px, 4.1vw, 64px);
       color: var(--cream-warm);
       line-height: 1.2;
       letter-spacing: 0.02em;
-      margin-bottom: 20px;
+      margin-bottom: 8px;
       white-space: nowrap;
-      padding: 8px 0;
+      padding: 4px 0;
     }
 
     .hero-sub {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(14px, 2vw, 22px);
+      font-size: clamp(20px, 2.2vw, 26px);
       font-style: italic;
       color: var(--cream);
       opacity: 0.72;
       max-width: 560px;
-      line-height: 1.6;
-      margin-bottom: 16px;
+      line-height: 1.4;
+      margin-bottom: 0;
+      white-space: nowrap;
     }
 
     .hero-tag {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: clamp(13px, 1.5vw, 16px);
+      font-size: clamp(11px, 1.8vw, 22px);
       font-weight: 700;
       letter-spacing: 0.32em;
       text-transform: uppercase;
       color: var(--brass-bright);
       opacity: 0.85;
+      margin-bottom: 10px;
     }
 
     /* ── BARTENDER SECTION ────────────────────────────────────── */
@@ -903,7 +901,7 @@
     @media (max-width: 640px) {
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
-      .hero { padding: 48px 20px 56px; }
+      .hero { aspect-ratio: 4 / 1; }
       .panels-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
       .header-nav { display: none; }
       .dispatch-body { padding: 24px 20px; }
@@ -2135,32 +2133,6 @@
       gap: 8px;
     }
 
-
-    /* ── COMING SOON RIBBON ───────────────────────────────────── */
-    .panel-card.coming-soon {
-      cursor: default;
-      pointer-events: none;
-    }
-    .panel-card.coming-soon::after {
-      content: 'Coming Soon';
-      position: absolute;
-      top: 22%;
-      right: -30%;
-      width: 100%;
-      text-align: center;
-      background: #8F1F0D;
-      color: #F5ECD6;
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: clamp(11px, 1.2vw, 15px);
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      padding: 10px 0;
-      transform: rotate(35deg);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.5);
-      z-index: 10;
-    }
-
   </style>
 </head>
 <body>
@@ -2185,10 +2157,9 @@
   <!-- ═══ HERO ════════════════════════════════════════════════ -->
   <section class="hero">
     <div class="hero-inner">
-      <span class="hero-eyebrow">Rhode Island · Est. 2014</span>
-      <h1 class="hero-headline">We're Sauce Enthusiasts First.</h1>
-      <p class="hero-sub">Each item carefully selected with a Flavor First priority.</p>
       <span class="hero-tag">Find Your Heat · Find Your Flavor</span>
+      <h1 class="hero-headline">We're Sauce Enthusiasts First</h1>
+      <p class="hero-sub">Each item carefully selected with a Flavor First priority.</p>
     </div>
   </section>
 
@@ -2274,37 +2245,37 @@
         <div class="pic-light__glow"></div>
       </div>
       <div class="panels-grid">
-        <a class="panel-card reveal" href="hot-sauces.html#mild-medium">
+        <a class="panel-card reveal" href="index.html?category=hot-sauce-mild">
           <img src="assets/category-panels/Hot-Sauces-Mild-Medium.png" alt="Hot Sauces Mild Medium" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="hot-sauces.html#hot-very-hot">
+        <a class="panel-card reveal" href="index.html?category=hot-sauce-hot">
           <img src="assets/category-panels/Hot-Sauces-Hot-Very-Hot.png" alt="Hot Sauces Hot Very Hot" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="hot-sauces.html#extreme-inferno">
+        <a class="panel-card reveal" href="index.html?category=hot-sauce-inferno">
           <img src="assets/category-panels/Hot-Sauces-Extreme-Heat-Inferno.png" alt="Hot Sauces Extreme Heat Inferno" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="seasonings-bbq.html">
+        <a class="panel-card reveal" href="index.html?category=seasonings">
           <img src="assets/category-panels/Seasonings-Dry-Rubs-BBQ-Sauces.png" alt="Seasonings Dry Rubs BBQ Sauces" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="buffalo-condiments.html#buffalo">
+        <a class="panel-card reveal" href="index.html?category=buffalo-sauce">
           <img src="assets/category-panels/Buffalo-Sauce.png" alt="Buffalo Sauce" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="buffalo-condiments.html#condiments">
+        <a class="panel-card reveal" href="index.html?category=condiments">
           <img src="assets/category-panels/Condiments-With-A-Kick.png" alt="Condiments With a Kick" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="snacks.html">
+        <a class="panel-card reveal" href="index.html?category=snacks">
           <img src="assets/category-panels/Snacks-Fried-Garlic.png" alt="Snacks Fried Garlic" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="olive-oils-vinegar.html">
+        <a class="panel-card reveal" href="index.html?category=olive-oil-vinegar">
           <img src="assets/category-panels/Specialty-Olive-Oils-Vinegar.png" alt="Specialty Olive Oils Vinegar" loading="lazy" />
         </a>
         <a class="panel-card reveal" href="index.html?category=recipes">
           <img src="assets/category-panels/Recipes-Home-Made.png" alt="Recipes Home Made" loading="lazy" />
         </a>
-        <a class="panel-card coming-soon reveal" href="#">
+        <a class="panel-card reveal" href="index.html?category=elite-wings">
           <img src="assets/category-panels/Elite-Wings-RI-Restaurants.png" alt="Elite Wings RI Restaurants" loading="lazy" />
         </a>
-        <a class="panel-card coming-soon reveal" href="#">
+        <a class="panel-card reveal" href="index.html?category=merch">
           <img src="assets/category-panels/Merch.png" alt="Merch" loading="lazy" />
         </a>
       </div>
