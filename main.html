@@ -268,6 +268,16 @@
       pointer-events: none;
     }
 
+    /* ── PANORAMA SECTION ─────────────────────────────────────── */
+    .panorama-section {
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+      font-size: 0;
+    }
+
     /* ── BARTENDER PANORAMA ───────────────────────────────────── */
     .bartender-panorama-wrap {
       position: relative;
@@ -288,14 +298,17 @@
       left: 50%;
       transform: translateX(-50%);
       height: 100%;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
     .bartender-video-overlay video {
       height: 100%;
       width: auto;
+      max-width: 100%;
       display: block;
     }
 
@@ -2222,20 +2235,23 @@
     </div>
   </section>
 
+  <!-- ═══ PANORAMA ═════════════════════════════════════════════ -->
+  <section class="panorama-section">
+    <div class="bartender-panorama-wrap">
+      <img class="bartender-panorama" src="assets/textures/Welcome-Panoramic-Pairing-Bar.png" alt="Pepper Junction Pairing Bar" />
+      <div class="bartender-video-overlay">
+        <video
+          src="assets/video/Bartender-Welcome-Parlor-Car.mp4/Bartender-Welcome-Parlor-Car.mp4"
+          autoplay muted playsinline controls
+        ></video>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ BARTENDER ════════════════════════════════════════════ -->
   <section class="bartender-section">
     <div class="container">
       <div class="bartender-inner">
-
-        <div class="bartender-panorama-wrap reveal">
-          <img class="bartender-panorama" src="assets/textures/Welcome-Panoramic-Pairing-Bar.png" alt="Pepper Junction Pairing Bar" />
-          <div class="bartender-video-overlay">
-            <video
-              src="assets/video/Bartender-Welcome-Parlor-Car.mp4/Bartender-Welcome-Parlor-Car.mp4"
-              autoplay muted playsinline controls
-            ></video>
-          </div>
-        </div>
 
         <div class="bartender-chat reveal">
           <img
