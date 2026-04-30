@@ -566,7 +566,7 @@ body {
   }
 }
 .pj-link-btn[aria-disabled="true"] {
-  opacity: 0.55;
+  opacity: 0.85;
   pointer-events: none;
 }
 
@@ -1262,6 +1262,25 @@ function bindCardImageToggles() {
 
       document.querySelectorAll(`[data-card-toggle="${cardId}"]`).forEach((toggleBtn) => {
         toggleBtn.setAttribute('aria-expanded', isOpening ? 'true' : 'false');
+      });
+    });
+  });
+
+  // Tap anywhere on the back of the card to flip back to front
+  document.querySelectorAll('[data-card-panel]').forEach((panel) => {
+    panel.addEventListener('click', (e) => {
+      // Let the X button handle its own click — don't double-fire
+      if (e.target.closest('[data-card-toggle]')) return;
+
+      const cardId = panel.getAttribute('data-card-panel');
+      const front = document.querySelector(`[data-card-front="${cardId}"]`);
+      if (!front || panel.hasAttribute('hidden')) return;
+
+      panel.hidden = true;
+      front.hidden = false;
+
+      document.querySelectorAll(`[data-card-toggle="${cardId}"]`).forEach((toggleBtn) => {
+        toggleBtn.setAttribute('aria-expanded', 'false');
       });
     });
   });
