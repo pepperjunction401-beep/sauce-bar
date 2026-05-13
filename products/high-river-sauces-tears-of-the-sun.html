@@ -344,12 +344,53 @@
     }
 
     /* ── BADGE DISPLAY ────────────────────────────────────────── */
+    .badge-station-wrap {
+      border: 1px solid rgba(212,168,50,0.55);
+      padding: 20px 16px 16px;
+      margin-bottom: 28px;
+      position: relative;
+      background: rgba(212,168,50,0.04);
+    }
+
+    .badge-station-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(212,168,50,0.2);
+      pointer-events: none;
+    }
+
+    .badge-station-header {
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .badge-station-title {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 18px;
+      color: var(--brass-bright);
+      letter-spacing: 0.06em;
+      display: block;
+    }
+
+    .badge-station-sub {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.6;
+      display: block;
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+
     .product-badges {
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
       justify-content: center;
-      padding: 16px 0 10px;
     }
 
     .badge-item {
@@ -460,21 +501,21 @@
 
     .class-key {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.24em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--brass);
-      opacity: 0.7;
-      margin-bottom: 4px;
+      opacity: 0.75;
+      margin-bottom: 5px;
       display: block;
     }
 
     .class-val {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
       color: var(--chalk);
     }
 
@@ -1119,20 +1160,38 @@
         <!-- CONTENT COLUMN -->
         <div class="product-content">
 
-          <!-- Badges -->
-          <div class="product-badges" id="product-badges">
-            <!-- Heat badge always shown -->
-            <div class="badge-item">
-              <img
-                id="heat-badge-img"
-                class="badge-img"
-                src="../assets/badges/heat/badge-medium.png"
-                alt="Medium Heat Badge"
-                loading="lazy"
-              />
-              <div class="badge-name" id="heat-badge-name">Farmer's Market Heat</div>
+          <!-- Badge Station -->
+          <div class="badge-station-wrap">
+            <div class="badge-station-header">
+              <span class="badge-station-title">Badge Station</span>
+              <span class="badge-station-sub">Earn these badges with qualifying purchases</span>
             </div>
-            <!-- Food category badges injected by JS -->
+            <div class="product-badges" id="product-badges">
+              <!-- L1 Heat badge -->
+              <div class="badge-item">
+                <img id="heat-badge-img" class="badge-img"
+                  src="../assets/badges/heat/badge-medium.png"
+                  alt="Medium Heat Badge" loading="lazy" />
+                <div class="badge-name" id="heat-badge-name">Farmer's Market Heat</div>
+              </div>
+              <!-- L2 Heat badge -->
+              <div class="badge-item" id="l2-badge-item">
+                <img id="l2-badge-img" class="badge-img"
+                  src="../assets/badges/heat/L2-badge-medium.png"
+                  alt="Level 2 Heat Badge" loading="lazy"
+                  onerror="this.parentElement.style.display='none'" />
+                <div class="badge-name" id="l2-badge-name">Cruel Summer</div>
+              </div>
+              <!-- L3 Heat badge -->
+              <div class="badge-item" id="l3-badge-item">
+                <img id="l3-badge-img" class="badge-img"
+                  src="../assets/badges/heat/L3-badge-medium.png"
+                  alt="Level 3 Heat Badge" loading="lazy"
+                  onerror="this.parentElement.style.display='none'" />
+                <div class="badge-name" id="l3-badge-name">The Sky Line</div>
+              </div>
+              <!-- Food category badges injected by JS -->
+            </div>
           </div>
 
           <!-- Classification pills only - title removed, lives in hero -->
@@ -1420,7 +1479,29 @@
         if (btn) btn.textContent = 'Buy Now — ' + price;
       }
 
-      /* Heat badge */
+      /* L2 badge names */
+      const L2_NAMES = {
+        'Mild':      'Fever',
+        'Medium':    'Cruel Summer',
+        'Hot':       'I Like it Hot, Hot, Hot',
+        'Very Hot':  'Hot Blooded',
+        'Super Hot': 'Highway to the Danger Zone',
+        'Extreme':   'Ring of Fire',
+        'Inferno':   'Burning Down the House'
+      };
+
+      /* L3 badge names */
+      const L3_NAMES = {
+        'Mild':      'Ferris Wheel',
+        'Medium':    'The Sky Line',
+        'Hot':       'The Flume',
+        'Very Hot':  'Tilt-A-Whirl',
+        'Super Hot': 'The Yo Yo',
+        'Extreme':   'Free Fall',
+        'Inferno':   'The Corkscrew'
+      };
+
+      /* Update L1 badge */
       var badgeSlug = HEAT_BADGE_SLUGS[heatCat] || 'badge-mild';
       var badgeName = HEAT_BADGE_NAMES[heatCat] || '';
       var badgeImg  = document.getElementById('heat-badge-img');
@@ -1429,6 +1510,26 @@
         badgeImg.alt = badgeName + ' Badge';
       }
       setTxt('heat-badge-name', badgeName);
+
+      /* Update L2 badge */
+      var l2Slug = HEAT_BADGE_SLUGS[heatCat] ? 'L2-' + HEAT_BADGE_SLUGS[heatCat] : '';
+      var l2Name = L2_NAMES[heatCat] || '';
+      var l2Img  = document.getElementById('l2-badge-img');
+      if (l2Img && l2Slug) {
+        l2Img.src = '../assets/badges/heat/' + l2Slug + '.png';
+        l2Img.alt = l2Name + ' Badge';
+      }
+      setTxt('l2-badge-name', l2Name);
+
+      /* Update L3 badge */
+      var l3Slug = HEAT_BADGE_SLUGS[heatCat] ? 'L3-' + HEAT_BADGE_SLUGS[heatCat] : '';
+      var l3Name = L3_NAMES[heatCat] || '';
+      var l3Img  = document.getElementById('l3-badge-img');
+      if (l3Img && l3Slug) {
+        l3Img.src = '../assets/badges/heat/' + l3Slug + '.png';
+        l3Img.alt = l3Name + ' Badge';
+      }
+      setTxt('l3-badge-name', l3Name);
 
       /* Dynamic nav category link */
       var catInfo = CAT_PAGE[category];
