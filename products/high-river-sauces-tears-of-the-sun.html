@@ -150,7 +150,9 @@
       flex-direction: column;
       text-align: center;
       padding: 24px 48px;
-      position: relative;
+      position: sticky;
+      top: 94px;
+      z-index: 90;
     }
 
     .product-hero-eyebrow {
@@ -239,7 +241,7 @@
     .chalkboard-surface {
       background:
         url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E"),
-        linear-gradient(160deg, #2A3828 0%, #1E2E1E 30%, #243222 60%, #1A2818 100%);
+        linear-gradient(160deg, #2E2E2E 0%, #252525 30%, #2A2A2A 60%, #1F1F1F 100%);
       padding: 48px 52px 56px;
       position: relative;
       overflow: hidden;
@@ -310,7 +312,7 @@
 
     .img-frame-inner {
       background: var(--chalk-surface);
-      min-height: 260px;
+      min-height: 340px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -321,7 +323,7 @@
     .img-frame-inner img {
       width: 100%;
       height: auto;
-      max-height: 300px;
+      max-height: 380px;
       object-fit: contain;
       display: block;
       filter: drop-shadow(0 8px 28px rgba(0,0,0,0.65));
@@ -342,32 +344,40 @@
     }
 
     /* ── BADGE DISPLAY ────────────────────────────────────────── */
-    .product-badge {
+    .product-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      padding: 16px 0 10px;
+    }
+
+    .badge-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      padding: 14px 0 8px;
     }
 
     .badge-img {
-      width: 80px;
-      height: 80px;
+      width: 100px;
+      height: 100px;
       object-fit: contain;
       filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
       transition: transform 0.3s ease;
     }
-    .badge-img:hover { transform: scale(1.08); }
+    .badge-img:hover { transform: scale(1.1); }
 
     .badge-name {
       font-family: 'Josefin Sans', sans-serif;
       font-size: 9px;
       font-weight: 700;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--brass-bright);
       opacity: 0.8;
       text-align: center;
+      max-width: 110px;
     }
 
     /* ── CONTENT COLUMN ───────────────────────────────────────── */
@@ -419,11 +429,11 @@
 
     .meta-pill {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      padding: 5px 12px;
+      padding: 7px 16px;
       border: 1px solid rgba(212,168,50,0.3);
       color: var(--brass-bright);
       background: rgba(212,168,50,0.07);
@@ -473,13 +483,13 @@
 
     .section-label {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
+      font-size: 13px;
       font-weight: 700;
-      letter-spacing: 0.36em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--brass-bright);
-      opacity: 0.8;
-      margin-bottom: 12px;
+      opacity: 0.9;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -968,6 +978,7 @@
       .similar-grid { grid-template-columns: 1fr 1fr; }
       .flavor-grid { grid-template-columns: 1fr; }
       .classification-row { grid-template-columns: 1fr 1fr; }
+      .meta-pill { font-size: 10px; padding: 5px 10px; }
     }
 
     @media (max-width: 640px) {
@@ -977,9 +988,12 @@
       .chalkboard-surface { padding: 28px 20px 32px; }
       .similar-grid { grid-template-columns: 1fr; }
       .uses-list { grid-template-columns: 1fr; }
-      .product-hero { min-height: 100px; padding: 16px 20px; }
+      .product-hero { min-height: 100px; padding: 16px 20px; top: 70px; }
       .breadcrumb { padding: 8px 20px; }
       .site-footer { padding: 20px; flex-direction: column; align-items: flex-start; }
+      .meta-pill { font-size: 9px; padding: 4px 8px; letter-spacing: 0.08em; }
+      .section-label { font-size: 11px; }
+      .badge-img { width: 80px; height: 80px; }
     }
   </style>
 
@@ -1084,28 +1098,45 @@
             </div>
           </div>
 
+          <!-- 3rd image slot — food/lifestyle placeholder -->
+          <div class="img-frame">
+            <div class="frame-bolt tl"></div>
+            <div class="frame-bolt tr"></div>
+            <div class="frame-bolt bl"></div>
+            <div class="frame-bolt br"></div>
+            <div class="img-frame-inner" style="min-height:140px;">
+              <img
+                src="../assets/PJ-logo.png"
+                alt="Pepper Junction"
+                loading="lazy"
+                style="max-height:100px; opacity:0.65;"
+              />
+            </div>
+          </div>
+
         </aside>
 
         <!-- CONTENT COLUMN -->
         <div class="product-content">
 
-          <!-- Badge -->
-          <div class="product-badge">
-            <img
-              id="heat-badge-img"
-              class="badge-img"
-              src="../assets/badges/heat/badge-medium.png"
-              alt="Medium Heat Badge"
-              loading="lazy"
-            />
-            <div class="badge-name" id="heat-badge-name">Farmer's Market Heat</div>
+          <!-- Badges -->
+          <div class="product-badges" id="product-badges">
+            <!-- Heat badge always shown -->
+            <div class="badge-item">
+              <img
+                id="heat-badge-img"
+                class="badge-img"
+                src="../assets/badges/heat/badge-medium.png"
+                alt="Medium Heat Badge"
+                loading="lazy"
+              />
+              <div class="badge-name" id="heat-badge-name">Farmer's Market Heat</div>
+            </div>
+            <!-- Food category badges injected by JS -->
           </div>
 
-          <!-- Title -->
+          <!-- Classification pills only - title removed, lives in hero -->
           <div class="product-title-block">
-            <div class="product-brand-label">High River Sauces</div>
-            <h1 class="product-name">Tears of the Sun</h1>
-            <p class="product-subtitle">Tropical Hot Sauce</p>
             <div class="meta-pills">
               <span class="meta-pill">Hot Sauce</span>
               <span class="meta-pill">Caribbean</span>
@@ -1309,7 +1340,20 @@
   const PAGE_SLUG = 'high-river-sauces-tears-of-the-sun';
   const DB_PATH   = '../data/Database_Pepper_Junction_v4_1.json';
 
-  /* ── HEAT BADGE MAP ── */
+  /* ── FOOD BADGE MAP ── */
+  const FOOD_BADGE_MAP = [
+    { keyword: 'caribbean',    slug: 'badge-food-caribbean',   name: 'Is This Love' },
+    { keyword: 'taco',         slug: 'badge-food-taco',        name: 'Taco Fever' },
+    { keyword: 'seafood',      slug: 'badge-food-seafood',     name: 'Shore Dinner Hall' },
+    { keyword: 'wings',        slug: 'badge-food-wings',       name: 'Epic Wingman' },
+    { keyword: 'sushi',        slug: 'badge-food-asian',       name: 'Asian' },
+    { keyword: 'mexican',      slug: 'badge-food-mexican',     name: 'Muy Rico!' },
+    { keyword: 'garlic',       slug: 'badge-food-garlic',      name: 'Garlic Breath' },
+    { keyword: 'bbq',          slug: 'badge-food-bbq',         name: 'Smoking Section' },
+    { keyword: 'breakfast',    slug: 'badge-food-breakfast',   name: 'This Is Your Brain' },
+    { keyword: 'veggies',      slug: 'badge-food-veggies',     name: 'Veggie Outlaws' },
+    { keyword: 'snack',        slug: 'badge-food-snacks',      name: 'Snack Shack' },
+  ];
   const HEAT_BADGE_NAMES = {
     'Mild':      "Keep the Milk for Cookies",
     'Medium':    "Farmer's Market Heat",
@@ -1427,6 +1471,29 @@
         s.offers.url   = product['Product URL'] || '';
         schema.textContent = JSON.stringify(s, null, 2);
       }
+
+      /* Inject food category badges */
+      var pairings = (product['Best Food Pairings'] || '').toLowerCase();
+      var foodStyle = (product['Food Style'] || '').toLowerCase();
+      var badgesContainer = document.getElementById('product-badges');
+      var addedFoodBadges = [];
+
+      FOOD_BADGE_MAP.forEach(function(b) {
+        if (addedFoodBadges.length >= 3) return; // cap at 3 food badges
+        if (pairings.includes(b.keyword) || foodStyle.includes(b.keyword)) {
+          if (addedFoodBadges.indexOf(b.slug) === -1) {
+            addedFoodBadges.push(b.slug);
+            var div = document.createElement('div');
+            div.className = 'badge-item';
+            div.innerHTML =
+              '<img class="badge-img" src="../assets/badges/food/' + b.slug + '.png" ' +
+              'alt="' + esc(b.name) + '" loading="lazy" ' +
+              'onerror="this.parentElement.style.display=\'none\'">' +
+              '<div class="badge-name">' + esc(b.name) + '</div>';
+            badgesContainer.appendChild(div);
+          }
+        }
+      });
 
       /* Similar products */
       loadSimilar(data, product);
