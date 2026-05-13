@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>High River Tears of the Sun — Pepper Junction</title>
+  <meta name="description" content="High River Tears of the Sun Tropical Hot Sauce. Fruit-forward habanero with layered sweetness and rising heat. Approved under The Pepper Junction Standard™." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── VARIABLES ─────────────────────────────────────────────── */
+    :root {
+      --brass:        #B88939;
+      --brass-bright: #D4A832;
+      --crimson:      #8F1F0D;
+      --crimson-dim:  #6B1608;
+      --green-dark:   #1E3020;
+      --cream:        #F5ECD6;
+      --cream-warm:   #FDF6E8;
+      --cream-deep:   #EDD9B4;
+      --ink:          #2B1D15;
+      --ink-mid:      #4A3020;
+      --chalk:        #F0EDE0;
+      --chalk-muted:  #B8B4A0;
+      --chalk-surface:#1E2A1E;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @font-face {
+      font-family: 'BlackRiver';
+      src: url('../assets/fonts/Blackriver-Bold.ttf') format('truetype');
+      font-weight: bold;
+      font-display: swap;
+    }
+
+    body {
+      background: var(--green-dark);
+      background-image: url('../assets/textures/wooden-texture.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      font-family: 'Libre Baskerville', Georgia, serif;
+      color: var(--chalk);
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ───────────────────────────────────────────────── */
+    .site-header {
+      background: var(--green-dark);
+      border-bottom: 2px solid var(--brass);
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.4);
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+    }
+
+    .header-logo img { height: 52px; width: auto; }
+
+    .header-wordmark { display: flex; flex-direction: column; gap: 2px; }
+
+    .header-name {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--cream-warm);
+      line-height: 1;
+      letter-spacing: 0.04em;
+    }
+
+    .header-tagline {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.8;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .header-nav a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.65;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .header-nav a:hover { opacity: 1; }
+
+    .nav-cta {
+      background: var(--crimson) !important;
+      color: var(--cream-warm) !important;
+      opacity: 1 !important;
+      padding: 8px 20px;
+      border-radius: 2px;
+    }
+    .nav-cta:hover { background: var(--crimson-dim) !important; }
+
+    /* ── BREADCRUMB ───────────────────────────────────────────── */
+    .breadcrumb {
+      padding: 10px 48px;
+      background: rgba(30,48,32,0.8);
+      border-bottom: 1px solid rgba(184,137,57,0.2);
+    }
+    .breadcrumb-inner {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.7;
+    }
+    .breadcrumb-inner a {
+      color: inherit;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .breadcrumb-inner a:hover { opacity: 1; }
+    .breadcrumb-inner span { opacity: 0.5; margin: 0 8px; }
+
+    /* ── BURGUNDY HERO BANNER ─────────────────────────────────── */
+    .product-hero {
+      background: url('../assets/textures/Hero-Banner-Pullman-Burgandy.png') center center / 100% 100% no-repeat;
+      min-height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 24px 48px;
+      position: relative;
+    }
+
+    .product-hero-eyebrow {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      margin-bottom: 8px;
+    }
+
+    .product-hero-name {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(28px, 5vw, 64px);
+      color: var(--cream-warm);
+      line-height: 1;
+      letter-spacing: 0.03em;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.6);
+    }
+
+    .product-hero-sub {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(13px, 1.8vw, 20px);
+      color: var(--cream);
+      opacity: 0.75;
+      margin-top: 8px;
+    }
+
+    /* ── PAGE BODY ────────────────────────────────────────────── */
+    .page-outer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px 64px;
+    }
+
+    /* ── CHALKBOARD WRAP ──────────────────────────────────────── */
+    .chalkboard-wrap {
+      position: relative;
+      padding: 18px;
+      background: linear-gradient(135deg,
+        #5C3310 0%, #7A4A20 12%, #4A2808 25%,
+        #8B5E30 38%, #5C3310 50%, #6B4018 62%,
+        #9A6838 75%, #4A2808 88%, #6B4018 100%);
+      box-shadow: inset 0 2px 6px rgba(255,220,100,0.3),
+                  inset 0 -3px 8px rgba(0,0,0,0.5),
+                  0 8px 40px rgba(0,0,0,0.6);
+    }
+
+    .chalkboard-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 2px solid rgba(212,168,50,0.5);
+      border-radius: 1px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .chalkboard-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(255,220,100,0.15);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .chalk-corner {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      z-index: 4;
+      background: radial-gradient(circle at 38% 38%,
+        #e8c96e 0%, #c8a84b 40%, #8a6010 80%, #5a3c08 100%);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.7), inset -1px -1px 3px rgba(0,0,0,0.4);
+    }
+    .chalk-corner.tl { top: 4px; left: 4px; }
+    .chalk-corner.tr { top: 4px; right: 4px; }
+    .chalk-corner.bl { bottom: 4px; left: 4px; }
+    .chalk-corner.br { bottom: 4px; right: 4px; }
+
+    /* ── CHALKBOARD SURFACE ───────────────────────────────────── */
+    .chalkboard-surface {
+      background:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E"),
+        linear-gradient(160deg, #2A3828 0%, #1E2E1E 30%, #243222 60%, #1A2818 100%);
+      padding: 48px 52px 56px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chalkboard-surface::before {
+      content: '';
+      position: absolute;
+      top: 15%; left: 5%;
+      width: 45%; height: 35%;
+      background: radial-gradient(ellipse, rgba(255,255,255,0.025) 0%, transparent 70%);
+      transform: rotate(-6deg);
+      pointer-events: none;
+    }
+
+    /* ── PRODUCT LAYOUT ───────────────────────────────────────── */
+    .product-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 52px;
+      align-items: start;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── IMAGE COLUMN ─────────────────────────────────────────── */
+    .product-images {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: sticky;
+      top: 100px;
+    }
+
+    .img-frame {
+      position: relative;
+      padding: 12px;
+      background: linear-gradient(135deg,
+        #5C3310 0%, #7A4A20 15%, #4A2808 30%,
+        #8B5E30 50%, #5C3310 65%, #9A6838 85%, #4A2808 100%);
+      box-shadow: inset 0 2px 4px rgba(255,220,100,0.2),
+                  inset 0 -2px 6px rgba(0,0,0,0.45),
+                  0 6px 28px rgba(0,0,0,0.55);
+    }
+
+    .img-frame::before {
+      content: '';
+      position: absolute;
+      inset: 5px;
+      border: 1px solid rgba(212,168,50,0.4);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .frame-bolt {
+      position: absolute;
+      width: 14px; height: 14px;
+      z-index: 3;
+      background: radial-gradient(circle at 38% 38%,
+        #e8c96e 0%, #c8a84b 45%, #8a6010 85%, #5a3c08 100%);
+      border-radius: 50%;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    }
+    .frame-bolt.tl { top: 3px; left: 3px; }
+    .frame-bolt.tr { top: 3px; right: 3px; }
+    .frame-bolt.bl { bottom: 3px; left: 3px; }
+    .frame-bolt.br { bottom: 3px; right: 3px; }
+
+    .img-frame-inner {
+      background: var(--chalk-surface);
+      min-height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .img-frame-inner img {
+      width: 100%;
+      height: auto;
+      max-height: 300px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 8px 28px rgba(0,0,0,0.65));
+      position: relative;
+      z-index: 1;
+    }
+
+    .img-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.65;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    /* ── BADGE DISPLAY ────────────────────────────────────────── */
+    .product-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 0 8px;
+    }
+
+    .badge-img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+      transition: transform 0.3s ease;
+    }
+    .badge-img:hover { transform: scale(1.08); }
+
+    .badge-name {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      opacity: 0.8;
+      text-align: center;
+    }
+
+    /* ── CONTENT COLUMN ───────────────────────────────────────── */
+    .product-content { position: relative; z-index: 1; }
+
+    /* Title block */
+    .product-title-block {
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(212,168,50,0.2);
+    }
+
+    .product-brand-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      opacity: 0.85;
+      margin-bottom: 10px;
+    }
+
+    .product-name {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(26px, 3.5vw, 48px);
+      color: var(--chalk);
+      line-height: 1.1;
+      letter-spacing: 0.03em;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+      margin-bottom: 6px;
+    }
+
+    .product-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 15px;
+      color: var(--chalk-muted);
+      margin-bottom: 14px;
+    }
+
+    /* Classification pills */
+    .meta-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .meta-pill {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border: 1px solid rgba(212,168,50,0.3);
+      color: var(--brass-bright);
+      background: rgba(212,168,50,0.07);
+    }
+
+    .meta-pill.heat {
+      border-color: rgba(143,31,13,0.5);
+      color: #E8775A;
+      background: rgba(143,31,13,0.1);
+    }
+
+    /* Classification row */
+    .classification-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+      padding: 16px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(212,168,50,0.15);
+    }
+
+    .class-item {}
+
+    .class-key {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.7;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .class-val {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--chalk);
+    }
+
+    /* ── EDITORIAL SECTIONS ───────────────────────────────────── */
+    .editorial { margin-bottom: 28px; }
+
+    .section-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      opacity: 0.8;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(212,168,50,0.4), transparent);
+    }
+
+    .section-body {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 14px;
+      line-height: 1.85;
+      color: var(--chalk);
+      opacity: 0.9;
+    }
+
+    .section-body p + p { margin-top: 10px; }
+
+    /* Flavor grid */
+    .flavor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .flavor-cell {
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(212,168,50,0.15);
+    }
+
+    .flavor-key {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.65;
+      margin-bottom: 4px;
+    }
+
+    .flavor-val {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 13px;
+      color: var(--chalk);
+      line-height: 1.4;
+    }
+
+    /* Best used list */
+    .uses-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px 24px;
+    }
+
+    .uses-list li {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 13px;
+      color: var(--chalk);
+      opacity: 0.88;
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .uses-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--brass);
+      opacity: 0.55;
+    }
+
+    /* Pairing list */
+    .pairing-list {
+      list-style: none;
+    }
+
+    .pairing-list li {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 13px;
+      color: var(--chalk);
+      opacity: 0.88;
+      padding: 6px 0 6px 20px;
+      position: relative;
+      border-bottom: 1px solid rgba(212,168,50,0.1);
+      line-height: 1.5;
+    }
+
+    .pairing-list li:last-child { border-bottom: none; }
+
+    .pairing-list li::before {
+      content: '🌶';
+      position: absolute;
+      left: 0;
+      font-size: 10px;
+      top: 8px;
+    }
+
+    /* Heat classification */
+    .heat-block {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      background: rgba(143,31,13,0.1);
+      border: 1px solid rgba(143,31,13,0.3);
+    }
+
+    .heat-peppers { font-size: 20px; letter-spacing: 2px; flex-shrink: 0; }
+
+    .heat-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #E8775A;
+    }
+
+    .heat-desc {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 12px;
+      font-style: italic;
+      color: var(--chalk-muted);
+      margin-top: 2px;
+    }
+
+    /* PJ Standard */
+    .pj-standard {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 16px;
+      background: rgba(30,48,32,0.5);
+      border: 1px solid rgba(212,168,50,0.22);
+      border-left: 3px solid var(--brass);
+    }
+
+    .pj-standard-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      opacity: 0.85;
+      font-style: italic;
+    }
+
+    /* ── LOCAL DELIVERY CALLOUT ───────────────────────────────── */
+    .delivery-callout {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(212,168,50,0.09);
+      border: 1px solid rgba(212,168,50,0.38);
+      margin-bottom: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .delivery-callout:hover { background: rgba(212,168,50,0.15); }
+
+    .delivery-icon { font-size: 18px; flex-shrink: 0; }
+
+    .delivery-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+    }
+
+    .delivery-arrow { margin-left: auto; color: var(--brass); font-size: 16px; opacity: 0.6; }
+
+    /* ── BUY NOW ──────────────────────────────────────────────── */
+    .buy-now-btn {
+      display: block;
+      width: 100%;
+      padding: 16px 24px;
+      background: var(--crimson);
+      color: var(--cream-warm);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      text-align: center;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      box-shadow: 0 4px 20px rgba(143,31,13,0.4);
+    }
+
+    .buy-now-btn:hover {
+      background: var(--crimson-dim);
+      transform: translateY(-1px);
+    }
+
+    /* ── SIMILAR PRODUCTS ─────────────────────────────────────── */
+    .similar-section {
+      padding-top: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-rule {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .rule-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(212,168,50,0.5), transparent);
+    }
+
+    .rule-line.right {
+      background: linear-gradient(90deg, transparent, rgba(212,168,50,0.5));
+    }
+
+    .rule-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      opacity: 0.7;
+      white-space: nowrap;
+    }
+
+    .similar-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .similar-card {
+      background: rgba(30,48,32,0.7);
+      border: 1px solid rgba(212,168,50,0.22);
+      padding: 18px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .similar-card:hover {
+      border-color: rgba(212,168,50,0.5);
+      transform: translateY(-3px);
+    }
+
+    .similar-img {
+      width: 100%;
+      height: 130px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+    }
+
+    .similar-brand {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.7;
+    }
+
+    .similar-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--chalk);
+      line-height: 1.3;
+    }
+
+    .similar-heat {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #E8775A;
+      margin-top: auto;
+    }
+
+    .similar-loading {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--chalk-muted);
+      opacity: 0.5;
+      text-align: center;
+      padding: 24px;
+      grid-column: 1 / -1;
+    }
+
+    /* ── DELIVERY MODAL ───────────────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      background: var(--chalk-surface);
+      border: 1px solid rgba(212,168,50,0.4);
+      padding: 32px;
+      max-width: 500px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 16px 56px rgba(0,0,0,0.7);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: none;
+      border: 1px solid rgba(212,168,50,0.3);
+      color: var(--chalk-muted);
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover { border-color: var(--brass); color: var(--brass); }
+
+    .modal-title {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--chalk);
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    .modal-sub {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.7;
+      margin-bottom: 20px;
+    }
+
+    .modal-steps { list-style: none; margin-bottom: 20px; }
+
+    .modal-steps li {
+      display: flex;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(212,168,50,0.1);
+      font-family: 'Libre Baskerville', serif;
+      font-size: 13px;
+      color: var(--chalk);
+      line-height: 1.5;
+    }
+
+    .modal-steps li:last-child { border-bottom: none; }
+
+    .modal-step-num {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--brass-bright);
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .modal-screenshot {
+      width: 100%;
+      border: 1px solid rgba(212,168,50,0.2);
+      background: rgba(0,0,0,0.3);
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .modal-screenshot-placeholder {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--chalk-muted);
+      opacity: 0.4;
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    .site-footer {
+      background: var(--green-dark);
+      border-top: 2px solid var(--brass);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-item {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.4;
+    }
+
+    .footer-item a { color: inherit; text-decoration: none; }
+    .footer-item a:hover { opacity: 1; }
+
+    .footer-sep {
+      width: 1px;
+      height: 12px;
+      background: rgba(184,137,57,0.3);
+    }
+
+    .footer-right {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.45;
+    }
+
+    /* ── SCROLL REVEAL ────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .product-layout { grid-template-columns: 1fr; }
+      .product-images { position: static; }
+      .similar-grid { grid-template-columns: 1fr 1fr; }
+      .flavor-grid { grid-template-columns: 1fr; }
+      .classification-row { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .site-header { padding: 16px 20px; }
+      .header-nav { display: none; }
+      .page-outer { padding: 0 16px 40px; }
+      .chalkboard-surface { padding: 28px 20px 32px; }
+      .similar-grid { grid-template-columns: 1fr; }
+      .uses-list { grid-template-columns: 1fr; }
+      .product-hero { min-height: 100px; padding: 16px 20px; }
+      .breadcrumb { padding: 8px 20px; }
+      .site-footer { padding: 20px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+
+  <!-- Schema.org structured data — values injected from JSON -->
+  <script type="application/ld+json" id="product-schema">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "",
+    "brand": { "@type": "Brand", "name": "High River Sauces" },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": "",
+      "url": ""
+    }
+  }
+  </script>
+</head>
+
+<body>
+
+<!-- ═══ HEADER ══════════════════════════════════════════════════ -->
+<header class="site-header">
+  <a class="header-logo" href="../conductor.html">
+    <img src="../assets/PJ-logo.png" alt="Pepper Junction" />
+    <div class="header-wordmark">
+      <span class="header-name">Pepper Junction</span>
+      <span class="header-tagline">Est. 2014 · Rhode Island</span>
+    </div>
+  </a>
+  <nav class="header-nav">
+    <a href="../hot-sauces.html" id="nav-category">Hot Sauces</a>
+    <a href="../main.html">Home</a>
+    <a href="../index.html">Pairing Bar</a>
+    <a href="../main.html#location">Visit</a>
+  </nav>
+</header>
+
+<!-- ═══ BREADCRUMB ══════════════════════════════════════════════ -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../main.html">Home</a>
+    <span>›</span>
+    <a href="../hot-sauces.html" id="breadcrumb-category">Hot Sauces</a>
+    <span>›</span>
+    Tears of the Sun
+  </div>
+</div>
+
+<!-- ═══ HERO BANNER ═════════════════════════════════════════════ -->
+<div class="product-hero">
+  <div class="product-hero-eyebrow">High River Sauces · Hot Sauce · Caribbean</div>
+  <div class="product-hero-name">Tears of the Sun</div>
+  <div class="product-hero-sub">Tropical Hot Sauce · 5 fl oz · <span id="hero-price">$9.00</span></div>
+</div>
+
+<!-- ═══ PAGE BODY ════════════════════════════════════════════════ -->
+<div class="page-outer">
+  <div class="chalkboard-wrap reveal">
+    <div class="chalk-corner tl"></div>
+    <div class="chalk-corner tr"></div>
+    <div class="chalk-corner bl"></div>
+    <div class="chalk-corner br"></div>
+
+    <div class="chalkboard-surface">
+      <div class="product-layout">
+
+        <!-- IMAGE COLUMN -->
+        <aside class="product-images">
+
+          <!-- Bottle image -->
+          <div class="img-frame">
+            <div class="frame-bolt tl"></div>
+            <div class="frame-bolt tr"></div>
+            <div class="frame-bolt bl"></div>
+            <div class="frame-bolt br"></div>
+            <div class="img-frame-inner">
+              <img
+                src="../assets/sauces/high-river-sauces-tears-of-the-sun.png"
+                alt="High River Tears of the Sun"
+                loading="eager"
+                onerror="this.style.opacity='0.3'"
+              />
+            </div>
+          </div>
+          <div class="img-label">High River Sauces</div>
+
+          <!-- PJ Logo placeholder -->
+          <div class="img-frame">
+            <div class="frame-bolt tl"></div>
+            <div class="frame-bolt tr"></div>
+            <div class="frame-bolt bl"></div>
+            <div class="frame-bolt br"></div>
+            <div class="img-frame-inner" style="min-height:140px;">
+              <img
+                src="../assets/PJ-logo.png"
+                alt="Pepper Junction"
+                loading="lazy"
+                style="max-height:100px; opacity:0.65;"
+              />
+            </div>
+          </div>
+
+        </aside>
+
+        <!-- CONTENT COLUMN -->
+        <div class="product-content">
+
+          <!-- Badge -->
+          <div class="product-badge">
+            <img
+              id="heat-badge-img"
+              class="badge-img"
+              src="../assets/badges/heat/badge-medium.png"
+              alt="Medium Heat Badge"
+              loading="lazy"
+            />
+            <div class="badge-name" id="heat-badge-name">Farmer's Market Heat</div>
+          </div>
+
+          <!-- Title -->
+          <div class="product-title-block">
+            <div class="product-brand-label">High River Sauces</div>
+            <h1 class="product-name">Tears of the Sun</h1>
+            <p class="product-subtitle">Tropical Hot Sauce</p>
+            <div class="meta-pills">
+              <span class="meta-pill">Hot Sauce</span>
+              <span class="meta-pill">Caribbean</span>
+              <span class="meta-pill">Habanero</span>
+              <span class="meta-pill heat" id="heat-pill">Medium · 4/10</span>
+            </div>
+            <div class="classification-row">
+              <div class="class-item">
+                <span class="class-key">Heat Category</span>
+                <span class="class-val" id="class-heat-cat">Medium</span>
+              </div>
+              <div class="class-item">
+                <span class="class-key">How it Hits™</span>
+                <span class="class-val" id="class-how-hits">Immediate Hit</span>
+              </div>
+              <div class="class-item">
+                <span class="class-key">Heat Finish™</span>
+                <span class="class-val" id="class-heat-finish">Escalator Down</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- What It Is -->
+          <div class="editorial">
+            <div class="section-label">What It Is</div>
+            <div class="section-body">
+              <p>This tropical style hot sauce starts with rolling fruit from peaches, pineapple, papaya and mango, then the habanero heat rises behind it and settles in for a nice slow burn. The balance keeps the sweetness lively while the spice builds just enough to keep things interesting. This versatile sauce is fantastic with tacos, rice, eggs, chicken, oysters, fish, vegetables — even a bagel with cream cheese if you're feeling adventurous.</p>
+            </div>
+          </div>
+
+          <!-- Flavor Profile -->
+          <div class="editorial">
+            <div class="section-label">Flavor Profile</div>
+            <div class="flavor-grid">
+              <div class="flavor-cell">
+                <div class="flavor-key">Primary Notes</div>
+                <div class="flavor-val">Sweet tropical fruit</div>
+              </div>
+              <div class="flavor-cell">
+                <div class="flavor-key">Secondary Notes</div>
+                <div class="flavor-val">Fruity habanero depth</div>
+              </div>
+              <div class="flavor-cell">
+                <div class="flavor-key">Heat Source</div>
+                <div class="flavor-val">Habanero peppers</div>
+              </div>
+              <div class="flavor-cell">
+                <div class="flavor-key">Finish</div>
+                <div class="flavor-val">Steady sun-like heat rise</div>
+              </div>
+            </div>
+            <div class="section-body">
+              <p>Fruitiness greets the palate first, then the habanero gradually settles in, delivering balanced but assertive warmth.</p>
+            </div>
+          </div>
+
+          <!-- Best Used For -->
+          <div class="editorial">
+            <div class="section-label">Best Used For</div>
+            <ul class="uses-list">
+              <li>Sautéed shrimp with rice</li>
+              <li>RI Oysters</li>
+              <li>Pork tenderloin</li>
+              <li>Fish tacos</li>
+              <li>Roasted vegetables</li>
+              <li>Sushi</li>
+              <li>Bagel with cream cheese</li>
+              <li>Rice bowls</li>
+            </ul>
+            <div class="section-body" style="margin-top:12px;">
+              <p>Also excellent mixed into salsa or brushed onto grilled pineapple.</p>
+            </div>
+          </div>
+
+          <!-- Culinary Performance Notes -->
+          <div class="editorial">
+            <div class="section-label">Culinary Performance Notes</div>
+            <div class="section-body">
+              <p>Tears of the Sun performs best where sweetness can contrast savory or smoky elements. Use as a flavor enhancer for fresh made salsa for tacos or salmon or sea bass. Stir into sour cream for a tropical heat dip. Splash onto a bagel with cream cheese for lox and smoked salmon. Pairs especially well with charcoal grilling and fruitwood smoke.</p>
+            </div>
+          </div>
+
+          <!-- Pepper Junction Pairing Notes -->
+          <div class="editorial">
+            <div class="section-label">Pepper Junction Pairing Notes</div>
+            <ul class="pairing-list">
+              <li>Pair with grilled shrimp and mango salsa for a bright summer plate</li>
+              <li>Add to pork tacos with pineapple slaw</li>
+              <li>Brush lightly over wings before serving</li>
+              <li>Beverage pairing: Tropical IPA, mojito, or chilled rosé</li>
+            </ul>
+          </div>
+
+          <!-- Ingredient Transparency -->
+          <div class="editorial">
+            <div class="section-label">Ingredient Transparency</div>
+            <div class="section-body">
+              <p>Peaches, pineapple, papaya, mango, habanero peppers, light brown sugar, lime and garlic.</p>
+            </div>
+          </div>
+
+          <!-- Heat Classification -->
+          <div class="editorial">
+            <div class="section-label">Heat Classification — Pepper Junction Scale™</div>
+            <div class="heat-block">
+              <div class="heat-peppers">🌶🌶🌶🌶</div>
+              <div>
+                <div class="heat-label" id="heat-label">Medium — 4 / 10</div>
+                <div class="heat-desc">Fruit-forward entry with a steady, sun-like habanero warmth that builds and recedes cleanly.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Why It Stands Out -->
+          <div class="editorial">
+            <div class="section-label">Why It Stands Out</div>
+            <div class="section-body">
+              <p>A fruit-forward habanero hot sauce delivering layered sweetness and controlled, rising heat. Tears of the Sun offers tropical flavor complexity while maintaining bold spice intensity for versatile use across meats, seafood, and snacks.</p>
+            </div>
+          </div>
+
+          <!-- PJ Standard -->
+          <div class="editorial">
+            <div class="pj-standard">
+              <div class="pj-standard-text">✓ &nbsp;Approved under The Pepper Junction Standard™ for ingredient integrity and functional culinary performance</div>
+            </div>
+          </div>
+
+          <!-- Local Delivery Callout -->
+          <div class="delivery-callout" id="delivery-callout" role="button" tabindex="0">
+            <span class="delivery-icon">🚂</span>
+            <span class="delivery-text">Ordering for local RI delivery? Tap here first — Square buries the option.</span>
+            <span class="delivery-arrow">›</span>
+          </div>
+
+          <!-- Buy Now -->
+          <a
+            class="buy-now-btn"
+            id="buy-now-btn"
+            href="https://www.pepperjunction401.com/product/high-river-tears-of-the-sun-tropical-hot-sauce-/1?cs=true&cst=custom"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Buy Now — $9.00
+          </a>
+
+        </div><!-- /product-content -->
+      </div><!-- /product-layout -->
+
+      <!-- Similar Products Rule -->
+      <div class="similar-section">
+        <div class="section-rule">
+          <div class="rule-line"></div>
+          <span class="rule-text">You Might Also Like</span>
+          <div class="rule-line right"></div>
+        </div>
+        <div class="similar-grid reveal" id="similar-products">
+          <div class="similar-loading">Loading similar products…</div>
+        </div>
+      </div>
+
+    </div><!-- /chalkboard-surface -->
+  </div><!-- /chalkboard-wrap -->
+</div><!-- /page-outer -->
+
+<!-- ═══ FOOTER ═══════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-left">
+    <span class="footer-item"><a href="https://www.pepperjunction401.com">pepperjunction401.com</a></span>
+    <span class="footer-sep"></span>
+    <span class="footer-item">320 Kingstown Rd · Richmond, RI</span>
+    <span class="footer-sep"></span>
+    <span class="footer-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+  </div>
+  <div class="footer-right">© Pepper Junction · Est. 2014</div>
+</footer>
+
+<!-- ═══ DELIVERY MODAL ══════════════════════════════════════════ -->
+<div class="modal-overlay" id="delivery-modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close" aria-label="Close">×</button>
+    <div class="modal-title">Local RI Delivery</div>
+    <div class="modal-sub">How to select it at checkout</div>
+    <ol class="modal-steps">
+      <li><span class="modal-step-num">01</span>Click Buy Now — you'll land on the Square checkout page.</li>
+      <li><span class="modal-step-num">02</span>On the shipping step, look for the delivery method selector — Square defaults to shipping.</li>
+      <li><span class="modal-step-num">03</span>Select <strong style="color:var(--brass-bright);">Local Delivery</strong> from the options. It's easy to miss.</li>
+      <li><span class="modal-step-num">04</span>Available within the local RI delivery zone.</li>
+    </ol>
+    <div class="modal-screenshot">
+      <span class="modal-screenshot-placeholder">Screenshot placeholder — add Square checkout image</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCRIPTS ══════════════════════════════════════════════════ -->
+<script>
+(function () {
+
+  /* ── PAGE SLUG — the only hardcoded value ── */
+  const PAGE_SLUG = 'high-river-sauces-tears-of-the-sun';
+  const DB_PATH   = '../data/Database_Pepper_Junction_v4_1.json';
+
+  /* ── HEAT BADGE MAP ── */
+  const HEAT_BADGE_NAMES = {
+    'Mild':      "Keep the Milk for Cookies",
+    'Medium':    "Farmer's Market Heat",
+    'Hot':       "Sauce Boss",
+    'Very Hot':  "Pucker Up, Pepper Head",
+    'Super Hot': "Have Anything Hotter?",
+    'Extreme':   "Pass the $%&@#! Carton!",
+    'Inferno':   "Incinerator"
+  };
+
+  const HEAT_BADGE_SLUGS = {
+    'Mild':      'badge-mild',
+    'Medium':    'badge-medium',
+    'Hot':       'badge-hot',
+    'Very Hot':  'badge-very-hot',
+    'Super Hot': 'badge-super-hot',
+    'Extreme':   'badge-extreme',
+    'Inferno':   'badge-inferno'
+  };
+
+  /* ── CATEGORY → PAGE MAP ── */
+  const CAT_PAGE = {
+    'HOT SAUCE':          { label: 'Hot Sauces',        href: '../hot-sauces.html' },
+    'WING SAUCE':         { label: 'Buffalo & Wing',     href: '../buffalo-condiments.html' },
+    'BBQ SAUCE':          { label: 'Seasonings & BBQ',   href: '../seasonings-bbq.html' },
+    'CONDIMENTS':         { label: 'Condiments',         href: '../buffalo-condiments.html' },
+    'SEASONINGS/DRY RUBS':{ label: 'Seasonings & BBQ',   href: '../seasonings-bbq.html' },
+    'SNACKS':             { label: 'Snacks',              href: '../snacks.html' },
+    'Olive Oil/Vinegar':  { label: 'Olive Oils & Vinegar',href: '../olive-oils-vinegar.html' }
+  };
+
+  function esc(s) {
+    return String(s||'')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── LOAD PRODUCT DATA ── */
+  fetch(DB_PATH)
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+
+      var product = data.find(function(p){ return p.slug === PAGE_SLUG; });
+      if (!product) { console.warn('Product not found:', PAGE_SLUG); return; }
+
+      /* Populate classification fields */
+      var heatCat   = product['Heat Category'] || '';
+      var heatLevel = product['Heat Level']    || '';
+      var howHits   = product['How it Hits']   || '';
+      var heatFin   = product['Heat Finish']   || '';
+      var price     = product['Price']         ? '$' + parseFloat(product['Price']).toFixed(2) : '';
+      var sqId      = product['Square_ID']     || '';
+      var category  = product['Category']      || '';
+
+      /* Update displayed classification */
+      setTxt('class-heat-cat',   heatCat);
+      setTxt('class-how-hits',   howHits);
+      setTxt('class-heat-finish',heatFin);
+      setTxt('heat-pill',        heatCat + ' · ' + heatLevel + '/10');
+      setTxt('heat-label',       heatCat + ' — ' + heatLevel + ' / 10');
+      if (price) {
+        setTxt('hero-price', price);
+        var btn = document.getElementById('buy-now-btn');
+        if (btn) btn.textContent = 'Buy Now — ' + price;
+      }
+
+      /* Heat badge */
+      var badgeSlug = HEAT_BADGE_SLUGS[heatCat] || 'badge-mild';
+      var badgeName = HEAT_BADGE_NAMES[heatCat] || '';
+      var badgeImg  = document.getElementById('heat-badge-img');
+      if (badgeImg) {
+        badgeImg.src = '../assets/badges/heat/' + badgeSlug + '.png';
+        badgeImg.alt = badgeName + ' Badge';
+      }
+      setTxt('heat-badge-name', badgeName);
+
+      /* Dynamic nav category link */
+      var catInfo = CAT_PAGE[category];
+      if (catInfo) {
+        var navCat = document.getElementById('nav-category');
+        var bcCat  = document.getElementById('breadcrumb-category');
+        if (navCat) { navCat.textContent = catInfo.label; navCat.href = catInfo.href; }
+        if (bcCat)  { bcCat.textContent  = catInfo.label; bcCat.href  = catInfo.href; }
+      }
+
+      /* Populate data attributes on article wrapper */
+      var article = document.querySelector('.product-content');
+      if (article) {
+        article.dataset.productId    = PAGE_SLUG;
+        article.dataset.squareId     = sqId;
+        article.dataset.heatCategory = heatCat;
+        article.dataset.howItHits    = howHits;
+        article.dataset.heatFinish   = heatFin;
+        article.dataset.foodStyle    = product['Food Style'] || '';
+        article.dataset.category     = category;
+        article.dataset.pjApproved   = 'true';
+      }
+
+      /* Populate rating container */
+      var ratingEl = document.querySelector('.pj-rating-container');
+      if (ratingEl) {
+        ratingEl.dataset.productId           = PAGE_SLUG;
+        ratingEl.dataset.expectedHeatCategory= heatCat;
+        ratingEl.dataset.expectedHowItHits   = howHits;
+        ratingEl.dataset.expectedHeatFinish  = heatFin;
+        ratingEl.dataset.squareId            = sqId;
+      }
+
+      /* Update schema */
+      var schema = document.getElementById('product-schema');
+      if (schema) {
+        var s = JSON.parse(schema.textContent);
+        s.name = product['Product Name'] || '';
+        s.offers.price = product['Price'] || '';
+        s.offers.url   = product['Product URL'] || '';
+        schema.textContent = JSON.stringify(s, null, 2);
+      }
+
+      /* Similar products */
+      loadSimilar(data, product);
+    })
+    .catch(function(e){ console.error('DB load error:', e); });
+
+  function setTxt(id, val) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = val;
+  }
+
+  /* ── SIMILAR PRODUCTS ── */
+  function loadSimilar(data, product) {
+    var grid   = document.getElementById('similar-products');
+    var others = data.filter(function(p){ return p.slug !== PAGE_SLUG; });
+
+    /* Same Food Style first */
+    var similar = others.filter(function(p){
+      return p['Food Style'] === product['Food Style'];
+    });
+
+    /* Backfill with same Heat Category */
+    if (similar.length < 3) {
+      var backfill = others.filter(function(p){
+        return p['Heat Category'] === product['Heat Category'] &&
+               !similar.find(function(s){ return s.slug === p.slug; });
+      });
+      similar = similar.concat(backfill);
+    }
+
+    similar = similar.slice(0, 3);
+
+    if (!similar.length) {
+      grid.innerHTML = '<div class="similar-loading">No similar products found.</div>';
+      return;
+    }
+
+    grid.innerHTML = similar.map(function(p) {
+      var img  = '../assets/sauces/' + (p.slug || '') + '.png';
+      var heat = p['Heat Category'] || '';
+      return '<a class="similar-card" href="' + esc(p.slug) + '.html">' +
+        '<img class="similar-img" src="' + esc(img) + '" alt="' + esc(p['Product Name']) + '" loading="lazy" onerror="this.src=\'../assets/PJ-logo.png\'">' +
+        '<div class="similar-brand">' + esc(p['Brand']||'') + '</div>' +
+        '<div class="similar-name">' + esc(p['Product Name']||'') + '</div>' +
+        '<div class="similar-heat">' + esc(heat) + '</div>' +
+        '</a>';
+    }).join('');
+  }
+
+  /* ── DELIVERY MODAL ── */
+  var callout  = document.getElementById('delivery-callout');
+  var modal    = document.getElementById('delivery-modal');
+  var closeBtn = document.getElementById('modal-close');
+
+  function openModal()  { modal.classList.add('open'); }
+  function closeModal() { modal.classList.remove('open'); }
+
+  if (callout)  { callout.addEventListener('click', openModal); }
+  if (closeBtn) { closeBtn.addEventListener('click', closeModal); }
+  if (modal)    { modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); }); }
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
+
+  /* ── SCROLL REVEAL ── */
+  var revEls = document.querySelectorAll('.reveal');
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.06 });
+  revEls.forEach(function(el){ obs.observe(el); });
+
+})();
+</script>
+
+<!-- Hidden rating container for future app integration -->
+<div class="pj-rating-container"
+     data-product-id=""
+     data-expected-heat-category=""
+     data-expected-how-it-hits=""
+     data-expected-heat-finish=""
+     data-square-id=""
+     style="display:none;">
+</div>
+
+</body>
+</html>
