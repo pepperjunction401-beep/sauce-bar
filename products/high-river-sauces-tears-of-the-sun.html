@@ -424,7 +424,6 @@
     /* ── CONTENT COLUMN ───────────────────────────────────────── */
     .product-content { position: relative; z-index: 1; }
 
-    /* Title block */
     .product-title-block {
       margin-bottom: 32px;
       padding-bottom: 24px;
@@ -460,7 +459,6 @@
       margin-bottom: 14px;
     }
 
-    /* Classification pills */
     .meta-pills {
       display: flex;
       flex-wrap: wrap;
@@ -486,7 +484,6 @@
       background: rgba(143,31,13,0.1);
     }
 
-    /* Classification row */
     .classification-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -496,8 +493,6 @@
       background: rgba(0,0,0,0.2);
       border: 1px solid rgba(212,168,50,0.15);
     }
-
-    .class-item {}
 
     .class-key {
       font-family: 'Josefin Sans', sans-serif;
@@ -553,7 +548,6 @@
 
     .section-body p + p { margin-top: 10px; }
 
-    /* Flavor grid */
     .flavor-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -585,7 +579,6 @@
       line-height: 1.4;
     }
 
-    /* Best used list */
     .uses-list {
       list-style: none;
       display: grid;
@@ -611,10 +604,7 @@
       opacity: 0.55;
     }
 
-    /* Pairing list */
-    .pairing-list {
-      list-style: none;
-    }
+    .pairing-list { list-style: none; }
 
     .pairing-list li {
       font-family: 'Libre Baskerville', serif;
@@ -637,7 +627,6 @@
       top: 8px;
     }
 
-    /* Heat classification */
     .heat-block {
       display: flex;
       align-items: center;
@@ -666,7 +655,6 @@
       margin-top: 2px;
     }
 
-    /* PJ Standard */
     .pj-standard {
       display: flex;
       align-items: center;
@@ -702,7 +690,6 @@
     }
 
     .delivery-callout:hover { background: rgba(212,168,50,0.15); }
-
     .delivery-icon { font-size: 18px; flex-shrink: 0; }
 
     .delivery-text {
@@ -776,7 +763,6 @@
       white-space: nowrap;
     }
 
-    /* ── UPDATED: 4-column grid ── */
     .similar-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -799,7 +785,6 @@
       transform: translateY(-3px);
     }
 
-    /* ── NEW: slot label ── */
     .similar-label {
       font-family: 'Josefin Sans', sans-serif;
       font-size: 9px;
@@ -999,11 +984,7 @@
       display: block;
     }
 
-    .footer-contact-item a {
-      color: inherit;
-      text-decoration: none;
-    }
-
+    .footer-contact-item a { color: inherit; text-decoration: none; }
     .footer-contact-item a:hover { opacity: 1; color: var(--brass-bright); }
 
     .footer-col-title {
@@ -1134,6 +1115,10 @@
     }
   }
   </script>
+
+  <!-- ── PRODUCT INTELLIGENCE LAYER ── -->
+  <script src="../assets/js/pj-product.js"></script>
+
 </head>
 
 <body>
@@ -1187,7 +1172,6 @@
         <!-- IMAGE COLUMN -->
         <aside class="product-images">
 
-          <!-- Bottle image -->
           <div class="img-frame">
             <div class="frame-bolt tl"></div>
             <div class="frame-bolt tr"></div>
@@ -1204,7 +1188,6 @@
           </div>
           <div class="img-label">High River Sauces</div>
 
-          <!-- Food/lifestyle image — auto fallback to PJ logo -->
           <div class="img-frame">
             <div class="frame-bolt tl"></div>
             <div class="frame-bolt tr"></div>
@@ -1222,7 +1205,6 @@
             </div>
           </div>
 
-          <!-- 3rd image slot — food/lifestyle placeholder -->
           <div class="img-frame">
             <div class="frame-bolt tl"></div>
             <div class="frame-bolt tr"></div>
@@ -1250,14 +1232,12 @@
               <span class="badge-station-sub">Earn these badges with qualifying purchases</span>
             </div>
             <div class="product-badges" id="product-badges">
-              <!-- L1 Heat badge -->
               <div class="badge-item">
                 <img id="heat-badge-img" class="badge-img"
                   src="../assets/badges/heat/badge-medium.png"
                   alt="Medium Heat Badge" loading="lazy" />
                 <div class="badge-name" id="heat-badge-name">Farmer's Market Heat</div>
               </div>
-              <!-- L2 Heat badge -->
               <div class="badge-item" id="l2-badge-item">
                 <img id="l2-badge-img" class="badge-img"
                   src="../assets/badges/heat/L2-badge-medium.png"
@@ -1265,7 +1245,6 @@
                   onerror="this.parentElement.style.display='none'" />
                 <div class="badge-name" id="l2-badge-name">Cruel Summer</div>
               </div>
-              <!-- L3 Heat badge -->
               <div class="badge-item" id="l3-badge-item">
                 <img id="l3-badge-img" class="badge-img"
                   src="../assets/badges/heat/L3-badge-medium.png"
@@ -1273,11 +1252,10 @@
                   onerror="this.parentElement.style.display='none'" />
                 <div class="badge-name" id="l3-badge-name">The Sky Line</div>
               </div>
-              <!-- Food category badges injected by JS -->
             </div>
           </div>
 
-          <!-- Classification pills only - title removed, lives in hero -->
+          <!-- Classification pills -->
           <div class="product-title-block">
             <div class="meta-pills">
               <span class="meta-pill">Hot Sauce</span>
@@ -1448,7 +1426,6 @@
 <footer class="site-footer">
   <div class="footer-top">
 
-    <!-- Brand + Contact -->
     <div class="footer-brand">
       <img src="../assets/PJ-logo.png" alt="Pepper Junction" />
       <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
@@ -1456,7 +1433,6 @@
       <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
     </div>
 
-    <!-- Shop -->
     <div>
       <span class="footer-col-title">Shop</span>
       <ul class="footer-col-links">
@@ -1469,7 +1445,6 @@
       </ul>
     </div>
 
-    <!-- Pepper Junction -->
     <div>
       <span class="footer-col-title">Pepper Junction</span>
       <ul class="footer-col-links">
@@ -1480,7 +1455,6 @@
       </ul>
     </div>
 
-    <!-- Help -->
     <div>
       <span class="footer-col-title">Help</span>
       <ul class="footer-col-links">
@@ -1523,6 +1497,9 @@
   /* ── PAGE SLUG — the only hardcoded value ── */
   const PAGE_SLUG = 'high-river-sauces-tears-of-the-sun';
   const DB_PATH   = '../data/Database_Pepper_Junction_v4_1.json';
+
+  /* ── INIT — write this page to session browsing history ── */
+  PJProduct.init(PAGE_SLUG);
 
   /* ── FOOD BADGE MAP ── */
   const FOOD_BADGE_MAP = [
@@ -1584,7 +1561,6 @@
       var product = data.find(function(p){ return p.slug === PAGE_SLUG; });
       if (!product) { console.warn('Product not found:', PAGE_SLUG); return; }
 
-      /* Populate classification fields */
       var heatCat   = product['Heat Category'] || '';
       var heatLevel = product['Heat Level']    || '';
       var howHits   = product['How it Hits']   || '';
@@ -1604,7 +1580,6 @@
         if (btn) btn.textContent = 'Buy Now — ' + price;
       }
 
-      /* L2 badge names */
       const L2_NAMES = {
         'Mild':      'Fever',
         'Medium':    'Cruel Summer',
@@ -1615,7 +1590,6 @@
         'Inferno':   'Burning Down the House'
       };
 
-      /* L3 badge names */
       const L3_NAMES = {
         'Mild':      'Ferris Wheel',
         'Medium':    'The Sky Line',
@@ -1626,7 +1600,6 @@
         'Inferno':   'The Corkscrew'
       };
 
-      /* L1 badge */
       var badgeSlug = HEAT_BADGE_SLUGS[heatCat] || 'badge-mild';
       var badgeName = HEAT_BADGE_NAMES[heatCat] || '';
       var badgeImg  = document.getElementById('heat-badge-img');
@@ -1636,7 +1609,6 @@
       }
       setTxt('heat-badge-name', badgeName);
 
-      /* L2 badge */
       var l2Slug = HEAT_BADGE_SLUGS[heatCat] ? 'L2-' + HEAT_BADGE_SLUGS[heatCat] : '';
       var l2Name = L2_NAMES[heatCat] || '';
       var l2Img  = document.getElementById('l2-badge-img');
@@ -1646,7 +1618,6 @@
       }
       setTxt('l2-badge-name', l2Name);
 
-      /* L3 badge */
       var l3Slug = HEAT_BADGE_SLUGS[heatCat] ? 'L3-' + HEAT_BADGE_SLUGS[heatCat] : '';
       var l3Name = L3_NAMES[heatCat] || '';
       var l3Img  = document.getElementById('l3-badge-img');
@@ -1656,7 +1627,6 @@
       }
       setTxt('l3-badge-name', l3Name);
 
-      /* Dynamic nav category link */
       var catInfo = CAT_PAGE[category];
       if (catInfo) {
         var navCat = document.getElementById('nav-category');
@@ -1665,7 +1635,6 @@
         if (bcCat)  { bcCat.textContent  = catInfo.label; bcCat.href  = catInfo.href; }
       }
 
-      /* Data attributes */
       var article = document.querySelector('.product-content');
       if (article) {
         article.dataset.productId    = PAGE_SLUG;
@@ -1678,7 +1647,6 @@
         article.dataset.pjApproved   = 'true';
       }
 
-      /* Rating container */
       var ratingEl = document.querySelector('.pj-rating-container');
       if (ratingEl) {
         ratingEl.dataset.productId            = PAGE_SLUG;
@@ -1688,7 +1656,6 @@
         ratingEl.dataset.squareId             = sqId;
       }
 
-      /* Schema */
       var schema = document.getElementById('product-schema');
       if (schema) {
         var s = JSON.parse(schema.textContent);
@@ -1721,180 +1688,15 @@
         }
       });
 
-      /* Similar products */
-      loadSimilar(data, product);
+      /* ── SIMILAR PRODUCTS — powered by pj-product.js ── */
+      PJProduct.loadSimilar(data, product, PAGE_SLUG);
+
     })
     .catch(function(e){ console.error('DB load error:', e); });
 
   function setTxt(id, val) {
     var el = document.getElementById(id);
     if (el) el.textContent = val;
-  }
-
-  /* ── SIMILAR PRODUCTS ── */
-  function loadSimilar(data, product) {
-    var grid = document.getElementById('similar-products');
-
-    var currentSlug   = product.slug;
-    var currentFlavor = (product['Primary Flavor Notes'] || '').toLowerCase().trim();
-    var currentStyle  = (product['Food Style'] || '').toLowerCase().trim();
-    var currentLevel  = Number(product['Heat Level'] || 0);
-
-    /* Category helpers */
-    var SAUCE_CATS    = ['hot sauce', 'wing sauce'];
-    var NONSAUCE_CATS = ['seasonings/dry rubs', 'snacks', 'condiments', 'olive oil/vinegar'];
-
-    function isSauce(p) {
-      return SAUCE_CATS.indexOf((p['Category'] || '').toLowerCase().trim()) !== -1;
-    }
-
-    function isNonSauce(p) {
-      return NONSAUCE_CATS.indexOf((p['Category'] || '').toLowerCase().trim()) !== -1;
-    }
-
-    /* Flavor similarity — interpretation-based, not exact match.
-       Tokenizes both strings and scores shared meaningful words.
-       Handles cayenne-garlic ≈ garlic-cayenne, fruity ≈ fruit, etc. */
-    var FLAVOR_STOPWORDS = ['and', 'the', 'a', 'with', 'of', 'pepper', 'hot'];
-
-    function flavorTokens(str) {
-      return (str || '').toLowerCase()
-        .replace(/[-\/]/g, ' ')
-        .split(/[\s,]+/)
-        .map(function(t){ return t.trim(); })
-        .filter(function(t){
-          return t.length > 1 && FLAVOR_STOPWORDS.indexOf(t) === -1;
-        });
-    }
-
-    function flavorSimilarity(a, b) {
-      var tokA = flavorTokens(a);
-      var tokB = flavorTokens(b);
-      if (!tokA.length || !tokB.length) return 0;
-      var shared = 0;
-      tokA.forEach(function(t) {
-        if (tokB.some(function(u){
-          return u === t || u.indexOf(t) === 0 || t.indexOf(u) === 0;
-        })) shared++;
-      });
-      return shared / Math.max(tokA.length, tokB.length);
-    }
-
-    function withinHeat(p) {
-      return Math.abs(Number(p['Heat Level'] || 0) - currentLevel) <= 2;
-    }
-
-    /* All products except current */
-    var others    = data.filter(function(p){ return p.slug !== currentSlug; });
-    var sauces    = others.filter(isSauce);
-    var nonSauces = others.filter(isNonSauce);
-
-    /* Track used slugs across all slots — no duplicates */
-    var used = [currentSlug];
-
-    function notUsed(p){ return used.indexOf(p.slug) === -1; }
-
-    function nearestSeasoning() {
-      var seasonings = others.filter(function(p){
-        return (p['Category'] || '').toLowerCase() === 'seasonings/dry rubs' && notUsed(p);
-      });
-      seasonings.sort(function(a, b){
-        return Math.abs(Number(a['Heat Level']||0) - currentLevel) -
-               Math.abs(Number(b['Heat Level']||0) - currentLevel);
-      });
-      return seasonings.length ? seasonings[0] : null;
-    }
-
-    /* ── SLOT 1 — Flavor similarity + Heat Level ±2 (sauces only) ── */
-    var slot1 = null;
-    var s1Candidates = sauces.filter(function(p){
-      return notUsed(p) && withinHeat(p);
-    }).map(function(p){
-      return { p: p, score: flavorSimilarity(currentFlavor, p['Primary Flavor Notes']) };
-    }).filter(function(o){ return o.score > 0; });
-    s1Candidates.sort(function(a, b){ return b.score - a.score; });
-    if (s1Candidates.length) slot1 = s1Candidates[0].p;
-    if (!slot1) slot1 = nearestSeasoning();
-    if (slot1) used.push(slot1.slug);
-
-    /* ── SLOT 2 — Same Food Style + Heat Level ±2 (sauces first) ── */
-    var slot2 = null;
-    var s2 = sauces.filter(function(p){
-      return notUsed(p) &&
-             (p['Food Style'] || '').toLowerCase().trim() === currentStyle &&
-             withinHeat(p);
-    });
-    if (s2.length) {
-      slot2 = s2[0];
-    } else {
-      slot2 = nearestSeasoning();
-    }
-    if (slot2) used.push(slot2.slug);
-
-    /* ── SLOT 3 — Same Food Style, any heat (sauces first) ── */
-    var slot3 = null;
-    var s3 = sauces.filter(function(p){
-      return notUsed(p) &&
-             (p['Food Style'] || '').toLowerCase().trim() === currentStyle;
-    });
-    if (s3.length) {
-      slot3 = s3[0];
-    } else {
-      slot3 = nearestSeasoning();
-    }
-    if (slot3) used.push(slot3.slug);
-
-    /* ── SLOT 4 — Non-sauce cross-sell ── */
-    var slot4 = null;
-
-    /* Priority 1: same flavor profile, non-sauce */
-    var s4Flavor = nonSauces.filter(notUsed).map(function(p){
-      return { p: p, score: flavorSimilarity(currentFlavor, p['Primary Flavor Notes']) };
-    }).filter(function(o){ return o.score > 0; });
-    s4Flavor.sort(function(a, b){ return b.score - a.score; });
-
-    if (s4Flavor.length) {
-      slot4 = s4Flavor[0].p;
-    } else {
-      /* Priority 2: same Food Style, non-sauce */
-      var s4Style = nonSauces.filter(function(p){
-        return notUsed(p) &&
-               (p['Food Style'] || '').toLowerCase().trim() === currentStyle;
-      });
-      if (s4Style.length) {
-        slot4 = s4Style[0];
-      } else {
-        /* Priority 3: any non-sauce, closest heat */
-        var s4Any = nonSauces.filter(notUsed);
-        s4Any.sort(function(a, b){
-          return Math.abs(Number(a['Heat Level']||0) - currentLevel) -
-                 Math.abs(Number(b['Heat Level']||0) - currentLevel);
-        });
-        if (s4Any.length) slot4 = s4Any[0];
-      }
-    }
-
-    /* ── RENDER ── */
-    var slots  = [slot1, slot2, slot3, slot4].filter(Boolean);
-    var labels = ['Flavor Match', 'Same Style', 'You Might Like', 'Try With It'];
-
-    if (!slots.length) {
-      grid.innerHTML = '<div class="similar-loading">No similar products found.</div>';
-      return;
-    }
-
-    grid.innerHTML = slots.map(function(p, i) {
-      var img  = '../assets/sauces/' + (p.slug || '') + '.png';
-      var heat = p['Heat Category'] || '';
-      return '<a class="similar-card" href="' + esc(p.slug) + '.html">' +
-        '<div class="similar-label">' + esc(labels[i] || '') + '</div>' +
-        '<img class="similar-img" src="' + esc(img) + '" alt="' + esc(p['Product Name']) + '" ' +
-        'loading="lazy" onerror="this.src=\'../assets/PJ-logo.png\'">' +
-        '<div class="similar-brand">' + esc(p['Brand'] || '') + '</div>' +
-        '<div class="similar-name">' + esc(p['Product Name'] || '') + '</div>' +
-        '<div class="similar-heat">' + esc(heat) + '</div>' +
-        '</a>';
-    }).join('');
   }
 
   /* ── DELIVERY MODAL ── */
