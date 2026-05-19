@@ -161,12 +161,11 @@
   function heatProximityBonus(currentLevel, candidateLevel) {
     if (!candidateLevel || candidateLevel === 0) return 0;
     var diff = Math.abs(candidateLevel - currentLevel);
-    if (diff === 0) return 6;
-    if (diff === 1) return 4;
-    if (diff === 2) return 2;
-    if (diff === 3) return 0;
-    /* Far below current heat — small penalty to avoid cliff drops */
-    return -2;
+    if (diff === 0) return 2;
+    if (diff === 1) return 1;
+    if (diff === 2) return 0;
+    /* Far outside preferred window — small penalty to avoid cliff drops */
+    return -1;
   }
 
   /* ══════════════════════════════════════════════════════════════
@@ -474,9 +473,9 @@
       /* Heat proximity bonus — rewards ±2 window, penalizes cliff drops */
       score += heatProximityBonus(currentLevel, candidateLevel);
 
-      /* Food style match bonus */
+      /* Food style match bonus — weighted to outrank pure heat proximity */
       if ((p['Food Style'] || '').toLowerCase().trim() === currentStyle) {
-        score += 8;
+        score += 14;
       }
 
       return { p: p, score: score };
@@ -485,9 +484,8 @@
     /* Sort by score descending */
     scored.sort(function(a, b){ return b.score - a.score; });
 
-    /* Separate sauces and non-sauces from scored pool */
-    var scoredSauces    = scored.filter(function(o){ return isSauce(o.p); });
-    var scoredNonSauces = scored.filter(function(o){ return isNonSauce(o.p); });
+    /* Separate sauces from scored pool — slots 1-3 */
+    var scoredSauces = scored.filter(function(o){ return isSauce(o.p); });
 
     /* Track used slugs — no duplicates across all 4 slots */
     var used = [currentSlug];
@@ -495,11 +493,6 @@
 
     function pickSauce() {
       var candidate = scoredSauces.find(function(o){ return notUsed(o.p); });
-      return candidate ? candidate.p : null;
-    }
-
-    function pickNonSauce() {
-      var candidate = scoredNonSauces.find(function(o){ return notUsed(o.p); });
       return candidate ? candidate.p : null;
     }
 
@@ -519,29 +512,29 @@
       return pool.length ? pool[0] : null;
     }
 
-    /* Fallback — nearest non-sauce by flavor/pairing proximity */
-    function fallbackNonSauce() {
+    /* ── Slot 4 — Snacks only, randomized, heat window applies ── */
+    function pickSnack() {
       var pool = candidates.filter(function(p){
-        return isNonSauce(p) && notUsed(p);
+        return (p['Category'] || '').toLowerCase().trim() === 'snacks' &&
+               notUsed(p) &&
+               isHeatAllowed(currentLevel, Number(p['Heat Level']||0), p['Heat Category']);
       });
-      pool.sort(function(a, b){
-        return Math.abs(Number(a['Heat Level']||0) - currentLevel) -
-               Math.abs(Number(b['Heat Level']||0) - currentLevel);
-      });
-      return pool.length ? pool[0] : null;
+      if (!pool.length) return null;
+      /* Random pick from eligible snacks */
+      return pool[Math.floor(Math.random() * pool.length)];
     }
 
     /* ── Pick slots ── */
-    var slot1 = pickSauce()    || fallbackSauce();
+    var slot1 = pickSauce()  || fallbackSauce();
     if (slot1) used.push(slot1.slug);
 
-    var slot2 = pickSauce()    || fallbackSauce();
+    var slot2 = pickSauce()  || fallbackSauce();
     if (slot2) used.push(slot2.slug);
 
-    var slot3 = pickSauce()    || fallbackSauce();
+    var slot3 = pickSauce()  || fallbackSauce();
     if (slot3) used.push(slot3.slug);
 
-    var slot4 = pickNonSauce() || fallbackNonSauce();
+    var slot4 = pickSnack();
     if (slot4) used.push(slot4.slug);
 
     /* ── Render ── */
