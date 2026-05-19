@@ -470,25 +470,44 @@
         return null;
       }
 
+      var fields = recordFields(p);
+
+      /* Flavor floor — score only from flavor-relevant fields.
+         Sauces must earn at least 1 point here to qualify for slots 1-3.
+         Pepper type and heat alone are not enough. */
+      var flavorScore = 0;
+      var queryParts  = query.split(/\s+/).filter(Boolean);
+      queryParts.forEach(function(part) {
+        if (hasWholeWord(fields.flavorNotes, part)) flavorScore += 8;
+        if (hasWholeWord(fields.foodStyle,   part)) flavorScore += 10;
+        if (hasWholeWord(fields.pairings,    part)) flavorScore += 12;
+      });
+      /* Food style exact match bonus counts toward flavor floor */
+      if (fields.foodStyle.toLowerCase().trim() === currentStyle) flavorScore += 14;
+
       /* Base relevance score from widget engine */
       var score = matchesSearch(p, query) ? getRelevanceScore(p, query) : 0;
 
-      /* Heat proximity bonus — rewards ±2 window, penalizes cliff drops */
+      /* Heat proximity bonus — tiebreaker only */
       score += heatProximityBonus(currentLevel, candidateLevel);
 
       /* Food style match bonus — weighted to outrank pure heat proximity */
-      if ((p['Food Style'] || '').toLowerCase().trim() === currentStyle) {
+      if (fields.foodStyle.toLowerCase().trim() === currentStyle) {
         score += 14;
       }
 
-      return { p: p, score: score };
+      return { p: p, score: score, flavorScore: flavorScore };
     }).filter(Boolean);
 
     /* Sort by score descending */
     scored.sort(function(a, b){ return b.score - a.score; });
 
-    /* Separate sauces from scored pool — slots 1-3 */
-    var scoredSauces = scored.filter(function(o){ return isSauce(o.p); });
+    /* Separate sauces from scored pool — slots 1-3
+       Sauce must have flavorScore > 0 to qualify.
+       Fallback handles any empty slots if flavor pool runs dry. */
+    var scoredSauces = scored.filter(function(o){
+      return isSauce(o.p) && o.flavorScore > 0;
+    });
 
     /* Track used slugs — no duplicates across all 4 slots */
     var used = [currentSlug];
