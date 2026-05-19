@@ -281,33 +281,35 @@
     if (!q) return true;
 
     var fields = recordFields(record);
-    var priorityFields  = [
+    var allFields = [
       fields.productName, fields.pairings, fields.flavorNotes,
-      fields.foodStyle, fields.brand, fields.category, fields.pepperType
+      fields.foodStyle, fields.brand, fields.category, fields.pepperType,
+      fields.heatCategory, fields.heatCurve, fields.heatFinish
     ];
-    var secondaryFields = [fields.heatCategory, fields.heatCurve, fields.heatFinish];
 
     if (isLockedPhrase(q)) {
-      return [...priorityFields, ...secondaryFields].some(function(text){
+      return allFields.some(function(text){
         return hasWholePhrase(text, q);
       });
     }
 
     if (isProtectedWord(q)) {
-      return [...priorityFields, ...secondaryFields].some(function(text){
+      return allFields.some(function(text){
         return hasWholeWord(text, q);
       });
     }
 
     var parts = q.split(/\s+/).filter(Boolean);
     if (parts.length > 1) {
-      var allText = [...priorityFields, ...secondaryFields]
-        .map(function(text){ return normalizeText(text); })
-        .join(' | ');
-      return parts.every(function(part){ return allText.includes(part); });
+      /* ANY term match qualifies — not ALL terms required */
+      return parts.some(function(part){
+        return allFields.some(function(text){
+          return normalizeText(text).includes(part);
+        });
+      });
     }
 
-    return [...priorityFields, ...secondaryFields].some(function(text){
+    return allFields.some(function(text){
       return normalizeText(text).includes(q);
     });
   }
@@ -344,8 +346,9 @@
       parts.forEach(function(part) {
         if (hasWholeWord(fields.productName, part)) score += 10;
         if (hasWholeWord(fields.pairings,    part)) score += 12;
-        if (hasWholeWord(fields.flavorNotes, part)) score += 6;
-        if (hasWholeWord(fields.foodStyle,   part)) score += 7;
+        if (hasWholeWord(fields.flavorNotes, part)) score += 8;
+        if (hasWholeWord(fields.foodStyle,   part)) score += 10;
+        if (hasWholeWord(fields.pepperType,  part)) score += 4;
         if (hasWholeWord(fields.brand,       part)) score += 3;
         if (hasWholeWord(fields.category,    part)) score += 2;
       });
