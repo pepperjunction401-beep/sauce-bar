@@ -523,6 +523,33 @@
         bcSchema.textContent = JSON.stringify(bc, null, 2);
       }
 
+      /* ── OUT OF STOCK TREATMENT ── */
+      var inStock = product['in_stock'];
+      if (inStock === false || String(inStock).toLowerCase() === 'false') {
+        /* Disable Buy Now button */
+        var buyBtn = document.getElementById('buy-now-btn');
+        if (buyBtn) {
+          buyBtn.classList.add('out-of-stock');
+          buyBtn.textContent = 'Currently Out of Stock';
+          buyBtn.removeAttribute('href');
+          buyBtn.setAttribute('aria-disabled', 'true');
+          buyBtn.setAttribute('tabindex', '-1');
+        }
+
+        /* Hide local delivery callout — not relevant if out of stock */
+        var calloutEl = document.getElementById('delivery-callout');
+        if (calloutEl) calloutEl.style.display = 'none';
+
+        /* Add out of stock pill to meta pills */
+        var pillsEl = document.querySelector('.meta-pills');
+        if (pillsEl) {
+          var osPill = document.createElement('span');
+          osPill.className = 'meta-pill out-of-stock';
+          osPill.textContent = 'Out of Stock';
+          pillsEl.appendChild(osPill);
+        }
+      }
+
       /* ── BADGES — powered by pj-product.js ── */
       PJProduct.initBadges({
         heatCategory:    heatCat,
