@@ -347,14 +347,17 @@
 
     /* ── HEAT LEVEL LABELS ── */
     .heat-level-label {
-      font-size: 8px;
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
       font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      letter-spacing: 0.06em;
       color: var(--brass-bright);
-      opacity: 0.5;
-      text-align: center;
-      margin-bottom: 8px;
+      opacity: 0.75;
+      margin-bottom: 16px;
+      margin-top: 8px;
+      padding-left: 4px;
+      border-left: 3px solid var(--brass-dim);
+      padding-bottom: 4px;
     }
 
     .heat-column {
@@ -552,8 +555,8 @@
   </div>
   <div class="stat-divider"></div>
   <div class="stat">
-    <div class="stat-val">1</div>
-    <div class="stat-label">Secret Badge</div>
+    <div class="stat-val">2</div>
+    <div class="stat-label">Secret Badges</div>
   </div>
   <div class="stat-divider"></div>
   <div class="stat">
@@ -799,9 +802,9 @@
       <div class="category-icon">✨</div>
       <div class="category-titles">
         <div class="category-name">Celestial Badges — 2026</div>
-        <div class="category-desc">Annual · Retiring · 12 Zodiac + Chinese Lunar Year Bonus · Resets Jan 1</div>
+        <div class="category-desc">Annual · Retiring · 12 Zodiac Badges · Year of the Horse is a Secret Badge · Resets Jan 1</div>
       </div>
-      <div class="category-count">13</div>
+      <div class="category-count">12</div>
     </div>
     <div class="badge-grid">
       <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-capricorn-2026.png" alt="Capricorn" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♑</div><div class="badge-info"><div class="badge-name">Capricorn</div><div class="badge-sub">January · 2026</div></div></div>
@@ -816,15 +819,6 @@
       <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-libra-2026.png" alt="Libra" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♎</div><div class="badge-info"><div class="badge-name">Libra</div><div class="badge-sub">October · 2026</div></div></div>
       <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-scorpio-2026.png" alt="Scorpio" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♏</div><div class="badge-info"><div class="badge-name">Scorpio</div><div class="badge-sub">November · 2026</div></div></div>
       <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-sagittarius-2026.png" alt="Sagittarius" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♐</div><div class="badge-info"><div class="badge-name">Sagittarius</div><div class="badge-sub">December · 2026</div></div></div>
-      <div class="badge-card" style="border-color:rgba(212,168,50,0.4); background:rgba(212,168,50,0.04);">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/celestial/badge-celestial-horse-2026.png" alt="Year of the Horse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🐴</div>
-        <div class="badge-info">
-          <div class="badge-name">Year of the Horse</div>
-          <div class="badge-sub">Bonus · Complete All 12 · 2026</div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -840,8 +834,8 @@
     </div>
     <div class="badge-grid">
       <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-bbq.png" alt="BBQ" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🔥</div><div class="badge-info"><div class="badge-name">Smoking Section</div><div class="badge-sub">BBQ / Dry Rubs</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-asian.png" alt="Asian" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍣</div><div class="badge-info"><div class="badge-name">(Image Only)</div><div class="badge-sub">Asian</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-indian.png" alt="Indian" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">💃</div><div class="badge-info"><div class="badge-name">(Image Only)</div><div class="badge-sub">Indian — No Label</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-asian.png" alt="Asian" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍣</div><div class="badge-info"><div class="badge-name"></div><div class="badge-sub">Asian</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-indian.png" alt="Indian" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">💃</div><div class="badge-info"><div class="badge-name"></div><div class="badge-sub">Indian — No Label</div></div></div>
       <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-wings.png" alt="Wings" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">✈️</div><div class="badge-info"><div class="badge-name">Epic Wingman</div><div class="badge-sub">Chicken Wings</div></div></div>
       <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-verde.png" alt="Verde" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🌿</div><div class="badge-info"><div class="badge-name">Señor Verde</div><div class="badge-sub">Verde Sauce</div></div></div>
       <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-fruit.png" alt="Fruit" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍓</div><div class="badge-info"><div class="badge-name">Fruity Pants</div><div class="badge-sub">Fruit</div></div></div>
@@ -855,7 +849,7 @@
       <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-seasonings.png" alt="Seasonings" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍴</div><div class="badge-info"><div class="badge-name">Flavortown Mayor</div><div class="badge-sub">Seasonings — Text: Triple D</div></div></div>
       <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-condiments.png" alt="Condiments" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍶</div><div class="badge-info"><div class="badge-name">Flavor Junkie</div><div class="badge-sub">Condiments</div></div></div>
       <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-snacks.png" alt="Snacks" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍿</div><div class="badge-info"><div class="badge-name">Snack Shack</div><div class="badge-sub">Snacks</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-seafood.png" alt="Seafood" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🦞</div><div class="badge-info"><div class="badge-name">(Image Only)</div><div class="badge-sub">Seafood — Rocky Point Shore Dinner Hall</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-seafood.png" alt="Seafood" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🦞</div><div class="badge-info"><div class="badge-name"></div><div class="badge-sub">Seafood — Rocky Point Shore Dinner Hall</div></div></div>
       <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-mediterranean.png" alt="Mediterranean" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🫒</div><div class="badge-info"><div class="badge-name">Olive Oil & Vin — Ch. 1</div><div class="badge-sub">Mediterranean · Narrative Entry</div></div></div>
     </div>
   </section>
@@ -872,13 +866,13 @@
     </div>
     <div class="pending-note">⚠ Thresholds are BLIND — amounts never revealed to customer. Badge just arrives.</div>
     <div class="badge-grid tokens-grid">
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-day-coach.png" alt="Day Coach" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Day Coach Passenger</div><div class="badge-sub">Providence & Burrillville · Federal Hill Street Car</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-parlor-car.png" alt="Parlor Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Parlor Car Guest</div><div class="badge-sub">New York Providence & Boston · Daniel Nason</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-sleeping-car.png" alt="Sleeping Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Sleeping Car Guest</div><div class="badge-sub">Pawtuxet Valley Railroad · N.Y.N.H.&H.</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-dining-car.png" alt="Dining Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Dining Car Regular</div><div class="badge-sub">Newport & Narragansett Bay · Newport Dinner Train</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-private-car.png" alt="Private Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Private Car Guest</div><div class="badge-sub">Hartford Providence & Fishkill · The Bee</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-pullman-patron.png" alt="Pullman Patron" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Pullman Patron</div><div class="badge-sub">Narragansett Pier Railroad · Lighthouse</div></div></div>
-      <div class="badge-card" style="border-color:rgba(212,168,50,0.4);background:rgba(212,168,50,0.04);"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-railroad-magnate.png" alt="Railroad Magnate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Railroad Magnate</div><div class="badge-sub">NY New Haven & Hartford · Superman Building · Providence</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-day-coach.png" alt="Day Coach" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Day Coach Passenger</div><div class="badge-sub"></div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-parlor-car.png" alt="Parlor Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Parlor Car Guest</div><div class="badge-sub"></div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-sleeping-car.png" alt="Sleeping Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Sleeping Car Guest</div><div class="badge-sub"></div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-dining-car.png" alt="Dining Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Dining Car Regular</div><div class="badge-sub"></div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-private-car.png" alt="Private Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Private Car Guest</div><div class="badge-sub"></div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-pullman-patron.png" alt="Pullman Patron" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Pullman Patron</div><div class="badge-sub"></div></div></div>
+      <div class="badge-card" style="border-color:rgba(212,168,50,0.4);background:rgba(212,168,50,0.04);"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-railroad-magnate.png" alt="Railroad Magnate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Railroad Magnate</div><div class="badge-sub"></div></div></div>
     </div>
   </section>
 
@@ -988,7 +982,7 @@
         <div class="category-name">Secret Badges</div>
         <div class="category-desc">Never Revealed Until Earned · Owner Eyes Only on This Page</div>
       </div>
-      <div class="category-count">1</div>
+      <div class="category-count">2</div>
     </div>
     <div class="badge-grid">
       <div class="badge-card secret">
@@ -998,6 +992,15 @@
         <div class="badge-info">
           <div class="badge-name">YES, CHEF!</div>
           <div class="badge-sub">1 Purchase from Every Category · The Bear · FX</div>
+        </div>
+      </div>
+      <div class="badge-card secret">
+        <span class="badge-status secret-tag">🔒 Secret</span>
+        <img class="badge-img" src="assets/badges/secret/badge-secret-celestial-horse-2026.png" alt="Year of the Horse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🐴</div>
+        <div class="badge-info">
+          <div class="badge-name">Year of the Horse</div>
+          <div class="badge-sub">Complete All 12 Celestial Badges · 2026 · Retiring</div>
         </div>
       </div>
     </div>
