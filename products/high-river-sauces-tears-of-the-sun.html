@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>High River Tears of the Sun — Pepper Junction</title>
   <meta name="description" content="High River Tears of the Sun Tropical Hot Sauce. Fruit-forward habanero with layered sweetness and rising heat. Approved under The Pepper Junction Standard™." />
+
+  <!-- ── OPEN GRAPH — social share preview ── -->
+  <meta property="og:type"        content="product" />
+  <meta property="og:site_name"   content="Pepper Junction" />
+  <meta property="og:title"       content="High River Tears of the Sun — Pepper Junction" />
+  <meta property="og:description" content="High River Tears of the Sun Tropical Hot Sauce. Fruit-forward habanero with layered sweetness and rising heat. Approved under The Pepper Junction Standard™." />
+  <meta property="og:url"         content="https://pepperjunction401-beep.github.io/sauce-bar/products/high-river-sauces-tears-of-the-sun.html" />
+  <meta property="og:image"       content="https://pepperjunction401-beep.github.io/sauce-bar/assets/sauces/high-river-sauces-tears-of-the-sun.png" />
+  <meta property="og:image:alt"   content="High River Tears of the Sun Tropical Hot Sauce" />
+  <meta name="twitter:card"       content="summary_large_image" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -12,7 +23,7 @@
   <!-- ── PRODUCT PAGE STYLESHEET ── -->
   <link rel="stylesheet" href="../assets/css/pj-product.css">
 
-  <!-- Schema.org structured data — values injected from JSON -->
+  <!-- ── SCHEMA.ORG — product structured data, values injected from JSON ── -->
   <script type="application/ld+json" id="product-schema">
   {
     "@context": "https://schema.org/",
@@ -25,6 +36,34 @@
       "price": "",
       "url": ""
     }
+  }
+  </script>
+
+  <!-- ── SCHEMA.ORG — breadcrumb structured data ── -->
+  <script type="application/ld+json" id="breadcrumb-schema">
+  {
+    "@context": "https://schema.org/",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://pepperjunction401-beep.github.io/sauce-bar/main.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Hot Sauces",
+        "item": "https://pepperjunction401-beep.github.io/sauce-bar/hot-sauces.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Tears of the Sun",
+        "item": "https://pepperjunction401-beep.github.io/sauce-bar/products/high-river-sauces-tears-of-the-sun.html"
+      }
+    ]
   }
   </script>
 
@@ -472,6 +511,16 @@
         s.offers.price = product['Price'] || '';
         s.offers.url   = product['Product URL'] || '';
         schema.textContent = JSON.stringify(s, null, 2);
+      }
+
+      /* Update breadcrumb schema with correct category */
+      var bcSchema = document.getElementById('breadcrumb-schema');
+      if (bcSchema && catInfo) {
+        var bc = JSON.parse(bcSchema.textContent);
+        bc.itemListElement[1].name = catInfo.label;
+        bc.itemListElement[1].item = 'https://pepperjunction401-beep.github.io/sauce-bar/' + catInfo.href.replace('../', '');
+        bc.itemListElement[2].name = product['Product Name'] || '';
+        bcSchema.textContent = JSON.stringify(bc, null, 2);
       }
 
       /* ── BADGES — powered by pj-product.js ── */
