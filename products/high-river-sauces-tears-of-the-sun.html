@@ -1231,28 +1231,7 @@
               <span class="badge-station-title">Badge Station</span>
               <span class="badge-station-sub">Earn these badges with qualifying purchases</span>
             </div>
-            <div class="product-badges" id="product-badges">
-              <div class="badge-item">
-                <img id="heat-badge-img" class="badge-img"
-                  src="../assets/badges/heat/badge-medium.png"
-                  alt="Medium Heat Badge" loading="lazy" />
-                <div class="badge-name" id="heat-badge-name">Farmer's Market Heat</div>
-              </div>
-              <div class="badge-item" id="l2-badge-item">
-                <img id="l2-badge-img" class="badge-img"
-                  src="../assets/badges/heat/L2-badge-medium.png"
-                  alt="Level 2 Heat Badge" loading="lazy"
-                  onerror="this.parentElement.style.display='none'" />
-                <div class="badge-name" id="l2-badge-name">Cruel Summer</div>
-              </div>
-              <div class="badge-item" id="l3-badge-item">
-                <img id="l3-badge-img" class="badge-img"
-                  src="../assets/badges/heat/L3-badge-medium.png"
-                  alt="Level 3 Heat Badge" loading="lazy"
-                  onerror="this.parentElement.style.display='none'" />
-                <div class="badge-name" id="l3-badge-name">The Sky Line</div>
-              </div>
-            </div>
+            <div class="product-badges" id="product-badges"></div>
           </div>
 
           <!-- Classification pills -->
@@ -1501,41 +1480,6 @@
   /* ── INIT — write this page to session browsing history ── */
   PJProduct.init(PAGE_SLUG);
 
-  /* ── FOOD BADGE MAP ── */
-  const FOOD_BADGE_MAP = [
-    { keyword: 'caribbean',    slug: 'badge-food-caribbean',   name: 'Is This Love' },
-    { keyword: 'taco',         slug: 'badge-food-taco',        name: 'Taco Fever' },
-    { keyword: 'seafood',      slug: 'badge-food-seafood',     name: 'Shore Dinner Hall' },
-    { keyword: 'wings',        slug: 'badge-food-wings',       name: 'Epic Wingman' },
-    { keyword: 'sushi',        slug: 'badge-food-asian',       name: 'Asian' },
-    { keyword: 'mexican',      slug: 'badge-food-mexican',     name: 'Muy Rico!' },
-    { keyword: 'garlic',       slug: 'badge-food-garlic',      name: 'Garlic Breath' },
-    { keyword: 'bbq',          slug: 'badge-food-bbq',         name: 'Smoking Section' },
-    { keyword: 'breakfast',    slug: 'badge-food-breakfast',   name: 'This Is Your Brain' },
-    { keyword: 'veggies',      slug: 'badge-food-veggies',     name: 'Veggie Outlaws' },
-    { keyword: 'snack',        slug: 'badge-food-snacks',      name: 'Snack Shack' },
-  ];
-
-  const HEAT_BADGE_NAMES = {
-    'Mild':      "Keep the Milk for Cookies",
-    'Medium':    "Farmer's Market Heat",
-    'Hot':       "Sauce Boss",
-    'Very Hot':  "Pucker Up, Pepper Head",
-    'Super Hot': "Have Anything Hotter?",
-    'Extreme':   "Pass the $%&@#! Carton!",
-    'Inferno':   "Incinerator"
-  };
-
-  const HEAT_BADGE_SLUGS = {
-    'Mild':      'badge-mild',
-    'Medium':    'badge-medium',
-    'Hot':       'badge-hot',
-    'Very Hot':  'badge-very-hot',
-    'Super Hot': 'badge-super-hot',
-    'Extreme':   'badge-extreme',
-    'Inferno':   'badge-inferno'
-  };
-
   /* ── CATEGORY → PAGE MAP ── */
   const CAT_PAGE = {
     'HOT SAUCE':          { label: 'Hot Sauces',         href: '../hot-sauces.html' },
@@ -1580,53 +1524,6 @@
         if (btn) btn.textContent = 'Buy Now — ' + price;
       }
 
-      const L2_NAMES = {
-        'Mild':      'Fever',
-        'Medium':    'Cruel Summer',
-        'Hot':       'I Like it Hot, Hot, Hot',
-        'Very Hot':  'Hot Blooded',
-        'Super Hot': 'Highway to the Danger Zone',
-        'Extreme':   'Ring of Fire',
-        'Inferno':   'Burning Down the House'
-      };
-
-      const L3_NAMES = {
-        'Mild':      'Ferris Wheel',
-        'Medium':    'The Sky Line',
-        'Hot':       'The Flume',
-        'Very Hot':  'Tilt-A-Whirl',
-        'Super Hot': 'The Yo Yo',
-        'Extreme':   'Free Fall',
-        'Inferno':   'The Corkscrew'
-      };
-
-      var badgeSlug = HEAT_BADGE_SLUGS[heatCat] || 'badge-mild';
-      var badgeName = HEAT_BADGE_NAMES[heatCat] || '';
-      var badgeImg  = document.getElementById('heat-badge-img');
-      if (badgeImg) {
-        badgeImg.src = '../assets/badges/heat/' + badgeSlug + '.png';
-        badgeImg.alt = badgeName + ' Badge';
-      }
-      setTxt('heat-badge-name', badgeName);
-
-      var l2Slug = HEAT_BADGE_SLUGS[heatCat] ? 'L2-' + HEAT_BADGE_SLUGS[heatCat] : '';
-      var l2Name = L2_NAMES[heatCat] || '';
-      var l2Img  = document.getElementById('l2-badge-img');
-      if (l2Img && l2Slug) {
-        l2Img.src = '../assets/badges/heat/' + l2Slug + '.png';
-        l2Img.alt = l2Name + ' Badge';
-      }
-      setTxt('l2-badge-name', l2Name);
-
-      var l3Slug = HEAT_BADGE_SLUGS[heatCat] ? 'L3-' + HEAT_BADGE_SLUGS[heatCat] : '';
-      var l3Name = L3_NAMES[heatCat] || '';
-      var l3Img  = document.getElementById('l3-badge-img');
-      if (l3Img && l3Slug) {
-        l3Img.src = '../assets/badges/heat/' + l3Slug + '.png';
-        l3Img.alt = l3Name + ' Badge';
-      }
-      setTxt('l3-badge-name', l3Name);
-
       var catInfo = CAT_PAGE[category];
       if (catInfo) {
         var navCat = document.getElementById('nav-category');
@@ -1665,27 +1562,12 @@
         schema.textContent = JSON.stringify(s, null, 2);
       }
 
-      /* Food category badges */
-      var pairings = (product['Best Food Pairings'] || '').toLowerCase();
-      var foodStyle = (product['Food Style'] || '').toLowerCase();
-      var badgesContainer = document.getElementById('product-badges');
-      var addedFoodBadges = [];
-
-      FOOD_BADGE_MAP.forEach(function(b) {
-        if (addedFoodBadges.length >= 3) return;
-        if (pairings.includes(b.keyword) || foodStyle.includes(b.keyword)) {
-          if (addedFoodBadges.indexOf(b.slug) === -1) {
-            addedFoodBadges.push(b.slug);
-            var div = document.createElement('div');
-            div.className = 'badge-item';
-            div.innerHTML =
-              '<img class="badge-img" src="../assets/badges/food/' + b.slug + '.png" ' +
-              'alt="' + esc(b.name) + '" loading="lazy" ' +
-              'onerror="this.parentElement.style.display=\'none\'">' +
-              '<div class="badge-name">' + esc(b.name) + '</div>';
-            badgesContainer.appendChild(div);
-          }
-        }
+      /* ── BADGES — powered by pj-product.js ── */
+      PJProduct.initBadges({
+        heatCategory:    heatCat,
+        bestPairings:    product['Best Food Pairings'],
+        foodStyle:       product['Food Style'],
+        narrativeSeries: product['narrative_series'] || ''
       });
 
       /* ── SIMILAR PRODUCTS — powered by pj-product.js ── */
