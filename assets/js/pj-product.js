@@ -611,7 +611,168 @@
   ══════════════════════════════════════════════════════════════ */
 
   /* ══════════════════════════════════════════════════════════════
-     7. PUBLIC INTERFACE
+     7. BADGE SYSTEM
+     All badge logic lives here. HTML needs only one empty container:
+       <div class="product-badges" id="product-badges"></div>
+     Add new tiers, rename badges, add food keywords — one file only.
+  ══════════════════════════════════════════════════════════════ */
+
+  /* ── Heat badge maps — L1, L2, L3 ── */
+  var HEAT_BADGE_SLUGS = {
+    'Mild':      'badge-mild',
+    'Medium':    'badge-medium',
+    'Hot':       'badge-hot',
+    'Very Hot':  'badge-very-hot',
+    'Super Hot': 'badge-super-hot',
+    'Extreme':   'badge-extreme',
+    'Inferno':   'badge-inferno'
+  };
+
+  var HEAT_BADGE_L1_NAMES = {
+    'Mild':      "Keep the Milk for Cookies",
+    'Medium':    "Farmer's Market Heat",
+    'Hot':       "Sauce Boss",
+    'Very Hot':  "Pucker Up, Pepper Head",
+    'Super Hot': "Have Anything Hotter?",
+    'Extreme':   "Pass the $%&@#! Carton!",
+    'Inferno':   "Incinerator"
+  };
+
+  var HEAT_BADGE_L2_NAMES = {
+    'Mild':      'Fever',
+    'Medium':    'Cruel Summer',
+    'Hot':       'I Like it Hot, Hot, Hot',
+    'Very Hot':  'Hot Blooded',
+    'Super Hot': 'Highway to the Danger Zone',
+    'Extreme':   'Ring of Fire',
+    'Inferno':   'Burning Down the House'
+  };
+
+  var HEAT_BADGE_L3_NAMES = {
+    'Mild':      'Ferris Wheel',
+    'Medium':    'The Sky Line',
+    'Hot':       'The Flume',
+    'Very Hot':  'Tilt-A-Whirl',
+    'Super Hot': 'The Yo Yo',
+    'Extreme':   'Free Fall',
+    'Inferno':   'The Corkscrew'
+  };
+
+  /* ── Food badge map — keyword → badge file + display name ── */
+  var FOOD_BADGE_MAP = [
+    { keyword: 'caribbean', slug: 'badge-food-caribbean', name: 'Is This Love'        },
+    { keyword: 'taco',      slug: 'badge-food-taco',      name: 'Taco Fever'          },
+    { keyword: 'seafood',   slug: 'badge-food-seafood',   name: 'Shore Dinner Hall'   },
+    { keyword: 'wings',     slug: 'badge-food-wings',     name: 'Epic Wingman'        },
+    { keyword: 'sushi',     slug: 'badge-food-asian',     name: 'Asian'               },
+    { keyword: 'mexican',   slug: 'badge-food-mexican',   name: 'Muy Rico!'           },
+    { keyword: 'garlic',    slug: 'badge-food-garlic',    name: 'Garlic Breath'       },
+    { keyword: 'bbq',       slug: 'badge-food-bbq',       name: 'Smoking Section'     },
+    { keyword: 'breakfast', slug: 'badge-food-breakfast', name: 'This Is Your Brain'  },
+    { keyword: 'veggies',   slug: 'badge-food-veggies',   name: 'Veggie Outlaws'      },
+    { keyword: 'snack',     slug: 'badge-food-snacks',    name: 'Snack Shack'         },
+    { keyword: 'italian',   slug: 'badge-food-italian',   name: 'Sunday Gravy'        },
+    { keyword: 'cajun',     slug: 'badge-food-cajun',     name: 'Bayou Country'       },
+    { keyword: 'indian',    slug: 'badge-food-indian',    name: 'Curry Favor'         },
+    { keyword: 'asian',     slug: 'badge-food-asian',     name: 'Asian'               }
+  ];
+
+  function escBadge(s) {
+    return String(s||'')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function badgeItem(imgSrc, imgAlt, name, onerrorHide) {
+    var errHandler = onerrorHide
+      ? 'onerror="this.parentElement.style.display=\'none\'"'
+      : 'onerror="this.style.opacity=\'0.3\'"';
+    return '<div class="badge-item">' +
+      '<img class="badge-img" src="' + escBadge(imgSrc) + '" ' +
+      'alt="' + escBadge(imgAlt) + '" loading="lazy" ' + errHandler + '>' +
+      '<div class="badge-name">' + escBadge(name) + '</div>' +
+      '</div>';
+  }
+
+  function initBadges(params) {
+    var heatCategory   = params.heatCategory   || '';
+    var bestPairings   = (params.bestPairings  || '').toLowerCase();
+    var foodStyle      = (params.foodStyle     || '').toLowerCase();
+    var narrativeSeries= params.narrativeSeries|| '';
+
+    var container = document.getElementById('product-badges');
+    if (!container) return;
+
+    var html = '';
+
+    /* ── L1 Heat badge ── */
+    var l1Slug = HEAT_BADGE_SLUGS[heatCategory] || '';
+    var l1Name = HEAT_BADGE_L1_NAMES[heatCategory] || '';
+    if (l1Slug) {
+      html += badgeItem(
+        '../assets/badges/heat/' + l1Slug + '.png',
+        l1Name + ' Badge',
+        l1Name,
+        false
+      );
+    }
+
+    /* ── L2 Heat badge ── */
+    var l2Slug = l1Slug ? 'L2-' + l1Slug : '';
+    var l2Name = HEAT_BADGE_L2_NAMES[heatCategory] || '';
+    if (l2Slug) {
+      html += badgeItem(
+        '../assets/badges/heat/' + l2Slug + '.png',
+        l2Name + ' Badge',
+        l2Name,
+        true
+      );
+    }
+
+    /* ── L3 Heat badge ── */
+    var l3Slug = l1Slug ? 'L3-' + l1Slug : '';
+    var l3Name = HEAT_BADGE_L3_NAMES[heatCategory] || '';
+    if (l3Slug) {
+      html += badgeItem(
+        '../assets/badges/heat/' + l3Slug + '.png',
+        l3Name + ' Badge',
+        l3Name,
+        true
+      );
+    }
+
+    /* ── Food badges — up to 3, no duplicates ── */
+    var addedFoodSlugs = [];
+    FOOD_BADGE_MAP.forEach(function(b) {
+      if (addedFoodSlugs.length >= 3) return;
+      if (bestPairings.includes(b.keyword) || foodStyle.includes(b.keyword)) {
+        if (addedFoodSlugs.indexOf(b.slug) === -1) {
+          addedFoodSlugs.push(b.slug);
+          html += badgeItem(
+            '../assets/badges/food/' + b.slug + '.png',
+            b.name + ' Badge',
+            b.name,
+            true
+          );
+        }
+      }
+    });
+
+    /* ── Narrative badge — if product has a narrative series ── */
+    if (narrativeSeries) {
+      html += badgeItem(
+        '../assets/badges/narrative/badge-' + escBadge(narrativeSeries) + '.png',
+        narrativeSeries + ' Badge',
+        narrativeSeries,
+        true
+      );
+    }
+
+    container.innerHTML = html;
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     8. PUBLIC INTERFACE
      Exposed as window.PJProduct so product pages can call it
      after their JSON fetch completes.
   ══════════════════════════════════════════════════════════════ */
@@ -628,6 +789,23 @@
      */
     init: function(slug) {
       sessionWrite(slug);
+    },
+
+    /**
+     * initBadges
+     * Called by product page after JSON fetch resolves.
+     * Builds and injects the full badge station from product data.
+     *
+     * Usage in product page script:
+     *   PJProduct.initBadges({
+     *     heatCategory:    product['Heat Category'],
+     *     bestPairings:    product['Best Food Pairings'],
+     *     foodStyle:       product['Food Style'],
+     *     narrativeSeries: product['narrative_series']
+     *   });
+     */
+    initBadges: function(params) {
+      initBadges(params);
     },
 
     /**
