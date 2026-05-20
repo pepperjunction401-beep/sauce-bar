@@ -28,14 +28,14 @@
 
 @font-face {
   font-family: 'BlackRiver';
-  src: url('../assets/fonts/Blackriver-Bold.ttf') format('truetype');
+  src: url('../../assets/fonts/Blackriver-Bold.ttf') format('truetype');
   font-weight: bold;
   font-display: swap;
 }
 
 body {
   background: var(--green-dark);
-  background-image: url('../assets/textures/wooden-texture.jpg');
+  background-image: url('../../assets/textures/wooden-texture.jpg');
   background-size: cover;
   background-attachment: fixed;
   font-family: 'Libre Baskerville', Georgia, serif;
@@ -139,7 +139,7 @@ body {
 
 /* ── BURGUNDY HERO BANNER ─────────────────────────────────── */
 .product-hero {
-  background: url('../assets/textures/Hero-Banner-Pullman-Burgandy.png') center center / 100% 100% no-repeat;
+  background: url('../../assets/textures/Hero-Banner-Pullman-Burgandy.png') center center / 100% 100% no-repeat;
   min-height: 140px;
   display: flex;
   align-items: center;
