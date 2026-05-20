@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pepper Junction — Badge Preview · Owner Only</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --brass:        #B88939;
+      --brass-bright: #D4A832;
+      --brass-dim:    #8A6420;
+      --crimson:      #8F1F0D;
+      --green-dark:   #1E3020;
+      --green-mid:    #2A3E2A;
+      --cream:        #F5ECD6;
+      --cream-warm:   #FDF6E8;
+      --chalk:        #F0EDE0;
+      --chalk-muted:  #B8B4A0;
+      --charcoal:     #252525;
+      --ink:          #1A1A1A;
+      --gold-glow:    rgba(212,168,50,0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @font-face {
+      font-family: 'BlackRiver';
+      src: url('assets/fonts/Blackriver-Bold.ttf') format('truetype');
+      font-weight: bold;
+      font-display: swap;
+    }
+
+    body {
+      background: var(--ink);
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+        linear-gradient(160deg, #1A1A1A 0%, #141414 50%, #1E1A14 100%);
+      font-family: 'Josefin Sans', sans-serif;
+      color: var(--chalk);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .page-header {
+      background: var(--green-dark);
+      border-bottom: 3px solid var(--brass);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.6);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-logo { height: 52px; width: auto; }
+
+    .header-titles { display: flex; flex-direction: column; gap: 3px; }
+
+    .header-name {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--cream-warm);
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    .header-sub {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      opacity: 0.75;
+    }
+
+    .owner-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      border: 1px solid rgba(143,31,13,0.5);
+      padding: 5px 14px;
+      background: rgba(143,31,13,0.1);
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: rgba(30,48,32,0.6);
+      border-bottom: 1px solid rgba(184,137,57,0.2);
+      padding: 12px 48px;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--brass-bright);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--chalk-muted);
+      opacity: 0.65;
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(184,137,57,0.25);
+    }
+
+    /* ── QUICK NAV ── */
+    .quick-nav {
+      padding: 20px 48px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid rgba(184,137,57,0.1);
+    }
+
+    .nav-pill {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      border: 1px solid rgba(184,137,57,0.3);
+      padding: 6px 14px;
+      text-decoration: none;
+      transition: all 0.2s;
+      background: transparent;
+    }
+
+    .nav-pill:hover {
+      background: rgba(184,137,57,0.1);
+      border-color: rgba(184,137,57,0.6);
+      color: var(--brass-bright);
+    }
+
+    /* ── PAGE BODY ── */
+    .page-body {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 48px 48px 80px;
+    }
+
+    /* ── CATEGORY SECTION ── */
+    .badge-category {
+      margin-bottom: 64px;
+      scroll-margin-top: 120px;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid rgba(184,137,57,0.25);
+    }
+
+    .category-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .category-titles { flex: 1; }
+
+    .category-name {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 28px;
+      color: var(--cream-warm);
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    .category-desc {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.65;
+      margin-top: 4px;
+    }
+
+    .category-count {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--brass-bright);
+      opacity: 0.4;
+    }
+
+    /* ── BADGE GRID ── */
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 24px;
+    }
+
+    .badge-grid.heat-grid {
+      grid-template-columns: repeat(7, 1fr);
+    }
+
+    .badge-grid.tokens-grid {
+      grid-template-columns: repeat(7, 1fr);
+    }
+
+    /* ── BADGE CARD ── */
+    .badge-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 12px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(184,137,57,0.12);
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .badge-card:hover {
+      background: rgba(184,137,57,0.06);
+      border-color: rgba(184,137,57,0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .badge-card.pending {
+      opacity: 0.4;
+      border-style: dashed;
+    }
+
+    .badge-card.secret {
+      border-color: rgba(143,31,13,0.4);
+      background: rgba(143,31,13,0.05);
+    }
+
+    .badge-card.secret:hover {
+      border-color: rgba(143,31,13,0.7);
+      background: rgba(143,31,13,0.1);
+    }
+
+    .badge-img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6));
+      transition: transform 0.3s ease;
+    }
+
+    .badge-card:hover .badge-img {
+      transform: scale(1.06);
+    }
+
+    .badge-placeholder {
+      width: 120px;
+      height: 120px;
+      border: 2px dashed rgba(184,137,57,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      opacity: 0.4;
+    }
+
+    .badge-info {
+      text-align: center;
+      width: 100%;
+    }
+
+    .badge-name {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--chalk);
+      line-height: 1.4;
+      margin-bottom: 3px;
+    }
+
+    .badge-sub {
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.55;
+    }
+
+    .badge-status {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 3px 6px;
+    }
+
+    .badge-status.complete {
+      color: #4CAF50;
+      background: rgba(76,175,80,0.1);
+      border: 1px solid rgba(76,175,80,0.3);
+    }
+
+    .badge-status.pending {
+      color: var(--brass);
+      background: rgba(184,137,57,0.1);
+      border: 1px solid rgba(184,137,57,0.3);
+    }
+
+    .badge-status.secret-tag {
+      color: var(--crimson);
+      background: rgba(143,31,13,0.1);
+      border: 1px solid rgba(143,31,13,0.3);
+    }
+
+    /* ── HEAT LEVEL LABELS ── */
+    .heat-level-label {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      opacity: 0.5;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .heat-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .heat-level-group {
+      display: contents;
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .section-rule {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 48px 0 32px;
+    }
+
+    .rule-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(184,137,57,0.4), transparent);
+    }
+
+    .rule-line.right {
+      background: linear-gradient(90deg, transparent, rgba(184,137,57,0.4));
+    }
+
+    .rule-text {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.6;
+      white-space: nowrap;
+    }
+
+    /* ── PENDING SECTION ── */
+    .pending-note {
+      padding: 12px 18px;
+      background: rgba(184,137,57,0.06);
+      border: 1px solid rgba(184,137,57,0.2);
+      border-left: 3px solid var(--brass-dim);
+      margin-bottom: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--brass);
+      opacity: 0.7;
+    }
+
+    /* ── NARRATIVE CARDS ── */
+    .narrative-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(184,137,57,0.2);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .narrative-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--brass-bright);
+      margin-bottom: 6px;
+    }
+
+    .narrative-trigger {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--chalk-muted);
+      opacity: 0.6;
+      margin-bottom: 16px;
+    }
+
+    .chapter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+
+    .chapter-card {
+      padding: 12px;
+      background: rgba(0,0,0,0.3);
+      border: 1px dashed rgba(184,137,57,0.2);
+      text-align: center;
+    }
+
+    .chapter-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: var(--brass);
+      opacity: 0.4;
+      margin-bottom: 4px;
+    }
+
+    .chapter-desc {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--chalk-muted);
+      opacity: 0.6;
+      line-height: 1.4;
+    }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      background: var(--green-dark);
+      border-top: 2px solid var(--brass);
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.4;
+    }
+
+    .footer-private {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      opacity: 0.6;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .badge-grid.heat-grid,
+      .badge-grid.tokens-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-header, .stats-bar, .quick-nav, .page-body { padding-left: 20px; padding-right: 20px; }
+      .badge-grid.heat-grid,
+      .badge-grid.tokens-grid { grid-template-columns: repeat(3, 1fr); }
+      .badge-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="page-header">
+  <div class="header-left">
+    <img class="header-logo" src="assets/PJ-logo.png" alt="Pepper Junction" />
+    <div class="header-titles">
+      <div class="header-name">Pepper Junction</div>
+      <div class="header-sub">Badge Ecosystem Preview · Owner Reference</div>
+    </div>
+  </div>
+  <div class="owner-badge">🔒 Owner Access Only</div>
+</header>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-val">59</div>
+    <div class="stat-label">Badges Complete</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <div class="stat-val">21</div>
+    <div class="stat-label">Heat Badges</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <div class="stat-val">13</div>
+    <div class="stat-label">Celestial 2026</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <div class="stat-val">18</div>
+    <div class="stat-label">Food Category</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <div class="stat-val">7</div>
+    <div class="stat-label">Railroad Tokens</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <div class="stat-val">1</div>
+    <div class="stat-label">Secret Badge</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <div class="stat-val">14+</div>
+    <div class="stat-label">Badges Pending</div>
+  </div>
+</div>
+
+<!-- QUICK NAV -->
+<nav class="quick-nav">
+  <a class="nav-pill" href="#heat">Heat Badges</a>
+  <a class="nav-pill" href="#celestial">Celestial</a>
+  <a class="nav-pill" href="#food">Food Categories</a>
+  <a class="nav-pill" href="#railroad">Railroad Tokens</a>
+  <a class="nav-pill" href="#narrative">Narrative Series</a>
+  <a class="nav-pill" href="#widget">Widget Badges</a>
+  <a class="nav-pill" href="#events">Event Badges</a>
+  <a class="nav-pill" href="#secret">Secret Badges</a>
+</nav>
+
+<!-- PAGE BODY -->
+<div class="page-body">
+
+  <!-- ═══ HEAT BADGES ═══════════════════════════════════════════ -->
+  <section class="badge-category" id="heat">
+    <div class="category-header">
+      <div class="category-icon">🌶️</div>
+      <div class="category-titles">
+        <div class="category-name">Heat Identity Badges</div>
+        <div class="category-desc">3 Levels · 7 Heat Categories · 21 Badges Total · All Complete</div>
+      </div>
+      <div class="category-count">21</div>
+    </div>
+
+    <!-- Level 1 -->
+    <div class="heat-level-label">Level 1 — Heat Identity</div>
+    <div class="badge-grid heat-grid" style="margin-bottom:20px;">
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/badge-mild.png" alt="Mild L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🌶️</div>
+        <div class="badge-info">
+          <div class="badge-name">Keep the Milk for Cookies</div>
+          <div class="badge-sub">Mild</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/badge-medium.png" alt="Medium L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🌶️</div>
+        <div class="badge-info">
+          <div class="badge-name">Farmer's Market Heat</div>
+          <div class="badge-sub">Medium</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/badge-hot.png" alt="Hot L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🌶️</div>
+        <div class="badge-info">
+          <div class="badge-name">Sauce Boss</div>
+          <div class="badge-sub">Hot</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/badge-very-hot.png" alt="Very Hot L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🌶️</div>
+        <div class="badge-info">
+          <div class="badge-name">Pucker Up, Pepper Head</div>
+          <div class="badge-sub">Very Hot</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/badge-super-hot.png" alt="Super Hot L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🌶️</div>
+        <div class="badge-info">
+          <div class="badge-name">Have Anything Hotter?</div>
+          <div class="badge-sub">Super Hot</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/badge-extreme.png" alt="Extreme L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🌶️</div>
+        <div class="badge-info">
+          <div class="badge-name">Pass the $%&@#! Carton!</div>
+          <div class="badge-sub">Extreme</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/badge-inferno.png" alt="Inferno L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🌶️</div>
+        <div class="badge-info">
+          <div class="badge-name">Incinerator</div>
+          <div class="badge-sub">Inferno</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level 2 -->
+    <div class="heat-level-label">Level 2 — Classic Songs</div>
+    <div class="badge-grid heat-grid" style="margin-bottom:20px;">
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L2-badge-mild.png" alt="Mild L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎵</div>
+        <div class="badge-info">
+          <div class="badge-name">Fever</div>
+          <div class="badge-sub">Mild · L2</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L2-badge-medium.png" alt="Medium L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎵</div>
+        <div class="badge-info">
+          <div class="badge-name">Cruel Summer</div>
+          <div class="badge-sub">Medium · L2</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L2-badge-hot.png" alt="Hot L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎵</div>
+        <div class="badge-info">
+          <div class="badge-name">I Like it Hot, Hot, Hot</div>
+          <div class="badge-sub">Hot · L2</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L2-badge-very-hot.png" alt="Very Hot L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎵</div>
+        <div class="badge-info">
+          <div class="badge-name">Hot Blooded</div>
+          <div class="badge-sub">Very Hot · L2</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L2-badge-super-hot.png" alt="Super Hot L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎵</div>
+        <div class="badge-info">
+          <div class="badge-name">Highway to the Danger Zone</div>
+          <div class="badge-sub">Super Hot · L2</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L2-badge-extreme.png" alt="Extreme L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎵</div>
+        <div class="badge-info">
+          <div class="badge-name">Ring of Fire</div>
+          <div class="badge-sub">Extreme · L2</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L2-badge-inferno.png" alt="Inferno L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎵</div>
+        <div class="badge-info">
+          <div class="badge-name">Burning Down the House</div>
+          <div class="badge-sub">Inferno · L2</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level 3 -->
+    <div class="heat-level-label">Level 3 — Rocky Point Rides</div>
+    <div class="badge-grid heat-grid">
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L3-badge-mild.png" alt="Mild L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎡</div>
+        <div class="badge-info">
+          <div class="badge-name">Ferris Wheel</div>
+          <div class="badge-sub">Mild · L3</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L3-badge-medium.png" alt="Medium L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎡</div>
+        <div class="badge-info">
+          <div class="badge-name">The Sky Line</div>
+          <div class="badge-sub">Medium · L3</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L3-badge-hot.png" alt="Hot L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎡</div>
+        <div class="badge-info">
+          <div class="badge-name">The Flume</div>
+          <div class="badge-sub">Hot · L3</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L3-badge-very-hot.png" alt="Very Hot L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎡</div>
+        <div class="badge-info">
+          <div class="badge-name">Tilt-A-Whirl</div>
+          <div class="badge-sub">Very Hot · L3</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L3-badge-super-hot.png" alt="Super Hot L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎡</div>
+        <div class="badge-info">
+          <div class="badge-name">The Yo Yo</div>
+          <div class="badge-sub">Super Hot · L3</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L3-badge-extreme.png" alt="Extreme L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎡</div>
+        <div class="badge-info">
+          <div class="badge-name">Free Fall</div>
+          <div class="badge-sub">Extreme · L3</div>
+        </div>
+      </div>
+      <div class="badge-card">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/heat/L3-badge-inferno.png" alt="Inferno L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🎡</div>
+        <div class="badge-info">
+          <div class="badge-name">The Corkscrew</div>
+          <div class="badge-sub">Inferno · L3</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CELESTIAL BADGES ══════════════════════════════════════ -->
+  <section class="badge-category" id="celestial">
+    <div class="category-header">
+      <div class="category-icon">✨</div>
+      <div class="category-titles">
+        <div class="category-name">Celestial Badges — 2026</div>
+        <div class="category-desc">Annual · Retiring · 12 Zodiac + Chinese Lunar Year Bonus · Resets Jan 1</div>
+      </div>
+      <div class="category-count">13</div>
+    </div>
+    <div class="badge-grid">
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-capricorn-2026.png" alt="Capricorn" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♑</div><div class="badge-info"><div class="badge-name">Capricorn</div><div class="badge-sub">January · 2026</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-aquarius-2026.png" alt="Aquarius" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♒</div><div class="badge-info"><div class="badge-name">Aquarius</div><div class="badge-sub">February · 2026</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-pisces-2026.png" alt="Pisces" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♓</div><div class="badge-info"><div class="badge-name">Pisces</div><div class="badge-sub">March · 2026</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-aries-2026.png" alt="Aries" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♈</div><div class="badge-info"><div class="badge-name">Aries</div><div class="badge-sub">April · 2026</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-taurus-2026.png" alt="Taurus" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♉</div><div class="badge-info"><div class="badge-name">Taurus</div><div class="badge-sub">May · 2026</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-gemini-2026.png" alt="Gemini" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♊</div><div class="badge-info"><div class="badge-name">Gemini</div><div class="badge-sub">June · 2026</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-cancer-2026.png" alt="Cancer" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♋</div><div class="badge-info"><div class="badge-name">Cancer</div><div class="badge-sub">July · 2026</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-leo-2026.png" alt="Leo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♌</div><div class="badge-info"><div class="badge-name">Leo</div><div class="badge-sub">August · 2026</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-virgo-2026.png" alt="Virgo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♍</div><div class="badge-info"><div class="badge-name">Virgo</div><div class="badge-sub">September · 2026</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-libra-2026.png" alt="Libra" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♎</div><div class="badge-info"><div class="badge-name">Libra</div><div class="badge-sub">October · 2026</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-scorpio-2026.png" alt="Scorpio" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♏</div><div class="badge-info"><div class="badge-name">Scorpio</div><div class="badge-sub">November · 2026</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/celestial/badge-celestial-sagittarius-2026.png" alt="Sagittarius" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">♐</div><div class="badge-info"><div class="badge-name">Sagittarius</div><div class="badge-sub">December · 2026</div></div></div>
+      <div class="badge-card" style="border-color:rgba(212,168,50,0.4); background:rgba(212,168,50,0.04);">
+        <span class="badge-status complete">✅</span>
+        <img class="badge-img" src="assets/badges/celestial/badge-celestial-horse-2026.png" alt="Year of the Horse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🐴</div>
+        <div class="badge-info">
+          <div class="badge-name">Year of the Horse</div>
+          <div class="badge-sub">Bonus · Complete All 12 · 2026</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOD CATEGORY BADGES ══════════════════════════════════ -->
+  <section class="badge-category" id="food">
+    <div class="category-header">
+      <div class="category-icon">🍽️</div>
+      <div class="category-titles">
+        <div class="category-name">Food Category Badges</div>
+        <div class="category-desc">18 Categories · All Complete · Triggered by Best Food Pairings keyword matching</div>
+      </div>
+      <div class="category-count">18</div>
+    </div>
+    <div class="badge-grid">
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-bbq.png" alt="BBQ" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🔥</div><div class="badge-info"><div class="badge-name">Smoking Section</div><div class="badge-sub">BBQ / Dry Rubs</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-asian.png" alt="Asian" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍣</div><div class="badge-info"><div class="badge-name">(Image Only)</div><div class="badge-sub">Asian</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-indian.png" alt="Indian" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">💃</div><div class="badge-info"><div class="badge-name">(Image Only)</div><div class="badge-sub">Indian — No Label</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-wings.png" alt="Wings" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">✈️</div><div class="badge-info"><div class="badge-name">Epic Wingman</div><div class="badge-sub">Chicken Wings</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-verde.png" alt="Verde" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🌿</div><div class="badge-info"><div class="badge-name">Señor Verde</div><div class="badge-sub">Verde Sauce</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-fruit.png" alt="Fruit" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍓</div><div class="badge-info"><div class="badge-name">Fruity Pants</div><div class="badge-sub">Fruit</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-caribbean.png" alt="Caribbean" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🥁</div><div class="badge-info"><div class="badge-name">Is This Love</div><div class="badge-sub">Caribbean</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-taco.png" alt="Taco" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🌮</div><div class="badge-info"><div class="badge-name">Taco Fever</div><div class="badge-sub">Taco Sauce</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-breakfast.png" alt="Breakfast" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍳</div><div class="badge-info"><div class="badge-name">This Is Your Brain on Hot Sauce</div><div class="badge-sub">Eggs / Breakfast</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-cajun.png" alt="Cajun" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🎭</div><div class="badge-info"><div class="badge-name">Marty Bras</div><div class="badge-sub">Cajun</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-garlic.png" alt="Garlic" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🧄</div><div class="badge-info"><div class="badge-name">Garlic Breath</div><div class="badge-sub">Garlic</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-veggies.png" alt="Veggies" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🌿</div><div class="badge-info"><div class="badge-name">The Veggie Outlaws</div><div class="badge-sub">Veggies</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-mexican.png" alt="Mexican" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🥑</div><div class="badge-info"><div class="badge-name">Muy Rico!</div><div class="badge-sub">Mexican</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-seasonings.png" alt="Seasonings" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍴</div><div class="badge-info"><div class="badge-name">Flavortown Mayor</div><div class="badge-sub">Seasonings — Text: Triple D</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-condiments.png" alt="Condiments" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍶</div><div class="badge-info"><div class="badge-name">Flavor Junkie</div><div class="badge-sub">Condiments</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-snacks.png" alt="Snacks" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍿</div><div class="badge-info"><div class="badge-name">Snack Shack</div><div class="badge-sub">Snacks</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-seafood.png" alt="Seafood" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🦞</div><div class="badge-info"><div class="badge-name">(Image Only)</div><div class="badge-sub">Seafood — Rocky Point Shore Dinner Hall</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-mediterranean.png" alt="Mediterranean" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🫒</div><div class="badge-info"><div class="badge-name">Olive Oil & Vin — Ch. 1</div><div class="badge-sub">Mediterranean · Narrative Entry</div></div></div>
+    </div>
+  </section>
+
+  <!-- ═══ RAILROAD TOKENS ═══════════════════════════════════════ -->
+  <section class="badge-category" id="railroad">
+    <div class="category-header">
+      <div class="category-icon">🚂</div>
+      <div class="category-titles">
+        <div class="category-name">Railroad Passenger Class</div>
+        <div class="category-desc">Blind Spend Thresholds · Never Revealed · Rhode Island Railroad History</div>
+      </div>
+      <div class="category-count">7</div>
+    </div>
+    <div class="pending-note">⚠ Thresholds are BLIND — amounts never revealed to customer. Badge just arrives.</div>
+    <div class="badge-grid tokens-grid">
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-day-coach.png" alt="Day Coach" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Day Coach Passenger</div><div class="badge-sub">Providence & Burrillville · Federal Hill Street Car</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-parlor-car.png" alt="Parlor Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Parlor Car Guest</div><div class="badge-sub">New York Providence & Boston · Daniel Nason</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-sleeping-car.png" alt="Sleeping Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Sleeping Car Guest</div><div class="badge-sub">Pawtuxet Valley Railroad · N.Y.N.H.&H.</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-dining-car.png" alt="Dining Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Dining Car Regular</div><div class="badge-sub">Newport & Narragansett Bay · Newport Dinner Train</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-private-car.png" alt="Private Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Private Car Guest</div><div class="badge-sub">Hartford Providence & Fishkill · The Bee</div></div></div>
+      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-pullman-patron.png" alt="Pullman Patron" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Pullman Patron</div><div class="badge-sub">Narragansett Pier Railroad · Lighthouse</div></div></div>
+      <div class="badge-card" style="border-color:rgba(212,168,50,0.4);background:rgba(212,168,50,0.04);"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-railroad-magnate.png" alt="Railroad Magnate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Railroad Magnate</div><div class="badge-sub">NY New Haven & Hartford · Superman Building · Providence</div></div></div>
+    </div>
+  </section>
+
+  <!-- ═══ NARRATIVE SERIES ═══════════════════════════════════════ -->
+  <section class="badge-category" id="narrative">
+    <div class="category-header">
+      <div class="category-icon">📖</div>
+      <div class="category-titles">
+        <div class="category-name">Narrative Badge Series</div>
+        <div class="category-desc">3 Series · Story-Driven · Unlocked Through Repeat Purchases · Art Pending</div>
+      </div>
+      <div class="category-count">3</div>
+    </div>
+    <div class="pending-note">⚠ Narrative badge art is in development. Chapter 1 of Olive Oil & Vin uses badge-food-mediterranean.png</div>
+
+    <!-- Señor Verde & Marty Bras -->
+    <div class="narrative-card">
+      <div class="narrative-title">Señor Verde & Marty Bras</div>
+      <div class="narrative-trigger">Trigger: Equal purchases from Verde + Cajun categories (Jalapeño-based sauces count toward Verde). Every 2 from each = new chapter. 9 Chapters.</div>
+      <div class="chapter-grid">
+        <div class="chapter-card"><div class="chapter-num">Ch. 1</div><div class="chapter-desc">They meet at Mardi Gras</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 2</div><div class="chapter-desc">At the bar partying together</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 3</div><div class="chapter-desc">Hotel room — passed out, beads everywhere</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 4</div><div class="chapter-desc">Señor Verde — the walk of shame</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 5</div><div class="chapter-desc">Verde tells the boys (sweating)</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 6</div><div class="chapter-desc">Marty tells her girls</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 7</div><div class="chapter-desc">They see each other again</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 8</div><div class="chapter-desc">Back at the party together</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 9</div><div class="chapter-desc">Hotel room again. Beads everywhere. Some things never change.</div></div>
+      </div>
+    </div>
+
+    <!-- Olive Oil & Vin -->
+    <div class="narrative-card">
+      <div class="narrative-title">Olive Oil & Vin</div>
+      <div class="narrative-trigger">Trigger: Mediterranean Food Style purchases. Every 5 = new chapter. 4 Chapters. Ch.1 = badge-food-mediterranean.png</div>
+      <div class="chapter-grid">
+        <div class="chapter-card"><div class="chapter-num">Ch. 1</div><div class="chapter-desc">"Looks Great." / "Thank you. But how does the salad look?" — The Accidental Meeting. ✅ Art complete.</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 2</div><div class="chapter-desc">Lunch — giant antipasto. "Do these people only eat salads?" / "Well... I'm a vegetarian."</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 3</div><div class="chapter-desc">Table cleared, hours later. He leans in: "Why don't we get together over a pizza?"</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 4</div><div class="chapter-desc">Happily ever after — together in an elegant oil & vinegar cruet.</div></div>
+      </div>
+    </div>
+
+    <!-- Shooting Pepper Gang -->
+    <div class="narrative-card">
+      <div class="narrative-title">The Shooting Pepper Gang (SPG)</div>
+      <div class="narrative-trigger">Trigger: Pepper Junction All Purpose SPG 14oz purchases ONLY. Every 5 = new chapter. 5 Chapters.</div>
+      <div class="chapter-grid">
+        <div class="chapter-card"><div class="chapter-num">Ch. 1</div><div class="chapter-desc">Wanted Poster — Salt, Pepper, Garlic. "Wanted for: Making Everything Taste Better."</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 2</div><div class="chapter-desc">Garlic in the saloon. Asparagus swagger in. "Expect to get dusted, Veggies."</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 3</div><div class="chapter-desc">The gang rides together</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 4</div><div class="chapter-desc">High noon showdown at the grill</div></div>
+        <div class="chapter-card"><div class="chapter-num">Ch. 5</div><div class="chapter-desc">Riding off into the sunset</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WIDGET BADGES ══════════════════════════════════════════ -->
+  <section class="badge-category" id="widget">
+    <div class="category-header">
+      <div class="category-icon">🍹</div>
+      <div class="category-titles">
+        <div class="category-name">Widget Purchase Badges</div>
+        <div class="category-desc">Triggered by Buy Now from Pairing Bar + Completed Purchase · Exclusive to Pepper Junction · Art Needed</div>
+      </div>
+      <div class="category-count">4</div>
+    </div>
+    <div class="pending-note">⚠ Art needed for all 4 widget badges.</div>
+    <div class="badge-grid">
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🍹</div><div class="badge-info"><div class="badge-name">Trusted the Bartender</div><div class="badge-sub">1 Widget Purchase</div></div></div>
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🍹</div><div class="badge-info"><div class="badge-name">Regular at the Bar</div><div class="badge-sub">10 Widget Purchases</div></div></div>
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🍹</div><div class="badge-info"><div class="badge-name">Bar Regular</div><div class="badge-sub">25 Widget Purchases</div></div></div>
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🍹</div><div class="badge-info"><div class="badge-name">Never Orders Without Asking</div><div class="badge-sub">50 Widget Purchases</div></div></div>
+    </div>
+  </section>
+
+  <!-- ═══ EVENT BADGES ═══════════════════════════════════════════ -->
+  <section class="badge-category" id="events">
+    <div class="category-header">
+      <div class="category-icon">📅</div>
+      <div class="category-titles">
+        <div class="category-name">Event Badges (Specialty)</div>
+        <div class="category-desc">Annual · Retiring · National Food Days · Food Symbol + Year · Art Needed</div>
+      </div>
+      <div class="category-count">9</div>
+    </div>
+    <div class="pending-note">⚠ Art needed for all 9 event badges. Format: food symbol + year (e.g. 🍕 2026). Badge name = event name.</div>
+    <div class="badge-grid">
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🌶️</div><div class="badge-info"><div class="badge-name">National Hot Sauce Day</div><div class="badge-sub">January 22</div></div></div>
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🍕</div><div class="badge-info"><div class="badge-name">National Pizza Day</div><div class="badge-sub">February 9</div></div></div>
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🍕</div><div class="badge-info"><div class="badge-name">National Cheese Pizza Day</div><div class="badge-sub">September 5</div></div></div>
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🍕</div><div class="badge-info"><div class="badge-name">National Pepperoni Pizza Day</div><div class="badge-sub">September 20</div></div></div>
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🍔</div><div class="badge-info"><div class="badge-name">National Cheeseburger Day</div><div class="badge-sub">September 18</div></div></div>
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🥑</div><div class="badge-info"><div class="badge-name">National Guacamole Day</div><div class="badge-sub">September 16</div></div></div>
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🌶️</div><div class="badge-info"><div class="badge-name">National Hot & Spicy Day</div><div class="badge-sub">August 18</div></div></div>
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🌮</div><div class="badge-info"><div class="badge-name">National Taco Day</div><div class="badge-sub">First Tuesday October</div></div></div>
+      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🍗</div><div class="badge-info"><div class="badge-name">National Chicken Wing Day</div><div class="badge-sub">July 29</div></div></div>
+    </div>
+  </section>
+
+  <!-- ═══ SECRET BADGES ══════════════════════════════════════════ -->
+  <section class="badge-category" id="secret">
+    <div class="category-header">
+      <div class="category-icon">🔒</div>
+      <div class="category-titles">
+        <div class="category-name">Secret Badges</div>
+        <div class="category-desc">Never Revealed Until Earned · Owner Eyes Only on This Page</div>
+      </div>
+      <div class="category-count">1</div>
+    </div>
+    <div class="badge-grid">
+      <div class="badge-card secret">
+        <span class="badge-status secret-tag">🔒 Secret</span>
+        <img class="badge-img" src="assets/badges/secret/badge-secret-yes-chef.png" alt="YES CHEF!" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🐻</div>
+        <div class="badge-info">
+          <div class="badge-name">YES, CHEF!</div>
+          <div class="badge-sub">1 Purchase from Every Category · The Bear · FX</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <div class="footer-copy">© Pepper Junction · Est. 2014 · Badge Ecosystem Preview</div>
+  <div class="footer-private">🔒 Private · Owner Access Only · Not Linked From Any Public Page</div>
+</footer>
+
+</body>
+</html>
