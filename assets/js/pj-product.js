@@ -10,7 +10,7 @@
  *
  * Dependencies (must exist on the product page before this script runs):
  *   PAGE_SLUG  — hardcoded string, the only value unique per page
- *   DB_PATH    — path to Database_Pepper_Junction_v4_1.json
+ *   DB_PATH    — path to Database_Pepper_Junction.json
  *
  * Usage (added to every product page by the generator):
  *   <script src="../assets/js/pj-product.js"></script>
