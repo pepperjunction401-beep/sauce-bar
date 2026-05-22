@@ -140,16 +140,23 @@
 
   /**
    * isHeatAllowed
-   * Returns true if candidate product is within the allowed heat window
-   * relative to the current product.
+   * Graduated heat window — real world hot sauce knowledge applied:
+   * Levels 1-4 (mild-medium habanero territory): allow up to +3 above
+   * Levels 5-6 (getting serious): allow up to +2 above
+   * Levels 7+ (superhot territory): allow up to +1 above
+   * Zero-heat products always pass.
    */
   function isHeatAllowed(currentLevel, candidateLevel, candidateCategory) {
     /* Zero-heat products always pass — evaluated on flavor/pairing only */
     if (!candidateLevel || candidateLevel === 0) return true;
     if (!currentLevel  || currentLevel  === 0) return true;
 
-    /* Allow equal, lower, or up to 1 numeric level higher */
-    return candidateLevel <= currentLevel + 1;
+    var maxJump;
+    if (currentLevel <= 4)      maxJump = 3;
+    else if (currentLevel <= 6) maxJump = 2;
+    else                        maxJump = 1;
+
+    return candidateLevel <= currentLevel + maxJump;
   }
 
   /**
@@ -472,7 +479,7 @@
 
       var fields = recordFields(p);
 
-      /* Flavor floor — score only from flavor-relevant fields.
+      /* Flavor floor — score from flavor-relevant fields.
          Sauces must earn at least 1 point here to qualify for slots 1-3.
          Pepper type and heat alone are not enough. */
       var flavorScore = 0;
