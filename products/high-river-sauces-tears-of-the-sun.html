@@ -569,6 +569,49 @@
     if (el) el.textContent = val;
   }
 
+  /* ── BARTENDER LINES — two-beat conversion hook ── */
+  (function() {
+    var LINES_PATH = '../data/PJ_Bartender_Lines.json';
+    var shown = [];
+
+    function getRandom(pool) {
+      var available = pool.filter(function(l){ return shown.indexOf(l) === -1; });
+      if (!available.length) { shown = []; available = pool; }
+      var line = available[Math.floor(Math.random() * available.length)];
+      shown.push(line);
+      return line;
+    }
+
+    function showLine(text, duration) {
+      var el   = document.getElementById('bartender-line');
+      var txt  = document.getElementById('bartender-line-text');
+      if (!el || !txt) return;
+      txt.textContent = text;
+      el.classList.add('visible');
+      setTimeout(function() {
+        el.classList.remove('visible');
+      }, duration);
+    }
+
+    fetch(LINES_PATH, { cache: 'no-store' })
+      .then(function(r){ return r.json(); })
+      .then(function(data) {
+        var beat1 = data.beat1 || [];
+        var beat2 = data.beat2 || [];
+
+        /* Beat 1 — 15 seconds in */
+        setTimeout(function() {
+          if (beat1.length) showLine(getRandom(beat1), 15000);
+        }, 15000);
+
+        /* Beat 2 — 60 seconds in */
+        setTimeout(function() {
+          if (beat2.length) showLine(getRandom(beat2), 15000);
+        }, 60000);
+      })
+      .catch(function(e){ console.warn('Bartender lines unavailable:', e); });
+  })();
+
   /* ── DELIVERY MODAL ── */
   var callout  = document.getElementById('delivery-callout');
   var modal    = document.getElementById('delivery-modal');
@@ -605,6 +648,12 @@
      data-expected-heat-finish=""
      data-square-id=""
      style="display:none;">
+</div>
+
+<!-- ═══ BARTENDER LINE ══════════════════════════════════════ -->
+<div class="bartender-line" id="bartender-line" aria-live="polite">
+  <span class="bartender-line-text" id="bartender-line-text"></span>
+  <span class="bartender-line-attr">— Pepper, Pepper Junction</span>
 </div>
 
 </body>
