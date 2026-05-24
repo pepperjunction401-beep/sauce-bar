@@ -976,6 +976,27 @@
     }
 
     @media (max-width: 640px) {
+      .hero {
+        aspect-ratio: 2 / 1;
+      }
+      .hero-inner {
+        padding: 0 5%;
+      }
+      .hero-headline {
+        font-size: clamp(14px, 5.5vw, 28px);
+        white-space: normal;
+        margin-bottom: 4px;
+      }
+      .hero-sub {
+        font-size: clamp(10px, 3vw, 16px);
+        white-space: normal;
+        max-width: 100%;
+      }
+      .hero-tag {
+        font-size: clamp(8px, 2.2vw, 13px);
+        letter-spacing: 0.18em;
+        margin-bottom: 6px;
+      }
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
       .hero { aspect-ratio: 4 / 1; }
