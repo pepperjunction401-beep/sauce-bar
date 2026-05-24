@@ -326,6 +326,9 @@
       .flap-cell { width: 18px; height: 34px; }
       .flap-cell span { font-size: 14px; }
       .flap-cell.is-space { width: 7px; }
+      /* Hide Time and Track data on mobile — destination takes full width */
+      .board-row .board-col:nth-child(2),
+      .board-row .board-col:nth-child(3) { visibility: hidden; }
     }
 
     /* ── AUDIO CONTROLS — added styles only ──────────────────── */
@@ -536,7 +539,7 @@
         }
         span.textContent = steps[stepIdx++];
         const progress = stepIdx / steps.length;
-        const delay = 32 + Math.random() * 18 + (progress > 0.8 ? (progress - 0.8) * 100 : 0);
+        const delay = 18 + Math.random() * 10 + (progress > 0.8 ? (progress - 0.8) * 60 : 0);
         setTimeout(tick, delay);
       }
       setTimeout(tick, startDelay);
@@ -588,8 +591,7 @@
           return;
         }
         revealRow(rowIdx++, function () {
-          var delay = (rowIdx - 1 === 3) ? 1280 : 0;
-          setTimeout(nextRow, delay);
+          setTimeout(nextRow, 0);
         });
       }
       nextRow();
@@ -599,33 +601,27 @@
       overlay.classList.add('fade-out');
       setTimeout(function () { overlay.style.display = 'none'; }, 700);
 
-      // Start platform audio when board dismisses
-      var audio = document.getElementById('platform-audio');
-      var muteBtn = document.getElementById('mute-btn');
-      var creditEl = document.getElementById('audio-credit');
-
-      if (audio) {
-        audio.volume = 0.75;
-        audio.play().then(function () {
-          muteBtn.style.display = 'block';
-          creditEl.style.display = 'block';
-        }).catch(function () {
-          // Autoplay blocked — show mute button anyway for manual play
-          muteBtn.style.display = 'block';
-          muteBtn.textContent = '♪ Play';
-          creditEl.style.display = 'block';
-        });
+      // Stop flap chatter immediately — board is done
+      var flapAudio = document.getElementById('flap-audio');
+      if (flapAudio) {
+        flapAudio.pause();
+        flapAudio.currentTime = 0;
       }
 
-      muteBtn.addEventListener('click', function () {
-        if (audio.paused) {
-          audio.play();
-          muteBtn.textContent = '♪ Mute';
-        } else {
-          audio.pause();
-          muteBtn.textContent = '♪ Play';
-        }
-      });
+      // Wire mute button to platform audio
+      var audio   = document.getElementById('platform-audio');
+      var muteBtn = document.getElementById('mute-btn');
+      if (muteBtn && audio) {
+        muteBtn.addEventListener('click', function () {
+          if (audio.paused) {
+            audio.play();
+            muteBtn.textContent = '♪ Mute';
+          } else {
+            audio.pause();
+            muteBtn.textContent = '♪ Play';
+          }
+        });
+      }
     }
 
     skipBtn.addEventListener('click', function(e) {
@@ -661,6 +657,20 @@
         flapAudio.currentTime = 0;
         flapAudio.volume = 0.9;
         flapAudio.play().catch(function () {});
+      }
+
+      // Essex audio leans in at 3 seconds — train already moving as board animates
+      var platformAudio = document.getElementById('platform-audio');
+      if (platformAudio) {
+        platformAudio.currentTime = 0;
+        platformAudio.volume = 0.75;
+        setTimeout(function () {
+          platformAudio.play().catch(function () {});
+          var muteBtn = document.getElementById('mute-btn');
+          var creditEl = document.getElementById('audio-credit');
+          if (muteBtn) muteBtn.style.display = 'block';
+          if (creditEl) creditEl.style.display = 'block';
+        }, 3000);
       }
 
       // Start board sequence
