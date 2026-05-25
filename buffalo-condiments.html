@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Buffalo &amp; Wing Sauces, Condiments — Pepper Junction</title>
-  <meta name="description" content="Shop Pepper Junction's Buffalo &amp; Wing Sauces and Condiments With a Kick — Defcon, Melinda's, Colon Cleaner, and Spicy Shark. Rhode Island's specialty sauce destination since 2014." />
+  <title>Wing Sauces, Condiments — Pepper Junction</title>
+  <meta name="description" content="Shop Pepper Junction's Wing Sauces and Condiments With a Kick — Defcon, Melinda's, Colon Cleaner, and Spicy Shark. Rhode Island's specialty sauce destination since 2014." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -598,50 +598,25 @@
     .product-card:hover .product-card-btn-arrow { transform: translateX(3px); }
 
     /* ── FOOTER ───────────────────────────────────────────────── */
-    .site-footer {
-      background: var(--green-dark);
-      border-top: 2px solid var(--brass);
-      padding: 28px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      position: relative;
-      z-index: 1;
+    .site-footer { background: var(--green-dark); border-top: 2px solid var(--brass); position: relative; z-index: 1; }
+    .footer-top { max-width: 1100px; margin: 0 auto; padding: 48px 48px 40px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
+    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
+    .footer-contact-item { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; }
+    .footer-contact-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
+    .footer-contact-item a:hover { opacity: 1; }
+    .footer-col-title { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass); opacity: 0.8; display: block; margin-bottom: 14px; }
+    .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col-links li a { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; text-decoration: none; transition: opacity 0.2s; }
+    .footer-col-links li a:hover { opacity: 1; }
+    .footer-bottom { border-top: 1px solid rgba(184,137,57,0.2); padding: 18px 48px; display: flex; align-items: center; justify-content: space-between; max-width: 100%; }
+    .footer-copy { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.35; }
+    .footer-standard { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); opacity: 0.45; }
+    .footer-sep { display: none; }
+    @media (max-width: 768px) {
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; padding: 32px 20px 28px; }
+      .footer-bottom { padding: 14px 20px; flex-direction: column; gap: 6px; text-align: center; }
     }
-
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
-    .footer-item {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.4;
-    }
-
-    .footer-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
-    .footer-item a:hover { opacity: 1; }
-
-    .footer-sep { width: 1px; height: 12px; background: rgba(184,137,57,0.3); }
-
-    .footer-right {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--brass);
-      opacity: 0.45;
-    }
+    @media (max-width: 480px) { .footer-top { grid-template-columns: 1fr; } }
 
     /* ── SCROLL REVEAL ────────────────────────────────────────── */
     .reveal {
@@ -809,7 +784,7 @@
   <nav class="section-jump" aria-label="Jump to category section">
     <div class="section-jump-inner">
       <span class="jump-label">Jump to:</span>
-      <a class="jump-link" href="#buffalo-wing">🐃 Buffalo &amp; Wing Sauces</a>
+      <a class="jump-link" href="#buffalo-wing">🐃 Wing Sauces</a>
       <a class="jump-link" href="#condiments">🍯 Condiments With a Kick</a>
     </div>
   </nav>
@@ -829,7 +804,7 @@
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
-          <span class="cat-divider-text">Buffalo &amp; Wing Sauces</span>
+          <span class="cat-divider-text">Wing Sauces</span>
           <span class="cat-divider-count">4 Sauces</span>
         </div>
       </div>
