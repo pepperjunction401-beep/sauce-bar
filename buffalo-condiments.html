@@ -213,8 +213,7 @@
       background: rgba(30,48,32,0.85);
       border-bottom: 1px solid rgba(184,137,57,0.25);
       padding: 14px 48px;
-      position: sticky;
-      top: 92px;
+      position: relative;
       z-index: 90;
       backdrop-filter: blur(4px);
     }
@@ -366,14 +365,14 @@
 
     .cat-divider-badge {
       display: flex;
-      align-items: center;
-      gap: 10px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
       padding: 8px 20px;
       border: 1px solid rgba(184,137,57,0.45);
       border-radius: 2px;
       background: rgba(30,48,32,0.7);
       backdrop-filter: blur(4px);
-      white-space: nowrap;
     }
 
     .cat-divider-emoji { font-size: 14px; line-height: 1; }
@@ -718,11 +717,16 @@
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
       .page-hero { padding: 36px 20px 40px; }
-      .section-jump { padding: 12px 20px; top: 84px; }
+      .section-jump { padding: 12px 20px; }
+      .section-jump-inner { justify-content: center; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .wood-divider { height: 120px; }
       .header-nav { display: none; }
-      .site-footer { padding: 20px; }
+      .maker-badge { top: 18px; left: 14px; }
+      .award-badge { top: 44px; left: 8px; padding: 3px 6px; }
+      .award-badge-text { white-space: nowrap; }
+      body { overflow-x: hidden; }
+      .catalog-section { overflow: hidden; }
     }
 
     /* ── OUT OF STOCK TREATMENT ───────────────────────────────── */
@@ -825,11 +829,9 @@
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
-          <span class="cat-divider-emoji">🐃</span>
           <span class="cat-divider-text">Buffalo &amp; Wing Sauces</span>
           <span class="cat-divider-count">4 Sauces</span>
         </div>
-        <div class="cat-divider-line right"></div>
       </div>
 
       <div class="product-grid">
@@ -932,11 +934,9 @@
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
-          <span class="cat-divider-emoji">🍯</span>
           <span class="cat-divider-text">Condiments With a Kick</span>
           <span class="cat-divider-count">4 Products</span>
         </div>
-        <div class="cat-divider-line right"></div>
       </div>
 
       <div class="product-grid">
@@ -1034,14 +1034,46 @@
 
   <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
   <footer class="site-footer">
-    <div class="footer-left">
-      <span class="footer-item"><a href="https://www.pepperjunction401.com">pepperjunction401.com</a></span>
-      <span class="footer-sep"></span>
-      <span class="footer-item">320 Kingstown Rd · Richmond, RI</span>
-      <span class="footer-sep"></span>
-      <span class="footer-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
+        <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
+        <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+      </div>
+      <div>
+        <span class="footer-col-title">Shop</span>
+        <ul class="footer-col-links">
+          <li><a href="hot-sauces.html">Hot Sauces</a></li>
+          <li><a href="buffalo-condiments.html">Wing &amp; Buffalo</a></li>
+          <li><a href="seasonings-bbq.html">BBQ &amp; Seasonings</a></li>
+          <li><a href="buffalo-condiments.html">Condiments</a></li>
+          <li><a href="snacks.html">Snacks</a></li>
+          <li><a href="olive-oils-vinegar.html">Olive Oils &amp; Vinegars</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-title">Pepper Junction</span>
+        <ul class="footer-col-links">
+          <li><a href="main.html">Home</a></li>
+          <li><a href="index.html">Pairing Bar</a></li>
+          <li><a href="main.html#about">Our Story</a></li>
+          <li><a href="main.html#location">Visit Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-col-title">Help</span>
+        <ul class="footer-col-links">
+          <li><a href="policies.html#damaged">Damaged Products</a></li>
+          <li><a href="policies.html#shipping">Shipping Info</a></li>
+          <li><a href="policies.html#returns">Returns</a></li>
+          <li><a href="policies.html#contact">Contact Us</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-right">© Pepper Junction · Est. 2014</div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
+      <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
+    </div>
   </footer>
 
   <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
