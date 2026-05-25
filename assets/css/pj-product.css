@@ -241,7 +241,7 @@ body {
     linear-gradient(160deg, #2E2E2E 0%, #252525 30%, #2A2A2A 60%, #1F1F1F 100%);
   padding: 48px 52px 56px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .chalkboard-surface::before {
