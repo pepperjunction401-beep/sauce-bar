@@ -150,7 +150,7 @@
                 src="../assets/sauces/food/food-high-river-sauces-tears-of-the-sun.png"
                 alt="High River Tears of the Sun food pairing"
                 loading="lazy"
-                style="width:100%; height:340px; object-fit:cover;"
+                style="width:100%; height:100%; object-fit:cover;"
                 onerror="this.src='../assets/PJ-logo.png'; this.style.height='200px'; this.style.objectFit='contain'; this.style.opacity='0.65';"
               />
             </div>
@@ -586,7 +586,11 @@
       dots.push(dot);
     });
     scrollEl.addEventListener('scroll', function() {
-      var index = Math.round(scrollEl.scrollLeft / scrollEl.offsetWidth);
+      var items = scrollEl.querySelectorAll(itemSelector);
+      if (!items.length) return;
+      var itemWidth = items[0].offsetWidth + 14; /* item width + gap */
+      var index = Math.round(scrollEl.scrollLeft / itemWidth);
+      index = Math.min(index, dots.length - 1);
       dots.forEach(function(d, i) {
         d.classList.toggle('active', i === index);
       });
