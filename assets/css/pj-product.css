@@ -1182,7 +1182,7 @@ body {
   .img-frame-inner { min-height: 220px; }
   .site-header { padding: 16px 20px; }
   .header-nav { display: none; }
-  .page-outer { padding: 0 16px 40px; }
+  .page-outer { padding: 0 0 40px; }
   .chalkboard-surface { padding: 28px 20px 32px; }
   .uses-list { grid-template-columns: 1fr; }
   .product-hero {
