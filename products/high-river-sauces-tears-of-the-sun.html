@@ -183,6 +183,7 @@
               <span class="badge-station-sub">Earn these badges with qualifying purchases</span>
             </div>
             <div class="product-badges" id="product-badges"></div>
+            <div class="carousel-hint" id="badge-hint"></div>
           </div>
 
           <!-- Classification pills -->
@@ -340,12 +341,13 @@
       <div class="similar-section">
         <div class="section-rule">
           <div class="rule-line"></div>
-          <span class="rule-text">You Might Also Like</span>
+          <span class="rule-text">Things We Think You'll Like</span>
           <div class="rule-line right"></div>
         </div>
         <div class="similar-grid reveal" id="similar-products">
           <div class="similar-loading">Loading similar products…</div>
         </div>
+        <div class="carousel-hint" id="similar-hint"></div>
       </div>
 
     </div><!-- /chalkboard-surface -->
@@ -568,6 +570,53 @@
     var el = document.getElementById(id);
     if (el) el.textContent = val;
   }
+
+  /* ── MOBILE CAROUSEL DOTS ── */
+  function initCarouselDots(scrollEl, hintEl, itemSelector) {
+    if (!scrollEl || !hintEl) return;
+    if (window.innerWidth > 640) return;
+    var items = scrollEl.querySelectorAll(itemSelector);
+    if (items.length <= 1) { hintEl.style.display = 'none'; return; }
+    hintEl.innerHTML = '';
+    var dots = [];
+    items.forEach(function(_, i) {
+      var dot = document.createElement('div');
+      dot.className = 'carousel-hint-dot' + (i === 0 ? ' active' : '');
+      hintEl.appendChild(dot);
+      dots.push(dot);
+    });
+    scrollEl.addEventListener('scroll', function() {
+      var index = Math.round(scrollEl.scrollLeft / scrollEl.offsetWidth);
+      dots.forEach(function(d, i) {
+        d.classList.toggle('active', i === index);
+      });
+    }, { passive: true });
+  }
+
+  /* Init dots after badges and similar products render */
+  var _origInitBadges = PJProduct.initBadges.bind(PJProduct);
+  PJProduct.initBadges = function(params) {
+    _origInitBadges(params);
+    setTimeout(function() {
+      initCarouselDots(
+        document.getElementById('product-badges'),
+        document.getElementById('badge-hint'),
+        '.badge-item'
+      );
+    }, 100);
+  };
+
+  var _origLoadSimilar = PJProduct.loadSimilar.bind(PJProduct);
+  PJProduct.loadSimilar = function(data, product, slug) {
+    _origLoadSimilar(data, product, slug);
+    setTimeout(function() {
+      initCarouselDots(
+        document.getElementById('similar-products'),
+        document.getElementById('similar-hint'),
+        '.similar-card'
+      );
+    }, 100);
+  };
 
   /* ── BARTENDER LINES — two-beat conversion hook ── */
   (function() {
