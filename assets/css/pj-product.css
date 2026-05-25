@@ -1167,11 +1167,12 @@ body {
 }
 
 @media (max-width: 640px) {
+  body { overflow-x: hidden; }
+  .chalkboard-wrap { overflow: hidden; }
   .site-header { padding: 16px 20px; }
   .header-nav { display: none; }
   .page-outer { padding: 0 16px 40px; }
   .chalkboard-surface { padding: 28px 20px 32px; }
-  .similar-grid { grid-template-columns: 1fr; }
   .uses-list { grid-template-columns: 1fr; }
   .product-hero {
     min-height: 100px;
