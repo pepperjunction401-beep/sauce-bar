@@ -1173,11 +1173,13 @@ body {
 
 @media (max-width: 640px) {
   body { overflow-x: hidden; }
-  .chalkboard-wrap { overflow: hidden; }
-  .chalkboard-surface { overflow: visible; }
-  .product-images { position: static; top: auto; }
+  .chalkboard-wrap { padding: 0; background: none; box-shadow: none; }
+  .chalkboard-wrap::before, .chalkboard-wrap::after { display: none; }
+  .chalk-corner { display: none; }
+  .chalkboard-surface { overflow: hidden; max-width: 100%; padding: 24px 16px 32px; }
+  .product-content { max-width: 100%; overflow: hidden; }
+  .product-images { position: static; top: auto; max-width: 100%; }
   .img-frame-inner { min-height: 220px; }
-  .badge-station-wrap { overflow: hidden; }
   .site-header { padding: 16px 20px; }
   .header-nav { display: none; }
   .page-outer { padding: 0 16px 40px; }
@@ -1202,6 +1204,10 @@ body {
   .section-label { font-size: 11px; }
   .badge-img { width: 80px; height: 80px; }
   /* ── Badge station carousel ── */
+  .badge-station-wrap {
+    overflow: hidden;
+    max-width: 100%;
+  }
   .product-badges {
     display: flex;
     flex-wrap: nowrap;
@@ -1212,6 +1218,8 @@ body {
     padding: 8px 4px 16px;
     scrollbar-width: none;
     justify-content: flex-start;
+    max-width: 100%;
+    width: 100%;
   }
   .product-badges::-webkit-scrollbar { display: none; }
   .badge-item {
