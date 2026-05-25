@@ -1140,7 +1140,73 @@ body {
   margin-top: 6px;
 }
 
-/* ── SCROLL REVEAL ────────────────────────────────────────── */
+/* ── MOBILE CAROUSELS ─────────────────────────────────────── */
+@media (max-width: 640px) {
+
+  /* Badge station carousel */
+  .product-badges {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 20px;
+    padding: 8px 4px 16px;
+    scrollbar-width: none;
+    justify-content: flex-start;
+  }
+
+  .product-badges::-webkit-scrollbar { display: none; }
+
+  .badge-item {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    min-width: 100px;
+  }
+
+  /* Similar products carousel */
+  .similar-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 14px;
+    padding-bottom: 16px;
+    scrollbar-width: none;
+    grid-template-columns: unset;
+  }
+
+  .similar-grid::-webkit-scrollbar { display: none; }
+
+  .similar-card {
+    flex: 0 0 72vw;
+    max-width: 280px;
+    scroll-snap-align: start;
+  }
+
+  /* Carousel scroll hint dots */
+  .carousel-hint {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .carousel-hint-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(212,168,50,0.3);
+    transition: background 0.2s;
+  }
+
+  .carousel-hint-dot.active {
+    background: var(--brass-bright);
+  }
+
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(20px);
