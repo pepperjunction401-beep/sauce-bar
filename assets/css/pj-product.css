@@ -1413,3 +1413,135 @@ body {
     background: var(--brass-bright);
   }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   BADGE TOOLTIP CARD
+   Appears on click/tap of any badge in the Badge Car.
+   Shared across all 62 product pages via pj-product.js.
+══════════════════════════════════════════════════════════════ */
+#badge-tooltip-card {
+  display: none;
+  position: fixed;
+  z-index: 500;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  background: var(--chalk-surface);
+  border: 1px solid rgba(212,168,50,0.5);
+  border-top: 3px solid var(--brass);
+  box-shadow: 0 16px 64px rgba(0,0,0,0.85);
+  padding: 24px 20px 20px;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+#badge-tooltip-card.open {
+  display: flex;
+}
+
+.btc-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 20px;
+  color: var(--brass);
+  opacity: 0.7;
+  cursor: pointer;
+  line-height: 1;
+  user-select: none;
+}
+
+.btc-close:hover { opacity: 1; }
+
+.btc-img-wrap {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btc-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.5));
+}
+
+.btc-placeholder {
+  width: 120px;
+  height: 120px;
+  border: 2px dashed rgba(212,168,50,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brass);
+  opacity: 0.4;
+  font-size: 11px;
+  font-family: 'Josefin Sans', sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.btc-name {
+  font-family: 'BlackRiver', 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--brass-bright);
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+}
+
+.btc-earn {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--chalk);
+  opacity: 0.8;
+  line-height: 1.5;
+  padding: 0 8px;
+}
+
+.btc-cta {
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(212,168,50,0.2);
+  width: 100%;
+}
+
+.btc-cta a {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brass);
+  text-decoration: none;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+
+.btc-cta a:hover { opacity: 1; color: var(--brass-bright); }
+
+/* Badge placeholder small — inside badge carousel when art missing */
+.badge-placeholder-small {
+  width: 80px;
+  height: 80px;
+  border: 2px dashed rgba(212,168,50,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.35;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  #badge-tooltip-card {
+    width: 260px;
+    padding: 20px 16px 16px;
+  }
+}
