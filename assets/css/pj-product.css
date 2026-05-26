@@ -1457,8 +1457,8 @@ body {
 .btc-close:hover { opacity: 1; }
 
 .btc-img-wrap {
-  width: 120px;
-  height: 120px;
+  width: 180px;
+  height: 180px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -1466,15 +1466,15 @@ body {
 }
 
 .btc-img {
-  width: 120px;
-  height: 120px;
+  width: 180px;
+  height: 180px;
   object-fit: contain;
   filter: drop-shadow(0 4px 16px rgba(0,0,0,0.5));
 }
 
 .btc-placeholder {
-  width: 120px;
-  height: 120px;
+  width: 180px;
+  height: 180px;
   border: 2px dashed rgba(212,168,50,0.35);
   display: flex;
   align-items: center;
@@ -1515,8 +1515,9 @@ body {
 
 .btc-cta a {
   font-family: 'Josefin Sans', sans-serif;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
+  font-style: italic;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--brass);
