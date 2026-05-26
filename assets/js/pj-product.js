@@ -624,6 +624,17 @@
      Add new tiers, rename badges, add food keywords — one file only.
   ══════════════════════════════════════════════════════════════ */
 
+  /* ── Badge Car description — edit here, all 62 pages update ── */
+  var BADGE_CAR_DESCRIPTION = 'Every sauce you buy earns you something. '
+    + '<span style="color:var(--brass-bright);">Heat badges:</span> track how far up the scale you\'ve gone. '
+    + '<span style="color:var(--brass-bright);">Food badges:</span> mark your flavor territory. '
+    + '<span style="color:var(--brass-bright);">Narrative badges:</span> connect you to the Pepper Junction story. '
+    + 'Your Badge Depot, your personal display case of accomplishments and map of how to discover more. '
+    + '<span style="color:var(--brass-bright);">But note: Some badges you\'ll see coming. Some will surprise you.</span>';
+
+  var badgeCarDesc = document.getElementById('badge-car-description');
+  if (badgeCarDesc) { badgeCarDesc.innerHTML = BADGE_CAR_DESCRIPTION; }
+
   /* ── Heat badge maps — L1, L2, L3 ── */
   var HEAT_BADGE_SLUGS = {
     'Mild':      'badge-mild',
