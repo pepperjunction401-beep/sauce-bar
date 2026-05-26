@@ -714,6 +714,47 @@ body {
   font-style: italic;
 }
 
+/* ── SHARE BUTTON ─────────────────────────────────────────── */
+.share-btn-wrap {
+  margin-bottom: 12px;
+}
+
+.share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 24px;
+  background: transparent;
+  color: var(--brass-bright);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  border: 1px solid rgba(212,168,50,0.4);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.share-btn:hover {
+  background: rgba(212,168,50,0.08);
+  border-color: rgba(212,168,50,0.7);
+}
+
+.share-icon {
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(212,168,50,0.5);
+  border-radius: 50%;
+  line-height: 1;
+}
+
 /* ── LOCAL DELIVERY CALLOUT ───────────────────────────────── */
 .delivery-callout {
   display: flex;
@@ -1099,6 +1140,71 @@ body {
 @media (max-width: 640px) {
   .footer-top { grid-template-columns: 1fr; }
   .site-footer { padding: 28px 20px 20px; }
+}
+
+/* ── BADGE CAR INFO ───────────────────────────────────────── */
+.badge-info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 13px;
+  color: var(--brass);
+  opacity: 0.7;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-left: 6px;
+  transition: opacity 0.2s;
+}
+.badge-info-btn:hover { opacity: 1; color: var(--brass-bright); }
+
+.badge-info-popup {
+  display: none;
+  position: absolute;
+  z-index: 50;
+  background: var(--chalk-surface);
+  border: 1px solid rgba(212,168,50,0.4);
+  padding: 16px 18px;
+  max-width: 280px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  left: 0;
+  top: 100%;
+  margin-top: 8px;
+}
+
+.badge-info-popup.open { display: block; }
+
+.badge-info-close {
+  position: absolute;
+  top: 8px; right: 10px;
+  background: none;
+  border: none;
+  color: var(--chalk-muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+.badge-info-close:hover { color: var(--brass); }
+
+.badge-info-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brass-bright);
+  margin-bottom: 10px;
+  padding-right: 16px;
+}
+
+.badge-info-body {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--chalk);
+  opacity: 0.85;
 }
 
 /* ── BARTENDER LINE ──────────────────────────────────────── */
