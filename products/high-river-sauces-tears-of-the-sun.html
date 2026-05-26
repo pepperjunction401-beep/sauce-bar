@@ -186,13 +186,13 @@
             </div>
             <div class="product-badges" id="product-badges"></div>
             <div class="carousel-hint" id="badge-hint"></div>
-          </div>
 
-          <!-- Badge Car Info Popup -->
-          <div class="badge-info-popup" id="badge-info-popup">
-            <button class="badge-info-close" id="badge-info-close">×</button>
-            <div class="badge-info-title">What is the Badge Car?</div>
-            <div class="badge-info-body">Every product at Pepper Junction carries badges you can earn through purchases. Heat badges track your journey up the heat scale — L1, L2, L3. Food badges reflect your flavor territory. Narrative badges connect products to the Pepper Junction story. Collect them all in your Badge Depot.</div>
+            <!-- Badge Car Info Popup -->
+            <div class="badge-info-popup" id="badge-info-popup">
+              <button class="badge-info-close" id="badge-info-close">×</button>
+              <div class="badge-info-title">What is the Badge Car?</div>
+              <div class="badge-info-body">Every product at Pepper Junction carries badges you can earn through purchases. Heat badges track your journey up the heat scale — L1, L2, L3. Food badges reflect your flavor territory. Narrative badges connect products to the Pepper Junction story. Collect them all in your Badge Depot.</div>
+            </div>
           </div>
 
           <!-- Classification pills -->
@@ -331,6 +331,11 @@
               <span class="share-icon">↑</span>
               Share This Sauce
             </button>
+            <div class="share-panel" id="share-panel">
+              <button class="share-panel-btn" id="share-twitter">𝕏 &nbsp;Post on X</button>
+              <button class="share-panel-btn" id="share-email">✉ &nbsp;Send by Email</button>
+              <button class="share-panel-btn" id="share-copy">🔗 Copy Link</button>
+            </div>
           </div>
 
           <!-- Local Delivery Callout -->
@@ -706,24 +711,60 @@
 
   /* ── SHARE BUTTON ── */
   var shareBtn = document.getElementById('share-btn');
+  var sharePanel = document.getElementById('share-panel');
+
   if (shareBtn) {
-    shareBtn.addEventListener('click', function() {
-      var shareData = {
-        title: document.title,
-        text: 'Check this out from Pepper Junction:',
-        url: window.location.href
-      };
-      if (navigator.share) {
-        navigator.share(shareData).catch(function(){});
-      } else {
-        /* Fallback — copy URL to clipboard */
-        navigator.clipboard.writeText(window.location.href).then(function() {
-          shareBtn.textContent = '✓ Link Copied!';
-          setTimeout(function() {
-            shareBtn.innerHTML = '<span class="share-icon">↑</span> Share This Sauce';
-          }, 2000);
+    shareBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      /* Mobile — use native share sheet */
+      if (navigator.share && window.innerWidth <= 640) {
+        navigator.share({
+          title: document.title,
+          text: 'Check this out from Pepper Junction:',
+          url: window.location.href
         }).catch(function(){});
+        return;
       }
+      /* Desktop — toggle custom share panel */
+      if (sharePanel) {
+        sharePanel.classList.toggle('open');
+      }
+    });
+  }
+
+  document.addEventListener('click', function(e) {
+    if (sharePanel && !sharePanel.contains(e.target) && e.target !== shareBtn) {
+      sharePanel.classList.remove('open');
+    }
+  });
+
+  /* Share panel actions */
+  var copyLinkBtn = document.getElementById('share-copy');
+  var twitterBtn  = document.getElementById('share-twitter');
+  var emailBtn    = document.getElementById('share-email');
+
+  if (copyLinkBtn) {
+    copyLinkBtn.addEventListener('click', function() {
+      navigator.clipboard.writeText(window.location.href).then(function() {
+        copyLinkBtn.textContent = '✓ Copied!';
+        setTimeout(function() { copyLinkBtn.textContent = '🔗 Copy Link'; }, 2000);
+      });
+    });
+  }
+
+  if (twitterBtn) {
+    twitterBtn.addEventListener('click', function() {
+      window.open('https://twitter.com/intent/tweet?text=' +
+        encodeURIComponent('Check this out from Pepper Junction: ' + document.title) +
+        '&url=' + encodeURIComponent(window.location.href), '_blank');
+    });
+  }
+
+  if (emailBtn) {
+    emailBtn.addEventListener('click', function() {
+      window.location.href = 'mailto:?subject=' +
+        encodeURIComponent(document.title) +
+        '&body=' + encodeURIComponent('Check this out from Pepper Junction:\n\n' + window.location.href);
     });
   }
 
