@@ -372,14 +372,14 @@ body {
 
 .badge-station-sub {
   font-family: 'Josefin Sans', sans-serif;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--brass);
-  opacity: 0.6;
+  color: var(--brass-bright);
+  opacity: 0.9;
   display: block;
-  margin-top: 4px;
+  margin-top: 10px;
   margin-bottom: 16px;
 }
 
