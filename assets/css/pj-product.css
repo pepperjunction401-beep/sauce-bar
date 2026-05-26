@@ -1185,7 +1185,7 @@ body {
   cursor: pointer;
   vertical-align: middle;
   margin-left: 8px;
-  margin-bottom: -6px;
+  margin-bottom: -14px;
   transition: opacity 0.2s;
   user-select: none;
 }
