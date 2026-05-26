@@ -582,6 +582,10 @@
         narrativeSeries: product['narrative_series'] || ''
       });
 
+      /* ── BADGE CAR DESCRIPTION — source of truth in pj-product.js ── */
+      var badgeCarDesc = document.getElementById('badge-car-description');
+      if (badgeCarDesc) { badgeCarDesc.innerHTML = PJProduct.BADGE_CAR_DESCRIPTION; }
+
       /* ── SIMILAR PRODUCTS — powered by pj-product.js ── */
       PJProduct.loadSimilar(data, product, PAGE_SLUG);
 
