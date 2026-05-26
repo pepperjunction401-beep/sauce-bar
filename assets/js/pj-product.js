@@ -692,28 +692,88 @@
     { keyword: 'asian',     slug: 'badge-food-asian',     name: 'Asian'               }
   ];
 
+  /* ── Earn requirement map ── */
+  var HEAT_EARN = {
+    L1: '5 purchases in this heat category',
+    L2: '10 purchases in this heat category',
+    L3: '15 purchases in this heat category'
+  };
+  var FOOD_EARN      = '1 qualifying purchase matching this flavor territory';
+  var RAILROAD_EARN  = 'Keep purchasing to find out where this journey takes you.';
+  var NARRATIVE_EARN = 'Purchase Mediterranean products to begin uncovering the Olive Oil & Vin story';
+
+  /* ── Tooltip card ── */
+  function buildTooltipCard() {
+    if (document.getElementById('badge-tooltip-card')) return;
+    var card = document.createElement('div');
+    card.id = 'badge-tooltip-card';
+    card.innerHTML =
+      '<div class="btc-close" id="btc-close">&#xd7;</div>' +
+      '<div class="btc-img-wrap">' +
+        '<img class="btc-img" id="btc-img" src="" alt="" ' +
+          'onerror="this.style.display=\'none\';document.getElementById(\'btc-placeholder\').style.display=\'flex\'">' +
+        '<div class="btc-placeholder" id="btc-placeholder" style="display:none;"></div>' +
+      '</div>' +
+      '<div class="btc-name" id="btc-name"></div>' +
+      '<div class="btc-earn" id="btc-earn"></div>' +
+      '<div class="btc-cta"><a href="../join.html">Join Scovl to start earning</a></div>';
+    document.body.appendChild(card);
+    document.getElementById('btc-close').addEventListener('click', closeTooltip);
+    document.addEventListener('click', function(e) {
+      var c = document.getElementById('badge-tooltip-card');
+      if (c && c.classList.contains('open') && !c.contains(e.target) && !e.target.closest('.badge-item')) {
+        closeTooltip();
+      }
+    });
+  }
+
+  function openTooltip(imgSrc, name, earn, isRailroad) {
+    var card = document.getElementById('badge-tooltip-card');
+    var img  = document.getElementById('btc-img');
+    var ph   = document.getElementById('btc-placeholder');
+    var nEl  = document.getElementById('btc-name');
+    var eEl  = document.getElementById('btc-earn');
+    if (!card) return;
+    img.style.display = '';
+    ph.style.display  = 'none';
+    img.src = imgSrc;
+    img.alt = name;
+    nEl.textContent = name;
+    eEl.textContent = isRailroad ? RAILROAD_EARN : earn;
+    eEl.style.fontStyle = isRailroad ? 'italic' : '';
+    card.classList.add('open');
+  }
+
+  function closeTooltip() {
+    var card = document.getElementById('badge-tooltip-card');
+    if (card) card.classList.remove('open');
+  }
+
   function escBadge(s) {
     return String(s||'')
       .replace(/&/g,'&amp;').replace(/</g,'&lt;')
       .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  function badgeItem(imgSrc, imgAlt, name, onerrorHide) {
-    var errHandler = onerrorHide
-      ? 'onerror="this.parentElement.style.display=\'none\'"'
-      : 'onerror="this.style.opacity=\'0.3\'"';
-    return '<div class="badge-item">' +
+  function badgeItem(imgSrc, name, earn, isRailroad) {
+    return '<div class="badge-item" ' +
+      'data-img="'      + escBadge(imgSrc) + '" ' +
+      'data-name="'     + escBadge(name)   + '" ' +
+      'data-earn="'     + escBadge(earn)   + '" ' +
+      'data-railroad="' + (isRailroad ? 'true' : 'false') + '">' +
       '<img class="badge-img" src="' + escBadge(imgSrc) + '" ' +
-      'alt="' + escBadge(imgAlt) + '" loading="lazy" ' + errHandler + '>' +
+      'alt="' + escBadge(name) + '" loading="lazy" ' +
+      'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+      '<div class="badge-placeholder-small" style="display:none;"></div>' +
       '<div class="badge-name">' + escBadge(name) + '</div>' +
       '</div>';
   }
 
   function initBadges(params) {
-    var heatCategory   = params.heatCategory   || '';
-    var bestPairings   = (params.bestPairings  || '').toLowerCase();
-    var foodStyle      = (params.foodStyle     || '').toLowerCase();
-    var narrativeSeries= params.narrativeSeries|| '';
+    var heatCategory    = params.heatCategory    || '';
+    var bestPairings    = (params.bestPairings   || '').toLowerCase();
+    var foodStyle       = (params.foodStyle      || '').toLowerCase();
+    var narrativeSeries = params.narrativeSeries || '';
 
     var container = document.getElementById('product-badges');
     if (!container) return;
@@ -724,36 +784,21 @@
     var l1Slug = HEAT_BADGE_SLUGS[heatCategory] || '';
     var l1Name = HEAT_BADGE_L1_NAMES[heatCategory] || '';
     if (l1Slug) {
-      html += badgeItem(
-        '../assets/badges/heat/' + l1Slug + '.png',
-        l1Name + ' Badge',
-        l1Name,
-        false
-      );
+      html += badgeItem('../assets/badges/heat/' + l1Slug + '.png', l1Name, HEAT_EARN.L1, false);
     }
 
     /* ── L2 Heat badge ── */
     var l2Slug = l1Slug ? 'L2-' + l1Slug : '';
     var l2Name = HEAT_BADGE_L2_NAMES[heatCategory] || '';
     if (l2Slug) {
-      html += badgeItem(
-        '../assets/badges/heat/' + l2Slug + '.png',
-        l2Name + ' Badge',
-        l2Name,
-        true
-      );
+      html += badgeItem('../assets/badges/heat/' + l2Slug + '.png', l2Name, HEAT_EARN.L2, false);
     }
 
     /* ── L3 Heat badge ── */
     var l3Slug = l1Slug ? 'L3-' + l1Slug : '';
     var l3Name = HEAT_BADGE_L3_NAMES[heatCategory] || '';
     if (l3Slug) {
-      html += badgeItem(
-        '../assets/badges/heat/' + l3Slug + '.png',
-        l3Name + ' Badge',
-        l3Name,
-        true
-      );
+      html += badgeItem('../assets/badges/heat/' + l3Slug + '.png', l3Name, HEAT_EARN.L3, false);
     }
 
     /* ── Food badges — up to 3, no duplicates ── */
@@ -763,27 +808,33 @@
       if (bestPairings.includes(b.keyword) || foodStyle.includes(b.keyword)) {
         if (addedFoodSlugs.indexOf(b.slug) === -1) {
           addedFoodSlugs.push(b.slug);
-          html += badgeItem(
-            '../assets/badges/food/' + b.slug + '.png',
-            b.name + ' Badge',
-            b.name,
-            true
-          );
+          html += badgeItem('../assets/badges/food/' + b.slug + '.png', b.name, FOOD_EARN, false);
         }
       }
     });
 
-    /* ── Narrative badge — if product has a narrative series ── */
+    /* ── Narrative badge ── */
     if (narrativeSeries) {
       html += badgeItem(
-        '../assets/badges/narrative/badge-' + escBadge(narrativeSeries) + '.png',
-        narrativeSeries + ' Badge',
-        narrativeSeries,
-        true
+        '../assets/badges/food/badge-food-mediterranean.png',
+        narrativeSeries, NARRATIVE_EARN, false
       );
     }
 
     container.innerHTML = html;
+
+    /* ── Wire tooltip clicks ── */
+    buildTooltipCard();
+    container.querySelectorAll('.badge-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        openTooltip(
+          item.getAttribute('data-img'),
+          item.getAttribute('data-name'),
+          item.getAttribute('data-earn'),
+          item.getAttribute('data-railroad') === 'true'
+        );
+      });
+    });
   }
 
   /* ══════════════════════════════════════════════════════════════
