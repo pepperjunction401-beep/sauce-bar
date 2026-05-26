@@ -1172,9 +1172,23 @@ body {
   .footer-top { grid-template-columns: 1fr 1fr; }
 }
 
+
+/* Slot 2 food image — mobile-only edge correction */
 @media (max-width: 640px) {
-  .footer-top { grid-template-columns: 1fr; }
-  .site-footer { padding: 28px 20px 20px; }
+  .food-img-frame {
+    overflow: hidden !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .food-img-frame #food-img {
+    width: calc(100% + 24px) !important;
+    max-width: none !important;
+    margin-left: -12px !important;
+    height: 100% !important;
+    object-fit: fill !important;
+    display: block !important;
+  }
 }
 
 /* ── BADGE CAR INFO ───────────────────────────────────────── */
