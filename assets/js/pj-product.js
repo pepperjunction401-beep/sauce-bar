@@ -716,7 +716,7 @@
       '</div>' +
       '<div class="btc-name" id="btc-name"></div>' +
       '<div class="btc-earn" id="btc-earn"></div>' +
-      '<div class="btc-cta"><a href="../join.html">Join Scovl to start earning</a></div>';
+      '<div class="btc-cta"><a href="https://pepperjunction401-beep.github.io/sauce-bar/join.html">Join Scovl&#8482; to start earning</a></div>';
     document.body.appendChild(card);
     document.getElementById('btc-close').addEventListener('click', closeTooltip);
     document.addEventListener('click', function(e) {
