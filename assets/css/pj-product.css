@@ -1177,14 +1177,15 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 32px;
+  height: 32px;
   font-size: 14px;
   color: var(--brass);
   opacity: 0.8;
   cursor: pointer;
   vertical-align: middle;
   margin-left: 8px;
+  margin-bottom: -6px;
   transition: opacity 0.2s;
   user-select: none;
 }
