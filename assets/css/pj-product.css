@@ -360,6 +360,7 @@ body {
 .badge-station-header {
   text-align: center;
   margin-bottom: 4px;
+  position: relative;
 }
 
 .badge-station-title {
@@ -1205,8 +1206,9 @@ body {
   padding: 16px 18px 16px 16px;
   width: 260px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.7);
-  left: 0;
-  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(100% + 6px);
 }
 
 .badge-info-popup.open { display: block; }
@@ -1321,8 +1323,9 @@ body {
   .chalkboard-surface { overflow: hidden; max-width: 100%; padding: 24px 16px 32px; border: 1px solid rgba(212,168,50,0.4); }
   .product-content { max-width: 100%; overflow: hidden; }
   .product-images { position: static; top: auto; max-width: 100%; }
-  .img-frame { width: 100%; }
-  .img-frame-inner { min-height: 220px; width: 100%; }
+  .img-frame { width: 100%; box-sizing: border-box; }
+  .img-frame-inner { min-height: 220px; width: 100%; box-sizing: border-box; }
+  .img-frame-inner img { width: 100%; height: auto; max-height: none; object-fit: contain; display: block; }
   .site-header { padding: 16px 20px; }
   .header-nav { display: none; }
   .page-outer { padding: 0 0 40px; }
@@ -1349,8 +1352,8 @@ body {
   .badge-img { width: 80px; height: 80px; }
   /* ── Badge station carousel ── */
   .badge-station-wrap {
-    overflow: hidden;
     max-width: 100%;
+    overflow: visible;
   }
   .product-badges {
     display: flex;
