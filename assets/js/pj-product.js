@@ -632,9 +632,6 @@
     + 'Your Badge Depot, your personal display case of accomplishments and map of how to discover more. '
     + '<span style="color:var(--brass-bright);">But note: Some badges you\'ll see coming. Some will surprise you.</span>';
 
-  var badgeCarDesc = document.getElementById('badge-car-description');
-  if (badgeCarDesc) { badgeCarDesc.innerHTML = BADGE_CAR_DESCRIPTION; }
-
   /* ── Heat badge maps — L1, L2, L3 ── */
   var HEAT_BADGE_SLUGS = {
     'Mild':      'badge-mild',
@@ -796,6 +793,8 @@
   ══════════════════════════════════════════════════════════════ */
 
   window.PJProduct = {
+
+    BADGE_CAR_DESCRIPTION: BADGE_CAR_DESCRIPTION,
 
     /**
      * init
