@@ -1172,25 +1172,6 @@ body {
   .footer-top { grid-template-columns: 1fr 1fr; }
 }
 
-
-/* Slot 2 food image — mobile-only edge correction */
-@media (max-width: 640px) {
-  .food-img-frame {
-    overflow: hidden !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-
-  .food-img-frame #food-img {
-    width: calc(100% + 24px) !important;
-    max-width: none !important;
-    margin-left: -12px !important;
-    height: 100% !important;
-    object-fit: fill !important;
-    display: block !important;
-  }
-}
-
 /* ── BADGE CAR INFO ───────────────────────────────────────── */
 .badge-info-btn {
   display: inline-flex;
@@ -1336,7 +1317,7 @@ body {
   .chalkboard-surface { overflow: hidden; max-width: 100%; padding: 24px 16px 32px; border: 1px solid rgba(212,168,50,0.4); }
   .product-content { max-width: 100%; overflow: hidden; }
   .product-images { position: static; top: auto; max-width: 100%; }
-  .img-frame { width: 75%; margin-left: auto; margin-right: auto; }
+  .img-frame { width: 80%; margin-left: auto; margin-right: auto; }
   .img-frame-inner { min-height: 220px; width: 100%; }
   .site-header { padding: 16px 20px; }
   .header-nav { display: none; }
