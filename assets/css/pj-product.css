@@ -372,14 +372,14 @@ body {
 
 .badge-station-sub {
   font-family: 'Josefin Sans', sans-serif;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--brass-bright);
-  opacity: 0.9;
+  color: var(--brass);
+  opacity: 0.6;
   display: block;
-  margin-top: 10px;
+  margin-top: 4px;
   margin-bottom: 16px;
 }
 
@@ -408,7 +408,7 @@ body {
 
 .badge-name {
   font-family: 'Josefin Sans', sans-serif;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -712,6 +712,26 @@ body {
   color: var(--brass-bright);
   opacity: 0.85;
   font-style: italic;
+}
+
+/* ── REVIEW BUTTON ────────────────────────────────────────── */
+.review-btn {
+  display: block;
+  width: 100%;
+  padding: 14px 24px;
+  background: transparent;
+  color: var(--chalk-muted);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-align: center;
+  border: 1px solid rgba(184,137,57,0.2);
+  cursor: not-allowed;
+  opacity: 0.45;
+  margin-bottom: 12px;
+  pointer-events: none;
 }
 
 /* ── SHARE BUTTON ─────────────────────────────────────────── */
@@ -1172,21 +1192,24 @@ body {
   .footer-top { grid-template-columns: 1fr 1fr; }
 }
 
+@media (max-width: 640px) {
+  .footer-top { grid-template-columns: 1fr; }
+  .site-footer { padding: 28px 20px 20px; }
+}
+
 /* ── BADGE CAR INFO ───────────────────────────────────────── */
 .badge-info-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 18px;
+  height: 18px;
   font-size: 14px;
   color: var(--brass);
   opacity: 0.8;
   cursor: pointer;
   vertical-align: middle;
   margin-left: 8px;
-  margin-top: -14px;
-  margin-bottom: 0;
   transition: opacity 0.2s;
   user-select: none;
 }
@@ -1202,9 +1225,8 @@ body {
   padding: 16px 18px 16px 16px;
   width: 260px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.7);
-  left: 50%;
-  transform: translateX(-50%);
-  top: 48px;
+  left: 0;
+  top: calc(100% + 8px);
 }
 
 .badge-info-popup.open { display: block; }
@@ -1319,7 +1341,7 @@ body {
   .chalkboard-surface { overflow: hidden; max-width: 100%; padding: 24px 16px 32px; border: 1px solid rgba(212,168,50,0.4); }
   .product-content { max-width: 100%; overflow: hidden; }
   .product-images { position: static; top: auto; max-width: 100%; }
-  .img-frame { width: 80%; margin-left: auto; margin-right: auto; }
+  .img-frame { width: 100%; }
   .img-frame-inner { min-height: 220px; width: 100%; }
   .site-header { padding: 16px 20px; }
   .header-nav { display: none; }
@@ -1347,15 +1369,8 @@ body {
   .badge-img { width: 80px; height: 80px; }
   /* ── Badge station carousel ── */
   .badge-station-wrap {
-    overflow: visible;
+    overflow: hidden;
     max-width: 100%;
-  }
-  .product-content { max-width: 100%; }
-  .badge-info-popup {
-    width: 240px;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 48px;
   }
   .product-badges {
     display: flex;
@@ -1411,138 +1426,5 @@ body {
   }
   .carousel-hint-dot.active {
     background: var(--brass-bright);
-  }
-}
-
-/* ══════════════════════════════════════════════════════════════
-   BADGE TOOLTIP CARD
-   Appears on click/tap of any badge in the Badge Car.
-   Shared across all 62 product pages via pj-product.js.
-══════════════════════════════════════════════════════════════ */
-#badge-tooltip-card {
-  display: none;
-  position: fixed;
-  z-index: 500;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 280px;
-  background: var(--chalk-surface);
-  border: 1px solid rgba(212,168,50,0.5);
-  border-top: 3px solid var(--brass);
-  box-shadow: 0 16px 64px rgba(0,0,0,0.85);
-  padding: 24px 20px 20px;
-  text-align: center;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-#badge-tooltip-card.open {
-  display: flex;
-}
-
-.btc-close {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  font-size: 20px;
-  color: var(--brass);
-  opacity: 0.7;
-  cursor: pointer;
-  line-height: 1;
-  user-select: none;
-}
-
-.btc-close:hover { opacity: 1; }
-
-.btc-img-wrap {
-  width: 180px;
-  height: 180px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btc-img {
-  width: 180px;
-  height: 180px;
-  object-fit: contain;
-  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.5));
-}
-
-.btc-placeholder {
-  width: 180px;
-  height: 180px;
-  border: 2px dashed rgba(212,168,50,0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--brass);
-  opacity: 0.4;
-  font-size: 11px;
-  font-family: 'Josefin Sans', sans-serif;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.btc-name {
-  font-family: 'BlackRiver', 'Playfair Display', serif;
-  font-size: 16px;
-  color: var(--brass-bright);
-  letter-spacing: 0.06em;
-  line-height: 1.2;
-}
-
-.btc-earn {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  color: var(--chalk);
-  opacity: 0.8;
-  line-height: 1.5;
-  padding: 0 8px;
-}
-
-.btc-cta {
-  margin-top: 4px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(212,168,50,0.2);
-  width: 100%;
-}
-
-.btc-cta a {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  font-style: italic;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--brass);
-  text-decoration: none;
-  opacity: 0.75;
-  transition: opacity 0.2s;
-}
-
-.btc-cta a:hover { opacity: 1; color: var(--brass-bright); }
-
-/* Badge placeholder small — inside badge carousel when art missing */
-.badge-placeholder-small {
-  width: 80px;
-  height: 80px;
-  border: 2px dashed rgba(212,168,50,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.35;
-}
-
-/* Mobile */
-@media (max-width: 640px) {
-  #badge-tooltip-card {
-    width: 260px;
-    padding: 20px 16px 16px;
   }
 }
