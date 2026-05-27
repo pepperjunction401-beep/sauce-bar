@@ -180,7 +180,7 @@
           <div class="badge-station-wrap">
             <div class="badge-station-header">
               <span class="badge-station-title">Badge Car
-                <span class="badge-info-btn" id="badge-info-btn" title="What is the Badge Car?">ⓘ</span>
+                <span class="badge-info-btn" id="badge-info-btn" title="What is the Badge Car?"><img src="../assets/badge-car-bell.png" alt="Badge Car Info" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;filter:brightness(0) saturate(100%) invert(67%) sepia(55%) saturate(500%) hue-rotate(5deg) brightness(95%);"></span>
               </span>
               <span class="badge-station-sub">Earn these badges with qualifying purchases</span>
             </div>
@@ -700,25 +700,25 @@
       dismissTimer = setTimeout(hideLine, duration);
     }
 
-    /* Swipe or click to dismiss */
-    var bartenderEl = document.getElementById('bartender-line');
-    if (bartenderEl) {
-      var touchStartX = 0;
-      bartenderEl.addEventListener('touchstart', function(e) {
-        touchStartX = e.touches[0].clientX;
-      }, { passive: true });
-      bartenderEl.addEventListener('touchend', function(e) {
-        var diff = e.changedTouches[0].clientX - touchStartX;
-        if (diff > 40) hideLine(); /* swipe right to dismiss */
-      }, { passive: true });
-      bartenderEl.addEventListener('click', hideLine);
-    }
-
     fetch(LINES_PATH, { cache: 'no-store' })
       .then(function(r){ return r.json(); })
       .then(function(data) {
         var beat1 = data.beat1 || [];
         var beat2 = data.beat2 || [];
+
+        /* Attach swipe/click dismiss after DOM and data ready */
+        var bartenderEl = document.getElementById('bartender-line');
+        if (bartenderEl) {
+          var touchStartX = 0;
+          bartenderEl.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+          }, { passive: true });
+          bartenderEl.addEventListener('touchend', function(e) {
+            var diff = e.changedTouches[0].clientX - touchStartX;
+            if (diff > 40) hideLine();
+          }, { passive: true });
+          bartenderEl.addEventListener('click', hideLine);
+        }
 
         /* Beat 1 — 15 seconds in */
         setTimeout(function() {
