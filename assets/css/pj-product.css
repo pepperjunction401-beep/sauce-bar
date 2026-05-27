@@ -1223,10 +1223,9 @@ body {
   border: 1px solid rgba(212,168,50,0.5);
   border-left: 3px solid var(--brass);
   padding: 16px 18px 16px 16px;
-  width: 260px;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 48px;
+  width: 100%;
+  left: 0;
+  top: 0;
   box-shadow: 0 8px 32px rgba(0,0,0,0.7);
 }
 
@@ -1344,7 +1343,6 @@ body {
   .product-images { position: static; top: auto; max-width: 100%; }
   .img-frame { width: 80%; margin-left: auto; margin-right: auto; }
   .img-frame-inner { min-height: 220px; width: 100%; box-sizing: border-box; }
-  .badge-info-popup { width: 240px; left: 50%; transform: translateX(-50%); top: 48px; }
   .site-header { padding: 16px 20px; }
   .header-nav { display: none; }
   .page-outer { padding: 0 0 40px; }
