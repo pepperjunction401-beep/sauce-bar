@@ -1369,7 +1369,7 @@ body {
   .badge-img { width: 80px; height: 80px; }
   /* ── Badge station carousel ── */
   .badge-station-wrap {
-    overflow: hidden;
+    overflow: visible;
     max-width: 100%;
   }
   .product-badges {
@@ -1428,3 +1428,101 @@ body {
     background: var(--brass-bright);
   }
 }
+
+/* ── BADGE TOOLTIP CARD ───────────────────────────────────── */
+#badge-tooltip-card {
+  display: none;
+  position: fixed;
+  z-index: 300;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  background: var(--chalk-surface);
+  border: 1px solid rgba(212,168,50,0.5);
+  border-top: 3px solid var(--brass);
+  padding: 20px 16px 16px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.7);
+}
+
+#badge-tooltip-card.open { display: block; }
+
+.btc-close {
+  position: absolute;
+  top: 8px; right: 10px;
+  background: none;
+  border: none;
+  color: var(--chalk-muted);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+.btc-close:hover { color: var(--brass); }
+
+.btc-img-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.btc-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+}
+
+.btc-placeholder {
+  width: 100px;
+  height: 100px;
+  background: rgba(212,168,50,0.1);
+  border: 1px solid rgba(212,168,50,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-placeholder-small {
+  width: 100px;
+  height: 100px;
+  background: rgba(212,168,50,0.06);
+  border: 1px solid rgba(212,168,50,0.15);
+}
+
+.btc-name {
+  font-family: 'BlackRiver', 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--brass-bright);
+  letter-spacing: 0.04em;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.btc-earn {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--chalk);
+  opacity: 0.8;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.btc-cta {
+  text-align: center;
+}
+
+.btc-cta a {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brass);
+  text-decoration: none;
+  opacity: 0.75;
+  border-bottom: 1px solid rgba(212,168,50,0.3);
+  padding-bottom: 2px;
+}
+.btc-cta a:hover { opacity: 1; }
