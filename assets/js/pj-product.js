@@ -692,7 +692,39 @@
     { keyword: 'asian',     slug: 'badge-food-asian',     name: 'Asian'               }
   ];
 
-  /* ── Earn requirement map ── */
+  /* ── Celestial badge — current month, auto-updates yearly ── */
+  var CELESTIAL_MAP = {
+    1:  'aquarius',
+    2:  'pisces',
+    3:  'aries',
+    4:  'taurus',
+    5:  'gemini',
+    6:  'cancer',
+    7:  'leo',
+    8:  'virgo',
+    9:  'libra',
+    10: 'scorpio',
+    11: 'sagittarius',
+    12: 'capricorn'
+  };
+
+  var CELESTIAL_NAMES = {
+    1:  'Aquarius', 2:  'Pisces',    3:  'Aries',
+    4:  'Taurus',   5:  'Gemini',    6:  'Cancer',
+    7:  'Leo',      8:  'Virgo',     9:  'Libra',
+    10: 'Scorpio',  11: 'Sagittarius', 12: 'Capricorn'
+  };
+
+  var CELESTIAL_EARN = 'Make 1 purchase this month to earn this badge';
+
+  /* ── Review badge progression ── */
+  var REVIEW_BADGE = {
+    slug: 'badge-news-boy',
+    name: 'News Boy',
+    earn: 'Leave 3 reviews to earn your first badge'
+  };
+
+
   var HEAT_EARN = {
     L1: '5 purchases in this heat category',
     L2: '10 purchases in this heat category',
@@ -820,6 +852,24 @@
         narrativeSeries, NARRATIVE_EARN, false
       );
     }
+
+    /* ── Celestial badge — current month, changes automatically ── */
+    var currentMonth = new Date().getMonth() + 1;
+    var currentYear  = new Date().getFullYear();
+    var celestialSlug = CELESTIAL_MAP[currentMonth];
+    var celestialName = CELESTIAL_NAMES[currentMonth];
+    if (celestialSlug) {
+      html += badgeItem(
+        '../assets/badges/celestial/badge-celestial-' + celestialSlug + '-' + currentYear + '.png',
+        celestialName, CELESTIAL_EARN, false
+      );
+    }
+
+    /* ── Review badge — News Boy, always present ── */
+    html += badgeItem(
+      '../assets/badges/reviews/' + REVIEW_BADGE.slug + '.png',
+      REVIEW_BADGE.name, REVIEW_BADGE.earn, false
+    );
 
     container.innerHTML = html;
 
