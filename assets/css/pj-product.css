@@ -1341,6 +1341,7 @@ body {
   .chalkboard-surface { overflow: hidden; max-width: 100%; padding: 24px 16px 32px; border: 1px solid rgba(212,168,50,0.4); }
   .product-content { max-width: 100%; }
   .product-images { position: static; top: auto; max-width: 100%; }
+  .similar-section { position: relative; z-index: 2; margin-top: 32px; }
   .img-frame { width: 80%; margin-left: auto; margin-right: auto; }
   .img-frame-inner { min-height: 220px; width: 100%; box-sizing: border-box; }
   .site-header { padding: 16px 20px; }
