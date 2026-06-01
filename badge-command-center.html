@@ -327,6 +327,7 @@
       letter-spacing: 0.16em;
       text-transform: uppercase;
       padding: 3px 6px;
+      display: none; /* Hidden — checkboxes removed from command center */
     }
 
     .badge-status.complete {
@@ -345,6 +346,200 @@
       color: var(--crimson);
       background: rgba(143,31,13,0.1);
       border: 1px solid rgba(143,31,13,0.3);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       TOKEN FLIP CARD SYSTEM
+       Railroad Passenger Class tokens use a full flip-card mechanic.
+       Front: coin art (grayed if unearned, full color if earned) +
+              railroad name overlay (arched top) + badge name below.
+       Back: greeting + locomotive + social class history + threshold (cmd center only).
+       Click/tap to flip. Click/tap again to return.
+    ══════════════════════════════════════════════════════════════ */
+
+    .token-flip-card {
+      width: 160px;
+      height: 220px;
+      perspective: 1000px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .token-flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .token-flip-card.flipped .token-flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .token-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px 8px 12px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(184,137,57,0.2);
+    }
+
+    .token-face.token-back {
+      transform: rotateY(180deg);
+      background: rgba(30,48,32,0.85);
+      border-color: rgba(184,137,57,0.35);
+      justify-content: flex-start;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    /* Token image wrapper — holds coin + railroad name overlay */
+    .token-img-wrap {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      flex-shrink: 0;
+    }
+
+    .token-coin-img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6));
+      transition: transform 0.3s ease;
+      display: block;
+    }
+
+    /* Unearned — fully grayed */
+    .token-flip-card.unearned .token-coin-img {
+      filter: grayscale(100%) brightness(0.45) drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+    }
+
+    /* Railroad name overlay — arched over coin */
+    .token-rr-name {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 110px;
+      text-align: center;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 7.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.8);
+      pointer-events: none;
+      line-height: 1.3;
+      padding: 2px 4px;
+    }
+
+    .token-badge-name {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--chalk);
+      text-align: center;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* NEW indicator */
+    .token-new-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--brass-bright);
+      color: var(--ink);
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      border-radius: 2px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      z-index: 10;
+    }
+
+    /* Flip hint */
+    .token-flip-hint {
+      font-size: 7px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.5;
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    /* Back face content */
+    .token-back-greeting {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 11px;
+      color: var(--brass-bright);
+      line-height: 1.5;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(184,137,57,0.2);
+      padding-bottom: 8px;
+      width: 100%;
+    }
+
+    .token-back-section-label {
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.6;
+      margin-bottom: 4px;
+      margin-top: 8px;
+    }
+
+    .token-back-text {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 8.5px;
+      line-height: 1.6;
+      color: var(--chalk);
+      opacity: 0.88;
+      margin-bottom: 4px;
+    }
+
+    .token-back-threshold {
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brass-dim);
+      opacity: 0.7;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(184,137,57,0.15);
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Token grid — 7 across */
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .token-flip-card:hover .token-coin-img {
+      transform: scale(1.06);
     }
 
     /* ── HEAT LEVEL LABELS ── */
@@ -616,16 +811,165 @@
       </div>
       <div class="category-count">7</div>
     </div>
-    <div class="pending-note">⚠ Thresholds are BLIND — amounts never revealed to customer. Badge arrives as a surprise. Tooltip: "Keep purchasing to find out where this journey takes you." Once earned, permanently lit — never goes dark. Flip side reveals 1930s social class context for that tier.</div>
-    <div class="badge-grid tokens-grid">
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-day-coach.png" alt="Day Coach" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Day Coach Passenger</div><div class="badge-sub">Providence & Burrillville Street Railway · $100 lifetime · Working Poor · Flip: blind, no class revealed</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-parlor-car.png" alt="Parlor Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Parlor Car Guest</div><div class="badge-sub">New York Providence & Boston Railroad · $500 lifetime · Working Class · Flip: "1930s Working Class earned $500–$1,000/yr"</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-sleeping-car.png" alt="Sleeping Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Sleeping Car Guest</div><div class="badge-sub">Pawtuxet Valley Railroad · $1,000 lifetime · Middle Class · Flip: "1930s Middle Class earned $1,000–$2,500/yr"</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-dining-car.png" alt="Dining Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Dining Car Regular</div><div class="badge-sub">Newport & Narragansett Bay Railroad · $2,500 lifetime · Upper Middle Class · Flip: "1930s Upper Middle Class earned $2,500–$5,000/yr"</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-private-car.png" alt="Private Car" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Private Car Guest</div><div class="badge-sub">Hartford Providence & Fishkill Railroad · $5,000 lifetime · Wealthy · Flip: "1930s Wealthy earned $5,000–$20,000/yr"</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-pullman-patron.png" alt="Pullman Patron" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Pullman Patron</div><div class="badge-sub">Narragansett Pier Railroad · $10,000 lifetime · Very Wealthy · Flip: "1930s Very Wealthy earned $20,000–$50,000/yr"</div></div></div>
-      <div class="badge-card" style="border-color:rgba(212,168,50,0.4);background:rgba(212,168,50,0.04);"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/tokens/token-railroad-magnate.png" alt="Railroad Magnate" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🚃</div><div class="badge-info"><div class="badge-name">Railroad Magnate</div><div class="badge-sub">New York New Haven & Hartford Railroad · $20,000 lifetime · Magnate Class · Flip: "In the 1930s, Railroad Magnates didn't ride the train. They owned it. Stockholders. Power brokers. The names on the stations."</div></div></div>
-    </div>
+    <div class="pending-note">⚠ Thresholds BLIND — never revealed to customer. Once earned, permanently lit. Unearned = fully grayed. Front: coin art + railroad name + badge name. Flip: greeting + locomotive + social class history. Threshold shown at bottom of reverse for command center only — never in Badge Depot. Click/tap any token to flip.</div>
+
+    <div class="token-grid">
+
+      <!-- TOKEN 1 — Day Coach Passenger -->
+      <div class="token-flip-card unearned" onclick="this.classList.toggle('flipped')">
+        <div class="token-flip-inner">
+          <div class="token-face token-front">
+            <div class="token-img-wrap">
+              <img class="token-coin-img" src="assets/badges/tokens/token-day-coach.png" alt="Day Coach" onerror="this.style.opacity='0.2'">
+              <div class="token-rr-name">Providence &amp; Burrillville Street Railway</div>
+            </div>
+            <div class="token-badge-name">Day Coach Passenger</div>
+            <div class="token-flip-hint">Tap to flip</div>
+          </div>
+          <div class="token-face token-back">
+            <div class="token-back-greeting">"You've earned a ticket to ride at Pepper Junction."</div>
+            <div class="token-back-section-label">Locomotive</div>
+            <div class="token-back-text">Electric trolley car, Providence & Burrillville Street Railway. Part of the Rhode Island Company network under New Haven control. These cars ran the mill town corridors of northern Rhode Island in the early 1900s — open platforms, wooden benches, the smell of coal and rain. Short runs, working people, everyday life on rails.</div>
+            <div class="token-back-section-label">Historical Fact</div>
+            <div class="token-back-text">In 1930, nearly half of American families earned less than $500 a year. A trolley fare was how you got to work. Not a luxury — a lifeline.</div>
+            <div class="token-back-threshold">⚠ CMD CTR ONLY · $100 lifetime spend · Working Poor</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOKEN 2 — Parlor Car Guest -->
+      <div class="token-flip-card unearned" onclick="this.classList.toggle('flipped')">
+        <div class="token-flip-inner">
+          <div class="token-face token-front">
+            <div class="token-img-wrap">
+              <img class="token-coin-img" src="assets/badges/tokens/token-parlor-car.png" alt="Parlor Car" onerror="this.style.opacity='0.2'">
+              <div class="token-rr-name">New York Providence &amp; Boston Railroad</div>
+            </div>
+            <div class="token-badge-name">Parlor Car Guest</div>
+            <div class="token-flip-hint">Tap to flip</div>
+          </div>
+          <div class="token-face token-back">
+            <div class="token-back-greeting">"The conductor knows your name now."</div>
+            <div class="token-back-section-label">Locomotive</div>
+            <div class="token-back-text">The Daniel Nason — a 4-4-0 American Standard, NYP&B Railroad. This line opened the Shore Line in 1837, one of the earliest rail corridors in New England. The 4-4-0 was the workhorse of 19th century American railroading — elegant, reliable, and built for distance.</div>
+            <div class="token-back-section-label">Historical Fact</div>
+            <div class="token-back-text">Working Class families in 1930 earned between $500 and $1,000 annually. A parlor car ticket was an occasional indulgence — a Sunday ride, a special occasion. Something to talk about at the table.</div>
+            <div class="token-back-threshold">⚠ CMD CTR ONLY · $500 lifetime spend · Working Class</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOKEN 3 — Sleeping Car Guest -->
+      <div class="token-flip-card unearned" onclick="this.classList.toggle('flipped')">
+        <div class="token-flip-inner">
+          <div class="token-face token-front">
+            <div class="token-img-wrap">
+              <img class="token-coin-img" src="assets/badges/tokens/token-sleeping-car.png" alt="Sleeping Car" onerror="this.style.opacity='0.2'">
+              <div class="token-rr-name">Pawtuxet Valley Railroad</div>
+            </div>
+            <div class="token-badge-name">Sleeping Car Guest</div>
+            <div class="token-flip-hint">Tap to flip</div>
+          </div>
+          <div class="token-face token-back">
+            <div class="token-back-greeting">"You're not just passing through anymore."</div>
+            <div class="token-back-section-label">Locomotive</div>
+            <div class="token-back-text">NYNH&H C-2 Class 4-4-0 No. 1703 — built by the Rhode Island Locomotive Works in 1883. Rhode Island built, Rhode Island operated. Photographed arriving at Sockanosett around 1905. A local machine on a local line, connecting the Pawtuxet Valley to the broader New Haven network.</div>
+            <div class="token-back-section-label">Historical Fact</div>
+            <div class="token-back-text">Middle Class households in 1930 earned between $1,000 and $2,500 a year. A sleeping car berth meant overnight travel in relative comfort — arriving rested, presentable, and ready. A small but meaningful distinction.</div>
+            <div class="token-back-threshold">⚠ CMD CTR ONLY · $1,000 lifetime spend · Middle Class</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOKEN 4 — Dining Car Regular -->
+      <div class="token-flip-card unearned" onclick="this.classList.toggle('flipped')">
+        <div class="token-flip-inner">
+          <div class="token-face token-front">
+            <div class="token-img-wrap">
+              <img class="token-coin-img" src="assets/badges/tokens/token-dining-car.png" alt="Dining Car" onerror="this.style.opacity='0.2'">
+              <div class="token-rr-name">Newport &amp; Narragansett Bay Railroad</div>
+            </div>
+            <div class="token-badge-name">Dining Car Regular</div>
+            <div class="token-flip-hint">Tap to flip</div>
+          </div>
+          <div class="token-face token-back">
+            <div class="token-back-greeting">"Your usual table is ready."</div>
+            <div class="token-back-section-label">Locomotive</div>
+            <div class="token-back-text">The Aquidneck Spruce — originally built as a 54-seat coach for the Pennsylvania Railroad in 1946. Now operating as the Newport Dinner Train along the Narragansett Bay coastline. White tablecloths, soft lighting, the bay outside the window. Some railroad cars were built to move people. This one was built to slow them down.</div>
+            <div class="token-back-section-label">Historical Fact</div>
+            <div class="token-back-text">Upper Middle Class families in 1930 earned between $2,500 and $5,000 annually. Dining car service was expected at this level — not a treat, a standard. The table was set before they boarded.</div>
+            <div class="token-back-threshold">⚠ CMD CTR ONLY · $2,500 lifetime spend · Upper Middle Class</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOKEN 5 — Private Car Guest -->
+      <div class="token-flip-card unearned" onclick="this.classList.toggle('flipped')">
+        <div class="token-flip-inner">
+          <div class="token-face token-front">
+            <div class="token-img-wrap">
+              <img class="token-coin-img" src="assets/badges/tokens/token-private-car.png" alt="Private Car" onerror="this.style.opacity='0.2'">
+              <div class="token-rr-name">Hartford Providence &amp; Fishkill Railroad</div>
+            </div>
+            <div class="token-badge-name">Private Car Guest</div>
+            <div class="token-flip-hint">Tap to flip</div>
+          </div>
+          <div class="token-face token-back">
+            <div class="token-back-greeting">"The car is yours. We'll handle the rest."</div>
+            <div class="token-back-section-label">Locomotive</div>
+            <div class="token-back-text">HP&F engine "The Bee" — a named, documented locomotive photographed on the Hartford Providence & Fishkill line in the 19th century. Inbound from the Connecticut state line, The Bee worked every stop on the Rhode Island corridor: Greene → Washington → Summit → Anthony → Quidnick → Arctic → River Point → Olneyville → Dike Street → Providence Union Station. Mill towns, factory villages, working Rhode Island from end to end. The western section of this line — abandoned in 1968 — is now known locally as the Trestle Trail, a hiking and biking path through the Coventry and Greene corridor where the tracks once ran. The rails are gone. The geography remembers.</div>
+            <div class="token-back-section-label">Historical Fact</div>
+            <div class="token-back-text">Wealthy households in 1930 earned between $5,000 and $20,000 a year. A private car arrangement meant the railroad came to you — your schedule, your guests, your menu. The timetable was a suggestion.</div>
+            <div class="token-back-threshold">⚠ CMD CTR ONLY · $5,000 lifetime spend · Wealthy</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOKEN 6 — Pullman Patron -->
+      <div class="token-flip-card unearned" onclick="this.classList.toggle('flipped')">
+        <div class="token-flip-inner">
+          <div class="token-face token-front">
+            <div class="token-img-wrap">
+              <img class="token-coin-img" src="assets/badges/tokens/token-pullman-patron.png" alt="Pullman Patron" onerror="this.style.opacity='0.2'">
+              <div class="token-rr-name">Narragansett Pier Railroad</div>
+            </div>
+            <div class="token-badge-name">Pullman Patron</div>
+            <div class="token-flip-hint">Tap to flip</div>
+          </div>
+          <div class="token-face token-back">
+            <div class="token-back-greeting">"They don't print your name on just anyone's car."</div>
+            <div class="token-back-section-label">Locomotive</div>
+            <div class="token-back-text">ALCO 2-6-0 Mogul No. 11 — ordered 1922, arrived 1923. The Narragansett Pier Railroad's primary steam locomotive in its final passenger era. A compact Mogul working an 8.5 mile run: West Kingston → Peace Dale → Wakefield → Narragansett Pier. Summer crowds, coastal air, the kind of ride people planned their seasons around. The tracks are gone now — the right of way lives on as the William C. O'Neill Bike Path, tracing the same route to the sea.</div>
+            <div class="token-back-section-label">Historical Fact</div>
+            <div class="token-back-text">Very Wealthy households in 1930 earned between $20,000 and $50,000 annually. Pullman service meant a porter who remembered your preferences, a berth made up before you asked, and a car that felt more like a private club than a train.</div>
+            <div class="token-back-threshold">⚠ CMD CTR ONLY · $10,000 lifetime spend · Very Wealthy</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOKEN 7 — Railroad Magnate -->
+      <div class="token-flip-card unearned" style="border-color:rgba(212,168,50,0.4);" onclick="this.classList.toggle('flipped')">
+        <div class="token-flip-inner">
+          <div class="token-face token-front" style="border-color:rgba(212,168,50,0.4);background:rgba(212,168,50,0.04);">
+            <div class="token-img-wrap">
+              <img class="token-coin-img" src="assets/badges/tokens/token-railroad-magnate.png" alt="Railroad Magnate" onerror="this.style.opacity='0.2'">
+              <div class="token-rr-name">New York New Haven &amp; Hartford Railroad</div>
+            </div>
+            <div class="token-badge-name">Railroad Magnate</div>
+            <div class="token-flip-hint">Tap to flip</div>
+          </div>
+          <div class="token-face token-back" style="border-color:rgba(212,168,50,0.4);">
+            <div class="token-back-greeting">"You don't ride the train. You own the tracks."</div>
+            <div class="token-back-section-label">Locomotive</div>
+            <div class="token-back-text">Class I-5 4-6-4 Hudson No. 1400 — semi-streamlined, Art Deco, late 1930s. The locomotive that hauled the Merchants Limited along the Shore Line. Built for speed and presence, the I-5 was the crown of the New Haven's passenger fleet. Behind it, the Industrial Trust Building rose over Providence — two minutes from Union Station, the tallest structure in Rhode Island, a monument to the same era. Both built at the peak. Both now waiting for their next chapter.</div>
+            <div class="token-back-section-label">Historical Fact</div>
+            <div class="token-back-text">Railroad Magnates in the 1930s didn't have salaries — they had empires. Stockholders, board members, the names on the stations. Their income was measured not in wages but in ownership. In the 1930s that meant controlling the movement of an entire region.</div>
+            <div class="token-back-threshold">⚠ CMD CTR ONLY · $20,000 lifetime spend · Magnate Class · "If someone spends $20K they might as well be a stockholder."</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /token-grid -->
   </section>
 
   <!-- ═══ HEAT BADGES ═══════════════════════════════════════════ -->
