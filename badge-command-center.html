@@ -740,6 +740,214 @@
       flex-shrink: 0;
     }
 
+    /* ══════════════════════════════════════════════════════════════
+       COIN FLIP CARD SYSTEM
+       Bottle-Purchase Coins — item count per visit trigger.
+       Obverse = front face (coin face shown on earn).
+       Reverse = back face (real reverse coin image + narrative).
+       Level Up Rule: each qualifying visit increments level indefinitely.
+       Catchphrase never changes regardless of level.
+    ══════════════════════════════════════════════════════════════ */
+
+    .coin-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .coin-flip-card {
+      width: 100%;
+      aspect-ratio: 1 / 1.5;
+      perspective: 800px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .coin-flip-card:hover {
+      transform: scale(2);
+      z-index: 50;
+    }
+
+    .coin-flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .coin-flip-card.flipped .coin-flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .coin-flip-card.flipped:hover {
+      transform: scale(2);
+    }
+
+    .coin-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 8px 6px 10px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(184,137,57,0.2);
+      overflow: hidden;
+    }
+
+    .coin-face.coin-back {
+      transform: rotateY(180deg);
+      background: rgba(30,48,32,0.9);
+      border-color: rgba(184,137,57,0.35);
+      text-align: left;
+      justify-content: flex-start;
+      overflow-y: auto;
+      padding: 10px 8px;
+    }
+
+    .coin-img-wrap {
+      position: relative;
+      width: 100%;
+      padding-bottom: 100%;
+      flex-shrink: 0;
+    }
+
+    .coin-img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 3px 10px rgba(0,0,0,0.6));
+      display: block;
+    }
+
+    /* Unearned — grayed */
+    .coin-flip-card.unearned .coin-img {
+      filter: grayscale(100%) brightness(0.4);
+    }
+
+    .coin-badge-name {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--chalk);
+      text-align: center;
+      margin-top: 6px;
+      line-height: 1.3;
+    }
+
+    .coin-catchphrase {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 8px;
+      color: var(--brass-bright);
+      text-align: center;
+      margin-top: 3px;
+      line-height: 1.3;
+    }
+
+    .coin-level {
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.7;
+      text-align: center;
+      margin-top: 2px;
+    }
+
+    .coin-items-label {
+      font-size: 7px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--chalk-muted);
+      opacity: 0.5;
+      text-align: center;
+      margin-top: 2px;
+    }
+
+    .coin-flip-hint {
+      font-size: 6px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.4;
+      margin-top: 4px;
+    }
+
+    /* Nudge strip */
+    .coin-nudge {
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      opacity: 0.75;
+      text-align: center;
+      margin-top: 3px;
+      line-height: 1.3;
+      border-top: 1px solid rgba(184,137,57,0.2);
+      padding-top: 3px;
+      width: 100%;
+    }
+
+    /* Back face */
+    .coin-back-section-label {
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.6;
+      margin-bottom: 3px;
+      margin-top: 6px;
+    }
+
+    .coin-back-text {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 8px;
+      line-height: 1.6;
+      color: var(--chalk);
+      opacity: 0.88;
+      margin-bottom: 3px;
+    }
+
+    .coin-back-fact {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 8px;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--brass-bright);
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    .coin-back-threshold {
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brass-dim);
+      opacity: 0.6;
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(184,137,57,0.15);
+      width: 100%;
+      text-align: center;
+    }
+
     /* ── HEAT LEVEL LABELS ── */
     .heat-level-label {
       font-family: 'Playfair Display', serif;
@@ -1680,25 +1888,176 @@
       <div class="category-icon">🪙</div>
       <div class="category-titles">
         <div class="category-name">Bottle-Purchase Coins</div>
-        <div class="category-desc">6 Coins · Single Transaction Dollar Amount · $20–$125 · Obverse + Reverse · 1930s Era Currency · All Art Complete</div>
+        <div class="category-desc">6 Coins · Item Count Per Visit · 3–9 Items · Level Up Rule · 1930s Era Currency · All Art Complete</div>
       </div>
-      <div class="category-count">12</div>
+      <div class="category-count">6</div>
     </div>
-    <div class="pending-note">Triggered by dollar amount of a single transaction. Obverse shown on earn. Reverse reveals coin title and years in circulation. $1 in 1930 = $20 today. Path: assets/badges/bottle-purchase-coins/</div>
-    <div class="badge-grid">
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/bottle-purchase-coins/badge-coin-penny-obverse.png" alt="Lincoln Penny Obverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🪙</div><div class="badge-info"><div class="badge-name">Lincoln Wheat Penny</div><div class="badge-sub">$20 · Obverse: Lincoln · Reverse: Wheat Ears · 1909–1958</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/bottle-purchase-coins/badge-coin-penny-reverse.png" alt="Lincoln Penny Reverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🪙</div><div class="badge-info"><div class="badge-name">Lincoln Wheat Penny — Reverse</div><div class="badge-sub">Wheat Ears · ONE CENT · 1909–1958</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/bottle-purchase-coins/badge-coin-nickel-obverse.png" alt="Buffalo Nickel Obverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🪙</div><div class="badge-info"><div class="badge-name">Buffalo Nickel</div><div class="badge-sub">$35 · Obverse: Native American Profile · Reverse: American Buffalo · 1913–1938</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/bottle-purchase-coins/badge-coin-nickel-reverse.png" alt="Buffalo Nickel Reverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🪙</div><div class="badge-info"><div class="badge-name">Buffalo Nickel — Reverse</div><div class="badge-sub">American Buffalo · FIVE CENTS · 1913–1938</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/bottle-purchase-coins/badge-coin-dime-obverse.png" alt="Mercury Dime Obverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🪙</div><div class="badge-info"><div class="badge-name">Mercury Dime</div><div class="badge-sub">$50 · Obverse: Winged Liberty Head · Reverse: Fasces + Olive Branch · 1916–1945</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/bottle-purchase-coins/badge-coin-dime-reverse.png" alt="Mercury Dime Reverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🪙</div><div class="badge-info"><div class="badge-name">Mercury Dime — Reverse</div><div class="badge-sub">Fasces + Olive Branch · 1916–1945</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/bottle-purchase-coins/badge-coin-quarter-obverse.png" alt="Standing Liberty Quarter Obverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🪙</div><div class="badge-info"><div class="badge-name">Standing Liberty Quarter</div><div class="badge-sub">$75 · Obverse: Standing Liberty · Reverse: Eagle in Flight · 1916–1930 · 1930 final year on badge</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/bottle-purchase-coins/badge-coin-quarter-reverse.png" alt="Standing Liberty Quarter Reverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🪙</div><div class="badge-info"><div class="badge-name">Standing Liberty Quarter — Reverse</div><div class="badge-sub">Eagle in Flight · QUARTER DOLLAR · 1916–1930</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/bottle-purchase-coins/badge-coin-half-dollar-obverse.png" alt="Walking Liberty Half Dollar Obverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🪙</div><div class="badge-info"><div class="badge-name">Walking Liberty Half Dollar</div><div class="badge-sub">$100 · Obverse: Liberty Walking · Reverse: Bald Eagle · 1916–1947</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/bottle-purchase-coins/badge-coin-half-dollar-reverse.png" alt="Walking Liberty Half Dollar Reverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🪙</div><div class="badge-info"><div class="badge-name">Walking Liberty Half Dollar — Reverse</div><div class="badge-sub">Bald Eagle · HALF DOLLAR · 1916–1947</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/bottle-purchase-coins/badge-coin-peace-dollar-obverse.png" alt="Peace Dollar Obverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🪙</div><div class="badge-info"><div class="badge-name">Peace Dollar</div><div class="badge-sub">$125 · Obverse: Liberty with Crown · Reverse: Perched Eagle · PEACE · 1921–1935</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/bottle-purchase-coins/badge-coin-peace-dollar-reverse.png" alt="Peace Dollar Reverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🪙</div><div class="badge-info"><div class="badge-name">Peace Dollar — Reverse</div><div class="badge-sub">Perched Eagle · ONE DOLLAR · PEACE · 1921–1935</div></div></div>
-    </div>
+    <div class="pending-note">Triggered by NUMBER OF ITEMS in a single visit — NOT dollar amount. Level Up Rule applies: each qualifying visit increments level indefinitely. Catchphrase never changes. 4-item gap: Lincoln Penny levels up, nudge toward Nickel. Path: assets/badges/bottle-purchase-coins/</div>
+
+    <div class="coin-grid">
+
+      <!-- COIN 1 — Lincoln Wheat Penny — 3 items -->
+      <div class="coin-flip-card unearned" onclick="this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-penny-obverse.png" alt="Lincoln Penny Obverse" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Lincoln Wheat Penny</div>
+            <div class="coin-catchphrase">"This Makes Sense"</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-items-label">3 Items</div>
+            <div class="coin-nudge">+1 item = Buffalo Nickel</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back">
+            <div class="coin-img-wrap" style="padding-bottom:80%;">
+              <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-penny-reverse.png" alt="Lincoln Penny Reverse" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-back-section-label">In Circulation</div>
+            <div class="coin-back-text">1909–1958 · 95% copper, 5% tin and zinc (1943: zinc-coated steel — wartime copper shortage)</div>
+            <div class="coin-back-section-label">Fun Fact</div>
+            <div class="coin-back-fact">In 1943 copper was diverted for the war effort so pennies were struck on zinc-coated steel for one year. A handful were accidentally struck on leftover copper planchets. Those error pennies are now worth $100,000 or more. Check your change.</div>
+            <div class="coin-back-threshold">⚠ CMD CTR ONLY · 3 items per visit · Level Up Rule applies · 4 items = Penny levels up + nudge</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COIN 2 — Buffalo Nickel — 5 items -->
+      <div class="coin-flip-card unearned" onclick="this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-nickel-obverse.png" alt="Buffalo Nickel Obverse" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Buffalo Nickel</div>
+            <div class="coin-catchphrase">"5 Alive"</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-items-label">5 Items</div>
+            <div class="coin-nudge">+1 item = Mercury Dime</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back">
+            <div class="coin-img-wrap" style="padding-bottom:80%;">
+              <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-nickel-reverse.png" alt="Buffalo Nickel Reverse" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-back-section-label">In Circulation</div>
+            <div class="coin-back-text">1913–1938 · 75% copper, 25% nickel</div>
+            <div class="coin-back-section-label">Fun Fact</div>
+            <div class="coin-back-fact">In 1937 at the Denver Mint, a pressman over-polished a die to remove surface marks and accidentally erased the buffalo's front right leg. Thousands of "three-legged" nickels were released before the error was caught. A circulated example is worth around $612 today. Uncirculated: $2,258–$5,221 or more.</div>
+            <div class="coin-back-threshold">⚠ CMD CTR ONLY · 5 items per visit · Level Up Rule applies · Penny does NOT level up at 5</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COIN 3 — Mercury Dime — 6 items -->
+      <div class="coin-flip-card unearned" onclick="this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-dime-obverse.png" alt="Mercury Dime Obverse" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Mercury Dime</div>
+            <div class="coin-catchphrase">"Six-Pack of Legends"</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-items-label">6 Items</div>
+            <div class="coin-nudge">+1 item = Standing Liberty Quarter</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back">
+            <div class="coin-img-wrap" style="padding-bottom:80%;">
+              <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-dime-reverse.png" alt="Mercury Dime Reverse" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-back-section-label">In Circulation</div>
+            <div class="coin-back-text">1916–1945 · 90% silver, 10% copper</div>
+            <div class="coin-back-section-label">Fun Fact</div>
+            <div class="coin-back-fact">It's not actually Mercury on the coin. The figure is Lady Liberty wearing a winged cap — a symbol of freedom of thought. The resemblance to the Roman god Mercury was so strong that the nickname stuck and never left.</div>
+            <div class="coin-back-threshold">⚠ CMD CTR ONLY · 6 items per visit · Level Up Rule applies</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COIN 4 — Standing Liberty Quarter — 7 items -->
+      <div class="coin-flip-card unearned" onclick="this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-quarter-obverse.png" alt="Standing Liberty Quarter Obverse" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Standing Liberty Quarter</div>
+            <div class="coin-catchphrase">"Quarter Past Seven"</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-items-label">7 Items</div>
+            <div class="coin-nudge">+1 item = Walking Liberty Half Dollar</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back">
+            <div class="coin-img-wrap" style="padding-bottom:80%;">
+              <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-quarter-reverse.png" alt="Standing Liberty Quarter Reverse" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-back-section-label">In Circulation</div>
+            <div class="coin-back-text">1916–1930 · 90% silver, 10% copper</div>
+            <div class="coin-back-section-label">Fun Fact</div>
+            <div class="coin-back-fact">The original 1916 design featured Lady Liberty with one breast fully exposed. The public outcry was immediate — religious leaders called it obscene, citizens' groups lobbied Congress, and the design was revised in 1917 to cover her in a coat of chain mail. Only 52,000 of the original bare-breasted quarters were struck, making them extremely rare today.</div>
+            <div class="coin-back-threshold">⚠ CMD CTR ONLY · 7 items per visit · Level Up Rule applies</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COIN 5 — Walking Liberty Half Dollar — 8 items -->
+      <div class="coin-flip-card unearned" onclick="this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-half-dollar-obverse.png" alt="Walking Liberty Half Dollar Obverse" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Walking Liberty Half Dollar</div>
+            <div class="coin-catchphrase">"Eight to Appreciate"</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-items-label">8 Items</div>
+            <div class="coin-nudge">+1 item = Peace Dollar</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back">
+            <div class="coin-img-wrap" style="padding-bottom:80%;">
+              <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-half-dollar-reverse.png" alt="Walking Liberty Half Dollar Reverse" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-back-section-label">In Circulation</div>
+            <div class="coin-back-text">1916–1947 · 90% silver, 10% copper</div>
+            <div class="coin-back-section-label">Fun Fact</div>
+            <div class="coin-back-fact">The Walking Liberty design is considered one of the most beautiful motifs ever employed on a circulating coin. It was so beloved that the obverse design has been used on the American Silver Eagle since its inception in 1986 — still in use today, nearly 80 years after the original coin was retired.</div>
+            <div class="coin-back-threshold">⚠ CMD CTR ONLY · 8 items per visit · Level Up Rule applies</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COIN 6 — Peace Dollar — 9 items -->
+      <div class="coin-flip-card unearned" style="border-color:rgba(212,168,50,0.4);" onclick="this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="border-color:rgba(212,168,50,0.4);background:rgba(212,168,50,0.04);">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-peace-dollar-obverse.png" alt="Peace Dollar Obverse" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Peace Dollar</div>
+            <div class="coin-catchphrase">"Peace Is With You"</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-items-label">9 Items</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="border-color:rgba(212,168,50,0.4);">
+            <div class="coin-img-wrap" style="padding-bottom:80%;">
+              <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-peace-dollar-reverse.png" alt="Peace Dollar Reverse" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-back-section-label">In Circulation</div>
+            <div class="coin-back-text">1921–1935 · 90% silver, 10% copper</div>
+            <div class="coin-back-section-label">Fun Fact</div>
+            <div class="coin-back-fact">The Peace Dollar was commissioned in 1921 to commemorate the end of World War I — the first U.S. coin explicitly designed as a symbol of peace. Sculptor Anthony de Francisci used his wife Teresa as the model for Lady Liberty. She had recently immigrated from Italy and later said posing for the coin was the proudest moment of her life.</div>
+            <div class="coin-back-threshold">⚠ CMD CTR ONLY · 9 items per visit · Level Up Rule applies · Apex coin</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /coin-grid -->
   </section>
 
   <!-- ═══ CHECK-TOTAL BADGES ════════════════════════════════════ -->
