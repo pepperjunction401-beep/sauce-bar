@@ -1126,15 +1126,24 @@
       overflow: visible;
     }
 
-    /* Hover — badge image pops out only. Card stays put. */
+    /* On hover raise the entire card above siblings to prevent clipping */
+    .token-flip-card:not(.pj-expanded):not(.pj-flipped):hover,
+    .celestial-flip-card:not(.pj-expanded):not(.pj-flipped):hover,
+    .coin-flip-card:not(.pj-expanded):not(.pj-flipped):hover,
+    .badge-card:not(.pj-expanded):hover {
+      z-index: 50;
+      position: relative;
+    }
+
+    /* Hover — badge image pops upward 2x. Card stays in place. */
     .token-flip-card:not(.pj-expanded):not(.pj-flipped):hover .token-coin-img,
     .celestial-flip-card:not(.pj-expanded):not(.pj-flipped):hover .celestial-img,
     .coin-flip-card:not(.pj-expanded):not(.pj-flipped):hover .coin-img,
     .badge-card:not(.pj-expanded):hover .badge-img {
       transform: scale(2);
-      transform-origin: center center;
+      transform-origin: bottom center;
       position: relative;
-      z-index: 100;
+      z-index: 50;
     }
 
     /* ── CLICK 1 — EXPANDED STATE ── */
