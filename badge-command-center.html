@@ -224,6 +224,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 24px;
+      overflow: visible;
     }
 
     .badge-grid.heat-grid {
@@ -594,7 +595,7 @@
       padding: 8px 6px 10px;
       background: #1A1A1A;
       border: 1px solid rgba(184,137,57,0.15);
-      overflow: hidden;
+      overflow: visible;
     }
 
     .celestial-face.celestial-back {
@@ -766,7 +767,7 @@
       padding: 8px 6px 10px;
       background: #1A1A1A;
       border: 1px solid rgba(184,137,57,0.2);
-      overflow: hidden;
+      overflow: visible;
     }
 
     .coin-face.coin-back {
@@ -1114,13 +1115,24 @@
       overflow: visible;
     }
 
-    /* ── HOVER STATE (default state only — state 0) ── */
-    /* Badge image pops 2x out of card. Card stays in place. */
+    /* All grid containers must allow overflow for badge hover pop */
+    .badge-grid,
+    .token-grid,
+    .celestial-grid,
+    .coin-grid,
+    .check-total-grid,
+    .review-grid,
+    .loyalty-grid {
+      overflow: visible;
+    }
+
+    /* Hover — badge image pops out only. Card stays put. */
     .token-flip-card:not(.pj-expanded):not(.pj-flipped):hover .token-coin-img,
     .celestial-flip-card:not(.pj-expanded):not(.pj-flipped):hover .celestial-img,
     .coin-flip-card:not(.pj-expanded):not(.pj-flipped):hover .coin-img,
     .badge-card:not(.pj-expanded):hover .badge-img {
       transform: scale(2);
+      transform-origin: center center;
       position: relative;
       z-index: 100;
     }
