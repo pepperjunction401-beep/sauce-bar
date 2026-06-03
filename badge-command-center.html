@@ -1155,7 +1155,12 @@
       position: relative;
     }
 
-    /* No hover effects in expanded or flipped state */
+    /* Coins hover at 1.5x — already naturally larger than other badges */
+    .coin-flip-card:not(.pj-expanded):not(.pj-flipped):hover .coin-img {
+      transform: scale(1.5);
+      transform-origin: center center;
+      z-index: 50;
+    }
     .token-flip-card.pj-expanded:hover .token-coin-img,
     .token-flip-card.pj-flipped:hover .token-coin-img,
     .celestial-flip-card.pj-expanded:hover .celestial-img,
