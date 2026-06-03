@@ -2136,22 +2136,195 @@
       <div class="category-icon">🎲</div>
       <div class="category-titles">
         <div class="category-name">Check-Total Badges</div>
-        <div class="category-desc">9 Badges · Single Transaction Item Count · 3–12 Items · 1920s–1940s Board Game Era · All Art Complete</div>
+        <div class="category-desc">9 Badges · Single Transaction Dollar Amount · $10–$100 · 1920s–1940s Board Game Era · Level Up Rule · All Art Complete</div>
       </div>
       <div class="category-count">9</div>
     </div>
-    <div class="pending-note">Triggered by number of items in a single transaction. Each badge = iconic game piece from a period-accurate board game. Flip side reveals game origin story and era of popularity. Path: assets/badges/check-total/</div>
-    <div class="badge-grid">
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/check-total/badge-check-total-pickup-sticks.png" alt="Pickup Sticks" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🎲</div><div class="badge-info"><div class="badge-name">Pickup Sticks</div><div class="badge-sub">3 Items · 1930s commercial version — Depression era, cost nothing, played everywhere</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/check-total/badge-check-total-chinese-checkers.png" alt="Chinese Checkers" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🎲</div><div class="badge-info"><div class="badge-name">Chinese Checkers</div><div class="badge-sub">5 Items · Invented in Germany in 1892 as Stern-Halma. Rebranded as Chinese Checkers in America in 1928. Nationwide craze through the 1930s.</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/check-total/badge-check-total-dominoes.png" alt="Dominoes" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🎲</div><div class="badge-info"><div class="badge-name">Dominoes</div><div class="badge-sub">6 Items · 18th century European origins. 1920s–30s fixture of American parlor life, kitchen tables to front porches.</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/check-total/badge-check-total-bingo.png" alt="Bingo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🎲</div><div class="badge-info"><div class="badge-name">Bingo</div><div class="badge-sub">7 Items · Standardized 1929 by Edwin Lowe. 10,000 games played weekly by early 1930s. The Depression-era social staple.</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/check-total/badge-check-total-checkers.png" alt="Checkers" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🎲</div><div class="badge-info"><div class="badge-name">Checkers</div><div class="badge-sub">8 Items · The quintessential American parlor game — every home, every barbershop, every general store.</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/check-total/badge-check-total-parcheesi.png" alt="Parcheesi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🎲</div><div class="badge-info"><div class="badge-name">Parcheesi</div><div class="badge-sub">9 Items · Trademarked 1874. By 1920s–30s one of the most widely owned games in America.</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/check-total/badge-check-total-monopoly.png" alt="Monopoly" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🎲</div><div class="badge-info"><div class="badge-name">Monopoly</div><div class="badge-sub">10 Items · 1935. Sold 20,000 sets in its first year during the height of the Depression.</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/check-total/badge-check-total-scrabble.png" alt="Scrabble" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🎲</div><div class="badge-info"><div class="badge-name">Scrabble</div><div class="badge-sub">11 Items · Invented 1938. Ignored for a decade. Became a national sensation when Macy's discovered it.</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/check-total/badge-check-total-sorry.png" alt="Sorry!" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🎲</div><div class="badge-info"><div class="badge-name">Sorry!</div><div class="badge-sub">12 Items · Patented 1929. North America 1934. Equal parts strategy and gleeful sabotage.</div></div></div>
-    </div>
+    <div class="pending-note">Triggered by DOLLAR AMOUNT of single transaction — highest threshold reached only. Thresholds passed through are never awarded. Level Up Rule applies. Dynamic nudge math lives in the Junction Progress Station cart — NOT on the badge. Path: assets/badges/check-total/</div>
+
+    <div class="coin-grid">
+
+      <!-- PICKUP STICKS — $10 -->
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/check-total/badge-check-total-pickup-sticks.png" alt="Pickup Sticks" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Pickup Sticks</div>
+            <div class="coin-catchphrase">"Every great collection starts with the first pick."</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Pickup Sticks</div>
+            <div class="coin-back-text">1930s commercial version. Born in the Depression era when entertainment had to cost nothing. A handful of colored sticks, a steady hand, and the whole family was occupied for an hour. Simple, portable, and requiring no board or special equipment — perfect when pennies counted.</div>
+            <div class="coin-back-threshold">Leveling up to the next badge is $15 away. · Level Up Rule applies.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHINESE CHECKERS — $25 -->
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/check-total/badge-check-total-chinese-checkers.png" alt="Chinese Checkers" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Chinese Checkers</div>
+            <div class="coin-catchphrase">"You're already three jumps ahead."</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Chinese Checkers</div>
+            <div class="coin-back-text">Despite the name, invented in Germany in 1892 as Stern-Halma. Rebranded as Chinese Checkers in America in 1928 and became a nationwide craze through the 1930s. The star-shaped board made it instantly recognizable on any shelf — and the name, completely unrelated to its origin, stuck forever.</div>
+            <div class="coin-back-threshold">Leveling up to the next badge is $15 away. · Level Up Rule applies.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOMINOES — $40 -->
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/check-total/badge-check-total-dominoes.png" alt="Dominoes" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Dominoes</div>
+            <div class="coin-catchphrase">"One good sauce leads to another. Watch them fall."</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Dominoes</div>
+            <div class="coin-back-text">European dominoes date to the 18th century, derived from Chinese tile games. By the 1920s and 1930s they were a fixture of American parlor life — kitchen tables, front porches, barbershops. The game had rules. The real joy was standing them up in a line and letting them fall.</div>
+            <div class="coin-back-threshold">Leveling up to the next badge is $10 away. · Level Up Rule applies.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BINGO — $50 -->
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/check-total/badge-check-total-bingo.png" alt="Bingo" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Bingo</div>
+            <div class="coin-catchphrase">"Spice Things Up Until You Reach BINGO!"</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Bingo</div>
+            <div class="coin-back-text">Standardized and mass marketed in 1929 by Edwin Lowe after he witnessed a carnival game called Beano. By the early 1930s an estimated 10,000 Bingo games were being played weekly across North America. A Depression-era staple — cheap, social, and available everywhere. The number O-69 is historically documented.</div>
+            <div class="coin-back-threshold">Leveling up to the next badge is $10 away. · Level Up Rule applies.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHECKERS — $60 -->
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/check-total/badge-check-total-checkers.png" alt="Checkers" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Checkers</div>
+            <div class="coin-catchphrase">"Purchasing like a King!"</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Checkers</div>
+            <div class="coin-back-text">Ancient origins, codified into modern rules in the 1800s. By the 1920s and 1930s checkers was the quintessential American parlor game — found in every home, every barbershop, every general store. No era defined checkers more than the Depression years when entertainment had to be free. Getting kinged was the whole point.</div>
+            <div class="coin-back-threshold">Leveling up to the next badge is $10 away. · Level Up Rule applies.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PARCHEESI — $70 -->
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/check-total/badge-check-total-parcheesi.png" alt="Parcheesi" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Parcheesi</div>
+            <div class="coin-catchphrase">"No Safe Space Can Contain Your Need for Heat."</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Parcheesi</div>
+            <div class="coin-back-text">An American adaptation of the ancient Indian game Pachisi, trademarked by Selchow and Righter in 1874. By the 1920s and 1930s it was one of the most widely owned board games in America — a fixture in parlors, sunrooms, and vacation cottages. The safe space was a lie. Someone always sent you back.</div>
+            <div class="coin-back-threshold">Leveling up to the next badge is $10 away. · Level Up Rule applies.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MONOPOLY — $80 -->
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/check-total/badge-check-total-monopoly.png" alt="Monopoly" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Monopoly</div>
+            <div class="coin-catchphrase">"What's Free About Parking?"</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Monopoly</div>
+            <div class="coin-back-text">Charles Darrow sold it to Parker Brothers in 1935 during the height of the Depression. The irony of a game about accumulating wealth during America's poorest decade made it an instant phenomenon. Over 20,000 sets sold in its first year. The railroads on the board — B&O, Reading, Pennsylvania, Short Line — were all real. Free Parking was a house rule. It was never in the original instructions.</div>
+            <div class="coin-back-threshold">Leveling up to the next badge is $10 away. · Level Up Rule applies.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCRABBLE — $90 -->
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/check-total/badge-check-total-scrabble.png" alt="Scrabble" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Scrabble</div>
+            <div class="coin-catchphrase">"Pssssh.. Now This is a Real Score."</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Scrabble</div>
+            <div class="coin-back-text">Invented by Alfred Mosher Butts in 1938 as Criss-Cross Words. Largely ignored until 1948 when James Brunot acquired the rights and refined it. Became a national sensation in the early 1950s when Macy's placed a large order. One of the great slow-burn success stories in game history. PEPPER JUNCTION on a triple word score — that's the whole game right there.</div>
+            <div class="coin-back-threshold">Leveling up to the next badge is $10 away. · Level Up Rule applies.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SORRY! — $100 -->
+      <div class="coin-flip-card" style="border-color:rgba(212,168,50,0.4);" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;border-color:rgba(212,168,50,0.4);">
+            <div class="coin-img-wrap">
+              <img class="coin-img" src="assets/badges/check-total/badge-check-total-sorry.png" alt="Sorry!" onerror="this.style.opacity='0.2'">
+            </div>
+            <div class="coin-badge-name">Sorry!</div>
+            <div class="coin-catchphrase">"Sliding into this many new sauces feels as fun as the game."</div>
+            <div class="coin-level">Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;border-color:rgba(212,168,50,0.4);">
+            <div class="coin-back-section-label">Sorry!</div>
+            <div class="coin-back-text">Based on the ancient Indian game Pachisi, Sorry! was patented in England in 1929 and introduced to North America by Parker Brothers in 1934. The concept of sending opponents back to start with a cheerful apology made it an instant family favorite — equal parts strategy and gleeful sabotage. The slide was the whole reason you played.</div>
+            <div class="coin-back-threshold">You've reached the top tier. Nothing left to prove. · Level Up Rule applies.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /coin-grid -->
   </section>
 
   <!-- ═══ REVIEW BADGES ══════════════════════════════════════════ -->
