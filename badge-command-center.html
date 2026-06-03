@@ -367,11 +367,6 @@
       position: relative;
     }
 
-    .token-flip-card:hover {
-      transform: scale(2);
-      z-index: 50;
-    }
-
     .token-flip-inner {
       position: relative;
       width: 100%;
@@ -382,14 +377,6 @@
 
     .token-flip-card.flipped .token-flip-inner {
       transform: rotateY(180deg);
-    }
-
-    .token-flip-card:hover .token-flip-inner {
-      /* hover scale handled at card level — no override needed here */
-    }
-
-    .token-flip-card.flipped:hover {
-      transform: scale(2);
     }
 
     .token-face {
@@ -403,13 +390,13 @@
       align-items: center;
       justify-content: flex-start;
       padding: 10px 8px 12px;
-      background: rgba(255,255,255,0.02);
+      background: #1A1A1A;
       border: 1px solid rgba(184,137,57,0.2);
     }
 
     .token-face.token-back {
       transform: rotateY(180deg);
-      background: rgba(30,48,32,0.85);
+      background: #1E3020;
       border-color: rgba(184,137,57,0.35);
       justify-content: flex-start;
       overflow-y: auto;
@@ -580,12 +567,6 @@
       perspective: 800px;
       cursor: pointer;
       position: relative;
-      transition: transform 0.3s ease;
-    }
-
-    .celestial-flip-card:hover {
-      transform: scale(2);
-      z-index: 50;
     }
 
     .celestial-flip-inner {
@@ -600,10 +581,6 @@
       transform: rotateY(180deg);
     }
 
-    .celestial-flip-card.flipped:hover {
-      transform: scale(2);
-    }
-
     .celestial-face {
       position: absolute;
       width: 100%;
@@ -615,14 +592,14 @@
       align-items: center;
       justify-content: flex-start;
       padding: 8px 6px 10px;
-      background: rgba(255,255,255,0.02);
+      background: #1A1A1A;
       border: 1px solid rgba(184,137,57,0.15);
       overflow: hidden;
     }
 
     .celestial-face.celestial-back {
       transform: rotateY(180deg);
-      background: rgba(30,48,32,0.9);
+      background: #1E3020;
       border-color: rgba(184,137,57,0.35);
       justify-content: center;
       text-align: center;
@@ -762,12 +739,6 @@
       perspective: 800px;
       cursor: pointer;
       position: relative;
-      transition: transform 0.3s ease;
-    }
-
-    .coin-flip-card:hover {
-      transform: scale(2);
-      z-index: 50;
     }
 
     .coin-flip-inner {
@@ -780,10 +751,6 @@
 
     .coin-flip-card.flipped .coin-flip-inner {
       transform: rotateY(180deg);
-    }
-
-    .coin-flip-card.flipped:hover {
-      transform: scale(2);
     }
 
     .coin-face {
@@ -1115,6 +1082,63 @@
       .badge-grid.tokens-grid { grid-template-columns: repeat(3, 1fr); }
       .badge-grid { grid-template-columns: repeat(3, 1fr); }
     }
+    /* ══════════════════════════════════════════════════════════════
+       UNIVERSAL BADGE INTERACTION SYSTEM
+       Applies to ALL badge card types across all categories.
+
+       Hover  → badge image only pops 2x. Card stays in place.
+       Click 1 → entire card expands. Front face visible.
+       Click 2 → card flips to reverse. Narrative readable.
+       Click 3 → card returns to front + collapses to default size.
+
+       State classes managed by pjBadgeInteraction() JS function.
+       .pj-expanded  → card is enlarged (clicks 1 & 2)
+       .pj-flipped   → card is showing reverse (click 2)
+    ══════════════════════════════════════════════════════════════ */
+
+    /* Universal card base — all card types */
+    .token-flip-card,
+    .celestial-flip-card,
+    .coin-flip-card,
+    .badge-card {
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Hover — badge image pops out only. Card stays put. */
+    .token-flip-card:hover .token-coin-img,
+    .celestial-flip-card:hover .celestial-img,
+    .coin-flip-card:hover .coin-img,
+    .badge-card:hover .badge-img {
+      transform: scale(2);
+      position: relative;
+      z-index: 50;
+    }
+
+    /* Click 1 — expanded state. Entire card grows. */
+    .token-flip-card.pj-expanded,
+    .celestial-flip-card.pj-expanded,
+    .coin-flip-card.pj-expanded,
+    .badge-card.pj-expanded {
+      transform: scale(2);
+      z-index: 100;
+      position: relative;
+    }
+
+    /* Suppress image hover pop when card is expanded */
+    .token-flip-card.pj-expanded:hover .token-coin-img,
+    .celestial-flip-card.pj-expanded:hover .celestial-img,
+    .coin-flip-card.pj-expanded:hover .coin-img,
+    .badge-card.pj-expanded:hover .badge-img {
+      transform: none;
+    }
+
+    /* Click 2 — flipped state. Reverse visible at expanded size. */
+    .token-flip-card.pj-flipped .token-flip-inner,
+    .celestial-flip-card.pj-flipped .celestial-flip-inner,
+    .coin-flip-card.pj-flipped .coin-flip-inner {
+      transform: rotateY(180deg);
+    }
+
   </style>
 </head>
 
@@ -2265,5 +2289,86 @@
   <div class="footer-private">🔒 Private · Owner Access Only · Not Linked From Any Public Page</div>
 </footer>
 
+<script>
+/* ══════════════════════════════════════════════════════════════
+   UNIVERSAL BADGE INTERACTION — pjBadgeInteraction
+   Manages 3-state click cycle for all badge card types.
+   State 0 (default)  → hover pops badge image only
+   State 1 (expanded) → card enlarged, front visible
+   State 2 (flipped)  → card enlarged, reverse visible
+   State 3            → resets to state 0
+   Unearned cards (class 'unearned') are non-interactive.
+══════════════════════════════════════════════════════════════ */
+
+(function() {
+
+  /* All interactive card selectors */
+  var CARD_SELECTORS = [
+    '.token-flip-card',
+    '.celestial-flip-card',
+    '.coin-flip-card',
+    '.badge-card'
+  ].join(', ');
+
+  /* Remove legacy flipped class used by old onclick handlers */
+  function cleanLegacy(card) {
+    card.classList.remove('flipped');
+  }
+
+  /* Get current state from data attribute */
+  function getState(card) {
+    return parseInt(card.dataset.pjState || '0', 10);
+  }
+
+  /* Set state and apply classes */
+  function setState(card, state) {
+    card.dataset.pjState = state;
+
+    if (state === 0) {
+      card.classList.remove('pj-expanded', 'pj-flipped');
+    } else if (state === 1) {
+      card.classList.add('pj-expanded');
+      card.classList.remove('pj-flipped');
+    } else if (state === 2) {
+      card.classList.add('pj-expanded', 'pj-flipped');
+    }
+  }
+
+  /* Click handler */
+  function handleClick(e) {
+    var card = e.currentTarget;
+
+    /* Block interaction on unearned cards */
+    if (card.classList.contains('unearned')) return;
+
+    cleanLegacy(card);
+
+    var current = getState(card);
+    var next = (current + 1) % 3;
+    setState(card, next);
+  }
+
+  /* Collapse card when clicking outside */
+  document.addEventListener('click', function(e) {
+    var cards = document.querySelectorAll(CARD_SELECTORS);
+    cards.forEach(function(card) {
+      if (!card.contains(e.target) && getState(card) > 0) {
+        setState(card, 0);
+      }
+    });
+  });
+
+  /* Attach handlers after DOM ready */
+  document.addEventListener('DOMContentLoaded', function() {
+    var cards = document.querySelectorAll(CARD_SELECTORS);
+    cards.forEach(function(card) {
+      /* Remove old inline onclick */
+      card.removeAttribute('onclick');
+      card.addEventListener('click', handleClick);
+    });
+  });
+
+})();
+</script>
 </body>
 </html>
