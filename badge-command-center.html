@@ -1084,37 +1084,48 @@
     }
     /* ══════════════════════════════════════════════════════════════
        UNIVERSAL BADGE INTERACTION SYSTEM
-       Applies to ALL badge card types across all categories.
-
        Hover  → badge image only pops 2x. Card stays in place.
        Click 1 → entire card expands. Front face visible.
        Click 2 → card flips to reverse. Narrative readable.
        Click 3 → card returns to front + collapses to default size.
-
-       State classes managed by pjBadgeInteraction() JS function.
-       .pj-expanded  → card is enlarged (clicks 1 & 2)
-       .pj-flipped   → card is showing reverse (click 2)
     ══════════════════════════════════════════════════════════════ */
 
-    /* Universal card base — all card types */
+    /* Universal card base */
     .token-flip-card,
     .celestial-flip-card,
     .coin-flip-card,
     .badge-card {
       transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: visible;
     }
 
-    /* Hover — badge image pops out only. Card stays put. */
-    .token-flip-card:hover .token-coin-img,
-    .celestial-flip-card:hover .celestial-img,
-    .coin-flip-card:hover .coin-img,
-    .badge-card:hover .badge-img {
+    /* All face/inner containers must allow overflow for hover pop */
+    .token-face,
+    .celestial-face,
+    .coin-face,
+    .badge-card {
+      overflow: visible;
+    }
+
+    /* Token and coin image wrappers — allow overflow */
+    .token-img-wrap,
+    .celestial-img-wrap,
+    .coin-img-wrap {
+      overflow: visible;
+    }
+
+    /* ── HOVER STATE (default state only — state 0) ── */
+    /* Badge image pops 2x out of card. Card stays in place. */
+    .token-flip-card:not(.pj-expanded):not(.pj-flipped):hover .token-coin-img,
+    .celestial-flip-card:not(.pj-expanded):not(.pj-flipped):hover .celestial-img,
+    .coin-flip-card:not(.pj-expanded):not(.pj-flipped):hover .coin-img,
+    .badge-card:not(.pj-expanded):hover .badge-img {
       transform: scale(2);
       position: relative;
-      z-index: 50;
+      z-index: 100;
     }
 
-    /* Click 1 — expanded state. Entire card grows. */
+    /* ── CLICK 1 — EXPANDED STATE ── */
     .token-flip-card.pj-expanded,
     .celestial-flip-card.pj-expanded,
     .coin-flip-card.pj-expanded,
@@ -1124,19 +1135,32 @@
       position: relative;
     }
 
-    /* Suppress image hover pop when card is expanded */
+    /* No hover effects in expanded or flipped state */
     .token-flip-card.pj-expanded:hover .token-coin-img,
+    .token-flip-card.pj-flipped:hover .token-coin-img,
     .celestial-flip-card.pj-expanded:hover .celestial-img,
+    .celestial-flip-card.pj-flipped:hover .celestial-img,
     .coin-flip-card.pj-expanded:hover .coin-img,
+    .coin-flip-card.pj-flipped:hover .coin-img,
     .badge-card.pj-expanded:hover .badge-img {
       transform: none;
+      z-index: auto;
     }
 
-    /* Click 2 — flipped state. Reverse visible at expanded size. */
+    /* ── CLICK 2 — FLIPPED STATE ── */
     .token-flip-card.pj-flipped .token-flip-inner,
     .celestial-flip-card.pj-flipped .celestial-flip-inner,
     .coin-flip-card.pj-flipped .coin-flip-inner {
       transform: rotateY(180deg);
+    }
+
+    /* Flipped card stays expanded */
+    .token-flip-card.pj-flipped,
+    .celestial-flip-card.pj-flipped,
+    .coin-flip-card.pj-flipped {
+      transform: scale(2);
+      z-index: 100;
+      position: relative;
     }
 
   </style>
