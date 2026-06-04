@@ -105,11 +105,11 @@
 
         '<div class="pj-cart-teaser" aria-label="Badge progress preview">' +
           '<div class="pj-cart-teaser-row">' +
-            '<span class="pj-cart-teaser-key">Bottle Coin</span>' +
+            '<img class="pj-cart-teaser-img" id="pj-cart-bottle-img" src="../assets/badges/bottle-purchase-coins/badge-coin-penny-obverse.png" alt="" loading="lazy">' +
             '<span class="pj-cart-teaser-val" id="pj-cart-bottle-teaser">Add 3 items to unlock your first Bottle-Purchase Coin.</span>' +
           '</div>' +
           '<div class="pj-cart-teaser-row">' +
-            '<span class="pj-cart-teaser-key">Check Total</span>' +
+            '<img class="pj-cart-teaser-img" id="pj-cart-total-img" src="../assets/badges/check-total/badge-check-total-pickup-sticks.png" alt="" loading="lazy">' +
             '<span class="pj-cart-teaser-val" id="pj-cart-total-teaser">Start your lineup to begin Check-Total progress.</span>' +
           '</div>' +
         '</div>' +
@@ -288,15 +288,35 @@
   }
 
   function renderBadgeTeasers(summary) {
-    var bottleEl = document.getElementById('pj-cart-bottle-teaser');
-    var totalEl = document.getElementById('pj-cart-total-teaser');
+    var bottleEl  = document.getElementById('pj-cart-bottle-teaser');
+    var totalEl   = document.getElementById('pj-cart-total-teaser');
+    var bottleImg = document.getElementById('pj-cart-bottle-img');
+    var totalImg  = document.getElementById('pj-cart-total-img');
+
+    var badgeBase = '../assets/badges/';
 
     if (bottleEl && summary.bottle_coin_progress) {
-      bottleEl.textContent = summary.bottle_coin_progress.message || '';
+      var bottleProgress = summary.bottle_coin_progress;
+      var bottleBadge    = bottleProgress.next || bottleProgress.earned;
+
+      bottleEl.textContent = bottleProgress.message || '';
+
+      if (bottleImg && bottleBadge && bottleBadge.image) {
+        bottleImg.src = badgeBase + bottleBadge.image;
+        bottleImg.alt = bottleBadge.name || 'Bottle Coin';
+      }
     }
 
     if (totalEl && summary.check_total_progress) {
-      totalEl.textContent = summary.check_total_progress.message || '';
+      var totalProgress = summary.check_total_progress;
+      var totalBadge    = totalProgress.next || totalProgress.earned;
+
+      totalEl.textContent = totalProgress.message || '';
+
+      if (totalImg && totalBadge && totalBadge.image) {
+        totalImg.src = badgeBase + totalBadge.image;
+        totalImg.alt = totalBadge.name || 'Check Total Badge';
+      }
     }
   }
 
