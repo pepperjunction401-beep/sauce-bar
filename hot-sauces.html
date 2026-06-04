@@ -79,7 +79,7 @@
     .breadcrumb-sep { opacity: 0.45; }
     .page-hero-headline { font-family: 'BlackRiver', 'Playfair Display', serif; font-size: clamp(32px, 5vw, 64px); color: var(--cream-warm); line-height: 1.1; letter-spacing: 0.02em; margin-bottom: 12px; }
     .page-hero-sub { font-family: 'Playfair Display', serif; font-size: clamp(14px, 1.8vw, 20px); font-style: italic; color: var(--cream); opacity: 0.7; max-width: 520px; line-height: 1.6; }
-    .section-jump { background: rgba(30,48,32,0.85); border-bottom: 1px solid rgba(184,137,57,0.25); padding: 14px 48px; position: sticky; top: 92px; z-index: 90; backdrop-filter: blur(4px); }
+    .section-jump { background: rgba(30,48,32,0.85); border-bottom: 1px solid rgba(184,137,57,0.25); padding: 14px 48px; position: relative; z-index: 90; backdrop-filter: blur(4px); }
     .section-jump-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .jump-label { font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--brass); opacity: 0.6; margin-right: 8px; white-space: nowrap; }
     .jump-link { font-family: 'Josefin Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream); opacity: 0.55; text-decoration: none; padding: 6px 14px; border: 1px solid rgba(184,137,57,0.2); border-radius: 2px; transition: opacity 0.2s, border-color 0.2s, background 0.2s; white-space: nowrap; }
@@ -94,13 +94,13 @@
     .catalog-section { padding: 64px 0 48px; position: relative; z-index: 1; background-image: url('assets/textures/green-steel-panel-bg.png'); background-size: cover; background-position: -8px top; background-repeat: repeat-y; }
     .catalog-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--brass), transparent); opacity: 0.5; }
     .catalog-section::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--brass), transparent); opacity: 0.5; }
-    .heat-divider { display: flex; align-items: center; gap: 20px; margin-bottom: 40px; padding: 0 4px; }
+    .heat-divider { display: flex; align-items: center; gap: 20px; margin-bottom: 40px; padding: 0 4px; justify-content: flex-start; }
     .heat-divider-line { flex: 1; height: 1px; }
     .heat-divider-line.left { background: linear-gradient(90deg, transparent, var(--brass)); }
     .heat-divider-line.right { background: linear-gradient(90deg, var(--brass), transparent); }
-    .heat-divider-badge { display: flex; align-items: center; gap: 10px; padding: 8px 20px; border: 1px solid rgba(184,137,57,0.45); border-radius: 2px; background: rgba(30,48,32,0.7); backdrop-filter: blur(4px); white-space: nowrap; }
+    .heat-divider-badge { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 8px 20px; border: 1px solid rgba(184,137,57,0.45); border-radius: 2px; background: rgba(30,48,32,0.7); backdrop-filter: blur(4px); width: fit-content; }
     .heat-divider-emoji { font-size: 14px; line-height: 1; }
-    .heat-divider-text { font-family: 'Josefin Sans', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--cream-warm); text-shadow: 0 1px 6px rgba(0,0,0,0.5); }
+    .heat-divider-text { font-family: 'Josefin Sans', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--cream-warm); text-shadow: 0 1px 6px rgba(0,0,0,0.5); white-space: nowrap; }
     .heat-divider-count { font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; color: var(--brass); opacity: 0.7; }
     .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
     .product-card { position: relative; background: var(--cream-warm); border: none; border-radius: 0; overflow: hidden; box-shadow: none; display: flex; flex-direction: column; transition: transform 0.25s ease; text-decoration: none; color: var(--ink); }
@@ -125,13 +125,28 @@
     .product-card-btn:hover { background: var(--crimson); border-color: var(--crimson); }
     .product-card-btn-arrow { font-size: 10px; line-height: 1; transition: transform 0.2s; }
     .product-card:hover .product-card-btn-arrow { transform: translateX(3px); }
-    .site-footer { background: var(--green-dark); border-top: 2px solid var(--brass); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; position: relative; z-index: 1; }
-    .footer-left { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-    .footer-item { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.4; }
-    .footer-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
-    .footer-item a:hover { opacity: 1; }
-    .footer-sep { width: 1px; height: 12px; background: rgba(184,137,57,0.3); }
-    .footer-right { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); opacity: 0.45; }
+    .site-footer { background: var(--green-dark); border-top: 2px solid var(--brass); position: relative; z-index: 1; }
+    .footer-top { max-width: 1100px; margin: 0 auto; padding: 48px 48px 40px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
+    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
+    .footer-brand img { height: 44px; width: auto; margin-bottom: 4px; }
+    .footer-contact-item { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; }
+    .footer-contact-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
+    .footer-contact-item a:hover { opacity: 1; }
+    .footer-col-title { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass); opacity: 0.8; display: block; margin-bottom: 14px; }
+    .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col-links li a { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; text-decoration: none; transition: opacity 0.2s; }
+    .footer-col-links li a:hover { opacity: 1; }
+    .footer-bottom { border-top: 1px solid rgba(184,137,57,0.2); padding: 18px 48px; display: flex; align-items: center; justify-content: space-between; max-width: 100%; }
+    .footer-copy { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.35; }
+    .footer-standard { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); opacity: 0.45; }
+    .footer-sep { display: none; }
+    @media (max-width: 768px) {
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; padding: 32px 20px 28px; }
+      .footer-bottom { padding: 14px 20px; flex-direction: column; gap: 6px; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .footer-top { grid-template-columns: 1fr; }
+    }
     .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .back-top { display: flex; justify-content: center; padding: 24px 0 60px; position: relative; z-index: 1; }
@@ -142,11 +157,63 @@
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
       .page-hero { padding: 36px 20px 40px; }
-      .section-jump { padding: 12px 20px; top: 84px; }
+      .section-jump { padding: 12px 20px; }
+      .section-jump-inner { justify-content: center; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .wood-divider { height: 120px; }
       .header-nav { display: none; }
-      .site-footer { padding: 20px; }
+      /* Maker badge — top left inside window frame */
+      .maker-badge { top: 18px; left: 14px; }
+      /* Award badge — raised, stays centered horizontally */
+      .award-badge { top: 44px; left: 8px; padding: 3px 6px; }
+      .award-badge-text { white-space: nowrap; }
+      /* Heat badge — lowered to window sill */
+      .heat-badge { bottom: 14px; }
+      /* Fix page float */
+      body { overflow-x: hidden; }
+      .catalog-section { overflow: hidden; }
+    }
+
+    /* ── OUT OF STOCK TREATMENT ───────────────────────────────── */
+    .product-card.out-of-stock .product-card-image img {
+      filter: grayscale(100%) opacity(0.5);
+      transition: filter 0.3s ease;
+    }
+
+    .out-of-stock-banner {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      background: rgba(43,29,21,0.88);
+      border-top: 1px solid rgba(184,137,57,0.4);
+      border-bottom: 1px solid rgba(184,137,57,0.4);
+      padding: 10px 0;
+      text-align: center;
+      z-index: 3;
+      display: none;
+    }
+
+    .product-card.out-of-stock .out-of-stock-banner {
+      display: block;
+    }
+
+    .out-of-stock-banner span {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+    }
+
+    .product-card.out-of-stock .product-card-name {
+      opacity: 0.55;
+    }
+
+    .product-card.out-of-stock .product-card-teaser {
+      opacity: 0.45;
     }
   </style>
 </head>
@@ -201,11 +268,9 @@
       <div class="heat-divider">
         <div class="heat-divider-line left"></div>
         <div class="heat-divider-badge">
-          <span class="heat-divider-emoji">🌶</span>
-          <span class="heat-divider-text">Mild &amp; Medium Heat</span>
+          <span class="heat-divider-text">Mild &amp; Medium</span>
           <span class="heat-divider-count">10 Sauces · 1–5 / 10</span>
         </div>
-        <div class="heat-divider-line right"></div>
       </div>
       <div class="product-grid">
         <a class="product-card reveal" href="products/mikey-vs-jalapeno-dill-pickle-hot-sauce.html">
@@ -371,11 +436,9 @@
       <div class="heat-divider">
         <div class="heat-divider-line left"></div>
         <div class="heat-divider-badge">
-          <span class="heat-divider-emoji">🌶🌶</span>
           <span class="heat-divider-text">Hot &amp; Very Hot</span>
           <span class="heat-divider-count">8 Sauces · 5–7 / 10</span>
         </div>
-        <div class="heat-divider-line right"></div>
       </div>
       <div class="product-grid">
         <a class="product-card reveal" href="products/high-river-hellacious-chipotle-hot-sauce.html">
@@ -511,11 +574,9 @@
       <div class="heat-divider">
         <div class="heat-divider-line left"></div>
         <div class="heat-divider-badge">
-          <span class="heat-divider-emoji">🌶🌶🌶</span>
           <span class="heat-divider-text">Extreme &amp; Inferno</span>
           <span class="heat-divider-count">12 Sauces · 8–11 / 10</span>
         </div>
-        <div class="heat-divider-line right"></div>
       </div>
       <div class="product-grid">
         <a class="product-card reveal" href="products/hells-kitchen-cinnamon-ghost-punch.html">
@@ -722,14 +783,51 @@
   </section>
 
   <footer class="site-footer">
-    <div class="footer-left">
-      <span class="footer-item"><a href="https://www.pepperjunction401.com">pepperjunction401.com</a></span>
-      <span class="footer-sep"></span>
-      <span class="footer-item">320 Kingstown Rd · Richmond, RI</span>
-      <span class="footer-sep"></span>
-      <span class="footer-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
+        <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
+        <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+      </div>
+
+      <div>
+        <span class="footer-col-title">Shop</span>
+        <ul class="footer-col-links">
+          <li><a href="hot-sauces.html">Hot Sauces</a></li>
+          <li><a href="buffalo-condiments.html">Wing &amp; Buffalo</a></li>
+          <li><a href="seasonings-bbq.html">BBQ &amp; Seasonings</a></li>
+          <li><a href="buffalo-condiments.html">Condiments</a></li>
+          <li><a href="snacks.html">Snacks</a></li>
+          <li><a href="olive-oils-vinegar.html">Olive Oils &amp; Vinegars</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <span class="footer-col-title">Pepper Junction</span>
+        <ul class="footer-col-links">
+          <li><a href="main.html">Home</a></li>
+          <li><a href="index.html">Pairing Bar</a></li>
+          <li><a href="main.html#about">Our Story</a></li>
+          <li><a href="main.html#location">Visit Us</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <span class="footer-col-title">Help</span>
+        <ul class="footer-col-links">
+          <li><a href="policies.html#damaged">Damaged Products</a></li>
+          <li><a href="policies.html#shipping">Shipping Info</a></li>
+          <li><a href="policies.html#returns">Returns</a></li>
+          <li><a href="policies.html#contact">Contact Us</a></li>
+        </ul>
+      </div>
+
     </div>
-    <div class="footer-right">© Pepper Junction · Est. 2014</div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
+      <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
+    </div>
   </footer>
 
   <script>
@@ -765,6 +863,183 @@
       });
     }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
     sections.forEach(function (s) { if (s) sectionObserver.observe(s); });
+  })();
+  </script>
+
+  <script>
+  /* ================================================================
+     PJ CATEGORY PAGE — JSON-DRIVEN RENDERING
+     Dormant until data/Database_Pepper_Junction.json is live.
+     Static cards remain as fallback if fetch fails or JSON not ready.
+     Out-of-stock treatment activates when in_stock: false appears.
+  ================================================================ */
+  (function() {
+
+    var JSON_PATH = 'data/Database_Pepper_Junction.json';
+    var CATEGORY  = 'HOT SAUCE';
+
+    var SECTION_MAP = {
+      'Mild':      'mild-medium',
+      'Medium':    'mild-medium',
+      'Hot':       'hot-very-hot',
+      'Very Hot':  'hot-very-hot',
+      'Super Hot': 'extreme-inferno',
+      'Extreme':   'extreme-inferno',
+      'Inferno':   'extreme-inferno'
+    };
+
+    var AWARD_BADGES = {
+      'ghost-scream-ghost-scream':           "\uD83C\uDFC6 Hot Sauce of the Year '16",
+      'hells-kitchen-cinnamon-ghost':        "\uD83C\uDFC6 Hot Sauce of the Year '24",
+      'dirty-dicks-hot-tropical-hot-sauce':  "\uD83C\uDFC6 Hot Sauce of the Year '17 & '18",
+      'rheds-deja-vu':                       "\uD83C\uDFC6 Screaming Mimi Award",
+      'high-river-sauces-peppers-up':        "\uD83D\uDD25 Hot Ones Season 24",
+      'cajohns-la-segadora-carolina-reaper': "\uD83C\uDFC6 Screaming Mimi Award"
+    };
+
+    var IMAGE_MAP = {
+      '13-stars-dragons-breath':                           '13-stars-dragons-breath-hot-sauce',
+      'cajohns-la-segadora-carolina-reaper':               'cajohns-segadora-reaper-hot-sauce',
+      'dirty-dicks-hot-tropical-hot-sauce':                'dirty-dicks-hot-tropical-hot-sauce',
+      'ghost-scream-ghost-scream':                         'ghost-scream-hot-sauce',
+      'heartbreaking-dawns-the-green':                     'heartbreaking-dawns-the-green-hot-sauce',
+      'high-river-sauces-hellacious':                      'high-river-hellacious-hot-sauce',
+      'high-river-sauces-psych-sauce':                     'high-river-psych-hot-sauce',
+      'high-river-sauces-foo-foo-mama-choo':               'high-river-foo-foo-mam-choo-hot-sauce',
+      'high-river-sauces-peppers-up':                      'high-river-peppers-up-hot-sauce',
+      'high-river-sauces-rogue':                           'high-river-rogue-hot-sauce',
+      'high-river-sauces-tears-of-the-sun':                'high-river-tears-of-the-sun-hot-sauce',
+      'high-river-sauces-thunder-juice':                   'high-river-thunder-juice-hot-sauce',
+      'high-river-sauces-taco-x':                          'high-river-pepper-x-hot-sauce',
+      'hells-kitchen-cinnamon-ghost':                      'hells-kitchen-cinnamon-ghost-punch-hot-sauce',
+      'hells-kitchen-coconut-curry':                       'hells-kitchen-rockin-rasta-coconut-curry-hot-sauce',
+      'hells-kitchen-black-forest':                        'hells-kitchen-black-forest-black-cherry-balsamic-ghost-hot-sauce',
+      'sauce-crafters-hogs-ass-garlic-habanero-sauce':     'hogs-ass-garlic-habanero-hot-sauce',
+      'ashley-foods-mad-dog-sriracha':                     'mad-dog-357-sriracha-reaper-hot-sauce',
+      'melindas-mango-habanero':                           'melindas-mango-hot-sauce',
+      'melindas-original-naga-jolokia':                    'melindas-naga-jolokia-ghost-pepper-hot-sauce',
+      'melindas-scotch-bonnet-sauce':                      'melindas-scotch-bonnet-hot-sauce',
+      'mikey-vs-i-love-taco-sauce-hot':                    'mikey-vs-i-love-taco-hot-sauce-hot',
+      'mikey-vs-jalapeno-dill-pickle':                     'mikey-vs-dill-pickle-jalapeno-hot-sauce',
+      'mikey-vs-reaper-jalapeno-dill-pickle':              'mikey-vs-dill-pickle-reaper-hot-sauce',
+      'mikey-vs-ghostly-garlic':                           'mikey-vs-ghostly-garlic-hot-sauce',
+      'sauce-crafters-mountain-man-fire-roasted-habanero': 'moutain-man-fire-roasted-habanero-hot-sauce',
+      'puckerbutt-puckerbutt-gator-sauce':                 'puckerbutt-gator-hot-sauce',
+      'rheds-deja-vu':                                     'rheds-deja-vu-hot-sauce',
+      'rheds-lemon-drop':                                  'rheds-lemon-drop-hot-sauce',
+      'rheds-rheds-original':                              'rheds-original-hot-sauce',
+      'walker-son-slap-ya-mama-hot-sauce':                 'slap-ya-mama-cajun-hot-sauce'
+    };
+
+    function getImageStem(slug) {
+      return IMAGE_MAP[slug] || slug;
+    }
+
+    function buildCard(product) {
+      var slug      = product.slug;
+      var name      = product['Product Name'] || '';
+      var brand     = product['Brand'] || '';
+      var price     = product['Price'] ? '$' + parseFloat(product['Price']).toFixed(2) : '';
+      var heatCat   = product['Heat Category'] || '';
+      var heatLevel = product['Heat Level'] !== null ? product['Heat Level'] + '/10' : '';
+      var inStock   = product['in_stock'] !== false;
+      var imgStem   = getImageStem(slug);
+      var imgSrc    = 'assets/pullman-product-display/cat-' + imgStem + '.png';
+      var pageLink  = 'products/' + slug + '.html';
+      var award     = AWARD_BADGES[slug] || null;
+      var oos       = inStock ? '' : ' out-of-stock';
+      var oosBanner = '<div class="out-of-stock-banner"><span>Out of Stock</span></div>';
+      var awardHtml = award ? '<div class="award-badge"><span class="award-badge-text">' + award + '</span></div>' : '';
+
+      return '<a class="product-card reveal' + oos + '" href="' + pageLink + '">' +
+        '<div class="product-card-image">' +
+          '<div class="maker-badge"><span class="maker-badge-text">' + brand + '</span></div>' +
+          awardHtml +
+          '<img src="' + imgSrc + '" alt="' + name + '" loading="lazy" onerror="this.src=\'assets/pullman-product-display/cat-placeholder.png\'" />' +
+          oosBanner +
+          '<div class="heat-badge">' +
+            '<span class="heat-badge-emoji">\uD83C\uDF36</span>' +
+            '<span class="heat-badge-text">' + heatCat + '</span>' +
+            '<span class="heat-badge-num">' + heatLevel + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="product-card-body">' +
+          '<div class="product-card-name">' + name + '</div>' +
+          '<p class="product-card-teaser"></p>' +
+        '</div>' +
+        '<div class="product-card-footer">' +
+          '<span class="product-card-price">5 fl oz' + (price ? ' \u00b7 ' + price : '') + '</span>' +
+          '<span class="product-card-btn">View <span class="product-card-btn-arrow">\u2192</span></span>' +
+        '</div>' +
+      '</a>';
+    }
+
+    function fetchAndRender() {
+      fetch(JSON_PATH)
+        .then(function(res) {
+          if (!res.ok) throw new Error('JSON not ready');
+          return res.json();
+        })
+        .then(function(data) {
+          var hotSauces = data.filter(function(p) { return p['Category'] === CATEGORY; });
+          if (!hotSauces.length) return;
+
+          var sections = {
+            'mild-medium':     [],
+            'hot-very-hot':    [],
+            'extreme-inferno': []
+          };
+
+          hotSauces.forEach(function(p) {
+            var sid = SECTION_MAP[p['Heat Category']];
+            if (sid) sections[sid].push(p);
+          });
+
+          Object.keys(sections).forEach(function(key) {
+            sections[key].sort(function(a, b) {
+              return (a['Heat Level'] || 0) - (b['Heat Level'] || 0);
+            });
+          });
+
+          var sectionIds = ['mild-medium', 'hot-very-hot', 'extreme-inferno'];
+          var revEls = [];
+
+          document.querySelectorAll('.product-grid').forEach(function(grid, i) {
+            var sid      = sectionIds[i];
+            var products = sections[sid];
+            if (!products.length) return;
+            grid.innerHTML = products.map(buildCard).join('');
+            grid.querySelectorAll('.reveal').forEach(function(el) { revEls.push(el); });
+          });
+
+          var obs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+              if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+            });
+          }, { threshold: 0.08 });
+          revEls.forEach(function(el) { obs.observe(el); });
+
+          var counts = document.querySelectorAll('.heat-divider-count');
+          counts.forEach(function(el, i) {
+            var prods  = sections[sectionIds[i]];
+            var levels = prods.map(function(p) { return p['Heat Level']; }).filter(Boolean);
+            if (!levels.length) return;
+            var min = Math.min.apply(null, levels);
+            var max = Math.max.apply(null, levels);
+            el.textContent = prods.length + ' Sauces \u00b7 ' + min + '\u2013' + max + ' / 10';
+          });
+        })
+        .catch(function() {
+          console.log('PJ: JSON not available yet, using static catalog.');
+        });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fetchAndRender);
+    } else {
+      fetchAndRender();
+    }
+
   })();
   </script>
 </body>

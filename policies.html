@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Policies — Pepper Junction</title>
+  <meta name="description" content="Shipping, returns, damaged products, and contact information for Pepper Junction." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --brass:        #B88939;
+      --brass-bright: #D4A832;
+      --crimson:      #8F1F0D;
+      --green-dark:   #1E3020;
+      --cream:        #F5ECD6;
+      --cream-warm:   #FDF6E8;
+      --ink:          #2B1D15;
+      --ink-mid:      #4A3020;
+      --chalk:        #F0EDE0;
+      --chalk-muted:  #B8B4A0;
+      --chalk-surface:#1E2A1E;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @font-face {
+      font-family: 'BlackRiver';
+      src: url('assets/fonts/Blackriver-Bold.ttf') format('truetype');
+      font-weight: bold;
+      font-display: swap;
+    }
+
+    body {
+      background: var(--green-dark);
+      background-image: url('assets/textures/wooden-texture.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      font-family: 'Libre Baskerville', Georgia, serif;
+      color: var(--chalk);
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: var(--green-dark);
+      border-bottom: 2px solid var(--brass);
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.4);
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+    }
+
+    .header-logo img { height: 52px; width: auto; }
+
+    .header-wordmark { display: flex; flex-direction: column; gap: 2px; }
+
+    .header-name {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--cream-warm);
+      line-height: 1;
+      letter-spacing: 0.04em;
+    }
+
+    .header-tagline {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.8;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .header-nav a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.90;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .header-nav a:hover { opacity: 1; color: var(--brass-bright); }
+
+    /* ── HERO ── */
+    .page-hero {
+      background: url('assets/textures/Hero-Banner-Pullman-Burgandy.png') center center / 100% 100% no-repeat;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 24px 48px;
+    }
+
+    .page-hero-name {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(28px, 5vw, 52px);
+      color: var(--cream-warm);
+      line-height: 1;
+      letter-spacing: 0.03em;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.6);
+    }
+
+    .page-hero-sub {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 15px;
+      color: var(--cream);
+      opacity: 0.7;
+      margin-top: 8px;
+    }
+
+    /* ── PAGE BODY ── */
+    .page-outer {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 32px 64px;
+    }
+
+    /* ── CHALKBOARD WRAP ── */
+    .chalkboard-wrap {
+      position: relative;
+      padding: 18px;
+      background: linear-gradient(135deg,
+        #5C3310 0%, #7A4A20 12%, #4A2808 25%,
+        #8B5E30 38%, #5C3310 50%, #6B4018 62%,
+        #9A6838 75%, #4A2808 88%, #6B4018 100%);
+      box-shadow: inset 0 2px 6px rgba(255,220,100,0.3),
+                  inset 0 -3px 8px rgba(0,0,0,0.5),
+                  0 8px 40px rgba(0,0,0,0.6);
+      margin-bottom: 64px;
+    }
+
+    .chalkboard-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 2px solid rgba(212,168,50,0.5);
+      border-radius: 1px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .chalkboard-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(255,220,100,0.15);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .chalk-corner {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      z-index: 4;
+      background: radial-gradient(circle at 38% 38%,
+        #e8c96e 0%, #c8a84b 40%, #8a6010 80%, #5a3c08 100%);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.7), inset -1px -1px 3px rgba(0,0,0,0.4);
+    }
+    .chalk-corner.tl { top: 4px; left: 4px; }
+    .chalk-corner.tr { top: 4px; right: 4px; }
+    .chalk-corner.bl { bottom: 4px; left: 4px; }
+    .chalk-corner.br { bottom: 4px; right: 4px; }
+
+    .chalkboard-surface {
+      background:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E"),
+        linear-gradient(160deg, #2E2E2E 0%, #252525 30%, #2A2A2A 60%, #1F1F1F 100%);
+      padding: 48px 52px 56px;
+      position: relative;
+    }
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 24px 0 8px;
+      justify-content: center;
+    }
+
+    .quick-link {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      text-decoration: none;
+      padding: 7px 16px;
+      border: 1px solid rgba(212,168,50,0.35);
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .quick-link:hover {
+      background: rgba(212,168,50,0.1);
+      border-color: rgba(212,168,50,0.6);
+    }
+
+    /* ── POLICY SECTIONS ── */
+    .policy-section {
+      margin-top: 48px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(212,168,50,0.2);
+      scroll-margin-top: 120px;
+    }
+
+    .policy-title {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 28px;
+      color: var(--brass-bright);
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+
+    .policy-subtitle {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.6;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .policy-subtitle::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(212,168,50,0.4), transparent);
+    }
+
+    .policy-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    .policy-table tr:nth-child(even) td {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .policy-table td {
+      padding: 12px 16px;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 14px;
+      color: var(--chalk);
+      line-height: 1.6;
+      border-bottom: 1px solid rgba(212,168,50,0.1);
+      vertical-align: top;
+    }
+
+    .policy-table td:first-child {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      opacity: 0.8;
+      width: 200px;
+      white-space: nowrap;
+    }
+
+    .policy-note {
+      padding: 14px 18px;
+      background: rgba(143,31,13,0.1);
+      border: 1px solid rgba(143,31,13,0.3);
+      border-left: 3px solid var(--crimson);
+      margin-bottom: 20px;
+    }
+
+    .policy-note p {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--chalk);
+      opacity: 0.9;
+    }
+
+    .policy-body {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--chalk);
+      opacity: 0.9;
+      margin-bottom: 16px;
+    }
+
+    .contact-btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 12px 24px;
+      background: var(--crimson);
+      color: var(--cream-warm);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .contact-btn:hover { background: #6B1608; }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: var(--green-dark);
+      border-top: 2px solid var(--brass);
+      padding: 40px 48px 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(184,137,57,0.2);
+    }
+
+    .footer-brand img { height: 48px; width: auto; margin-bottom: 14px; opacity: 0.85; }
+
+    .footer-contact-item {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--cream);
+      opacity: 0.55;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .footer-contact-item a { color: inherit; text-decoration: none; }
+    .footer-contact-item a:hover { opacity: 1; }
+
+    .footer-col-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      opacity: 0.8;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+    .footer-col-links li a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.5;
+      text-decoration: none;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    .footer-col-links li a:hover { opacity: 1; color: var(--brass-bright); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-copy {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.45;
+    }
+
+    .footer-standard {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.25;
+      font-style: italic;
+    }
+
+    @media (max-width: 900px) {
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .policy-table td:first-child { width: 140px; }
+    }
+
+    @media (max-width: 640px) {
+      .site-header { padding: 16px 20px; }
+      .header-nav { display: none; }
+      .page-outer { padding: 0 16px 40px; }
+      .footer-top { grid-template-columns: 1fr; }
+      .site-footer { padding: 28px 20px 20px; }
+      .policy-table td:first-child { width: auto; white-space: normal; }
+      .policy-table { display: block; }
+      .policy-table tr { display: block; margin-bottom: 12px; }
+      .policy-table td { display: block; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a class="header-logo" href="conductor.html">
+    <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+    <div class="header-wordmark">
+      <span class="header-name">Pepper Junction</span>
+      <span class="header-tagline">Est. 2014 · Rhode Island</span>
+    </div>
+  </a>
+  <nav class="header-nav">
+    <a href="main.html">Home</a>
+    <a href="index.html">Pairing Bar</a>
+    <a href="main.html#location">Visit</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-name">Policies & Information</div>
+  <div class="page-hero-sub">Shipping · Returns · Damaged Products · Contact</div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page-outer">
+  <div class="chalkboard-wrap">
+    <div class="chalk-corner tl"></div>
+    <div class="chalk-corner tr"></div>
+    <div class="chalk-corner bl"></div>
+    <div class="chalk-corner br"></div>
+    <div class="chalkboard-surface">
+
+  <!-- Quick jump links -->
+  <div class="quick-links">
+    <a class="quick-link" href="#shipping">Shipping</a>
+    <a class="quick-link" href="#returns">Returns</a>
+    <a class="quick-link" href="#damaged">Damaged Products</a>
+    <a class="quick-link" href="#contact">Contact Us</a>
+  </div>
+
+  <!-- SHIPPING -->
+  <section class="policy-section" id="shipping">
+    <div class="policy-title">Shipping</div>
+    <div class="policy-subtitle">United States</div>
+    <table class="policy-table">
+      <tr>
+        <td>Ships To</td>
+        <td>Anywhere in the United States</td>
+      </tr>
+      <tr>
+        <td>Flat Rate</td>
+        <td>$9.99 flat rate shipping on all orders</td>
+      </tr>
+      <tr>
+        <td>Free Local Delivery</td>
+        <td>Free local delivery on orders of $20 or more within 15 miles of Cranston, RI</td>
+      </tr>
+    </table>
+    <div class="policy-note">
+      <p>When checking out, Square defaults to standard shipping. If you qualify for local delivery, look for the delivery method selector on the shipping step and choose <strong>Local Delivery</strong> — it's easy to miss.</p>
+    </div>
+  </section>
+
+  <!-- RETURNS -->
+  <section class="policy-section" id="returns">
+    <div class="policy-title">Returns</div>
+    <div class="policy-subtitle">30-Day Return Policy</div>
+    <table class="policy-table">
+      <tr>
+        <td>Authorization</td>
+        <td>Required — contact Pepper Junction by phone or email before returning any item</td>
+      </tr>
+      <tr>
+        <td>Window</td>
+        <td>30 days from date of purchase</td>
+      </tr>
+      <tr>
+        <td>Condition</td>
+        <td>Unopened, unused, in original packaging, completely resalable condition</td>
+      </tr>
+      <tr>
+        <td>Invoice</td>
+        <td>Include a copy of your original invoice for prompt credit processing</td>
+      </tr>
+      <tr>
+        <td>Refund Method</td>
+        <td>Credit issued to original payment method upon receipt of returned item</td>
+      </tr>
+      <tr>
+        <td>Freight</td>
+        <td>Non-refundable unless return is due to a Pepper Junction error</td>
+      </tr>
+      <tr>
+        <td>Restocking Fee</td>
+        <td>A 10% restocking fee may be applied to cancelled orders</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- DAMAGED PRODUCTS -->
+  <section class="policy-section" id="damaged">
+    <div class="policy-title">Damaged Products</div>
+    <div class="policy-subtitle">What to Do If Your Order Arrives Damaged</div>
+    <div class="policy-body">
+      If your order arrives damaged, don't worry — we'll make it right. Please follow these steps immediately upon receipt:
+    </div>
+    <table class="policy-table">
+      <tr>
+        <td>Step 1</td>
+        <td>Photograph the damaged item AND the shipping box before doing anything else. Photos are required to file a claim with the shipping carrier.</td>
+      </tr>
+      <tr>
+        <td>Step 2</td>
+        <td>Email your photos to <a href="mailto:pepperjunction401@gmail.com" style="color:var(--brass-bright);">pepperjunction401@gmail.com</a> with your order details.</td>
+      </tr>
+      <tr>
+        <td>Window</td>
+        <td>Please contact us within 14 days of delivery. Claims submitted after 14 days may not be eligible for replacement or refund.</td>
+      </tr>
+    </table>
+    <div class="policy-note">
+      <p>The photos of both the product AND the shipping box are critical — carriers require both to process a damage claim. Reach out as soon as possible and we'll take care of you.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="policy-section" id="contact">
+    <div class="policy-title">Contact Us</div>
+    <div class="policy-subtitle">We're Here to Help</div>
+    <table class="policy-table">
+      <tr>
+        <td>Phone</td>
+        <td><a href="tel:4013001474" style="color:var(--brass-bright);">(401) 300-1474</a></td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td><a href="mailto:pepperjunction401@gmail.com" style="color:var(--brass-bright);">pepperjunction401@gmail.com</a></td>
+      </tr>
+      <tr>
+        <td>Location</td>
+        <td>Jules Antiques · 320 Kingstown Rd · Richmond, RI 02898</td>
+      </tr>
+    </table>
+    <a class="contact-btn" href="mailto:pepperjunction401@gmail.com">Send Us an Email</a>
+  </section>
+
+    </div><!-- /chalkboard-surface -->
+  </div><!-- /chalkboard-wrap -->
+</div><!-- /page-outer -->
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+      <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
+      <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
+      <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+    </div>
+    <div>
+      <span class="footer-col-title">Shop</span>
+      <ul class="footer-col-links">
+        <li><a href="hot-sauces.html">Hot Sauces</a></li>
+        <li><a href="buffalo-condiments.html">Wing & Buffalo</a></li>
+        <li><a href="seasonings-bbq.html">BBQ & Seasonings</a></li>
+        <li><a href="buffalo-condiments.html">Condiments</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="olive-oils-vinegar.html">Olive Oils & Vinegars</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="footer-col-title">Pepper Junction</span>
+      <ul class="footer-col-links">
+        <li><a href="main.html">Home</a></li>
+        <li><a href="index.html">Pairing Bar</a></li>
+        <li><a href="main.html#about">Our Story</a></li>
+        <li><a href="main.html#location">Visit Us</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="footer-col-title">Help</span>
+      <ul class="footer-col-links">
+        <li><a href="policies.html#damaged">Damaged Products</a></li>
+        <li><a href="policies.html#shipping">Shipping Info</a></li>
+        <li><a href="policies.html#returns">Returns</a></li>
+        <li><a href="policies.html#contact">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
+    <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
+  </div>
+</footer>
+
+</body>
+</html>

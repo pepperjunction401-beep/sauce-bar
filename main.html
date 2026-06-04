@@ -976,6 +976,28 @@
     }
 
     @media (max-width: 640px) {
+      .hero {
+        background: url('assets/textures/Hero-Banner-Mobile.png') center center / 100% 100% no-repeat;
+        aspect-ratio: 2 / 1;
+      }
+      .hero-inner {
+        padding: 0 5%;
+      }
+      .hero-headline {
+        font-size: clamp(14px, 5.5vw, 28px);
+        white-space: normal;
+        margin-bottom: 4px;
+      }
+      .hero-sub {
+        font-size: clamp(10px, 3vw, 16px);
+        white-space: normal;
+        max-width: 100%;
+      }
+      .hero-tag {
+        font-size: clamp(8px, 2.2vw, 13px);
+        letter-spacing: 0.18em;
+        margin-bottom: 6px;
+      }
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
       .hero { aspect-ratio: 4 / 1; }
@@ -2227,7 +2249,6 @@
       <a href="#categories">Shop</a>
       <a href="index.html">Pairing Bar</a>
       <a href="#location">Visit</a>
-      <a href="https://www.pepperjunction401.com" class="nav-cta" target="_blank">Order Online</a>
     </nav>
   </header>
 
@@ -2250,6 +2271,22 @@
           autoplay muted playsinline controls
         ></video>
       </div>
+    </div>
+    <div style="text-align:center;padding:80px 0 8px;">
+      <a href="index.html" style="
+        display:inline-block;
+        font-family:'Josefin Sans',sans-serif;
+        font-size:13px;
+        font-weight:700;
+        letter-spacing:0.26em;
+        text-transform:uppercase;
+        text-decoration:none;
+        color:#1a1008;
+        background:#c49a3c;
+        border:1px solid #d4a832;
+        padding:14px 48px;
+        border-radius:2px;
+      ">Head to the Pairing Bar &rarr;</a>
     </div>
   </section>
 
@@ -2311,28 +2348,28 @@
         <div class="pic-light__glow"></div>
       </div>
       <div class="panels-grid">
-        <a class="panel-card reveal" href="index.html?category=hot-sauce-mild">
+        <a class="panel-card reveal" href="hot-sauces.html#mild-medium">
           <img src="assets/category-panels/Hot-Sauces-Mild-Medium.png" alt="Hot Sauces Mild Medium" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="index.html?category=hot-sauce-hot">
+        <a class="panel-card reveal" href="hot-sauces.html#hot-very-hot">
           <img src="assets/category-panels/Hot-Sauces-Hot-Very-Hot.png" alt="Hot Sauces Hot Very Hot" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="index.html?category=hot-sauce-inferno">
+        <a class="panel-card reveal" href="hot-sauces.html#extreme-inferno">
           <img src="assets/category-panels/Hot-Sauces-Extreme-Heat-Inferno.png" alt="Hot Sauces Extreme Heat Inferno" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="index.html?category=seasonings">
+        <a class="panel-card reveal" href="seasonings-bbq.html">
           <img src="assets/category-panels/Seasonings-Dry-Rubs-BBQ-Sauces.png" alt="Seasonings Dry Rubs BBQ Sauces" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="index.html?category=buffalo-sauce">
+        <a class="panel-card reveal" href="buffalo-condiments.html#buffalo">
           <img src="assets/category-panels/Buffalo-Sauce.png" alt="Buffalo Sauce" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="index.html?category=condiments">
+        <a class="panel-card reveal" href="buffalo-condiments.html#condiments">
           <img src="assets/category-panels/Condiments-With-A-Kick.png" alt="Condiments With a Kick" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="index.html?category=snacks">
+        <a class="panel-card reveal" href="snacks.html">
           <img src="assets/category-panels/Snacks-Fried-Garlic.png" alt="Snacks Fried Garlic" loading="lazy" />
         </a>
-        <a class="panel-card reveal" href="index.html?category=olive-oil-vinegar">
+        <a class="panel-card reveal" href="olive-oils-vinegar.html">
           <img src="assets/category-panels/Specialty-Olive-Oils-Vinegar.png" alt="Specialty Olive Oils Vinegar" loading="lazy" />
         </a>
         <a class="panel-card reveal" href="index.html?category=recipes">
@@ -2496,7 +2533,8 @@
       <span class="footer-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
     </div>
     <div class="footer-right">© Pepper Junction · Est. 2014</div>
-  </footer>
+  
+</footer>
 
   <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
   <script>
@@ -2520,18 +2558,42 @@
     const sendBtn     = document.getElementById('chat-send');
     const thinkingEl  = document.getElementById('chat-thinking');
 
-    const SYSTEM_PROMPT = `You are the Pepper Junction Bartender — brand ambassador, storyteller, and general guide. Warm, knowledgeable, conversational. The voice of someone who has been in hospitality their whole life. Genuinely helpful, personable, never robotic.
+    const SYSTEM_PROMPT = `You are the Pepper Junction Bartender — brand ambassador, storyteller, and general guide for Pepper Junction. You are warm, knowledgeable, and conversational. The voice of someone who has been in hospitality their whole life — genuinely helpful, personable, never robotic. You read the customer, give the right answer, and know when to pass them to the right person.
 
-You handle: brand story and philosophy, The Pepper Junction Standard™, location (Jules Antiques & General Store, 320 Kingstown Rd, Richmond RI, Mon-Sun 10am-5pm), contact info (phone: 401-300-1474, email: pepperjunction401@gmail.com), events (seasonal pop-up appearances — follow email list for updates), online store and shipping ($9.99 flat rate, free local delivery on orders $20+ within 15 miles of Cranston RI), returns (30 days, unopened, authorization required), general product category overview.
+ABOUT PEPPER JUNCTION:
+Pepper Junction is a specialty food retailer and pop-up vendor based in Rhode Island, founded in 2014 by John. A flavor-first approach to craft hot sauces, spicy condiments, BBQ dry rubs, spicy snacks, and artisan infused olive oils and vinegars. Flavor first — not heat first. Every product on the shelf has been intentionally selected. Nothing is placed there by accident or on a whim.
 
-For specific sauce recommendations, heat levels, flavor notes, or food pairings — always direct to the Sauce Discovery Engine / Pairing Bar.
+OWNER & STORY:
+John spent 30+ years working in Rhode Island's hospitality industry as a professional waiter in upscale restaurants — where pairing, balance, and knowing how to guide someone toward the right choice was part of the job every day. Pepper Junction is not just about selling hot sauce — it is about creating a better flavor experience for people who want something more thoughtful, more personal, and more exciting than grabbing a bottle off a shelf.
 
-Hard rules:
-- Never mention Facebook under any circumstances
-- Keep responses under 90 words — conversational, not a brochure
-- Never invent product details
-- Never state pop-up schedule is fixed — seasonal and subject to change
-- Never mention farmers markets specifically`;
+THE PEPPER JUNCTION STANDARD™:
+A voluntary internal governance framework ensuring integrity, intentionality, and consistency in product selection. Three criteria: (1) Ingredient Integrity — transparency of formulation, quality primary ingredients, no artificial additives or fillers. (2) Balance Within Intended Style — structural balance among heat, acidity, sweetness, and salt. Heat alone does not qualify a product. (3) Pairing Performance — effective culinary performance within at least one defined pairing lane. Every product has been personally evaluated. Nothing makes the shelf by accident or on a whim.
+
+LOCATION:
+Jules Antiques & General Store, 320 Kingstown Rd (Route 138), Richmond, RI 02892. Open Monday through Sunday, 10:00 AM to 5:00 PM. Closed Easter Sunday, Christmas Day, New Year's Day, and the first full week of January. Pepper Junction has been a permanent vendor there since 2014.
+
+CONTACT:
+Phone: (401) 300-1474. Email: pepperjunction401@gmail.com. Instagram: @pepperjunction401. Website: pepperjunction401.com. Wholesale: pepperjunction401.com/wholesale.
+
+ONLINE STORE & SHIPPING:
+Ships anywhere in the United States. $9.99 flat rate shipping. Free local delivery on orders of $20 or more within 15 miles of Cranston, RI.
+
+RETURNS:
+Returns require authorization — contact by phone or email first. 30-day window from date of purchase. Items must be unopened, unused, in original packaging. Include original invoice. 10% restocking fee may apply to cancelled orders. Freight charges non-refundable unless error on Pepper Junction's part. For damaged items: photograph item AND box immediately, email photos within 14 days of delivery.
+
+EVENTS:
+Seasonal pop-up vendor at food festivals and events. Schedule is seasonal — nothing is guaranteed year to year. Sign up for the email and text campaign at pepperjunction401.com for advance notice.
+
+PRODUCT CATEGORIES:
+Hot Sauce, Wing Sauce, BBQ Sauce, Condiments, Seasonings & Dry Rubs, Snacks, Olive Oil & Vinegar, Merch. Pepper Junction also carries its own product: All Purpose SPG 14oz — a competition-grade dry rub (salt, pepper, garlic) for smoking and grilling.
+
+HARD RULES — follow these without exception:
+- Never mention Facebook under any circumstances.
+- Keep responses under 90 words when possible — conversational, not a brochure.
+- Never invent product details — redirect to the Sauce Discovery Engine / Pairing Bar.
+- Never state that the pop-up or event schedule is fixed — it is seasonal and subject to change.
+- For any question about specific sauce recommendations, heat levels, flavor notes, or food pairings — always direct to the Pairing Bar: "That's a pairing question — the Sauce Discovery Engine has you covered. You can find it right here on the site."
+- Never reference farmers markets specifically.`;
 
     let history = [];
 

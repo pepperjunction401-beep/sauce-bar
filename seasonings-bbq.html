@@ -730,6 +730,48 @@
       .site-footer { padding: 20px; }
     }
 
+    /* ── OUT OF STOCK TREATMENT ───────────────────────────────── */
+    .product-card.out-of-stock .product-card-image img {
+      filter: grayscale(100%) opacity(0.5);
+      transition: filter 0.3s ease;
+    }
+
+    .out-of-stock-banner {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      background: rgba(43,29,21,0.88);
+      border-top: 1px solid rgba(184,137,57,0.4);
+      border-bottom: 1px solid rgba(184,137,57,0.4);
+      padding: 10px 0;
+      text-align: center;
+      z-index: 3;
+      display: none;
+    }
+
+    .product-card.out-of-stock .out-of-stock-banner {
+      display: block;
+    }
+
+    .out-of-stock-banner span {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+    }
+
+    .product-card.out-of-stock .product-card-name {
+      opacity: 0.55;
+    }
+
+    .product-card.out-of-stock .product-card-teaser {
+      opacity: 0.45;
+    }
+
   </style>
 </head>
 <body>
@@ -1141,6 +1183,132 @@
     }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
 
     sections.forEach(function (s) { if (s) sectionObserver.observe(s); });
+  })();
+  </script>
+
+  <script>
+  /* ================================================================
+     PJ CATEGORY PAGE — JSON-DRIVEN RENDERING
+     Dormant until data/Database_Pepper_Junction.json.json is live.
+     Static cards remain as fallback if fetch fails or JSON not ready.
+     Out-of-stock treatment activates when in_stock: false appears.
+  ================================================================ */
+  (function() {
+
+    var JSON_PATH = 'data/Database_Pepper_Junction.json.json';
+
+    // Grid 0 = BBQ Sauces + Dry Rubs, Grid 1 = Seasonings
+    var GRID_CATEGORIES = [
+      ['BBQ SAUCE', 'SEASONINGS/DRY RUBS'],  // grid 0 — bbq-rubs section
+      ['SEASONINGS/DRY RUBS']                 // grid 1 — seasonings section (Slap Ya Mama + Ass Kickin)
+    ];
+
+    var AWARD_BADGES = {
+      'sucklebusters-original-bbq':              "\uD83C\uDFC6 Award Winning",
+      'sucklebusters-bbq-chipotle':              "\uD83C\uDFC6 Award Winning",
+      'sucklebusters-sucklebusters-hogwaller-14oz':   "\uD83C\uDFC6 Award Winning",
+      'sucklebusters-sucklebusters-clucker-dust-14oz':"\uD83C\uDFC6 Award Winning",
+      '2-pig-mafia-2-pig-mafia-steak-seasoning-14oz': "\uD83C\uDFC6 2019 World Steak Championship"
+    };
+
+    var IMAGE_MAP = {
+      'sucklebusters-original-bbq':                    'sucklebusters-original-bbq-sauce',
+      'sucklebusters-bbq-chipotle':                    'sucklebusters-chipotle-bbq-sauce',
+      'sucklebusters-sucklebusters-hogwaller-14oz':    'sucklebusters-hogwaller-bbq-dry-rub',
+      'suckelbusters-suckelbusters-1836-14oz':         'sucklebusters-1836-beef-rub',
+      '2-pig-mafia-2-pig-mafia-steak-seasoning-14oz':  'two-pig-mafia-steak-seasoning',
+      'pepper-junction-all-purpose-spg-14oz':          'pj-all-purpose-spg',
+      'sucklebusters-sucklebusters-clucker-dust-14oz': 'sucklebusters-cluckerdust-chipotle-bbq-dry-rub',
+      'sucklebusters-sucklebusters-bamm-14oz':         'sucklebusters-bamm-bbq-dry-rub',
+      'walker-son-slap-ya-mama-cajun-original':        'slap-ya-mama-cajun-seasoning-original',
+      'walker-son-slap-ya-mama-cajun-hot':             'slap-ya-mama-cajun-seasoning-hot',
+      'walker-son-slap-ya-mama-cajun-low-sodium':      'slap-ya-mama-cajun-seasoning-low-sodium',
+      'ass-kickin-habanero-garlic-salt':               'pj-all-purpose-spg'
+    };
+
+    function getImageStem(slug) {
+      return IMAGE_MAP[slug] || slug;
+    }
+
+    function buildCard(product) {
+      var slug      = product.slug;
+      var name      = product['Product Name'] || '';
+      var brand     = product['Brand'] || '';
+      var price     = product['Price'] ? '$' + parseFloat(product['Price']).toFixed(2) : '';
+      var inStock   = product['in_stock'] !== false;
+      var imgStem   = getImageStem(slug);
+      var imgSrc    = 'assets/pullman-product-display/cat-' + imgStem + '.png';
+      var pageLink  = 'products/' + slug + '.html';
+      var award     = AWARD_BADGES[slug] || null;
+      var oos       = inStock ? '' : ' out-of-stock';
+      var oosBanner = '<div class="out-of-stock-banner"><span>Out of Stock</span></div>';
+      var awardHtml = award ? '<div class="award-badge"><span class="award-badge-text">' + award + '</span></div>' : '';
+
+      return '<a class="product-card reveal' + oos + '" href="' + pageLink + '">' +
+        '<div class="product-card-image">' +
+          '<div class="maker-badge"><span class="maker-badge-text">' + brand + '</span></div>' +
+          awardHtml +
+          '<img src="' + imgSrc + '" alt="' + name + '" loading="lazy" onerror="this.src=\'assets/pullman-product-display/cat-placeholder.png\'" />' +
+          oosBanner +
+        '</div>' +
+        '<div class="product-card-body">' +
+          '<div class="product-card-name">' + name + '</div>' +
+          '<p class="product-card-teaser"></p>' +
+        '</div>' +
+        '<div class="product-card-footer">' +
+          '<span class="product-card-price">' + (price ? price : '') + '</span>' +
+          '<span class="product-card-btn">View <span class="product-card-btn-arrow">\u2192</span></span>' +
+        '</div>' +
+      '</a>';
+    }
+
+    function fetchAndRender() {
+      fetch(JSON_PATH)
+        .then(function(res) {
+          if (!res.ok) throw new Error('JSON not ready');
+          return res.json();
+        })
+        .then(function(data) {
+          // Grid 0: BBQ sauces + dry rubs (exclude Slap Ya Mama seasonings)
+          var bbqRubs = data.filter(function(p) {
+            return (p['Category'] === 'BBQ SAUCE' || p['Category'] === 'SEASONINGS/DRY RUBS') &&
+                   p['Brand'] !== 'Walker & Son' && p['Brand'] !== 'Ass Kickin';
+          });
+
+          // Grid 1: Seasonings (Slap Ya Mama + Ass Kickin)
+          var seasonings = data.filter(function(p) {
+            return p['Category'] === 'SEASONINGS/DRY RUBS' &&
+                   (p['Brand'] === 'Walker & Son' || p['Brand'] === 'Ass Kickin');
+          });
+
+          var groups  = [bbqRubs, seasonings];
+          var revEls  = [];
+
+          document.querySelectorAll('.product-grid').forEach(function(grid, i) {
+            var products = groups[i];
+            if (!products || !products.length) return;
+            grid.innerHTML = products.map(buildCard).join('');
+            grid.querySelectorAll('.reveal').forEach(function(el) { revEls.push(el); });
+          });
+
+          var obs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+              if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+            });
+          }, { threshold: 0.08 });
+          revEls.forEach(function(el) { obs.observe(el); });
+        })
+        .catch(function() {
+          console.log('PJ: JSON not available yet, using static catalog.');
+        });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fetchAndRender);
+    } else {
+      fetchAndRender();
+    }
+
   })();
   </script>
 

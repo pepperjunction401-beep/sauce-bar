@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pepperjunction401-beep.github.io/sauce-bar/sitemap.xml
