@@ -339,9 +339,9 @@ body.pj-cart-open {
 
 .pj-cart-teaser-row {
   display: grid;
-  grid-template-columns: 112px 1fr;
+  grid-template-columns: 36px 1fr;
   gap: 10px;
-  align-items: start;
+  align-items: center;
   padding: 8px 0;
   border-bottom: 1px solid rgba(212,168,50,0.12);
 }
@@ -355,14 +355,16 @@ body.pj-cart-open {
   border-bottom: none;
 }
 
+.pj-cart-teaser-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 2px 7px rgba(0,0,0,0.45));
+}
+
 .pj-cart-teaser-key {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--brass);
-  opacity: 0.75;
+  display: none;
 }
 
 .pj-cart-teaser-val {
