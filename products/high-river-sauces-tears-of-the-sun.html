@@ -22,6 +22,7 @@
 
   <!-- ── PRODUCT PAGE STYLESHEET ── -->
   <link rel="stylesheet" href="../assets/css/pj-product.css">
+  <link rel="stylesheet" href="../assets/css/cart.css">
 
   <!-- ── SCHEMA.ORG — product structured data, values injected from JSON ── -->
   <script type="application/ld+json" id="product-schema">
@@ -69,6 +70,8 @@
 
   <!-- ── PRODUCT INTELLIGENCE LAYER ── -->
   <script src="../assets/js/pj-product.js"></script>
+  <script src="../assets/js/cart-engine.js"></script>
+  <script src="../assets/js/cart-drawer.js"></script>
 
 </head>
 
@@ -350,16 +353,14 @@
             <span class="delivery-arrow">›</span>
           </div>
 
-          <!-- Buy Now -->
-          <a
+          <!-- Add To Cart -->
+          <button
             class="buy-now-btn"
             id="buy-now-btn"
-            href="https://www.pepperjunction401.com/product/high-river-tears-of-the-sun-tropical-hot-sauce-/1?cs=true&cst=custom"
-            target="_blank"
-            rel="noopener noreferrer"
+            type="button"
           >
-            Buy Now — $9.00
-          </a>
+            Add To Cart — $9.00
+          </button>
 
         </div><!-- /product-content -->
       </div><!-- /product-layout -->
@@ -493,6 +494,21 @@
       var sqId      = product['Square_ID']     || '';
       var category  = product['Category']      || '';
 
+      /* ── CART PRODUCT OBJECT ── */
+      window.PJCurrentProduct = {
+        product_id:   PAGE_SLUG,
+        slug:         PAGE_SLUG,
+        product_name: product['Product Name']  || '',
+        brand:        product['Brand']         || '',
+        price:        parseFloat(product['Price']) || 0,
+        square_id:    sqId,
+        square_url:   product['Product URL']   || '',
+        image:        '../assets/sauces/' + PAGE_SLUG + '.png',
+        category:     category,
+        heat_category: heatCat,
+        food_style:   product['Food Style']    || ''
+      };
+
       setTxt('class-heat-cat',   heatCat);
       setTxt('class-how-hits',   howHits);
       setTxt('class-heat-finish',heatFin);
@@ -501,7 +517,16 @@
       if (price) {
         setTxt('hero-price', price);
         var btn = document.getElementById('buy-now-btn');
-        if (btn) btn.textContent = 'Buy Now — ' + price;
+        if (btn) btn.textContent = 'Add To Cart — ' + price;
+      }
+
+      /* ── ADD TO CART HANDLER ── */
+      var buyBtn = document.getElementById('buy-now-btn');
+      if (buyBtn && window.PJCurrentProduct) {
+        buyBtn.addEventListener('click', function() {
+          PJCart.addItem(Object.assign({}, window.PJCurrentProduct, { quantity: 1 }));
+          PJCartDrawer.open();
+        });
       }
 
       var catInfo = CAT_PAGE[category];
@@ -555,12 +580,12 @@
       /* ── OUT OF STOCK TREATMENT ── */
       var inStock = product['in_stock'];
       if (inStock === false || String(inStock).toLowerCase() === 'false') {
-        /* Disable Buy Now button */
+        /* Disable Add To Cart button */
         var buyBtn = document.getElementById('buy-now-btn');
         if (buyBtn) {
           buyBtn.classList.add('out-of-stock');
           buyBtn.textContent = 'Currently Out of Stock';
-          buyBtn.removeAttribute('href');
+          buyBtn.disabled = true;
           buyBtn.setAttribute('aria-disabled', 'true');
           buyBtn.setAttribute('tabindex', '-1');
         }
