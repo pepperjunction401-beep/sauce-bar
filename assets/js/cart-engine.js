@@ -204,12 +204,12 @@
    * Based on item quantity in this transaction only.
    */
   var BOTTLE_COIN_TIERS = [
-    { count: 3, name: 'Lincoln Wheat Penny', catchphrase: 'This Makes Sense' },
-    { count: 5, name: 'Buffalo Nickel', catchphrase: '5 Alive' },
-    { count: 6, name: 'Mercury Dime', catchphrase: 'Six-Pack of Legends' },
-    { count: 7, name: 'Standing Liberty Quarter', catchphrase: 'Quarter Past Seven' },
-    { count: 8, name: 'Walking Liberty Half Dollar', catchphrase: 'Eight to Appreciate' },
-    { count: 9, name: 'Peace Dollar', catchphrase: 'Peace Is With You' }
+    { count: 3, name: 'Lincoln Wheat Penny',       image: 'bottle-purchase-coins/badge-coin-penny-obverse.png',        catchphrase: 'This Makes Sense' },
+    { count: 5, name: 'Buffalo Nickel',            image: 'bottle-purchase-coins/badge-coin-nickel-obverse.png',       catchphrase: '5 Alive' },
+    { count: 6, name: 'Mercury Dime',              image: 'bottle-purchase-coins/badge-coin-dime-obverse.png',         catchphrase: 'Six-Pack of Legends' },
+    { count: 7, name: 'Standing Liberty Quarter',  image: 'bottle-purchase-coins/badge-coin-quarter-obverse.png',      catchphrase: 'Quarter Past Seven' },
+    { count: 8, name: 'Walking Liberty Half Dollar', image: 'bottle-purchase-coins/badge-coin-half-dollar-obverse.png', catchphrase: 'Eight to Appreciate' },
+    { count: 9, name: 'Peace Dollar',              image: 'bottle-purchase-coins/badge-coin-peace-dollar-obverse.png', catchphrase: 'Peace Is With You' }
   ];
 
   function getBottleCoinProgress(itemCount) {
@@ -246,15 +246,15 @@
    * Highest threshold reached only.
    */
   var CHECK_TOTAL_TIERS = [
-    { amount: 10, name: 'Pickup Sticks', catchphrase: 'Every great collection starts with the first pick.' },
-    { amount: 25, name: 'Chinese Checkers', catchphrase: "You're already three jumps ahead." },
-    { amount: 40, name: 'Dominoes', catchphrase: 'One good sauce leads to another. Watch them fall.' },
-    { amount: 50, name: 'Bingo', catchphrase: 'Spice Things Up Until You Reach BINGO!' },
-    { amount: 60, name: 'Checkers', catchphrase: 'Purchasing like a King!' },
-    { amount: 70, name: 'Parcheesi', catchphrase: 'No Safe Space Can Contain Your Need for Heat.' },
-    { amount: 80, name: 'Monopoly', catchphrase: "What's Free About Parking?" },
-    { amount: 90, name: 'Scrabble', catchphrase: 'Pssssh.. Now This is a Real Score.' },
-    { amount: 100, name: 'Sorry!', catchphrase: 'Sliding into this many new sauces feels as fun as the game.' }
+    { amount: 10,  name: 'Pickup Sticks',      image: 'check-total/badge-check-total-pickup-sticks.png',      catchphrase: 'Every great collection starts with the first pick.' },
+    { amount: 25,  name: 'Chinese Checkers',   image: 'check-total/badge-check-total-chinese-checkers.png',   catchphrase: "You're already three jumps ahead." },
+    { amount: 40,  name: 'Dominoes',           image: 'check-total/badge-check-total-dominoes.png',           catchphrase: 'One good sauce leads to another. Watch them fall.' },
+    { amount: 50,  name: 'Bingo',              image: 'check-total/badge-check-total-bingo.png',              catchphrase: 'Spice Things Up Until You Reach BINGO!' },
+    { amount: 60,  name: 'Checkers',           image: 'check-total/badge-check-total-checkers.png',           catchphrase: 'Purchasing like a King!' },
+    { amount: 70,  name: 'Parcheesi',          image: 'check-total/badge-check-total-parcheesi.png',          catchphrase: 'No Safe Space Can Contain Your Need for Heat.' },
+    { amount: 80,  name: 'Monopoly',           image: 'check-total/badge-check-total-monopoly.png',           catchphrase: "What's Free About Parking?" },
+    { amount: 90,  name: 'Scrabble',           image: 'check-total/badge-check-total-scrabble.png',           catchphrase: 'Pssssh.. Now This is a Real Score.' },
+    { amount: 100, name: 'Sorry!',             image: 'check-total/badge-check-total-sorry.png',              catchphrase: 'Sliding into this many new sauces feels as fun as the game.' }
   ];
 
   function getCheckTotalProgress(subtotal) {
