@@ -530,3 +530,21 @@ body.pj-cart-open {
     letter-spacing: 0.16em;
   }
 }
+
+/* ── CART PAGE IMAGES ─────────────────────────────────────── */
+
+.pj-cart-page-item-img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  display: block;
+}
+
+/* ── BOTTLE COIN + CHECK TOTAL BADGE IMAGES ───────────────── */
+
+.pj-progress-img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  display: block;
+}
