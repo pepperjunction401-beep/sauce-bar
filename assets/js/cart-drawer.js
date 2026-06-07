@@ -121,7 +121,7 @@
           '<strong id="pj-cart-subtotal">$0.00</strong>' +
         '</div>' +
         '<button class="pj-cart-action pj-cart-continue" type="button">Continue Shopping</button>' +
-        '<a class="pj-cart-action pj-cart-view" href="../cart.html">View Full Cart</a>' +
+        '<a class="pj-cart-action pj-cart-view" href="../cart-page.html">View Full Cart</a>' +
         '<button class="pj-cart-action pj-cart-checkout" type="button">Checkout Now</button>' +
         '<div class="pj-cart-note">Checkout bridge coming soon. Square remains the register.</div>' +
       '</div>';
@@ -272,7 +272,7 @@
               '<button class="pj-cart-qty-btn" type="button" data-cart-dec="' + esc(item.product_id) + '" aria-label="Decrease quantity">−</button>' +
               '<span class="pj-cart-qty">' + esc(item.quantity) + '</span>' +
               '<button class="pj-cart-qty-btn" type="button" data-cart-inc="' + esc(item.product_id) + '" aria-label="Increase quantity">+</button>' +
-              '<button class="pj-cart-remove" type="button" data-cart-remove="' + esc(item.product_id) + '">Remove</button>' +
+              '<button class="pj-cart-remove" type="button" data-cart-remove="' + esc(item.product_id) + '">🗑 Remove</button>' +
             '</div>' +
           '</div>' +
 
