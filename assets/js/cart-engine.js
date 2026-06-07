@@ -151,12 +151,20 @@
   function decrement(productId) {
     var cart = readCart();
 
-    cart.items = cart.items.map(function (item) {
+    cart.items = cart.items.reduce(function (items, item) {
       if (item.product_id === productId) {
-        item.quantity = Math.max(1, normalizeQty(item.quantity) - 1);
+        var newQty = normalizeQty(item.quantity) - 1;
+
+        if (newQty < 1) {
+          return items;
+        }
+
+        item.quantity = newQty;
       }
-      return item;
-    });
+
+      items.push(item);
+      return items;
+    }, []);
 
     writeCart(cart);
     return getCartSummary();
