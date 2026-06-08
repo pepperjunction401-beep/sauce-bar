@@ -744,7 +744,7 @@
     if (!celestial) return null;
 
     var monthLabel = MONTH_LABELS[monthIndex] || '';
-    var badgeName = celestial.name + ' Celestial Badge';
+    vavar badgeName = celestial.name + ' Badge';
 
     return {
       type: 'celestial_badge',
