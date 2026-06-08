@@ -1,6 +1,6 @@
 /**
  * cart-page.js
- * Pepper Junction — Full Cart Page / Junction Progress Station v2
+ * Pepper Junction — Full Cart Page / Junction Progress Station v2.1
  *
  * Requires:
  * - assets/js/cart-engine.js loaded first
@@ -15,6 +15,7 @@
  * - Render Purchase Progress Badge progress
  * - Render Heat Badge progress
  * - Render Food Category Badge progress
+ * - Render Celestial Badge
  * - Keep page synced with PJCart sessionStorage
  *
  * Does NOT:
@@ -196,10 +197,6 @@
       emptyEl.textContent = config.emptyMessage || '';
       emptyEl.style.display = 'block';
 
-      /*
-       * Per locked spec:
-       * If a badge section has no badges, hide the section header and show the placeholder.
-       */
       if (headerEl) headerEl.style.display = 'none';
 
       return;
@@ -241,8 +238,8 @@
     if (card && card.image) {
       return (
         '<img class="pj-progress-img" src="' + esc(BADGE_BASE + card.image) + '" alt="' + esc(card.name || 'Badge') + '" ' +
-          'loading="lazy" onerror="this.style.display=\'none\'; this.parentNode.classList.add(\'pj-progress-img-missing\');">' +
-        '<span class="pj-progress-img-fallback" aria-hidden="true">Art Pending</span>'
+          'loading="lazy" onerror="this.style.display=\'none\'; if (this.nextElementSibling) { this.nextElementSibling.style.display=\'inline-flex\'; }">' +
+        '<span class="pj-progress-img-fallback" style="display:none;" aria-hidden="true">Art Pending</span>'
       );
     }
 
