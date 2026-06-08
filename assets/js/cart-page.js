@@ -234,17 +234,16 @@
     );
   }
 
-  function renderBadgeMedia(card) {
-    if (card && card.image) {
-      return (
-        '<img class="pj-progress-img" src="' + esc(BADGE_BASE + card.image) + '" alt="' + esc(card.name || 'Badge') + '" ' +
-          'loading="lazy" onerror="this.style.display=\'none\'; if (this.nextElementSibling) { this.nextElementSibling.style.display=\'inline-flex\'; }">' +
-        '<span class="pj-progress-img-fallback" style="display:none;" aria-hidden="true">Art Pending</span>'
-      );
-    }
-
-    return '<span class="pj-progress-img-fallback visible" aria-hidden="true">Art Pending</span>';
+function renderBadgeMedia(card) {
+  if (card && card.image) {
+    return (
+      '<img class="pj-progress-img" src="' + esc(BADGE_BASE + card.image) + '" alt="' + esc(card.name || 'Badge') + '" ' +
+        'loading="lazy" onerror="this.outerHTML=\'<span class=&quot;pj-progress-img-fallback visible&quot; aria-hidden=&quot;true&quot;>Art Pending</span>\'">'
+    );
   }
+
+  return '<span class="pj-progress-img-fallback visible" aria-hidden="true">Art Pending</span>';
+}
 
   function clampPercent(value) {
     return Math.max(0, Math.min(100, Math.round(Number(value || 0))));
