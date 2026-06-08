@@ -1,6 +1,6 @@
 /**
  * cart-engine.js
- * Pepper Junction — Session Cart Engine v2
+ * Pepper Junction — Session Cart Engine v2.1
  *
  * Purpose:
  * - Shared cart logic for all product pages
@@ -14,12 +14,14 @@
  * - Purchase Progress Badge
  * - Heat Badges
  * - Food Category Badges
+ * - Celestial Badge
  *
  * Critical rules:
  * - Highest tier only
  * - Quantity-based counting
  * - Session-only by default
  * - Supabase-ready hooks, but no Supabase dependency
+ * - Secret badges and Year of the Horse do not surface in cart
  */
 
 (function () {
@@ -349,9 +351,6 @@
   /*
    * Heat Badge tiers.
    * Highest tier only per heat category.
-   *
-   * Image paths are intentionally generated from category + level.
-   * If a file is missing, cart-page.js will render a placeholder safely.
    */
   var HEAT_BADGE_TIERS = [
     { threshold: 5, level: 1, label: 'L1' },
@@ -362,13 +361,6 @@
   /*
    * Food Category Badges.
    * v2 uses a 5 qualifying purchase threshold.
-   * Matching is based on available cart metadata:
-   * - category
-   * - food_style
-   * - best_pairings
-   * - product_name
-   *
-   * Add or refine keywords as badge data becomes more formal.
    */
   var FOOD_CATEGORY_BADGE_THRESHOLD = 5;
 
@@ -463,6 +455,31 @@
       image: 'food/badge-food-verde.png',
       keywords: ['verde', 'green sauce', 'tomatillo']
     }
+  ];
+
+  /*
+   * Celestial monthly badge.
+   * This surfaces the monthly zodiac badge only.
+   * Secret monthly-completion badges and Year of the Horse do not surface in cart.
+   */
+  var CELESTIAL_MONTHS = [
+    { slug: 'aquarius', name: 'Aquarius' },
+    { slug: 'pisces', name: 'Pisces' },
+    { slug: 'aries', name: 'Aries' },
+    { slug: 'taurus', name: 'Taurus' },
+    { slug: 'gemini', name: 'Gemini' },
+    { slug: 'cancer', name: 'Cancer' },
+    { slug: 'leo', name: 'Leo' },
+    { slug: 'virgo', name: 'Virgo' },
+    { slug: 'libra', name: 'Libra' },
+    { slug: 'scorpio', name: 'Scorpio' },
+    { slug: 'sagittarius', name: 'Sagittarius' },
+    { slug: 'capricorn', name: 'Capricorn' }
+  ];
+
+  var MONTH_LABELS = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
   function getHighestEarnedTier(value, tiers) {
@@ -716,6 +733,33 @@
     return models;
   }
 
+  function getCelestialBadgeCard(itemCount) {
+    if (!itemCount) return null;
+
+    var now = new Date();
+    var monthIndex = now.getMonth();
+    var year = now.getFullYear();
+    var celestial = CELESTIAL_MONTHS[monthIndex];
+
+    if (!celestial) return null;
+
+    var monthLabel = MONTH_LABELS[monthIndex] || '';
+    var badgeName = celestial.name + ' Celestial Badge';
+
+    return {
+      type: 'celestial_badge',
+      category: celestial.slug,
+      label: 'Celestial Badge',
+      name: badgeName,
+      image: 'celestial/badge-celestial-' + celestial.slug + '-' + year + '.png',
+      message: monthLabel + ' · ' + year + ' monthly Celestial Badge unlocked for this purchase.',
+      current: 1,
+      threshold: 1,
+      percent: 100,
+      state: 'unlocked'
+    };
+  }
+
   function sortBrewingByClosest(a, b) {
     var ar = Number(a.remaining || 999999);
     var br = Number(b.remaining || 999999);
@@ -778,9 +822,14 @@
     var purchaseProgress = getPurchaseProgressBadgeProgress(subtotal);
     var heatModels = getHeatBadgeProgress(cart.items);
     var foodModels = getFoodCategoryBadgeProgress(cart.items);
+    var celestialCard = getCelestialBadgeCard(itemCount);
 
     var unlocked = [];
     var brewing = [];
+
+    if (celestialCard) {
+      unlocked.push(celestialCard);
+    }
 
     [
       itemPurchase,
@@ -793,10 +842,6 @@
       if (brewingCard) brewing.push(brewingCard);
     });
 
-    /*
-     * One brewing badge maximum for heat badges.
-     * Highest earned per heat category can display in unlocked.
-     */
     heatModels.forEach(function (model) {
       var unlockedCard = toUnlockedCard(model);
       if (unlockedCard) unlocked.push(unlockedCard);
@@ -811,10 +856,6 @@
       brewing.push(heatBrewingCandidates[0]);
     }
 
-    /*
-     * One brewing badge maximum for food category badges.
-     * Highest earned per food category can display in unlocked.
-     */
     foodModels.forEach(function (model) {
       var unlockedCard = toUnlockedCard(model);
       if (unlockedCard) unlocked.push(unlockedCard);
@@ -834,6 +875,7 @@
       unlocked: unlocked,
       brewing: brewing,
       raw: {
+        celestial_badge: celestialCard,
         item_purchase_achievement: itemPurchase,
         purchase_progress_badge: purchaseProgress,
         heat_badges: heatModels,
@@ -854,19 +896,13 @@
       subtotal: subtotal,
       subtotal_display: '$' + subtotal.toFixed(2),
 
-      /*
-       * v2 naming.
-       */
+      celestial_badge: badgeProgress.raw.celestial_badge,
       item_purchase_achievement_progress: badgeProgress.raw.item_purchase_achievement,
       purchase_progress_badge_progress: badgeProgress.raw.purchase_progress_badge,
       heat_badge_progress: badgeProgress.raw.heat_badges,
       food_category_badge_progress: badgeProgress.raw.food_category_badges,
       badge_progress: badgeProgress,
 
-      /*
-       * Temporary backward-compatible aliases.
-       * These keep existing drawer/page code working during staged migration.
-       */
       bottle_coin_progress: legacyBottleAlias(badgeProgress.raw.item_purchase_achievement),
       check_total_progress: legacyCheckTotalAlias(badgeProgress.raw.purchase_progress_badge)
     };
@@ -940,6 +976,7 @@
     getSubtotal: getSubtotal,
     getSummary: getCartSummary,
 
+    getCelestialBadgeCard: getCelestialBadgeCard,
     getItemPurchaseAchievementProgress: getItemPurchaseAchievementProgress,
     getPurchaseProgressBadgeProgress: getPurchaseProgressBadgeProgress,
     getHeatBadgeProgress: getHeatBadgeProgress,
@@ -949,9 +986,6 @@
     setLifetimeContext: setLifetimeContext,
     getProductFromElement: getProductFromElement,
 
-    /*
-     * Temporary legacy exports.
-     */
     getBottleCoinProgress: getItemPurchaseAchievementProgress,
     getCheckTotalProgress: getPurchaseProgressBadgeProgress
   };
