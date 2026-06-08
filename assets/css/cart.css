@@ -548,3 +548,466 @@ body.pj-cart-open {
   object-fit: contain;
   display: block;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   CART PAGE — Junction Progress Station
+   Full cart page layout (cart-page.html)
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── PAGE LAYOUT GRID ─────────────────────────────────────── */
+
+.pj-cart-page-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 36px;
+  margin-bottom: 32px;
+}
+
+.pj-cart-page-main {
+  min-width: 0;
+}
+
+.pj-cart-page-empty {
+  padding: 36px 20px;
+  text-align: center;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--chalk-muted);
+  opacity: 0.7;
+  border: 1px dashed rgba(212,168,50,0.25);
+  background: rgba(0,0,0,0.12);
+}
+
+/* ── CART ITEMS LIST ──────────────────────────────────────── */
+
+.pj-cart-page-items {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.pj-cart-page-item {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: 16px;
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(212,168,50,0.18);
+}
+
+.pj-cart-page-item-img-wrap {
+  width: 110px;
+  height: 110px;
+  background: var(--chalk-surface);
+  border: 1px solid rgba(212,168,50,0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.pj-cart-page-item-img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+}
+
+.pj-cart-page-item-main {
+  min-width: 0;
+}
+
+.pj-cart-page-item-brand {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brass);
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.pj-cart-page-item-name {
+  display: block;
+  font-family: 'BlackRiver', 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--cream-warm);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  margin-bottom: 6px;
+  transition: color 0.2s;
+}
+
+.pj-cart-page-item-name:hover {
+  color: var(--brass-bright);
+}
+
+.pj-cart-page-item-meta {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chalk-muted);
+  opacity: 0.78;
+  margin-bottom: 12px;
+}
+
+.pj-cart-page-qty-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pj-cart-page-qty-btn {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212,168,50,0.08);
+  border: 1px solid rgba(212,168,50,0.32);
+  color: var(--brass-bright);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.pj-cart-page-qty-btn:hover {
+  background: rgba(212,168,50,0.16);
+  border-color: rgba(212,168,50,0.6);
+}
+
+.pj-cart-page-qty {
+  min-width: 28px;
+  text-align: center;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--chalk);
+}
+
+.pj-cart-page-remove {
+  background: transparent;
+  border: none;
+  color: var(--chalk-muted);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0.7;
+  padding: 4px 8px;
+  margin-left: 6px;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.pj-cart-page-remove:hover {
+  color: var(--brass-bright);
+  opacity: 1;
+}
+
+.pj-cart-page-item-price {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.pj-cart-page-item-price span {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chalk-muted);
+  opacity: 0.75;
+}
+
+.pj-cart-page-item-price strong {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--brass-bright);
+}
+
+/* ── ORDER SUMMARY SIDEBAR ────────────────────────────────── */
+
+.pj-cart-page-summary {
+  position: sticky;
+  top: 100px;
+  align-self: start;
+}
+
+.pj-cart-page-summary-box {
+  margin-top: 14px;
+  padding: 22px 20px;
+  background: rgba(30,48,32,0.6);
+  border: 1px solid rgba(212,168,50,0.32);
+}
+
+.pj-cart-page-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(212,168,50,0.14);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--chalk-muted);
+}
+
+.pj-cart-page-summary-row:last-of-type {
+  border-bottom: none;
+}
+
+.pj-cart-page-summary-row strong {
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  color: var(--brass-bright);
+}
+
+.pj-cart-page-note {
+  margin: 14px 0 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(212,168,50,0.18);
+  font-family: 'Libre Baskerville', serif;
+  font-size: 11px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--chalk-muted);
+  opacity: 0.78;
+}
+
+.pj-cart-page-checkout {
+  width: 100%;
+  display: block;
+  padding: 14px 16px;
+  text-align: center;
+  background: var(--crimson);
+  color: var(--cream-warm);
+  border: 1px solid rgba(212,168,50,0.45);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(143,31,13,0.32);
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.pj-cart-page-checkout:hover {
+  background: var(--crimson-dim);
+  border-color: rgba(212,168,50,0.7);
+  transform: translateY(-1px);
+}
+
+.pj-cart-page-checkout.disabled,
+.pj-cart-page-checkout:disabled {
+  background: rgba(0,0,0,0.25);
+  color: var(--chalk-muted);
+  border-color: rgba(212,168,50,0.22);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.pj-cart-page-continue {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 16px;
+  text-align: center;
+  background: transparent;
+  color: var(--brass-bright);
+  text-decoration: none;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border: 1px solid rgba(212,168,50,0.35);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.pj-cart-page-continue:hover {
+  background: rgba(212,168,50,0.08);
+  border-color: rgba(212,168,50,0.65);
+}
+
+/* ── JUNCTION PROGRESS STATION ────────────────────────────── */
+
+.pj-progress-station {
+  margin-top: 40px;
+}
+
+.pj-progress-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-top: 22px;
+}
+
+.pj-progress-card {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 20px;
+  align-items: center;
+  padding: 20px;
+  background: rgba(212,168,50,0.045);
+  border: 1px solid rgba(212,168,50,0.28);
+}
+
+.pj-progress-img-wrap {
+  width: 100px;
+  height: 100px;
+  background: var(--chalk-surface);
+  border: 1px solid rgba(212,168,50,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pj-progress-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.55));
+}
+
+.pj-progress-content {
+  min-width: 0;
+}
+
+.pj-progress-kicker {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--brass);
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.pj-progress-content h2 {
+  font-family: 'BlackRiver', 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--cream-warm);
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+  margin: 0 0 8px;
+}
+
+.pj-progress-content p {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--chalk);
+  opacity: 0.85;
+  margin: 0 0 12px;
+}
+
+.pj-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(212,168,50,0.22);
+  overflow: hidden;
+}
+
+.pj-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brass), var(--brass-bright));
+  transition: width 0.4s ease;
+  box-shadow: 0 0 12px rgba(212,168,50,0.45);
+}
+
+/* ── CART PAGE MOBILE ─────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .pj-cart-page-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .pj-cart-page-summary {
+    position: static;
+  }
+
+  .pj-progress-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .pj-cart-page-item {
+    grid-template-columns: 80px 1fr;
+    gap: 14px;
+    padding: 12px;
+  }
+
+  .pj-cart-page-item-img-wrap {
+    width: 80px;
+    height: 80px;
+  }
+
+  .pj-cart-page-item-img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .pj-cart-page-item-name {
+    font-size: 18px;
+  }
+
+  .pj-cart-page-item-price {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid rgba(212,168,50,0.14);
+  }
+
+  .pj-progress-card {
+    grid-template-columns: 80px 1fr;
+    padding: 14px;
+    gap: 14px;
+  }
+
+  .pj-progress-img-wrap {
+    width: 80px;
+    height: 80px;
+  }
+
+  .pj-progress-img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .pj-progress-content h2 {
+    font-size: 18px;
+  }
+}
