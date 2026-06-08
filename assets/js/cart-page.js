@@ -1,16 +1,20 @@
 /**
  * cart-page.js
- * Pepper Junction — Full Cart Page / Junction Progress Station v1
+ * Pepper Junction — Full Cart Page / Junction Progress Station v2
  *
  * Requires:
  * - assets/js/cart-engine.js loaded first
- * - cart-page.html structural IDs present
+ * - cart-page.html v2 structural IDs present
  *
  * Responsibilities:
  * - Render full cart page contents
  * - Render item count and subtotal
- * - Render Bottle-Purchase Coin progress
- * - Render Check-Total Badge progress
+ * - Render Badges Unlocked
+ * - Render Badges Brewing
+ * - Render Item Purchase Achievement progress
+ * - Render Purchase Progress Badge progress
+ * - Render Heat Badge progress
+ * - Render Food Category Badge progress
  * - Keep page synced with PJCart sessionStorage
  *
  * Does NOT:
@@ -86,8 +90,7 @@
 
     renderItems(summary);
     renderSummary(summary);
-    renderBottleProgress(summary.bottle_coin_progress);
-    renderCheckTotalProgress(summary.check_total_progress);
+    renderBadgeSections(summary);
   }
 
   function renderItems(summary) {
@@ -129,7 +132,7 @@
               '<button class="pj-cart-page-qty-btn" type="button" data-cart-page-dec="' + esc(item.product_id) + '" aria-label="Decrease quantity">−</button>' +
               '<span class="pj-cart-page-qty">' + esc(item.quantity) + '</span>' +
               '<button class="pj-cart-page-qty-btn" type="button" data-cart-page-inc="' + esc(item.product_id) + '" aria-label="Increase quantity">+</button>' +
-              '<button class="pj-cart-page-remove" type="button" data-cart-page-remove="' + esc(item.product_id) + '">Remove</button>' +
+              '<button class="pj-cart-page-remove" type="button" data-cart-page-remove="' + esc(item.product_id) + '">🗑 Remove</button>' +
             '</div>' +
           '</div>' +
 
@@ -157,88 +160,97 @@
     }
   }
 
-  function renderBottleProgress(progress) {
-    if (!progress) return;
+  function renderBadgeSections(summary) {
+    var badgeProgress = summary.badge_progress || {};
+    var unlocked = Array.isArray(badgeProgress.unlocked) ? badgeProgress.unlocked : [];
+    var brewing = Array.isArray(badgeProgress.brewing) ? badgeProgress.brewing : [];
 
-    var imgEl = document.getElementById('pj-progress-bottle-img');
-    var titleEl = document.getElementById('pj-progress-bottle-title');
-    var msgEl = document.getElementById('pj-progress-bottle-message');
-    var barEl = document.getElementById('pj-progress-bottle-bar');
+    renderBadgeSection({
+      cards: unlocked,
+      gridId: 'pj-badges-unlocked-grid',
+      headerId: 'pj-badges-unlocked-header',
+      emptyId: 'pj-badges-unlocked-empty',
+      emptyMessage: 'Start your lineup to begin unlocking badges.'
+    });
 
-    var badge = progress.next || progress.earned;
-    var title = badge ? badge.name : 'Bottle-Purchase Coin';
-
-    if (imgEl && badge && badge.image) {
-      imgEl.src = BADGE_BASE + badge.image;
-      imgEl.alt = badge.name || 'Bottle-Purchase Coin';
-    }
-
-    if (titleEl) {
-      titleEl.textContent = progress.earned && !progress.next
-        ? progress.earned.name
-        : title;
-    }
-
-    if (msgEl) {
-      msgEl.textContent = progress.message || '';
-    }
-
-    if (barEl) {
-      barEl.style.width = getBottleProgressPercent(progress) + '%';
-    }
+    renderBadgeSection({
+      cards: brewing,
+      gridId: 'pj-badges-brewing-grid',
+      headerId: 'pj-badges-brewing-header',
+      emptyId: 'pj-badges-brewing-empty',
+      emptyMessage: "You've reached the top tier in every category. Nothing left to prove."
+    });
   }
 
-  function renderCheckTotalProgress(progress) {
-    if (!progress) return;
+  function renderBadgeSection(config) {
+    var gridEl = document.getElementById(config.gridId);
+    var headerEl = document.getElementById(config.headerId);
+    var emptyEl = document.getElementById(config.emptyId);
+    var cards = Array.isArray(config.cards) ? config.cards : [];
 
-    var imgEl = document.getElementById('pj-progress-total-img');
-    var titleEl = document.getElementById('pj-progress-total-title');
-    var msgEl = document.getElementById('pj-progress-total-message');
-    var barEl = document.getElementById('pj-progress-total-bar');
+    if (!gridEl || !emptyEl) return;
 
-    var badge = progress.next || progress.earned;
-    var title = badge ? badge.name : 'Check-Total Badge';
+    if (!cards.length) {
+      gridEl.innerHTML = '';
+      gridEl.style.display = 'none';
+      emptyEl.textContent = config.emptyMessage || '';
+      emptyEl.style.display = 'block';
 
-    if (imgEl && badge && badge.image) {
-      imgEl.src = BADGE_BASE + badge.image;
-      imgEl.alt = badge.name || 'Check-Total Badge';
+      /*
+       * Per locked spec:
+       * If a badge section has no badges, hide the section header and show the placeholder.
+       */
+      if (headerEl) headerEl.style.display = 'none';
+
+      return;
     }
 
-    if (titleEl) {
-      titleEl.textContent = progress.earned && !progress.next
-        ? progress.earned.name
-        : title;
-    }
+    if (headerEl) headerEl.style.display = '';
+    emptyEl.style.display = 'none';
+    gridEl.style.display = '';
 
-    if (msgEl) {
-      msgEl.textContent = progress.message || '';
-    }
-
-    if (barEl) {
-      barEl.style.width = getCheckTotalProgressPercent(progress) + '%';
-    }
+    gridEl.innerHTML = cards.map(renderBadgeCard).join('');
   }
 
-  function getBottleProgressPercent(progress) {
-    if (!progress.next && progress.earned) return 100;
+  function renderBadgeCard(card) {
+    var percent = clampPercent(card.percent || 0);
+    var media = renderBadgeMedia(card);
 
-    var target = progress.next ? progress.next.count : 3;
-    if (!target) return 0;
+    return (
+      '<article class="pj-progress-card" data-badge-type="' + esc(card.type) + '" data-badge-state="' + esc(card.state) + '">' +
 
-    return clampPercent((progress.current_count / target) * 100);
+        '<div class="pj-progress-img-wrap">' +
+          media +
+        '</div>' +
+
+        '<div class="pj-progress-content">' +
+          '<div class="pj-progress-kicker">' + esc(card.label || 'Badge Progress') + '</div>' +
+          '<h2>' + esc(card.name || 'Badge Progress') + '</h2>' +
+          '<p>' + esc(card.message || 'Keep building your lineup.') + '</p>' +
+
+          '<div class="pj-progress-bar" aria-label="' + esc(card.name || 'Badge') + ' progress">' +
+            '<div class="pj-progress-bar-fill" style="width:' + percent + '%;"></div>' +
+          '</div>' +
+        '</div>' +
+
+      '</article>'
+    );
   }
 
-  function getCheckTotalProgressPercent(progress) {
-    if (!progress.next && progress.earned) return 100;
+  function renderBadgeMedia(card) {
+    if (card && card.image) {
+      return (
+        '<img class="pj-progress-img" src="' + esc(BADGE_BASE + card.image) + '" alt="' + esc(card.name || 'Badge') + '" ' +
+          'loading="lazy" onerror="this.style.display=\'none\'; this.parentNode.classList.add(\'pj-progress-img-missing\');">' +
+        '<span class="pj-progress-img-fallback" aria-hidden="true">Art Pending</span>'
+      );
+    }
 
-    var target = progress.next ? progress.next.amount : 10;
-    if (!target) return 0;
-
-    return clampPercent((progress.current_total / target) * 100);
+    return '<span class="pj-progress-img-fallback visible" aria-hidden="true">Art Pending</span>';
   }
 
   function clampPercent(value) {
-    return Math.max(0, Math.min(100, Math.round(value)));
+    return Math.max(0, Math.min(100, Math.round(Number(value || 0))));
   }
 
   function normalizeImagePath(path) {
