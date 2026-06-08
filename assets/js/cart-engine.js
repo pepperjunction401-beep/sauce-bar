@@ -824,23 +824,23 @@
     var foodModels = getFoodCategoryBadgeProgress(cart.items);
     var celestialCard = getCelestialBadgeCard(itemCount);
 
-    var unlocked = [];
-    var brewing = [];
+ var unlocked = [];
+var brewing = [];
 
-    if (celestialCard) {
-      unlocked.push(celestialCard);
-    }
+[
+  itemPurchase,
+  purchaseProgress
+].forEach(function (model) {
+  var unlockedCard = toUnlockedCard(model);
+  var brewingCard = toBrewingCard(model);
 
-    [
-      itemPurchase,
-      purchaseProgress
-    ].forEach(function (model) {
-      var unlockedCard = toUnlockedCard(model);
-      var brewingCard = toBrewingCard(model);
+  if (unlockedCard) unlocked.push(unlockedCard);
+  if (brewingCard) brewing.push(brewingCard);
+});
 
-      if (unlockedCard) unlocked.push(unlockedCard);
-      if (brewingCard) brewing.push(brewingCard);
-    });
+if (celestialCard) {
+  unlocked.push(celestialCard);
+}
 
     heatModels.forEach(function (model) {
       var unlockedCard = toUnlockedCard(model);
