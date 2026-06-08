@@ -45,7 +45,7 @@
 <section class="product-hero">
   <div class="product-hero-eyebrow">Junction Progress Station</div>
   <div class="product-hero-name">Your Lineup</div>
-  <div class="product-hero-sub">Review your cart, track your progress, and get ready for checkout.</div>
+  <div class="product-hero-sub">Review your cart, track your badge progress, and get ready for checkout.</div>
 </section>
 
 <main class="page-outer">
@@ -99,58 +99,34 @@
 
       </section>
 
-      <section class="pj-progress-station">
-        <div class="section-rule">
+      <!-- ═══ BADGES UNLOCKED ═════════════════════════════════════ -->
+      <section class="pj-progress-station" id="pj-badges-unlocked-section">
+        <div class="section-rule" id="pj-badges-unlocked-header">
           <div class="rule-line"></div>
-          <span class="rule-text">Junction Progress</span>
+          <span class="rule-text">Badges Unlocked</span>
           <div class="rule-line right"></div>
         </div>
 
-        <div class="pj-progress-grid">
-
-          <article class="pj-progress-card">
-            <div class="pj-progress-img-wrap">
-              <img
-                id="pj-progress-bottle-img"
-                class="pj-progress-img"
-                src="assets/badges/bottle-purchase-coins/badge-coin-penny-obverse.png"
-                alt="Bottle-Purchase Coin"
-              />
-            </div>
-
-            <div class="pj-progress-content">
-              <div class="pj-progress-kicker">Bottle-Purchase Coin</div>
-              <h2 id="pj-progress-bottle-title">First Coin Ahead</h2>
-              <p id="pj-progress-bottle-message">Add 3 items to unlock your first Bottle-Purchase Coin.</p>
-
-              <div class="pj-progress-bar">
-                <div id="pj-progress-bottle-bar" class="pj-progress-bar-fill" style="width:0%;"></div>
-              </div>
-            </div>
-          </article>
-
-          <article class="pj-progress-card">
-            <div class="pj-progress-img-wrap">
-              <img
-                id="pj-progress-total-img"
-                class="pj-progress-img"
-                src="assets/badges/check-total/badge-check-total-pickup-sticks.png"
-                alt="Check-Total Badge"
-              />
-            </div>
-
-            <div class="pj-progress-content">
-              <div class="pj-progress-kicker">Check-Total Badge</div>
-              <h2 id="pj-progress-total-title">First Game Piece Ahead</h2>
-              <p id="pj-progress-total-message">Start your lineup to begin Check-Total progress.</p>
-
-              <div class="pj-progress-bar">
-                <div id="pj-progress-total-bar" class="pj-progress-bar-fill" style="width:0%;"></div>
-              </div>
-            </div>
-          </article>
-
+        <div id="pj-badges-unlocked-empty" class="pj-cart-page-empty">
+          Start your lineup to begin unlocking badges.
         </div>
+
+        <div class="pj-progress-grid" id="pj-badges-unlocked-grid"></div>
+      </section>
+
+      <!-- ═══ BADGES BREWING ══════════════════════════════════════ -->
+      <section class="pj-progress-station" id="pj-badges-brewing-section">
+        <div class="section-rule" id="pj-badges-brewing-header">
+          <div class="rule-line"></div>
+          <span class="rule-text">Badges Brewing</span>
+          <div class="rule-line right"></div>
+        </div>
+
+        <div id="pj-badges-brewing-empty" class="pj-cart-page-empty">
+          You've reached the top tier in every category. Nothing left to prove.
+        </div>
+
+        <div class="pj-progress-grid" id="pj-badges-brewing-grid"></div>
       </section>
 
     </div>
