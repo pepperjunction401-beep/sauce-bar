@@ -2,26 +2,10 @@
  * cart-engine.js
  * Pepper Junction — Session Cart Engine v2.1
  *
- * Purpose:
- * - Shared cart logic for all product pages
- * - Uses sessionStorage only
- * - No Square checkout logic yet
- * - No Supabase logic yet
- * - No drawer rendering here
- *
- * v2 Badge Model:
- * - Item Purchase Achievement
- * - Purchase Progress Badge
- * - Heat Badges
- * - Food Category Badges
- * - Celestial Badge
- *
- * Critical rules:
- * - Highest tier only
- * - Quantity-based counting
- * - Session-only by default
- * - Supabase-ready hooks, but no Supabase dependency
- * - Secret badges and Year of the Horse do not surface in cart
+ * Purchase Progress Badge update:
+ * - Behavior unchanged
+ * - Active Purchase Progress art folder is now:
+ *   assets/badges/purchase-progress/
  */
 
 (function () {
@@ -29,12 +13,6 @@
 
   var CART_KEY = 'pj_cart';
   var CART_EVENT = 'pj-cart-updated';
-
-  /*
-   * Future Supabase shape:
-   * This remains null in v2.
-   * Later, account lifetime counts can be merged here before progress calculation.
-   */
   var lifetimeContext = null;
 
   function money(value) {
@@ -100,28 +78,20 @@
       throw new Error('PJCart product requires product_id or slug.');
     }
 
-    var price = money(product.price);
-
     return {
       product_id: String(productId),
       slug: String(product.slug || productId),
       product_name: String(product.product_name || product.productName || product.name || 'Pepper Junction Product'),
       brand: String(product.brand || ''),
-      price: price,
+      price: money(product.price),
       square_id: String(product.square_id || product.squareId || ''),
       square_url: String(product.square_url || product.squareUrl || ''),
       image: String(product.image || ''),
       quantity: normalizeQty(product.quantity || 1),
-
-      /*
-       * Product intelligence metadata.
-       * These values come from CNS/product page integration.
-       */
       category: String(product.category || ''),
       heat_category: String(product.heat_category || product.heatCategory || ''),
       food_style: String(product.food_style || product.foodStyle || ''),
       best_pairings: String(product.best_pairings || product.bestPairings || product['Best Food Pairings'] || ''),
-
       added_at: product.added_at || new Date().toISOString()
     };
   }
@@ -154,9 +124,11 @@
 
   function removeItem(productId) {
     var cart = readCart();
+
     cart.items = cart.items.filter(function (item) {
       return item.product_id !== productId;
     });
+
     writeCart(cart);
     return getCartSummary();
   }
@@ -217,11 +189,13 @@
       sessionStorage.removeItem(CART_KEY);
       notify();
     } catch (e) {}
+
     return getCartSummary();
   }
 
   function getItemCount() {
     var cart = readCart();
+
     return cart.items.reduce(function (sum, item) {
       return sum + normalizeQty(item.quantity);
     }, 0);
@@ -229,16 +203,12 @@
 
   function getSubtotal() {
     var cart = readCart();
+
     return money(cart.items.reduce(function (sum, item) {
       return sum + money(item.price) * normalizeQty(item.quantity);
     }, 0));
   }
 
-  /*
-   * Item Purchase Achievement
-   * Formerly Bottle Coin / Bottle-Purchase Coin.
-   * Based on item quantity in this transaction only.
-   */
   var ITEM_PURCHASE_ACHIEVEMENT_TIERS = [
     {
       threshold: 3,
@@ -278,90 +248,75 @@
     }
   ];
 
-  /*
-   * Purchase Progress Badge
-   * Formerly Check Total / Check Total Badge.
-   * Based on current transaction subtotal.
-   *
-   * Current board-game art remains placeholder until 1930s-era art arrives.
-   */
   var PURCHASE_PROGRESS_BADGE_TIERS = [
     {
       threshold: 10,
-      name: 'Pickup Sticks',
-      image: 'check-total/badge-check-total-pickup-sticks.png',
-      catchphrase: 'Every great collection starts with the first pick.'
+      name: "Fill 'Er Up",
+      image: 'purchase-progress/badge-purchase-progress-fuel.png',
+      catchphrase: "Fill 'Er Up"
     },
     {
       threshold: 25,
-      name: 'Chinese Checkers',
-      image: 'check-total/badge-check-total-chinese-checkers.png',
-      catchphrase: "You're already three jumps ahead."
+      name: 'Speakeasy',
+      image: 'purchase-progress/badge-purchase-progress-spirits.png',
+      catchphrase: 'Speakeasy'
     },
     {
       threshold: 40,
-      name: 'Dominoes',
-      image: 'check-total/badge-check-total-dominoes.png',
-      catchphrase: 'One good sauce leads to another. Watch them fall.'
+      name: 'Sauce Director',
+      image: 'purchase-progress/badge-purchase-progress-movies.png',
+      catchphrase: 'Sauce Director'
     },
     {
       threshold: 50,
-      name: 'Bingo',
-      image: 'check-total/badge-check-total-bingo.png',
-      catchphrase: 'Spice Things Up Until You Reach BINGO!'
+      name: 'Broadcast',
+      image: 'purchase-progress/badge-purchase-progress-radio.png',
+      catchphrase: 'Broadcast'
     },
     {
       threshold: 60,
-      name: 'Checkers',
-      image: 'check-total/badge-check-total-checkers.png',
-      catchphrase: 'Purchasing like a King!'
+      name: 'Market Run',
+      image: 'purchase-progress/badge-purchase-progress-groceries.png',
+      catchphrase: 'Market Run'
     },
     {
       threshold: 70,
-      name: 'Parcheesi',
-      image: 'check-total/badge-check-total-parcheesi.png',
-      catchphrase: 'No Safe Space Can Contain Your Need for Heat.'
+      name: 'Free Shipping',
+      image: 'purchase-progress/badge-purchase-progress-free-shipping.png',
+      catchphrase: 'Free Shipping'
     },
     {
       threshold: 80,
-      name: 'Monopoly',
-      image: 'check-total/badge-check-total-monopoly.png',
-      catchphrase: "What's Free About Parking?"
+      name: 'Distance Rider',
+      image: 'purchase-progress/badge-purchase-progress-taxi.png',
+      catchphrase: 'Distance Rider'
     },
     {
       threshold: 90,
-      name: 'Scrabble',
-      image: 'check-total/badge-check-total-scrabble.png',
-      catchphrase: 'Pssssh.. Now This is a Real Score.'
+      name: 'Rock Like a Doc',
+      image: 'purchase-progress/badge-purchase-progress-doctor.png',
+      catchphrase: 'Rock Like a Doc'
     },
     {
       threshold: 100,
-      name: 'Sorry!',
-      image: 'check-total/badge-check-total-sorry.png',
-      catchphrase: 'Sliding into this many new sauces feels as fun as the game.'
+      name: 'There Goes the House',
+      image: 'purchase-progress/badge-purchase-progress-mortgage.png',
+      catchphrase: 'There Goes the House'
     },
     {
       threshold: 125,
-      name: 'Grand Prize',
-      image: '',
-      catchphrase: 'Top shelf move.'
+      name: 'Hot Sauce Over a Yacht',
+      image: 'purchase-progress/badge-purchase-progress-boat.png',
+      catchphrase: 'Hot Sauce Over a Yacht'
     }
   ];
 
-  /*
-   * Heat Badge tiers.
-   * Highest tier only per heat category.
-   */
   var HEAT_BADGE_TIERS = [
     { threshold: 5, level: 1, label: 'L1' },
     { threshold: 10, level: 2, label: 'L2' },
     { threshold: 15, level: 3, label: 'L3' }
   ];
 
-  /*
-   * Food Category Badges.
-   * v2 uses a 5 qualifying purchase threshold.
-   */
   var FOOD_CATEGORY_BADGE_THRESHOLD = 5;
 
   var FOOD_CATEGORY_RULES = [
@@ -457,11 +412,6 @@
     }
   ];
 
-  /*
-   * Celestial monthly badge.
-   * This surfaces the monthly zodiac badge only.
-   * Secret monthly-completion badges and Year of the Horse do not surface in cart.
-   */
   var CELESTIAL_MONTHS = [
     { slug: 'aquarius', name: 'Aquarius' },
     { slug: 'pisces', name: 'Pisces' },
@@ -602,6 +552,7 @@
       if (!heat) return;
 
       var key = slugify(heat);
+
       if (!counts[key]) {
         counts[key] = {
           key: key,
@@ -617,11 +568,9 @@
   }
 
   function buildHeatTier(category, tier) {
-    var label = category.name + ' Heat ' + tier.label;
-
     return {
       threshold: tier.threshold,
-      name: label,
+      name: category.name + ' Heat ' + tier.label,
       level: tier.level,
       label: tier.label,
       image: 'heat/badge-heat-' + category.key + '-l' + tier.level + '.png'
@@ -761,9 +710,7 @@
   }
 
   function sortBrewingByClosest(a, b) {
-    var ar = Number(a.remaining || 999999);
-    var br = Number(b.remaining || 999999);
-    return ar - br;
+    return Number(a.remaining || 999999) - Number(b.remaining || 999999);
   }
 
   function toUnlockedCard(progress) {
@@ -806,11 +753,6 @@
   function getBadgeProgressModel(cart, subtotal, itemCount) {
     cart = cart || readCart();
 
-    /*
-     * Supabase hook.
-     * When accounts are live, lifetimeContext can be merged here.
-     * v2 intentionally keeps this session-only.
-     */
     var accountContext = lifetimeContext || {
       connected: false,
       lifetime_heat_counts: {},
@@ -824,23 +766,23 @@
     var foodModels = getFoodCategoryBadgeProgress(cart.items);
     var celestialCard = getCelestialBadgeCard(itemCount);
 
- var unlocked = [];
-var brewing = [];
+    var unlocked = [];
+    var brewing = [];
 
-[
-  itemPurchase,
-  purchaseProgress
-].forEach(function (model) {
-  var unlockedCard = toUnlockedCard(model);
-  var brewingCard = toBrewingCard(model);
+    [
+      itemPurchase,
+      purchaseProgress
+    ].forEach(function (model) {
+      var unlockedCard = toUnlockedCard(model);
+      var brewingCard = toBrewingCard(model);
 
-  if (unlockedCard) unlocked.push(unlockedCard);
-  if (brewingCard) brewing.push(brewingCard);
-});
+      if (unlockedCard) unlocked.push(unlockedCard);
+      if (brewingCard) brewing.push(brewingCard);
+    });
 
-if (celestialCard) {
-  unlocked.push(celestialCard);
-}
+    if (celestialCard) {
+      unlocked.push(celestialCard);
+    }
 
     heatModels.forEach(function (model) {
       var unlockedCard = toUnlockedCard(model);
