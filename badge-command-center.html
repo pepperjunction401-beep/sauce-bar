@@ -1419,7 +1419,7 @@
       </div>
 
       <!-- TOKEN 2 — Parlor Car Guest -->
-      <div class="token-flip-card unearned" onclick="this.classList.toggle('flipped')">
+      <div class="token-flip-card" onclick="this.classList.toggle('flipped')">
         <div class="token-flip-inner">
           <div class="token-face token-front">
             <div class="token-img-wrap">
@@ -1441,7 +1441,7 @@
       </div>
 
       <!-- TOKEN 3 — Sleeping Car Guest -->
-      <div class="token-flip-card unearned" onclick="this.classList.toggle('flipped')">
+      <div class="token-flip-card" onclick="this.classList.toggle('flipped')">
         <div class="token-flip-inner">
           <div class="token-face token-front">
             <div class="token-img-wrap">
@@ -1463,7 +1463,7 @@
       </div>
 
       <!-- TOKEN 4 — Dining Car Regular -->
-      <div class="token-flip-card unearned" onclick="this.classList.toggle('flipped')">
+      <div class="token-flip-card" onclick="this.classList.toggle('flipped')">
         <div class="token-flip-inner">
           <div class="token-face token-front">
             <div class="token-img-wrap">
@@ -1485,7 +1485,7 @@
       </div>
 
       <!-- TOKEN 5 — Private Car Guest -->
-      <div class="token-flip-card unearned" onclick="this.classList.toggle('flipped')">
+      <div class="token-flip-card" onclick="this.classList.toggle('flipped')">
         <div class="token-flip-inner">
           <div class="token-face token-front">
             <div class="token-img-wrap">
@@ -1507,7 +1507,7 @@
       </div>
 
       <!-- TOKEN 6 — Pullman Patron -->
-      <div class="token-flip-card unearned" onclick="this.classList.toggle('flipped')">
+      <div class="token-flip-card" onclick="this.classList.toggle('flipped')">
         <div class="token-flip-inner">
           <div class="token-face token-front">
             <div class="token-img-wrap">
@@ -1529,7 +1529,7 @@
       </div>
 
       <!-- TOKEN 7 — Railroad Magnate -->
-      <div class="token-flip-card unearned" style="border-color:rgba(212,168,50,0.4);" onclick="this.classList.toggle('flipped')">
+      <div class="token-flip-card" style="border-color:rgba(212,168,50,0.4);" onclick="this.classList.toggle('flipped')">
         <div class="token-flip-inner">
           <div class="token-face token-front" style="border-color:rgba(212,168,50,0.4);background:rgba(212,168,50,0.04);">
             <div class="token-img-wrap">
@@ -1567,69 +1567,119 @@
     <!-- Level 1 -->
     <div class="heat-level-label">Level 1 — Heat Identity</div>
     <div class="badge-grid heat-grid" style="margin-bottom:20px;">
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/badge-mild.png" alt="Mild L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🌶️</div>
-        <div class="badge-info">
-          <div class="badge-name">Keep the Milk for Cookies</div>
-          <div class="badge-sub">Mild</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-mild.png" alt="Mild L1" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Keep the Milk for Cookies</div>
+            <div class="coin-items-label">Mild · Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Mild · L1</div>
+            <div class="coin-back-text">You're here for flavor, not fire. Mild heat lets the food speak and the sauce support it. There's nothing wrong with knowing what you like.</div>
+            <div class="coin-back-threshold">Earn with 5 Mild heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/badge-medium.png" alt="Medium L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🌶️</div>
-        <div class="badge-info">
-          <div class="badge-name">Farmer's Market Heat</div>
-          <div class="badge-sub">Medium</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-medium.png" alt="Medium L1" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Farmer's Market Heat</div>
+            <div class="coin-items-label">Medium · Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Medium · L1</div>
+            <div class="coin-back-text">You know what heat is and you're not afraid of it. Medium is the most honest heat level — enough to notice, not enough to regret. The sweet spot of the sauce world.</div>
+            <div class="coin-back-threshold">Earn with 5 Medium heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/badge-hot.png" alt="Hot L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🌶️</div>
-        <div class="badge-info">
-          <div class="badge-name">Sauce Boss</div>
-          <div class="badge-sub">Hot</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-hot.png" alt="Hot L1" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Sauce Boss</div>
+            <div class="coin-items-label">Hot · Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Hot · L1</div>
+            <div class="coin-back-text">You're running the kitchen now. Hot heat means you've moved past curiosity into commitment. The Sauce Boss doesn't ask for mild. The Sauce Boss doesn't apologize.</div>
+            <div class="coin-back-threshold">Earn with 5 Hot heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/badge-very-hot.png" alt="Very Hot L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🌶️</div>
-        <div class="badge-info">
-          <div class="badge-name">Pucker Up, Pepper Head</div>
-          <div class="badge-sub">Very Hot</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-very-hot.png" alt="Very Hot L1" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Pucker Up, Pepper Head</div>
+            <div class="coin-items-label">Very Hot · Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Very Hot · L1</div>
+            <div class="coin-back-text">Your face says everything. Very Hot is where casual heat ends and serious heat begins. You're not just tolerating it — you're chasing it. That's the difference.</div>
+            <div class="coin-back-threshold">Earn with 5 Very Hot heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/badge-super-hot.png" alt="Super Hot L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🌶️</div>
-        <div class="badge-info">
-          <div class="badge-name">Have Anything Hotter?</div>
-          <div class="badge-sub">Super Hot</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-super-hot.png" alt="Super Hot L1" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Have Anything Hotter?</div>
+            <div class="coin-items-label">Super Hot · Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Super Hot · L1</div>
+            <div class="coin-back-text">You finished the Super Hot and looked up. That question is its own answer. The people who ask if there's anything hotter are the people who need to find out.</div>
+            <div class="coin-back-threshold">Earn with 5 Super Hot heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/badge-extreme.png" alt="Extreme L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🌶️</div>
-        <div class="badge-info">
-          <div class="badge-name">Pass the $%&@#! Carton!</div>
-          <div class="badge-sub">Extreme</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-extreme.png" alt="Extreme L1" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Pass the $%&amp;@#! Carton!</div>
+            <div class="coin-items-label">Extreme · Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Extreme · L1</div>
+            <div class="coin-back-text">When the table starts asking for milk you're doing something right. Extreme heat is not a category — it's a reputation. You've earned yours.</div>
+            <div class="coin-back-threshold">Earn with 5 Extreme heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/badge-inferno.png" alt="Inferno L1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🌶️</div>
-        <div class="badge-info">
-          <div class="badge-name">Incinerator</div>
-          <div class="badge-sub">Inferno</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-inferno.png" alt="Inferno L1" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Incinerator</div>
+            <div class="coin-items-label">Inferno · Level 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Inferno · L1</div>
+            <div class="coin-back-text">There is no higher tier. This is the end of the heat scale and you live here. The Incinerator badge doesn't need an explanation. Everyone else at the table already knows.</div>
+            <div class="coin-back-threshold">Earn with 5 Inferno heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
+
     </div>
 
     <!-- Level 2 -->
@@ -1641,69 +1691,119 @@
       <div class="l2-cta">Think you know your music? Flip and find out.</div>
     </div>
     <div class="badge-grid heat-grid" style="margin-bottom:20px;">
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L2-badge-mild.png" alt="Mild L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎵</div>
-        <div class="badge-info">
-          <div class="badge-name">Fever</div>
-          <div class="badge-sub">Mild · L2</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-mild.png" alt="Mild L2" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Fever</div>
+            <div class="coin-items-label">Mild · Level 2</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Trivia</div>
+            <div class="coin-back-text">Peggy Lee rewrote the original lyrics — adding verses about Romeo & Juliet and Captain Smith & Pocahontas — and recorded it with no guitar whatsoever. Just bass, drums, and finger snaps. She added some of the snaps herself. What year did she record it?</div>
+            <div class="coin-back-threshold">Answer: 1958 · Earn with 10 Mild heat purchases.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L2-badge-medium.png" alt="Medium L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎵</div>
-        <div class="badge-info">
-          <div class="badge-name">Cruel Summer</div>
-          <div class="badge-sub">Medium · L2</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-medium.png" alt="Medium L2" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Cruel Summer</div>
+            <div class="coin-items-label">Medium · Level 2</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Trivia</div>
+            <div class="coin-back-text">Bananarama refused to allow this song on the official soundtrack album — but it still became their first US top-10 hit after appearing in a 1984 film. The band didn't profit from the placement. The song did anyway. Which film put Cruel Summer on the map?</div>
+            <div class="coin-back-threshold">Answer: The Karate Kid · Earn with 10 Medium heat purchases.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L2-badge-hot.png" alt="Hot L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎵</div>
-        <div class="badge-info">
-          <div class="badge-name">I Like it Hot, Hot, Hot</div>
-          <div class="badge-sub">Hot · L2</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-hot.png" alt="Hot L2" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">I Like it Hot, Hot, Hot</div>
+            <div class="coin-items-label">Hot · Level 2</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Trivia</div>
+            <div class="coin-back-text">The Buster Poindexter music video for this song featured a surprise cameo from a famous comedic actor — who later starred alongside Poindexter in a 1988 Christmas film. Name the actor and the film.</div>
+            <div class="coin-back-threshold">Answer: Bill Murray / Scrooged · Earn with 10 Hot heat purchases.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L2-badge-very-hot.png" alt="Very Hot L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎵</div>
-        <div class="badge-info">
-          <div class="badge-name">Hot Blooded</div>
-          <div class="badge-sub">Very Hot · L2</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-very-hot.png" alt="Very Hot L2" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Hot Blooded</div>
+            <div class="coin-items-label">Very Hot · Level 2</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Trivia</div>
+            <div class="coin-back-text">Hot Blooded powered a pivotal training montage in a 1985 coming-of-age wrestling film set in Spokane, Washington — starring a young Matthew Modine and featuring an early Madonna performance. Name the film.</div>
+            <div class="coin-back-threshold">Answer: Vision Quest · Earn with 10 Very Hot heat purchases.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L2-badge-super-hot.png" alt="Super Hot L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎵</div>
-        <div class="badge-info">
-          <div class="badge-name">Highway to the Danger Zone</div>
-          <div class="badge-sub">Super Hot · L2</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-super-hot.png" alt="Super Hot L2" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Highway to the Danger Zone</div>
+            <div class="coin-items-label">Super Hot · Level 2</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Trivia</div>
+            <div class="coin-back-text">Kenny Loggins recorded this song specifically for a 1986 film. It became so inseparable from that film that you cannot hear one without seeing the other. Aviator sunglasses. Fighter jets. Volleyball. Name the film.</div>
+            <div class="coin-back-threshold">Answer: Top Gun · Earn with 10 Super Hot heat purchases.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L2-badge-extreme.png" alt="Extreme L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎵</div>
-        <div class="badge-info">
-          <div class="badge-name">Burning Down the House</div>
-          <div class="badge-sub">Extreme · L2</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-extreme.png" alt="Extreme L2" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Burning Down the House</div>
+            <div class="coin-items-label">Extreme · Level 2</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Trivia</div>
+            <div class="coin-back-text">Burning Down the House plays during an actual house fire early in a 1984 college comedy that put nerds on the map. The placement was so literal it became legendary. Name the film.</div>
+            <div class="coin-back-threshold">Answer: Revenge of the Nerds · Earn with 10 Extreme heat purchases.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L2-badge-inferno.png" alt="Inferno L2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎵</div>
-        <div class="badge-info">
-          <div class="badge-name">Ring of Fire</div>
-          <div class="badge-sub">Inferno · L2</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-inferno.png" alt="Inferno L2" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Ring of Fire</div>
+            <div class="coin-items-label">Inferno · Level 2</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Trivia</div>
+            <div class="coin-back-text">Ring of Fire anchors the biographical film that introduced Johnny Cash to a generation that never saw him perform live. Name the film and the actor who played Cash.</div>
+            <div class="coin-back-threshold">Answer: Walk the Line / Joaquin Phoenix · Earn with 10 Inferno heat purchases.</div>
+          </div>
         </div>
       </div>
+
     </div>
 
     <!-- Level 3 -->
@@ -1715,69 +1815,119 @@
       <div class="rp-collect">Collect all 7 and complete the Rocky Point collection.</div>
     </div>
     <div class="badge-grid heat-grid">
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L3-badge-mild.png" alt="Mild L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎡</div>
-        <div class="badge-info">
-          <div class="badge-name">Ferris Wheel</div>
-          <div class="badge-sub">Mild · L3</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-mild.png" alt="Mild L3" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Ferris Wheel</div>
+            <div class="coin-items-label">Mild · Level 3</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Rocky Point · Ferris Wheel</div>
+            <div class="coin-back-text">One of the oldest attractions at Rocky Point. The Spanish Fandango — a rotating wheel ride and forerunner to the modern Ferris wheel — was installed on the grounds as early as 1858. The Ferris wheel itself was built by Charles Looff, the same craftsman responsible for the legendary Crescent Park carousel just down the bay.</div>
+            <div class="coin-back-threshold">Earn with 15 Mild heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L3-badge-medium.png" alt="Medium L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎡</div>
-        <div class="badge-info">
-          <div class="badge-name">The Sky Line</div>
-          <div class="badge-sub">Medium · L3</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-medium.png" alt="Medium L3" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">The Sky Line</div>
+            <div class="coin-items-label">Medium · Level 3</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Rocky Point · The Sky Line</div>
+            <div class="coin-back-text">Ski-lift style chairs gliding over the entire park. Installed in 1966, the Sky Line offered a scenic — if slightly terrifying — aerial view of the rides and Narragansett Bay below. Its towers still stand at Rocky Point State Park today. Everything else is gone. The towers remain.</div>
+            <div class="coin-back-threshold">Earn with 15 Medium heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L3-badge-hot.png" alt="Hot L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎡</div>
-        <div class="badge-info">
-          <div class="badge-name">The Flume</div>
-          <div class="badge-sub">Hot · L3</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-hot.png" alt="Hot L3" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">The Flume</div>
+            <div class="coin-items-label">Hot · Level 3</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Rocky Point · The Flume</div>
+            <div class="coin-back-text">Sixty-foot drop. Constant long lines. One of the park's most beloved rides for decades. After Rocky Point closed the Flume was purchased by Enchanted Kingdom in the Philippines, where it still operates today as the Jungle Log Jam. The ride outlived the park.</div>
+            <div class="coin-back-threshold">Earn with 15 Hot heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L3-badge-very-hot.png" alt="Very Hot L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎡</div>
-        <div class="badge-info">
-          <div class="badge-name">Tilt-A-Whirl</div>
-          <div class="badge-sub">Very Hot · L3</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-very-hot.png" alt="Very Hot L3" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Tilt-A-Whirl</div>
+            <div class="coin-items-label">Very Hot · Level 3</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Rocky Point · Tilt-A-Whirl</div>
+            <div class="coin-back-text">A Rocky Point staple for decades. Regulars knew the secret — watch the cars before you board and find the one that spins the most, then grab it. It wasn't luck. It was strategy. The Tilt-A-Whirl rewarded the people who paid attention.</div>
+            <div class="coin-back-threshold">Earn with 15 Very Hot heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L3-badge-super-hot.png" alt="Super Hot L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎡</div>
-        <div class="badge-info">
-          <div class="badge-name">The Yo Yo</div>
-          <div class="badge-sub">Super Hot · L3</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-super-hot.png" alt="Super Hot L3" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">The Yo Yo</div>
+            <div class="coin-items-label">Super Hot · Level 3</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Rocky Point · The Yo Yo</div>
+            <div class="coin-back-text">Officially listed as Ride #23 on Rocky Point's brochure map. A Chance Rides swing attraction — elevated circular motion, outward-swinging chairs, the midway and the bay in every direction. A fixture of the park from the 1970s through the 1990s. Families, teenagers, and everyone in between lined up for it every summer.</div>
+            <div class="coin-back-threshold">Earn with 15 Super Hot heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L3-badge-extreme.png" alt="Extreme L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎡</div>
-        <div class="badge-info">
-          <div class="badge-name">Free Fall</div>
-          <div class="badge-sub">Extreme · L3</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-extreme.png" alt="Extreme L3" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Free Fall</div>
+            <div class="coin-items-label">Extreme · Level 3</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Rocky Point · Free Fall</div>
+            <div class="coin-back-text">13 stories. 55 mph. There is not much else to say about the Free Fall except that people rode it willingly, repeatedly, and then got back in line.</div>
+            <div class="coin-back-threshold">Earn with 15 Extreme heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
-      <div class="badge-card">
-        <span class="badge-status complete">✅</span>
-        <img class="badge-img" src="assets/badges/heat/L3-badge-inferno.png" alt="Inferno L3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="badge-placeholder" style="display:none;">🎡</div>
-        <div class="badge-info">
-          <div class="badge-name">The Corkscrew</div>
-          <div class="badge-sub">Inferno · L3</div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-inferno.png" alt="Inferno L3" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">The Corkscrew</div>
+            <div class="coin-items-label">Inferno · Level 3</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Rocky Point · The Corkscrew</div>
+            <div class="coin-back-text">First-of-its-kind in New England when it opened in 1984. One 360-degree loop. Two full twists. First riders described it as "getting tossed around in a clothes dryer" and "strapped on a giant runaway roller skate." After Rocky Point closed the Corkscrew sold for $805,000 and now operates at Wild Waves Theme Park in Federal Way, Washington as the Wild Thing. Rhode Island's most notorious ride is still running — just not here.</div>
+            <div class="coin-back-threshold">Earn with 15 Inferno heat purchases. Level Up Rule applies.</div>
+          </div>
         </div>
       </div>
+
     </div>
   </section>
 
