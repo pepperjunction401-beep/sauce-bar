@@ -1346,8 +1346,8 @@
   </div>
   <div class="stat-divider"></div>
   <div class="stat">
-    <div class="stat-val">4</div>
-    <div class="stat-label">Loyalty Tiers</div>
+    <div class="stat-val">15</div>
+    <div class="stat-label">Loyalty Tokens</div>
   </div>
   <div class="stat-divider"></div>
   <div class="stat">
@@ -2835,19 +2835,280 @@
   <!-- ═══ LOYALTY TIER BADGES ═══════════════════════════════════ -->
   <section class="badge-category" id="loyalty">
     <div class="category-header">
-      <div class="category-icon">🌶️</div>
+      <div class="category-icon">🌉</div>
       <div class="category-titles">
-        <div class="category-name">Loyalty Tier Badges</div>
-        <div class="category-desc">4 Tiers · Rolling 12-Month Square Spend · Outlaw / Western Theme · One Active / Three Grayed · Art Needed</div>
+        <div class="category-name">Loyalty Bridge Tokens</div>
+        <div class="category-desc">15 Tokens · 8 Pepper Tiers (50–225) · Bridge Obverse / Reward Reverse · Chili Pepper Currency · Supabase · Path: assets/badges/loyalty/</div>
       </div>
-      <div class="category-count">4</div>
+      <div class="category-count">15</div>
     </div>
-    <div class="pending-note">⚠ Art needed for all 4 loyalty tier badges. Fluctuates with rolling 12-month spend — NOT permanent. Only current tier shows full color. Other three gray out. No positive/negative framing — functions like a period marker (football game quarter indicator). Powered by Square Loyalty multiplier system.</div>
-    <div class="badge-grid">
-      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🌶️</div><div class="badge-info"><div class="badge-name">Pepper Posse</div><div class="badge-sub">$50+ annual · 1.25x multiplier · The Wild Bunch — gang of pepper + veggie characters · Spicy Pepper (Butch), Asparagus, Broccoli, Garden Pepper, Romaine Leaf</div></div></div>
-      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🌶️</div><div class="badge-info"><div class="badge-name">Junction Renegade</div><div class="badge-sub">$150+ annual · 1.5x multiplier · Billy the Kid · Trinidad Moruga Scorpion pepper · Tin type pose — Winchester one hand, pistol on hip, slight smirk · Lone, young, ungovernable</div></div></div>
-      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🌶️</div><div class="badge-info"><div class="badge-name">Pepper Outlaw</div><div class="badge-sub">$300+ annual · 1.75x multiplier · Jesse James · Ghost Pepper · Interior 1880s passenger railroad car · Long view down aisle · Passengers' backs · Both revolvers drawn · Sack for valuables · Jesse facing full car shouting</div></div></div>
-      <div class="badge-card pending"><span class="badge-status pending">⬜ Art Needed</span><div class="badge-placeholder" style="display:flex;">🌶️</div><div class="badge-info"><div class="badge-name">Infamous Gunslinger</div><div class="badge-sub">$500+ annual · 2x multiplier · Doc Holliday · Carolina Reaper · Riding tall on horseback down frontier town street · Townspeople peering from windows and doorways · The legend arriving</div></div></div>
+    <div class="pending-note">Earn Chili Peppers through purchases. Exchange tokens at qualifying pepper thresholds. Balance depletes on exchange. One token per transaction. Multiple tokens available simultaneously across qualifying tiers. Bridge art on front · Reward on reverse.</div>
+    <div class="coin-grid loyalty-grid">
+
+      <!-- ─── 50 PEPPERS ─────────────────────────────────────────── -->
+      <div class="tier-label" style="grid-column:1/-1;font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--brass);padding:0.5rem 0 0.25rem;border-top:1px solid rgba(212,168,50,0.2);margin-top:0.5rem;">50 Chili Peppers</div>
+
+      <!-- Token 1: Bixby Creek -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-bixby-creek.png" alt="Bixby Creek Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">Bixby Creek Bridge</div>
+          <div class="coin-front-sub">Big Sur, California</div>
+          <div class="coin-front-level">50 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-bixby-creek-reverse.png" alt="Bixby Creek Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">Complimentary</div>
+          <div class="coin-back-reward">Slap Ya Mama Cajun Original</div>
+          <div class="coin-back-text">Opened in 1932, the Bixby Creek Bridge spans 714 feet above a dramatic coastal canyon on California's Highway 1. Featured in HBO's Big Little Lies and countless car commercials, it's one of the most photographed bridges in the world.</div>
+        </div>
+      </div>
+
+      <!-- Token 2: Seven Mile -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-seven-mile.png" alt="Seven Mile Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">Seven Mile Bridge</div>
+          <div class="coin-front-sub">Florida Keys, Florida</div>
+          <div class="coin-front-level">50 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-seven-mile-reverse.png" alt="Seven Mile Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">Complimentary</div>
+          <div class="coin-back-reward">Slap Ya Mama Cajun Hot</div>
+          <div class="coin-back-text">Stretching 6.79 miles between Knight's Key and Little Duck Key, the Seven Mile Bridge is the iconic symbol of the Florida Keys. Built in 1982 alongside the remains of Henry Flagler's original 1912 railroad bridge, it carries travelers toward Key West over open Atlantic and Gulf waters simultaneously.</div>
+        </div>
+      </div>
+
+      <!-- ─── 75 PEPPERS ─────────────────────────────────────────── -->
+      <div class="tier-label" style="grid-column:1/-1;font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--brass);padding:0.5rem 0 0.25rem;border-top:1px solid rgba(212,168,50,0.2);margin-top:0.5rem;">75 Chili Peppers</div>
+
+      <!-- Token 3: Sunshine Skyway -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-sunshine-skyway.png" alt="Sunshine Skyway Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">Sunshine Skyway</div>
+          <div class="coin-front-sub">Tampa Bay, Florida</div>
+          <div class="coin-front-level">75 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-sunshine-skyway-reverse.png" alt="Sunshine Skyway Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">Complimentary</div>
+          <div class="coin-back-reward">Ass Kickin' Habanero Garlic Salt</div>
+          <div class="coin-back-text">The Bob Graham Sunshine Skyway Bridge rises 430 feet above Tampa Bay on bright yellow cables. Completed in 1987 after a tragic 1980 freighter collision destroyed the original span, it has appeared in three films and a documentary. At 4.1 miles, it's one of the longest cable-stayed bridges in the world.</div>
+        </div>
+      </div>
+
+      <!-- Token 4: Coronado -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-coronado.png" alt="Coronado Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">Coronado Bridge</div>
+          <div class="coin-front-sub">San Diego, California</div>
+          <div class="coin-front-level">75 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-coronado-reverse.png" alt="Coronado Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">Complimentary</div>
+          <div class="coin-back-reward">Slap Ya Mama Hot Sauce</div>
+          <div class="coin-back-text">The San Diego–Coronado Bridge sweeps across San Diego Bay in a graceful 80-degree curve — a deliberate design choice to reduce wind stress and avoid a Navy airfield's flight path. Opened in 1969, its 200-foot central span and distinctive arc make it one of the most visually distinctive bridges in America.</div>
+        </div>
+      </div>
+
+      <!-- Token 5: Mackinac -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-mackinac.png" alt="Mackinac Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">Mackinac Bridge</div>
+          <div class="coin-front-sub">Straits of Mackinac, Michigan</div>
+          <div class="coin-front-level">75 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-mackinac-reverse.png" alt="Mackinac Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">Complimentary</div>
+          <div class="coin-back-reward">Heartbreaking Dawn's The Green</div>
+          <div class="coin-back-text">Opened in 1957, "Mighty Mac" connects Michigan's Upper and Lower Peninsulas across the Straits of Mackinac where Lake Huron meets Lake Michigan. At 26,372 feet of total length, it held the title of longest suspension bridge in the Western Hemisphere for decades. Every Labor Day, thousands walk it — the only day pedestrians are permitted.</div>
+        </div>
+      </div>
+
+      <!-- ─── 100 PEPPERS ────────────────────────────────────────── -->
+      <div class="tier-label" style="grid-column:1/-1;font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--brass);padding:0.5rem 0 0.25rem;border-top:1px solid rgba(212,168,50,0.2);margin-top:0.5rem;">100 Chili Peppers</div>
+
+      <!-- Token 6: Chesapeake Bay -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-chesapeake-bay.png" alt="Chesapeake Bay Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">Chesapeake Bay Bridge</div>
+          <div class="coin-front-sub">Maryland</div>
+          <div class="coin-front-level">100 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-chesapeake-bay-reverse.png" alt="Chesapeake Bay Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">Complimentary</div>
+          <div class="coin-back-reward">Dirty Dick's Hot Tropical</div>
+          <div class="coin-back-text">Known to locals as the Bay Bridge, the William Preston Lane Jr. Memorial Bridge has carried Eastern Shore travelers across the Chesapeake since 1952. Spanning 4.3 miles with virtually no shoulder and open-grate sections that reveal the water below, it's been called one of the scariest bridges in the world — and one of the most essential on the East Coast.</div>
+        </div>
+      </div>
+
+      <!-- Token 7: New River Gorge -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-new-river-gorge.png" alt="New River Gorge Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">New River Gorge Bridge</div>
+          <div class="coin-front-sub">Fayetteville, West Virginia</div>
+          <div class="coin-front-level">100 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-new-river-gorge-reverse.png" alt="New River Gorge Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">Complimentary</div>
+          <div class="coin-back-reward">Sucklebusters Original BBQ</div>
+          <div class="coin-back-text">Completed in 1977, the New River Gorge Bridge held the title of world's longest steel arch span for 26 years. Rising 876 feet above the New River — one of the oldest rivers on the continent — it's the centerpiece of a National Park, was featured on the West Virginia state quarter, and hosts Bridge Day each October, when BASE jumpers legally leap from its deck.</div>
+        </div>
+      </div>
+
+      <!-- Token 8: Tacoma Narrows -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-tacoma-narrows.png" alt="Tacoma Narrows Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">Tacoma Narrows Bridge</div>
+          <div class="coin-front-sub">Tacoma, Washington</div>
+          <div class="coin-front-level">100 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-tacoma-narrows-reverse.png" alt="Tacoma Narrows Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">10% Off Entire Purchase</div>
+          <div class="coin-back-reward">Applied at Checkout</div>
+          <div class="coin-back-text">On November 7, 1940 — just four months after opening — the original Tacoma Narrows Bridge twisted itself apart in a 40 mph wind and collapsed into Puget Sound. "Galloping Gertie," as it was called, became the most studied engineering failure in history and permanently changed how suspension bridges are designed worldwide. The current bridge, opened 1950, stands as a tribute to lessons learned.</div>
+        </div>
+      </div>
+
+      <!-- ─── 125 PEPPERS ────────────────────────────────────────── -->
+      <div class="tier-label" style="grid-column:1/-1;font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--brass);padding:0.5rem 0 0.25rem;border-top:1px solid rgba(212,168,50,0.2);margin-top:0.5rem;">125 Chili Peppers</div>
+
+      <!-- Token 9: Zakim -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-zakim-bunker-hill.png" alt="Zakim Bunker Hill Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">Zakim Bunker Hill Bridge</div>
+          <div class="coin-front-sub">Boston, Massachusetts</div>
+          <div class="coin-front-level">125 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-zakim-bunker-hill-reverse.png" alt="Zakim Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">Complimentary</div>
+          <div class="coin-back-reward">Colon Cleaner Hot Mustard</div>
+          <div class="coin-back-text">Opened in 2003 as part of Boston's Big Dig, the Leonard P. Zakim Bunker Hill Memorial Bridge is the widest cable-stayed bridge ever built. Its distinctive twin towers are modeled on the nearby Bunker Hill Monument. Bostonians claim it immediately — it appears in The Departed, The Equalizer, and has become the defining symbol of modern Boston.</div>
+        </div>
+      </div>
+
+      <!-- ─── 150 PEPPERS ────────────────────────────────────────── -->
+      <div class="tier-label" style="grid-column:1/-1;font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--brass);padding:0.5rem 0 0.25rem;border-top:1px solid rgba(212,168,50,0.2);margin-top:0.5rem;">150 Chili Peppers</div>
+
+      <!-- Token 10: Verrazzano-Narrows -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-verrazzano-narrows.png" alt="Verrazzano-Narrows Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">Verrazzano-Narrows Bridge</div>
+          <div class="coin-front-sub">New York Harbor, New York</div>
+          <div class="coin-front-level">150 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-verrazzano-narrows-reverse.png" alt="Verrazzano Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">Complimentary</div>
+          <div class="coin-back-reward">Sucklebusters Hogwaller 14oz</div>
+          <div class="coin-back-text">Opened in 1964, the Verrazzano-Narrows Bridge connects Brooklyn to Staten Island across New York Harbor. Named for the Italian explorer who first sailed into the bay in 1524, it was the world's longest suspension bridge at opening. Every November, over 50,000 runners cross it at the start of the New York City Marathon — the only time pedestrians set foot on it.</div>
+        </div>
+      </div>
+
+      <!-- Token 11: SF-Oakland Bay -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-sf-oakland-bay.png" alt="SF-Oakland Bay Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">SF–Oakland Bay Bridge</div>
+          <div class="coin-front-sub">San Francisco Bay, California</div>
+          <div class="coin-front-level">150 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-sf-oakland-bay-reverse.png" alt="SF-Oakland Bay Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">15% Off Entire Purchase</div>
+          <div class="coin-back-reward">Applied at Checkout</div>
+          <div class="coin-back-text">While the Golden Gate gets the postcards, the Bay Bridge does the work. Carrying over 240,000 vehicles daily across two spans and Yerba Buena Island, it opened in 1936 — six months before the Golden Gate. The eastern self-anchored suspension span, completed in 2013, is the largest of its kind ever built and lights up nightly with the Bay Lights installation.</div>
+        </div>
+      </div>
+
+      <!-- ─── 175 PEPPERS ────────────────────────────────────────── -->
+      <div class="tier-label" style="grid-column:1/-1;font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--brass);padding:0.5rem 0 0.25rem;border-top:1px solid rgba(212,168,50,0.2);margin-top:0.5rem;">175 Chili Peppers</div>
+
+      <!-- Token 12: George Washington -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-george-washington.png" alt="George Washington Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">George Washington Bridge</div>
+          <div class="coin-front-sub">Hudson River, New York / New Jersey</div>
+          <div class="coin-front-level">175 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-george-washington-reverse.png" alt="George Washington Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">Complimentary</div>
+          <div class="coin-back-reward">2 Pig Mafia Steak Seasoning 14oz</div>
+          <div class="coin-back-text">The GWB opened in 1931 as the world's longest suspension bridge. Today it carries 14 lanes of traffic and over 103 million vehicles annually — the busiest bridge on Earth. It flies the world's largest free-flying American flag from its lower chord in honor of 9/11. It has appeared in 8 films and is part of the I-95 corridor connecting Maine to Florida.</div>
+        </div>
+      </div>
+
+      <!-- ─── 200 PEPPERS ────────────────────────────────────────── -->
+      <div class="tier-label" style="grid-column:1/-1;font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--brass);padding:0.5rem 0 0.25rem;border-top:1px solid rgba(212,168,50,0.2);margin-top:0.5rem;">200 Chili Peppers</div>
+
+      <!-- Token 13: Brooklyn -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-brooklyn.png" alt="Brooklyn Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">Brooklyn Bridge</div>
+          <div class="coin-front-sub">East River, New York City</div>
+          <div class="coin-front-level">200 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-brooklyn-reverse.png" alt="Brooklyn Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">Complimentary</div>
+          <div class="coin-back-reward">Ariston Garlic Infused Olive Oil 8.45oz</div>
+          <div class="coin-back-text">Opened in 1883, the Brooklyn Bridge was the world's first steel-wire suspension bridge and the longest suspension bridge of its era. Designated a National Historic Landmark, it spans 1,595 feet across the East River with Gothic granite towers that remain among the most recognized silhouettes in the world. To prove its safety after opening, 21 elephants were walked across it. It has appeared in Spider-Man, I Am Legend, and over a dozen major films.</div>
+        </div>
+      </div>
+
+      <!-- Token 14: Lake Pontchartrain -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-lake-pontchartrain.png" alt="Lake Pontchartrain Causeway" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">Lake Pontchartrain Causeway</div>
+          <div class="coin-front-sub">Louisiana</div>
+          <div class="coin-front-level">200 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-lake-pontchartrain-reverse.png" alt="Lake Pontchartrain Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">Complimentary</div>
+          <div class="coin-back-reward">Ariston Fig Infused Balsamic Vinegar 8.45oz</div>
+          <div class="coin-back-text">The Lake Pontchartrain Causeway is the longest bridge over water in the United States — 23.83 miles of twin spans connecting Metairie to Mandeville, Louisiana. For eight miles in the middle, no land is visible in any direction. Opened in 1956 and expanded in 1969, it carries commuters across the lake daily and remains a feat of scale that still stops people mid-crossing.</div>
+        </div>
+      </div>
+
+      <!-- ─── 225 PEPPERS ────────────────────────────────────────── -->
+      <div class="tier-label" style="grid-column:1/-1;font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--brass);padding:0.5rem 0 0.25rem;border-top:1px solid rgba(212,168,50,0.2);margin-top:0.5rem;">225 Chili Peppers</div>
+
+      <!-- Token 15: Golden Gate -->
+      <div class="coin-flip-card" onclick="handleCoinClick(this)">
+        <div class="coin-front">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-golden-gate.png" alt="Golden Gate Bridge" onerror="this.style.opacity='0.2'">
+          <div class="coin-front-name">Golden Gate Bridge</div>
+          <div class="coin-front-sub">San Francisco, California</div>
+          <div class="coin-front-level">225 🌶️</div>
+        </div>
+        <div class="coin-back">
+          <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-golden-gate-reverse.png" alt="Golden Gate Reverse" onerror="this.style.opacity='0.2'">
+          <div class="coin-back-name">20% Off Entire Purchase</div>
+          <div class="coin-back-reward">Applied at Checkout</div>
+          <div class="coin-back-text">The most recognized bridge in the world. Opened in 1937 in International Orange — chosen to be visible through the dense Pacific fog — the Golden Gate held the title of world's longest suspension bridge for 27 years. Heavier than the Empire State Building, it's held together by 1.2 million steel rivets. It has appeared in Superman, James Bond, Rise of the Planet of the Apes, and Pacific Rim. Over 10 million people visit it annually.</div>
+        </div>
+      </div>
+
     </div>
   </section>
 
