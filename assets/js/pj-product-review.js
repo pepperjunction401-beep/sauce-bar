@@ -107,7 +107,12 @@
     var valueEl = document.getElementById('pj-peoples-choice-value');
     var countEl = document.getElementById('pj-peoples-choice-count');
 
-    if (starsEl) starsEl.textContent = buildStars(agg.rating);
+    /*
+     * starsEl is the only element where we use innerHTML, because the
+     * star markup is generated entirely by our own code below — no
+     * external strings touch it. Safe by construction.
+     */
+    if (starsEl) starsEl.innerHTML = buildStars(agg.rating);
     if (valueEl) valueEl.textContent = agg.rating.toFixed(2) + ' People\u2019s Choice';
     if (countEl) {
       countEl.textContent = '(' + agg.count + ' verified review' + (agg.count === 1 ? '' : 's') + ')';
@@ -116,18 +121,20 @@
     container.hidden = false;
   }
 
+  /*
+   * Accurate quarter-star renderer using layered fill.
+   * Renders 5 empty stars with a width-clipped overlay of filled stars.
+   * Width = (rating / 5) * 100% gives precise fractional display.
+   */
   function buildStars(rating) {
-    var full  = Math.floor(rating);
-    var frac  = rating - full;
-    var stars = '';
-    for (var i = 0; i < full; i++) stars += '\u2605';
-    if (frac >= 0.75)      stars += '\u2605';
-    else if (frac >= 0.5)  stars += '\u00BD';
-    else if (frac >= 0.25) stars += '\u00BC';
-    while (stars.replace(/[\u00BC\u00BD]/g, '').length + (stars.indexOf('\u00BC') > -1 || stars.indexOf('\u00BD') > -1 ? 1 : 0) < 5) {
-      stars += '\u2606';
-    }
-    return stars;
+    var clamped = Math.max(0, Math.min(5, Number(rating) || 0));
+    var pct = (clamped / 5) * 100;
+    return (
+      '<span class="pj-stars-wrap" aria-hidden="true">' +
+        '<span class="pj-stars-empty">\u2606\u2606\u2606\u2606\u2606</span>' +
+        '<span class="pj-stars-fill" style="width:' + pct + '%;">\u2605\u2605\u2605\u2605\u2605</span>' +
+      '</span>'
+    );
   }
 
   /* ══════════════════════════════════════════════════════════
