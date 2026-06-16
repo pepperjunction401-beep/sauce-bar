@@ -1587,6 +1587,28 @@ body {
   line-height: 1;
 }
 
+.pj-stars-wrap {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
+.pj-stars-empty {
+  color: rgba(212,168,50,0.35);
+}
+
+.pj-stars-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--brass-bright);
+  pointer-events: none;
+}
+
 .pj-peoples-choice-value {
   font-size: 11px;
   font-weight: 700;
