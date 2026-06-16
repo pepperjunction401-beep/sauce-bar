@@ -72,6 +72,7 @@
   <script src="../assets/js/pj-product.js"></script>
   <script src="../assets/js/cart-engine.js"></script>
   <script src="../assets/js/cart-drawer.js"></script>
+  <script src="../assets/js/pj-product-review.js"></script>
 
 </head>
 
@@ -110,6 +111,11 @@
   <div class="product-hero-eyebrow">High River Sauces · Hot Sauce · Caribbean</div>
   <div class="product-hero-name">Tears of the Sun</div>
   <div class="product-hero-sub">Tropical Hot Sauce · 5 fl oz · <span id="hero-price">$9.00</span></div>
+  <div class="pj-peoples-choice" id="pj-peoples-choice" hidden aria-live="polite">
+    <span class="pj-peoples-choice-stars" id="pj-peoples-choice-stars"></span>
+    <span class="pj-peoples-choice-value" id="pj-peoples-choice-value"></span>
+    <span class="pj-peoples-choice-count" id="pj-peoples-choice-count"></span>
+  </div>
 </div>
 
 <!-- ═══ PAGE BODY ════════════════════════════════════════════════ -->
@@ -529,6 +535,16 @@
         });
       }
 
+      /* ── REVIEW INTEGRATION — initialize shared product-review system ── */
+      if (window.PJProductReview && typeof PJProductReview.init === 'function') {
+        PJProductReview.init({
+          productSlug:        PAGE_SLUG,
+          reviewButtonId:     'pj-review',
+          summaryContainerId: 'pj-peoples-choice',
+          customerLineId:     'customer-line'
+        });
+      }
+
       var catInfo = CAT_PAGE[category];
       if (catInfo) {
         var navCat = document.getElementById('nav-category');
@@ -760,6 +776,13 @@
       .catch(function(e){ console.warn('Bartender lines unavailable:', e); });
   })();
 
+  /* ── CUSTOMER LINE — 30-second hardwired trigger ── */
+  setTimeout(function () {
+    if (window.PJProductReview && typeof PJProductReview.showCustomerLine === 'function') {
+      PJProductReview.showCustomerLine();
+    }
+  }, 30000);
+
   /* ── SHARE BUTTON ── */
   var shareBtn = document.getElementById('share-btn');
   var sharePanel = document.getElementById('share-panel');
@@ -861,6 +884,12 @@
 <div class="bartender-line" id="bartender-line" aria-live="polite">
   <span class="bartender-line-text" id="bartender-line-text"></span>
   <span class="bartender-line-attr">— Head Pepper, Pepper Junction</span>
+</div>
+
+<!-- ═══ CUSTOMER LINE — left-side scroll, approved customer review excerpt ══════════ -->
+<div class="customer-line" id="customer-line" aria-live="polite">
+  <span class="customer-line-text" id="customer-line-text"></span>
+  <span class="customer-line-attr" id="customer-line-attr"></span>
 </div>
 
 </body>
