@@ -732,20 +732,21 @@ body {
   opacity: 0.45;
   margin-bottom: 12px;
   pointer-events: none;
-  transition: color 0.2s, border-color 0.2s, background 0.2s, opacity 0.2s;
 }
 
 .review-btn:not(:disabled) {
-  cursor: pointer;
-  pointer-events: auto;
-  opacity: 1;
   color: var(--brass-bright);
-  border-color: rgba(212,168,50,0.55);
+  border-color: rgba(212,168,50,0.5);
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: auto;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .review-btn:not(:disabled):hover {
   background: rgba(212,168,50,0.08);
-  border-color: rgba(212,168,50,0.85);
+  border-color: rgba(212,168,50,0.78);
+  color: var(--cream-warm);
 }
 
 /* ── SHARE BUTTON ─────────────────────────────────────────── */
@@ -1546,11 +1547,23 @@ body {
 
 /* ══════════════════════════════════════════════════════════════
    REVIEW INTEGRATION — Phase 2
-   - People's Choice Rating summary (hero area)
+   - Passenger Reviews section and People's Choice Rating summary
    - Customer line scroll (left-side, mirrors bartender behavior)
    ══════════════════════════════════════════════════════════════ */
 
-/* ── PEOPLE'S CHOICE RATING SUMMARY ──────────────────────── */
+/* ── PASSENGER REVIEWS / PEOPLE'S CHOICE SUMMARY ─────────── */
+.passenger-reviews-section {
+  margin-bottom: 28px;
+}
+
+.passenger-reviews-section[hidden] {
+  display: none;
+}
+
+.passenger-reviews-section .pj-peoples-choice {
+  margin-top: 0;
+}
+
 .pj-peoples-choice {
   display: inline-flex;
   align-items: center;
@@ -1570,30 +1583,8 @@ body {
 .pj-peoples-choice-stars {
   font-size: 14px;
   letter-spacing: 0.05em;
-  line-height: 1;
   color: var(--brass-bright);
-}
-
-.pj-stars-wrap {
-  position: relative;
-  display: inline-block;
   line-height: 1;
-  font-size: inherit;
-  letter-spacing: inherit;
-}
-
-.pj-stars-empty {
-  color: rgba(212,168,50,0.35);
-}
-
-.pj-stars-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  color: var(--brass-bright);
-  pointer-events: none;
 }
 
 .pj-peoples-choice-value {
