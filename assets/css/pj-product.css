@@ -732,6 +732,20 @@ body {
   opacity: 0.45;
   margin-bottom: 12px;
   pointer-events: none;
+  transition: color 0.2s, border-color 0.2s, background 0.2s, opacity 0.2s;
+}
+
+.review-btn:not(:disabled) {
+  cursor: pointer;
+  pointer-events: auto;
+  opacity: 1;
+  color: var(--brass-bright);
+  border-color: rgba(212,168,50,0.55);
+}
+
+.review-btn:not(:disabled):hover {
+  background: rgba(212,168,50,0.08);
+  border-color: rgba(212,168,50,0.85);
 }
 
 /* ── SHARE BUTTON ─────────────────────────────────────────── */
@@ -1556,8 +1570,30 @@ body {
 .pj-peoples-choice-stars {
   font-size: 14px;
   letter-spacing: 0.05em;
-  color: var(--brass-bright);
   line-height: 1;
+  color: var(--brass-bright);
+}
+
+.pj-stars-wrap {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
+.pj-stars-empty {
+  color: rgba(212,168,50,0.35);
+}
+
+.pj-stars-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--brass-bright);
+  pointer-events: none;
 }
 
 .pj-peoples-choice-value {
