@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,11 +112,6 @@
   <div class="product-hero-eyebrow">High River Sauces · Hot Sauce · Caribbean</div>
   <div class="product-hero-name">Tears of the Sun</div>
   <div class="product-hero-sub">Tropical Hot Sauce · 5 fl oz · <span id="hero-price">$9.00</span></div>
-  <div class="pj-peoples-choice" id="pj-peoples-choice" hidden aria-live="polite">
-    <span class="pj-peoples-choice-stars" id="pj-peoples-choice-stars"></span>
-    <span class="pj-peoples-choice-value" id="pj-peoples-choice-value"></span>
-    <span class="pj-peoples-choice-count" id="pj-peoples-choice-count"></span>
-  </div>
 </div>
 
 <!-- ═══ PAGE BODY ════════════════════════════════════════════════ -->
@@ -334,9 +330,9 @@
             </div>
           </div>
 
-          <!-- Review Button — muted until Supabase goes live -->
+          <!-- Review Button — activated by the shared review integration -->
           <button class="review-btn" id="pj-review" disabled aria-disabled="true">
-            Tell Everyone How Much You Love It!
+            Tell Other Passengers About This Item
           </button>
 
           <!-- Share -->
@@ -375,7 +371,7 @@
       <div class="similar-section">
         <div class="section-rule">
           <div class="rule-line"></div>
-          <span class="rule-text">Items That'll Wag Your Tail</span>
+          <span class="rule-text">Bartender's Recommendations</span>
           <div class="rule-line right"></div>
         </div>
         <div class="similar-grid reveal" id="similar-products">
@@ -538,10 +534,9 @@
       /* ── REVIEW INTEGRATION — initialize shared product-review system ── */
       if (window.PJProductReview && typeof PJProductReview.init === 'function') {
         PJProductReview.init({
-          productSlug:        PAGE_SLUG,
-          reviewButtonId:     'pj-review',
-          summaryContainerId: 'pj-peoples-choice',
-          customerLineId:     'customer-line'
+          productSlug:    PAGE_SLUG,
+          reviewButtonId: 'pj-review',
+          customerLineId: 'customer-line'
         });
       }
 
