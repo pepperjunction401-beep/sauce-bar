@@ -24,7 +24,7 @@
 
 /* ── CONFIG ─────────────────────────────────────────────── */
 var SHARED_REVIEW_PAGE = '../review.html';
-var TWO_OR_MORE_SYMBOLS = /[!@#$%^&*()_+={}[]|\:;"'<>,.?/~`]{2,}/;
+var TWO_OR_MORE_SYMBOLS = /[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?~`\/]{2,}/;
 
 var state = {
 productSlug: null,
