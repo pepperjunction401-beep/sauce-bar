@@ -97,7 +97,7 @@ if (!anchor || !anchor.parentNode) {
 var section = document.createElement('div');
 section.className = 'editorial passenger-reviews-section';
 section.id = 'passenger-reviews-section';
-section.hidden = true;
+section.hidden = false;
 
 var label = document.createElement('div');
 label.className = 'section-label';
