@@ -42,7 +42,6 @@ console.warn('PJProductReview: init requires productSlug.');
 return;
 }
 
-```
 state.productSlug = opts.productSlug;
 state.reviewButtonId = opts.reviewButtonId || 'pj-review';
 state.customerLineId = opts.customerLineId || 'customer-line';
@@ -52,7 +51,6 @@ bindReviewButton();
 loadSummary();
 prefetchCustomerLines();
 bindCustomerLineDismissal();
-```
 
 }
 
@@ -66,7 +64,6 @@ var existingSection = document.getElementById(
 'passenger-reviews-section'
 );
 
-```
 if (existingSection) {
   return existingSection;
 }
@@ -131,7 +128,6 @@ section.appendChild(summary);
 anchor.insertAdjacentElement('afterend', section);
 
 return section;
-```
 
 }
 
@@ -141,7 +137,6 @@ REVIEW BUTTON
 function bindReviewButton() {
 var btn = document.getElementById(state.reviewButtonId);
 
-```
 if (!btn) {
   return;
 }
@@ -154,7 +149,6 @@ btn.disabled = false;
 btn.setAttribute('aria-disabled', 'false');
 
 btn.addEventListener('click', handleReviewClick);
-```
 
 }
 
@@ -176,9 +170,7 @@ SHARED_REVIEW_PAGE +
 '?product=' +
 encodeURIComponent(state.productSlug);
 
-```
 window.location.href = url;
-```
 
 }
 
@@ -201,13 +193,11 @@ function loadSummary() {
 */
 var aggregate = getMockAggregate(state.productSlug);
 
-```
 if (!aggregate || !aggregate.count) {
   return;
 }
 
 renderSummary(aggregate);
-```
 
 }
 
@@ -216,7 +206,6 @@ var section = document.getElementById(
 'passenger-reviews-section'
 );
 
-```
 var container = document.getElementById(
   'pj-peoples-choice'
 );
@@ -238,7 +227,12 @@ var countEl = document.getElementById(
 );
 
 if (starsEl) {
-  starsEl.textContent = buildStars(aggregate.rating);
+  /*
+   * starsEl is the only element where innerHTML is used,
+   * because the star markup is generated entirely by
+   * buildStars() below. No external input touches it.
+   */
+  starsEl.innerHTML = buildStars(aggregate.rating);
 }
 
 if (valueEl) {
@@ -261,44 +255,28 @@ if (section) {
 }
 
 container.hidden = false;
-```
 
 }
 
 function buildStars(rating) {
-var full = Math.floor(rating);
-var fraction = rating - full;
-var stars = '';
-
-```
-for (var i = 0; i < full; i++) {
-  stars += '\u2605';
-}
-
-if (fraction >= 0.75) {
-  stars += '\u2605';
-} else if (fraction >= 0.5) {
-  stars += '\u00BD';
-} else if (fraction >= 0.25) {
-  stars += '\u00BC';
-}
-
-while (
-  stars.replace(/[\u00BC\u00BD]/g, '').length +
-    (
-      stars.indexOf('\u00BC') > -1 ||
-      stars.indexOf('\u00BD') > -1
-        ? 1
-        : 0
-    ) <
-  5
-) {
-  stars += '\u2606';
-}
-
-return stars;
-```
-
+  /*
+   * Accurate quarter-star renderer using layered fill.
+   * Renders 5 empty stars (☆☆☆☆☆) with a width-clipped
+   * overlay of 5 filled stars (★★★★★). The fill width is
+   * (rating / 5) * 100%, which gives precise fractional
+   * display at any rating — not just .00/.25/.50/.75.
+   *
+   * A rating of 3.75 renders as 75% of the row filled,
+   * not as 4 full stars.
+   */
+  var clamped = Math.max(0, Math.min(5, Number(rating) || 0));
+  var pct = (clamped / 5) * 100;
+  return (
+    '<span class="pj-stars-wrap" aria-hidden="true">' +
+      '<span class="pj-stars-empty">\u2606\u2606\u2606\u2606\u2606</span>' +
+      '<span class="pj-stars-fill" style="width:' + pct + '%;">\u2605\u2605\u2605\u2605\u2605</span>' +
+    '</span>'
+  );
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -330,7 +308,6 @@ if (state.lineShown) {
 return;
 }
 
-```
 var pool = state.customerLinePool.filter(isLineSafe);
 
 /*
@@ -394,7 +371,6 @@ state.dismissTimer = setTimeout(
   hideCustomerLine,
   15000
 );
-```
 
 }
 
@@ -403,7 +379,6 @@ var container = document.getElementById(
 state.customerLineId
 );
 
-```
 if (container) {
   container.classList.remove('visible');
 }
@@ -412,7 +387,6 @@ if (state.dismissTimer) {
   clearTimeout(state.dismissTimer);
   state.dismissTimer = null;
 }
-```
 
 }
 
@@ -421,7 +395,6 @@ if (!line || !line.text) {
 return false;
 }
 
-```
 /*
  * Reject runs of two or more adjacent symbols.
  */
@@ -430,7 +403,6 @@ if (TWO_OR_MORE_SYMBOLS.test(line.text)) {
 }
 
 return true;
-```
 
 }
 
@@ -439,7 +411,6 @@ var container = document.getElementById(
 state.customerLineId
 );
 
-```
 if (!container) {
   return;
 }
@@ -478,7 +449,6 @@ container.addEventListener(
   },
   { passive: true }
 );
-```
 
 }
 
