@@ -903,7 +903,7 @@ body {
 
 .rule-text {
   font-family: 'Josefin Sans', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.36em;
   text-transform: uppercase;
@@ -936,7 +936,7 @@ body {
 
 .similar-label {
   font-family: 'Josefin Sans', sans-serif;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
