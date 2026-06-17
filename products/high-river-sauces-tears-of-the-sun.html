@@ -765,7 +765,7 @@
         /* Beat 2 — 60 seconds in */
         setTimeout(function() {
           if (beat2.length) showLine(getRandom(beat2), 15000);
-        }, 60000);
+        }, 75000);
       })
       .catch(function(e){ console.warn('Bartender lines unavailable:', e); });
   })();
@@ -775,7 +775,7 @@
     if (window.PJProductReview && typeof PJProductReview.showCustomerLine === 'function') {
       PJProductReview.showCustomerLine();
     }
-  }, 30000);
+  }, 35000);
 
   /* ── SHARE BUTTON ── */
   var shareBtn = document.getElementById('share-btn');
