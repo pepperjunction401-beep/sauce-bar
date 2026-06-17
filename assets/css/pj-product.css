@@ -1300,7 +1300,7 @@ body {
 .bartender-line-text {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1.6;
   color: #FFD700;
   display: block;
@@ -1632,7 +1632,7 @@ body {
   left: -500px;
   bottom: 200px;
   max-width: 320px;
-  background: var(--green-dark, #1b3a2d);
+  background: var(--brass);
   border: 1px solid rgba(212,168,50,0.55);
   border-left: none;
   padding: 14px 18px 14px 20px;
@@ -1651,7 +1651,7 @@ body {
   font-style: italic;
   font-size: 15px;
   line-height: 1.6;
-  color: var(--cream-warm);
+  color: var(--crimson);
   display: block;
 }
 
@@ -1661,7 +1661,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--brass);
+  color: var(--crimson);
   opacity: 0.85;
   display: block;
   margin-top: 6px;
