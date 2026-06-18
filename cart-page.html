@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Your Cart — Pepper Junction</title>
+  <meta name="description" content="Review your Pepper Junction lineup, track cart badge progress, and prepare for checkout." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/pj-product.css">
+  <link rel="stylesheet" href="assets/css/cart.css">
+</head>
+
+<body>
+
+<header class="site-header">
+  <a class="header-logo" href="conductor.html">
+    <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+    <div class="header-wordmark">
+      <span class="header-name">Pepper Junction</span>
+      <span class="header-tagline">Est. 2014 · Rhode Island</span>
+    </div>
+  </a>
+
+  <nav class="header-nav">
+    <a href="hot-sauces.html">Hot Sauces</a>
+    <a href="main.html">Home</a>
+    <a href="index.html">Pairing Bar</a>
+    <a href="main.html#location">Visit</a>
+  </nav>
+</header>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="main.html">Home</a>
+    <span>›</span>
+    Your Cart
+  </div>
+</div>
+
+<section class="product-hero">
+  <div class="product-hero-eyebrow">Junction Progress Station</div>
+  <div class="product-hero-name">Your Lineup</div>
+  <div class="product-hero-sub">Review your cart, track your badge progress, and get ready for checkout.</div>
+</section>
+
+<main class="page-outer">
+  <div class="chalkboard-wrap reveal visible">
+    <div class="chalk-corner tl"></div>
+    <div class="chalk-corner tr"></div>
+    <div class="chalk-corner bl"></div>
+    <div class="chalk-corner br"></div>
+
+    <div class="chalkboard-surface">
+
+      <section class="pj-cart-page-layout">
+
+        <div class="pj-cart-page-main">
+          <div class="section-label">Your Cart</div>
+
+          <div id="pj-cart-page-empty" class="pj-cart-page-empty">
+            Your lineup is empty.
+          </div>
+
+          <div id="pj-cart-page-items" class="pj-cart-page-items"></div>
+        </div>
+
+        <aside class="pj-cart-page-summary">
+          <div class="section-label">Order Summary</div>
+
+          <div class="pj-cart-page-summary-box">
+            <div class="pj-cart-page-summary-row">
+              <span>Items</span>
+              <strong id="pj-cart-page-count">0</strong>
+            </div>
+
+            <div class="pj-cart-page-summary-row">
+              <span>Subtotal</span>
+              <strong id="pj-cart-page-subtotal">$0.00</strong>
+            </div>
+
+            <div class="pj-cart-page-note">
+              Taxes, shipping, and local delivery options will be handled at Square checkout.
+            </div>
+
+            <button class="pj-cart-page-checkout" id="pj-cart-page-checkout" type="button">
+              Checkout Now
+            </button>
+
+            <a class="pj-cart-page-continue" href="hot-sauces.html">
+              Continue Shopping
+            </a>
+          </div>
+        </aside>
+
+      </section>
+
+      <!-- ═══ BADGES UNLOCKED ═════════════════════════════════════ -->
+      <section class="pj-progress-station" id="pj-badges-unlocked-section">
+        <div class="section-rule" id="pj-badges-unlocked-header">
+          <div class="rule-line"></div>
+          <span class="rule-text">Badges Unlocked</span>
+          <div class="rule-line right"></div>
+        </div>
+
+        <div id="pj-badges-unlocked-empty" class="pj-cart-page-empty">
+          Start your lineup to begin unlocking badges.
+        </div>
+
+        <div class="pj-progress-grid" id="pj-badges-unlocked-grid"></div>
+      </section>
+
+      <!-- ═══ BADGES BREWING ══════════════════════════════════════ -->
+      <section class="pj-progress-station" id="pj-badges-brewing-section">
+        <div class="section-rule" id="pj-badges-brewing-header">
+          <div class="rule-line"></div>
+          <span class="rule-text">Badges Brewing</span>
+          <div class="rule-line right"></div>
+        </div>
+
+        <div id="pj-badges-brewing-empty" class="pj-cart-page-empty">
+          You've reached the top tier in every category. Nothing left to prove.
+        </div>
+
+        <div class="pj-progress-grid" id="pj-badges-brewing-grid"></div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+      <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
+      <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
+      <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+    </div>
+
+    <div>
+      <span class="footer-col-title">Shop</span>
+      <ul class="footer-col-links">
+        <li><a href="hot-sauces.html">Hot Sauces</a></li>
+        <li><a href="buffalo-condiments.html">Wing & Buffalo</a></li>
+        <li><a href="seasonings-bbq.html">BBQ & Seasonings</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="olive-oils-vinegar.html">Olive Oils & Vinegars</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <span class="footer-col-title">Pepper Junction</span>
+      <ul class="footer-col-links">
+        <li><a href="main.html">Home</a></li>
+        <li><a href="index.html">Pairing Bar</a></li>
+        <li><a href="main.html#about">Our Story</a></li>
+        <li><a href="main.html#location">Visit Us</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <span class="footer-col-title">Help</span>
+      <ul class="footer-col-links">
+        <li><a href="policies.html#damaged">Damaged Products</a></li>
+        <li><a href="policies.html#shipping">Shipping Info</a></li>
+        <li><a href="policies.html#returns">Returns</a></li>
+        <li><a href="policies.html#contact">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
+    <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
+  </div>
+</footer>
+
+<script src="assets/js/cart-engine.js"></script>
+<script src="assets/js/cart-drawer.js"></script>
+<script src="assets/js/cart-page.js"></script>
+
+</body>
+</html>

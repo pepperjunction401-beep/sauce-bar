@@ -812,25 +812,11 @@
 
     var html = '';
 
-    /* ── L1 Heat badge ── */
+    /* ── L1 Heat badge — entry level only, user progresses to L2/L3 via purchases ── */
     var l1Slug = HEAT_BADGE_SLUGS[heatCategory] || '';
     var l1Name = HEAT_BADGE_L1_NAMES[heatCategory] || '';
     if (l1Slug) {
       html += badgeItem('../assets/badges/heat/' + l1Slug + '.png', l1Name, HEAT_EARN.L1, false);
-    }
-
-    /* ── L2 Heat badge ── */
-    var l2Slug = l1Slug ? 'L2-' + l1Slug : '';
-    var l2Name = HEAT_BADGE_L2_NAMES[heatCategory] || '';
-    if (l2Slug) {
-      html += badgeItem('../assets/badges/heat/' + l2Slug + '.png', l2Name, HEAT_EARN.L2, false);
-    }
-
-    /* ── L3 Heat badge ── */
-    var l3Slug = l1Slug ? 'L3-' + l1Slug : '';
-    var l3Name = HEAT_BADGE_L3_NAMES[heatCategory] || '';
-    if (l3Slug) {
-      html += badgeItem('../assets/badges/heat/' + l3Slug + '.png', l3Name, HEAT_EARN.L3, false);
     }
 
     /* ── Food badges — up to 3, no duplicates ── */
@@ -869,6 +855,12 @@
     html += badgeItem(
       '../assets/badges/reviews/' + REVIEW_BADGE.slug + '.png',
       REVIEW_BADGE.name, REVIEW_BADGE.earn, false
+    );
+
+    /* ── Purchase Progress Badge — Fill 'Er Up, entry-level teaser ── */
+    html += badgeItem(
+      '../assets/badges/purchase-progress/badge-purchase-progress-fuel.png',
+      'Fill \'Er Up', 'Reach $10 in a single transaction to earn this badge', false
     );
 
     container.innerHTML = html;

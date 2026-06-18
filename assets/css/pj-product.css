@@ -364,7 +364,7 @@ body {
 
 .badge-station-title {
   font-family: 'BlackRiver', 'Playfair Display', serif;
-  font-size: 18px;
+  font-size: 22px;
   color: var(--brass-bright);
   letter-spacing: 0.06em;
   display: block;
@@ -734,6 +734,21 @@ body {
   pointer-events: none;
 }
 
+.review-btn:not(:disabled) {
+  color: var(--brass-bright);
+  border-color: rgba(212,168,50,0.5);
+  cursor: pointer;
+  opacity: 1;
+  pointer-events: auto;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.review-btn:not(:disabled):hover {
+  background: rgba(212,168,50,0.08);
+  border-color: rgba(212,168,50,0.78);
+  color: var(--cream-warm);
+}
+
 /* ── SHARE BUTTON ─────────────────────────────────────────── */
 .share-btn-wrap {
   margin-bottom: 12px;
@@ -888,7 +903,7 @@ body {
 
 .rule-text {
   font-family: 'Josefin Sans', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.36em;
   text-transform: uppercase;
@@ -921,7 +936,7 @@ body {
 
 .similar-label {
   font-family: 'Josefin Sans', sans-serif;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1202,8 +1217,8 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 44px;
+  height: 44px;
   font-size: 14px;
   color: var(--brass);
   opacity: 0.8;
@@ -1285,7 +1300,7 @@ body {
 .bartender-line-text {
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1.6;
   color: #FFD700;
   display: block;
@@ -1528,3 +1543,137 @@ body {
   padding-bottom: 2px;
 }
 .btc-cta a:hover { opacity: 1; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   REVIEW INTEGRATION — Phase 2
+   - Passenger Reviews section and People's Choice Rating summary
+   - Customer line scroll (left-side, mirrors bartender behavior)
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── PASSENGER REVIEWS / PEOPLE'S CHOICE SUMMARY ─────────── */
+.passenger-reviews-section {
+  margin-bottom: 28px;
+}
+
+.passenger-reviews-section[hidden] {
+  display: none;
+}
+
+.passenger-reviews-section .pj-peoples-choice {
+  margin-top: 0;
+}
+
+.pj-peoples-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 8px 14px;
+  background: rgba(212,168,50,0.06);
+  border: 1px solid rgba(212,168,50,0.32);
+  border-radius: 999px;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.pj-peoples-choice[hidden] {
+  display: none;
+}
+
+.pj-peoples-choice-stars {
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  color: var(--brass-bright);
+  line-height: 1;
+}
+
+.pj-stars-wrap {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
+.pj-stars-empty {
+  color: rgba(212,168,50,0.35);
+}
+
+.pj-stars-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--brass-bright);
+  pointer-events: none;
+}
+
+.pj-peoples-choice-value {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cream-warm);
+}
+
+.pj-peoples-choice-count {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chalk-muted);
+  opacity: 0.78;
+}
+
+/* ── CUSTOMER LINE — LEFT-SIDE SCROLL ────────────────────── */
+.customer-line {
+  position: fixed;
+  left: -500px;
+  bottom: 200px;
+  max-width: 320px;
+  background: var(--brass);
+  border: 1px solid rgba(212,168,50,0.55);
+  border-left: none;
+  padding: 14px 18px 14px 20px;
+  z-index: 151;
+  transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 4px 4px 24px rgba(0,0,0,0.45);
+  cursor: pointer;
+}
+
+.customer-line.visible {
+  left: 0;
+}
+
+.customer-line-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--crimson);
+  display: block;
+}
+
+.customer-line-attr {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  opacity: 0.85;
+  display: block;
+  margin-top: 6px;
+}
+
+@media (max-width: 640px) {
+  .customer-line {
+    max-width: 80vw;
+    bottom: 180px;
+    padding: 12px 16px;
+  }
+  .customer-line-text {
+    font-size: 14px;
+  }
+}
