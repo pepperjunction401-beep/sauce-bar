@@ -110,7 +110,7 @@
 <div class="product-hero">
   <div class="product-hero-eyebrow">Mikey V's · Hot Sauce · Mexican</div>
   <div class="product-hero-name">I love Taco Sauce Hot</div>
-  <div class="product-hero-sub">Tropical Hot Sauce · 5 fl oz · <span id="hero-price">$9.00</span></div>
+  <div class="product-hero-sub"><span id="hero-sub"></span> · <span id="hero-size"></span> · <span id="hero-price"></span></div>
 </div>
 
 <!-- ═══ PAGE BODY ════════════════════════════════════════════════ -->
@@ -318,7 +318,7 @@
           <div class="editorial">
             <div class="section-label">Why It Stands Out</div>
             <div class="section-body">
-              <p>A taco-driven hot sauce inspired by Austin's love of bold flavor and street food culture. Mikey V's I Love Taco Sauce delivers versatile heat that enhances tacos, wings, burgers, and Tex-Mex classics without overpowering them.</p>
+              <p>A taco-driven hot sauce inspired by Austin's love of bold flavor and street food culture. Mikey V's delivers versatile heat that enhances tacos, wings, burgers, and Tex-Mex classics without overpowering them.</p>
             </div>
           </div>
 
@@ -515,7 +515,9 @@
       setTxt('class-heat-finish',heatFin);
       setTxt('heat-pill',        heatCat + ' · ' + heatLevel + '/10');
       setTxt('heat-label',       heatCat + ' — ' + heatLevel + ' / 10');
-      if (price) {
+      setTxt('hero-sub',  product['hero sub'] || '');
+        setTxt('hero-size', product['Size']     || '');
+        if (price) {
         setTxt('hero-price', price);
         var btn = document.getElementById('buy-now-btn');
         if (btn) btn.textContent = 'Add To Cart — ' + price;
@@ -765,7 +767,7 @@
         /* Beat 2 — 60 seconds in */
         setTimeout(function() {
           if (beat2.length) showLine(getRandom(beat2), 15000);
-        }, 75000);
+        }, 60000);
       })
       .catch(function(e){ console.warn('Bartender lines unavailable:', e); });
   })();
@@ -775,7 +777,7 @@
     if (window.PJProductReview && typeof PJProductReview.showCustomerLine === 'function') {
       PJProductReview.showCustomerLine();
     }
-  }, 35000);
+  }, 30000);
 
   /* ── SHARE BUTTON ── */
   var shareBtn = document.getElementById('share-btn');
