@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rhed's Rhed's Original — Pepper Junction</title>
-  <meta name="description" content="Rhed's Rhed's Original. Approved under The Pepper Junction Standard™." />
+  <title>Rhed’s Rhed's Original — Pepper Junction</title>
+  <meta name="description" content="Rhed’s Rhed's Original. Approved under The Pepper Junction Standard™." />
 
   <!-- ── OPEN GRAPH — social share preview ── -->
   <meta property="og:type"        content="product" />
   <meta property="og:site_name"   content="Pepper Junction" />
-  <meta property="og:title"       content="Rhed's Rhed's Original — Pepper Junction" />
-  <meta property="og:description" content="Rhed's Rhed's Original. Approved under The Pepper Junction Standard™." />
+  <meta property="og:title"       content="Rhed’s Rhed's Original — Pepper Junction" />
+  <meta property="og:description" content="Rhed’s Rhed's Original. Approved under The Pepper Junction Standard™." />
   <meta property="og:url"         content="https://pepperjunction401-beep.github.io/sauce-bar/products/rheds-original.html" />
   <meta property="og:image"       content="https://pepperjunction401-beep.github.io/sauce-bar/assets/sauces/rheds-original.png" />
-  <meta property="og:image:alt"   content="Rhed's Rhed's Original" />
+  <meta property="og:image:alt"   content="Rhed’s Rhed's Original" />
   <meta name="twitter:card"       content="summary_large_image" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,7 @@
     "@context": "https://schema.org/",
     "@type": "Product",
     "name": "",
-    "brand": { "@type": "Brand", "name": "Rhed's" },
+    "brand": { "@type": "Brand", "name": "Rhed’s" },
     "offers": {
       "@type": "Offer",
       "priceCurrency": "USD",
@@ -108,9 +108,9 @@
 
 <!-- ═══ HERO BANNER ═════════════════════════════════════════════ -->
 <div class="product-hero">
-  <div class="product-hero-eyebrow">Rhed's · Hot Sauce · Cajun</div>
+  <div class="product-hero-eyebrow">Rhed’s · Hot Sauce · Cajun</div>
   <div class="product-hero-name">Rhed's Original</div>
-  <div class="product-hero-sub">Tropical Hot Sauce · 5 fl oz · <span id="hero-price">$9.00</span></div>
+  <div class="product-hero-sub"><span id="hero-sub"></span> · <span id="hero-size"></span> · <span id="hero-price"></span></div>
 </div>
 
 <!-- ═══ PAGE BODY ════════════════════════════════════════════════ -->
@@ -135,13 +135,13 @@
             <div class="img-frame-inner">
               <img
                 src="../assets/sauces/rheds-original.png"
-                alt="Rhed's Rhed's Original"
+                alt="Rhed’s Rhed's Original"
                 loading="eager"
                 onerror="this.style.opacity='0.3'"
               />
             </div>
           </div>
-          <div class="img-label">Rhed's</div>
+          <div class="img-label">Rhed’s</div>
 
           <div class="img-frame">
             <div class="frame-bolt tl"></div>
@@ -152,7 +152,7 @@
               <img
                 id="food-img"
                 src="../assets/sauces/food/food-rheds-original.png"
-                alt="Rhed's Rhed's Original food pairing"
+                alt="Rhed’s Rhed's Original food pairing"
                 loading="lazy"
                 style="width:100%; height:100%; object-fit:cover;"
                 onerror="this.src='../assets/PJ-logo.png'; this.style.height='200px'; this.style.objectFit='contain'; this.style.opacity='0.65';"
@@ -515,7 +515,9 @@
       setTxt('class-heat-finish',heatFin);
       setTxt('heat-pill',        heatCat + ' · ' + heatLevel + '/10');
       setTxt('heat-label',       heatCat + ' — ' + heatLevel + ' / 10');
-      if (price) {
+      setTxt('hero-sub',  product['hero sub'] || '');
+        setTxt('hero-size', product['Size']     || '');
+        if (price) {
         setTxt('hero-price', price);
         var btn = document.getElementById('buy-now-btn');
         if (btn) btn.textContent = 'Add To Cart — ' + price;
@@ -765,7 +767,7 @@
         /* Beat 2 — 60 seconds in */
         setTimeout(function() {
           if (beat2.length) showLine(getRandom(beat2), 15000);
-        }, 75000);
+        }, 60000);
       })
       .catch(function(e){ console.warn('Bartender lines unavailable:', e); });
   })();
@@ -775,7 +777,7 @@
     if (window.PJProductReview && typeof PJProductReview.showCustomerLine === 'function') {
       PJProductReview.showCustomerLine();
     }
-  }, 35000);
+  }, 30000);
 
   /* ── SHARE BUTTON ── */
   var shareBtn = document.getElementById('share-btn');
