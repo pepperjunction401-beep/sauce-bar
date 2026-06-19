@@ -110,7 +110,7 @@
 <div class="product-hero">
   <div class="product-hero-eyebrow">Melinda's · Hot Sauce · Caribbean</div>
   <div class="product-hero-name">Scotch Bonnet Sauce</div>
-  <div class="product-hero-sub">Tropical Hot Sauce · 5 fl oz · <span id="hero-price">$9.00</span></div>
+  <div class="product-hero-sub"><span id="hero-sub"></span> · <span id="hero-size"></span> · <span id="hero-price"></span></div>
 </div>
 
 <!-- ═══ PAGE BODY ════════════════════════════════════════════════ -->
@@ -227,7 +227,7 @@
           <div class="editorial">
             <div class="section-label">What It Is</div>
             <div class="section-body">
-              <p>This one brings classic Caribbean flavor to the table. Cousin to the habanero pepper, Scotch Bonnet peppers lead the way with their bright, fruity heat, while carrot, papaya, and passion fruit round things out with a natural sweetness that keeps the sauce lively and balanced. The heat stays clean and controlled, making it an easy go-to for eggs, seafood, rice dishes, tuna salad, or anything that could use a little tropical kick.</p>
+              <p>This one brings classic Caribbean flavor to the table. Cousin to the habanero pepper, Scotch Bonnet peppers lead the way with their bright, fruity heat, while carrot, papaya, and passion fruit round things out with a natural sweetness that keeps the sauce lively and balanced. The heat stays clean and controlled, making it an easy go-to for eggs, seafood, rice dishes, tuna salad, or anything that welcomes a little tropical kick.</p>
             </div>
           </div>
 
@@ -514,7 +514,9 @@
       setTxt('class-heat-finish',heatFin);
       setTxt('heat-pill',        heatCat + ' · ' + heatLevel + '/10');
       setTxt('heat-label',       heatCat + ' — ' + heatLevel + ' / 10');
-      if (price) {
+      setTxt('hero-sub',  product['hero sub'] || '');
+        setTxt('hero-size', product['Size']     || '');
+        if (price) {
         setTxt('hero-price', price);
         var btn = document.getElementById('buy-now-btn');
         if (btn) btn.textContent = 'Add To Cart — ' + price;
@@ -764,7 +766,7 @@
         /* Beat 2 — 60 seconds in */
         setTimeout(function() {
           if (beat2.length) showLine(getRandom(beat2), 15000);
-        }, 75000);
+        }, 60000);
       })
       .catch(function(e){ console.warn('Bartender lines unavailable:', e); });
   })();
@@ -774,7 +776,7 @@
     if (window.PJProductReview && typeof PJProductReview.showCustomerLine === 'function') {
       PJProductReview.showCustomerLine();
     }
-  }, 35000);
+  }, 30000);
 
   /* ── SHARE BUTTON ── */
   var shareBtn = document.getElementById('share-btn');
