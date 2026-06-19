@@ -812,7 +812,7 @@
       <div class="product-grid">
 
         <!-- ── Defcon Defense Condition #3 Mild ── -->
-        <a class="product-card reveal" href="products/defcon-defense-condition-3-mild.html">
+        <a class="product-card reveal" href="products/defcon-condition-3.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
             <div class="award-badge"><span class="award-badge-text">🏆 Screaming MiMi Award '16 &amp; '17</span></div>
@@ -827,13 +827,13 @@
             <p class="product-card-teaser">The original Defcon pillar — classic Buffalo tang with approachable heat designed to be enjoyed by everyone.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8 fl oz · $8.99</span>
+            <span class="product-card-price">8 fl oz · $9.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
         <!-- ── Defcon Defense Condition #2 Medium ── -->
-        <a class="product-card reveal" href="products/defcon-defense-condition-2-medium.html">
+        <a class="product-card reveal" href="products/defcon-condition-2.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
             <div class="award-badge"><span class="award-badge-text">🏆 Screaming MiMi Award '15 &amp; '23</span></div>
@@ -848,13 +848,13 @@
             <p class="product-card-teaser">Classic Buffalo tang with balanced heat and depth — consistently ranking among the best at the NYC Hot Sauce Expo.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8 fl oz · $8.99</span>
+            <span class="product-card-price">8 fl oz · $9.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
 
         <!-- ── Defcon Cluckwing Orange ── -->
-        <a class="product-card reveal" href="products/defcon-cluckwing-orange.html">
+        <a class="product-card reveal" href="products/defcon-cluckwing.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
             <div class="award-badge"><span class="award-badge-text">🏆 Screaming MiMi Award</span></div>
@@ -869,7 +869,7 @@
             <p class="product-card-teaser">Defcon's second hottest — cayenne and habanero layered with Peri-Peri, African Bird Pepper, and Trinidad Scorpion fire.</p>
           </div>
           <div class="product-card-footer">
-            <span class="product-card-price">8 fl oz · $9.99</span>
+            <span class="product-card-price">8 fl oz · $10.99</span>
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
@@ -917,9 +917,10 @@
       <div class="product-grid">
 
         <!-- ── Colon Cleaner Mustard Sauce ── -->
-        <a class="product-card reveal" href="products/colon-cleaner-mustard-sauce.html">
+        <a class="product-card oos reveal" href="products/sauce-crafters-colon-cleaner-mustard.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Colon Cleaner</span></div>
+            <div class="ribbon-oos">Out of Stock</div>
             <img src="assets/pullman-product-display/cat-colon-cleaner-mustard-hot-sauce.png" alt="Colon Cleaner Mustard Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🌭</span>
@@ -958,7 +959,7 @@
         </a>
 
         <!-- ── Melinda's Ghost Pepper Ketchup ── -->
-        <a class="product-card oos reveal" href="products/melindas-ghost-pepper-ketchup.html">
+        <a class="product-card oos reveal" href="products/melindas-naga-jolokia-ketchup.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
             <div class="ribbon-oos">Out of Stock</div>
@@ -979,7 +980,7 @@
         </a>
 
         <!-- ── Spicy Shark Habanero Maple Syrup ── -->
-        <a class="product-card reveal" href="products/spicy-shark-habanero-maple-syrup.html">
+        <a class="product-card reveal" href="products/the-spicy-shark-habanero-maple-syrup.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Spicy Shark</span></div>
             <img src="assets/pullman-product-display/cat-spicy-shark-hot-maple-syrup.png" alt="Spicy Shark Habanero Maple Syrup" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
@@ -1110,14 +1111,16 @@
 
     // Award badges keyed by slug
     var AWARD_BADGES = {
-      'defcon-defense-condition-2': "\uD83C\uDFC6 NYC Hot Sauce Expo 1st Place '15 & '23",
-      'defcon-defense-condition-3': "\uD83C\uDFC6 NYC Hot Sauce Expo 1st Place '16 & '17"
+      'defcon-condition-2': "\uD83C\uDFC6 NYC Hot Sauce Expo 1st Place '15 & '23",
+      'defcon-condition-3': "\uD83C\uDFC6 NYC Hot Sauce Expo 1st Place '16 & '17",
+      'defcon-cluckwing': "\uD83C\uDFC6 Screaming MiMi Award",
+      'defcon-curbstomp': "\uD83C\uDFC6 Screaming MiMi Award"
     };
 
     // slug → image filename stem
     var IMAGE_MAP = {
-      'defcon-defense-condition-3':              'defcon-defense-condition-3-mild',
-      'defcon-defense-condition-2':              'defcon-defense-condition-2-medium',
+      'defcon-condition-3':                      'defcon-defense-condition-3-mild',
+      'defcon-condition-2':                      'defcon-defense-condition-2-medium',
       'defcon-cluckwing':                        'defcon-cluckwing-orange',
       'defcon-curbstomp':                        'defcon-curbstomp',
       'sauce-crafters-colon-cleaner-mustard':    'colon-cleaner-mustard-hot-sauce',
