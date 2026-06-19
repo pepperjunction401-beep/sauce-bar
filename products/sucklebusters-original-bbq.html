@@ -110,7 +110,7 @@
 <div class="product-hero">
   <div class="product-hero-eyebrow">Sucklebusters · Bbq Sauce · BBQ</div>
   <div class="product-hero-name">Original BBQ</div>
-  <div class="product-hero-sub">Tropical Hot Sauce · 5 fl oz · <span id="hero-price">$9.00</span></div>
+  <div class="product-hero-sub"><span id="hero-sub"></span> · <span id="hero-size"></span> · <span id="hero-price"></span></div>
 </div>
 
 <!-- ═══ PAGE BODY ════════════════════════════════════════════════ -->
@@ -227,7 +227,7 @@
           <div class="editorial">
             <div class="section-label">What It Is</div>
             <div class="section-body">
-              <p>All-Natural. No fillers, no preservatives and no nine-syllable words you can't pronounce. And no high fructose corn syrup. HFC has a very low burning point — by using store-bought budget BBQ sauces jacked up with HFC, the sauce melts off or burns to the meat. So a $1 worth of BBQ sauce just ruined your $20 rack of ribs you spent 5 hours cooking. Stop ruining your food! There's a reason why this Original BBQ Sauce by Sucklebusters is award-winning. This tomato-based barbecue sauce delivers balanced sweetness from molasses and sugar, tang from vinegar, and mild spice from a hint of chili peppers. Crafted for versatility, this sauce enhances grilled, smoked, and roasted meats while maintaining a clean, well-rounded flavor structure. Designed for both backyard grilling and competition-level finishing, it performs equally well as a glaze, baste, finishing sauce, or table dip.</p>
+              <p>All-Natural. No fillers, no preservatives and no nine-syllable words you can't pronounce. And no high fructose corn syrup. HFC has a very low burning point — by using store-bought budget BBQ sauces jacked up with HFC, the sauce melts off or burns to the meat. So a $1 worth of BBQ sauce just ruined your $20 rack of ribs you spent 5 hours cooking. Stop ruining your food! There's a reason why this Original BBQ Sauce by Sucklebusters is award-winning. This tomato-based barbecue sauce delivers balanced sweetness from molasses and sugar, tang from vinegar, and mild spice from a hint of chili peppers. Crafted for versatility, this sauce enhances grilled, smoked, and roasted meats while maintaining a clean, well-rounded flavor structure.</p>
             </div>
           </div>
 
@@ -512,7 +512,9 @@
       setTxt('class-heat-finish',heatFin);
       setTxt('heat-pill',        heatCat + ' · ' + heatLevel + '/10');
       setTxt('heat-label',       heatCat + ' — ' + heatLevel + ' / 10');
-      if (price) {
+      setTxt('hero-sub',  product['hero sub'] || '');
+        setTxt('hero-size', product['Size']     || '');
+        if (price) {
         setTxt('hero-price', price);
         var btn = document.getElementById('buy-now-btn');
         if (btn) btn.textContent = 'Add To Cart — ' + price;
@@ -762,7 +764,7 @@
         /* Beat 2 — 60 seconds in */
         setTimeout(function() {
           if (beat2.length) showLine(getRandom(beat2), 15000);
-        }, 75000);
+        }, 60000);
       })
       .catch(function(e){ console.warn('Bartender lines unavailable:', e); });
   })();
@@ -772,7 +774,7 @@
     if (window.PJProductReview && typeof PJProductReview.showCustomerLine === 'function') {
       PJProductReview.showCustomerLine();
     }
-  }, 35000);
+  }, 30000);
 
   /* ── SHARE BUTTON ── */
   var shareBtn = document.getElementById('share-btn');
