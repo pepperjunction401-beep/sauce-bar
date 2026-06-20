@@ -654,36 +654,54 @@
     }
     .back-top-link:hover { opacity: 0.9; border-color: rgba(184,137,57,0.5); }
 
-    /* ── OUT OF STOCK RIBBON ─────────────────────────────────── */
-    .ribbon-oos {
+    /* ── OUT OF STOCK — hover reveal ─────────────────────────── */
+
+    /* Full color — no gray, no dim */
+    .product-card.oos .product-card-image img,
+    .product-card.out-of-stock .product-card-image img {
+      filter: none;
+      transition: transform 0.35s ease;
+    }
+
+    /* Crimson panel — sits at bottom, hidden off-screen by default */
+    .out-of-stock-banner {
       position: absolute;
-      top: 28px;
-      right: -32px;
-      width: 140px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 33%;
       background: var(--crimson);
-      color: var(--cream-warm);
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      text-align: center;
-      padding: 6px 0;
-      transform: rotate(45deg);
-      transform-origin: center;
-      border-top: 1px solid rgba(255,255,255,0.2);
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-      z-index: 3;
+      border-top: 1px solid rgba(212,168,50,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      transform: translateY(100%);
+      transition: transform 0.28s ease;
       pointer-events: none;
     }
 
-    /* Dim the card image when out of stock */
-    .product-card.oos .product-card-image img {
-      filter: grayscale(40%) brightness(0.8);
+    .out-of-stock-banner span {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: #FFD700;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
     }
 
-    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    /* Slide up on hover */
+    .product-card.oos:hover .out-of-stock-banner,
+    .product-card.out-of-stock:hover .out-of-stock-banner {
+      transform: translateY(0);
+    }
+
+    /* Card body and footer — full opacity always */
+    .product-card.oos .product-card-name,
+    .product-card.out-of-stock .product-card-name,
+    .product-card.oos .product-card-teaser,
+    .product-card.out-of-stock .product-card-teaser { opacity: 1; }
     @media (max-width: 900px) {
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
     }
@@ -702,48 +720,6 @@
       .award-badge-text { white-space: nowrap; }
       body { overflow-x: hidden; }
       .catalog-section { overflow: hidden; }
-    }
-
-    /* ── OUT OF STOCK TREATMENT ───────────────────────────────── */
-    .product-card.out-of-stock .product-card-image img {
-      filter: grayscale(100%) opacity(0.5);
-      transition: filter 0.3s ease;
-    }
-
-    .out-of-stock-banner {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      transform: translateY(-50%);
-      background: rgba(43,29,21,0.88);
-      border-top: 1px solid rgba(184,137,57,0.4);
-      border-bottom: 1px solid rgba(184,137,57,0.4);
-      padding: 10px 0;
-      text-align: center;
-      z-index: 3;
-      display: none;
-    }
-
-    .product-card.out-of-stock .out-of-stock-banner {
-      display: block;
-    }
-
-    .out-of-stock-banner span {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: var(--brass-bright);
-    }
-
-    .product-card.out-of-stock .product-card-name {
-      opacity: 0.55;
-    }
-
-    .product-card.out-of-stock .product-card-teaser {
-      opacity: 0.45;
     }
 
   </style>
@@ -917,15 +893,15 @@
       <div class="product-grid">
 
         <!-- ── Colon Cleaner Mustard Sauce ── -->
-        <a class="product-card oos reveal" href="products/sauce-crafters-colon-cleaner-mustard.html">
+        <a class="product-card out-of-stock reveal" href="products/sauce-crafters-colon-cleaner-mustard.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Colon Cleaner</span></div>
-            <div class="ribbon-oos">Out of Stock</div>
             <img src="assets/pullman-product-display/cat-colon-cleaner-mustard-hot-sauce.png" alt="Colon Cleaner Mustard Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🌭</span>
               <span class="type-badge-text">Mustard Sauce</span>
             </div>
+            <div class="out-of-stock-banner"><span>Out of Stock</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Habanero Mustard Sauce</div>
@@ -938,15 +914,15 @@
         </a>
 
         <!-- ── Melinda's Chipotle Ketchup ── -->
-        <a class="product-card oos reveal" href="products/melindas-chipotle-ketchup.html">
+        <a class="product-card out-of-stock reveal" href="products/melindas-chipotle-ketchup.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
-            <div class="ribbon-oos">Out of Stock</div>
             <img src="assets/pullman-product-display/cat-melindas-chipotle-ketchup.png" alt="Melinda's Chipotle Ketchup" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🍅</span>
               <span class="type-badge-text">Ketchup</span>
             </div>
+            <div class="out-of-stock-banner"><span>Out of Stock</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Chipotle Ketchup</div>
@@ -959,15 +935,15 @@
         </a>
 
         <!-- ── Melinda's Ghost Pepper Ketchup ── -->
-        <a class="product-card oos reveal" href="products/melindas-naga-jolokia-ketchup.html">
+        <a class="product-card out-of-stock reveal" href="products/melindas-naga-jolokia-ketchup.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
-            <div class="ribbon-oos">Out of Stock</div>
             <img src="assets/pullman-product-display/cat-melindas-ghost-pepper-ketchup.png" alt="Melinda's Ghost Pepper Ketchup" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🍅</span>
               <span class="type-badge-text">Ketchup</span>
             </div>
+            <div class="out-of-stock-banner"><span>Out of Stock</span></div>
           </div>
           <div class="product-card-body">
             <div class="product-card-name">Ghost Pepper Ketchup</div>
