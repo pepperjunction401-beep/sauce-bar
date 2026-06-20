@@ -328,15 +328,14 @@
 
     .cat-divider-badge {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       gap: 10px;
       padding: 8px 20px;
       border: 1px solid rgba(184,137,57,0.45);
       border-radius: 2px;
       background: rgba(30,48,32,0.7);
       backdrop-filter: blur(4px);
-      
+      white-space: nowrap;
     }
 
     .cat-divider-emoji { font-size: 14px; line-height: 1; }
@@ -536,25 +535,50 @@
     .product-card:hover .product-card-btn-arrow { transform: translateX(3px); }
 
     /* ── FOOTER ───────────────────────────────────────────────── */
-    .site-footer { background: var(--green-dark); border-top: 2px solid var(--brass); position: relative; z-index: 1; }
-    .footer-top { max-width: 1100px; margin: 0 auto; padding: 48px 48px 40px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
-    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
-    .footer-contact-item { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; }
-    .footer-contact-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
-    .footer-contact-item a:hover { opacity: 1; }
-    .footer-col-title { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass); opacity: 0.8; display: block; margin-bottom: 14px; }
-    .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .footer-col-links li a { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; text-decoration: none; transition: opacity 0.2s; }
-    .footer-col-links li a:hover { opacity: 1; }
-    .footer-bottom { border-top: 1px solid rgba(184,137,57,0.2); padding: 18px 48px; display: flex; align-items: center; justify-content: space-between; max-width: 100%; }
-    .footer-copy { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.35; }
-    .footer-standard { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); opacity: 0.45; }
-    .footer-sep { display: none; }
-    @media (max-width: 768px) {
-      .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; padding: 32px 20px 28px; }
-      .footer-bottom { padding: 14px 20px; flex-direction: column; gap: 6px; text-align: center; }
+    .site-footer {
+      background: var(--green-dark);
+      border-top: 2px solid var(--brass);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
     }
-    @media (max-width: 480px) { .footer-top { grid-template-columns: 1fr; } }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-item {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.4;
+    }
+
+    .footer-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
+    .footer-item a:hover { opacity: 1; }
+
+    .footer-sep { width: 1px; height: 12px; background: rgba(184,137,57,0.3); }
+
+    .footer-right {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.45;
+    }
 
     /* ── SCROLL REVEAL ────────────────────────────────────────── */
     .reveal {
@@ -604,53 +628,54 @@
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .wood-divider { height: 120px; }
       .header-nav { display: none; }
-      .maker-badge { top: 18px; left: 14px; }
-      .type-badge { bottom: 14px; }
-      body { overflow-x: hidden; }
-      .catalog-section { overflow: hidden; }
+      .site-footer { padding: 20px; }
     }
 
-    /* ── OUT OF STOCK TREATMENT ───────────────────────────────── */
+        /* ── OUT OF STOCK — hover reveal ─────────────────────────── */
+
+    /* Full color — no gray, no dim */
     .product-card.out-of-stock .product-card-image img {
-      filter: grayscale(100%) opacity(0.5);
-      transition: filter 0.3s ease;
+      filter: none;
+      transition: transform 0.35s ease;
     }
 
+    /* Crimson panel — sits at bottom, hidden off-screen by default */
     .out-of-stock-banner {
       position: absolute;
-      top: 50%;
+      bottom: 0;
       left: 0;
       right: 0;
-      transform: translateY(-50%);
-      background: rgba(43,29,21,0.88);
-      border-top: 1px solid rgba(184,137,57,0.4);
-      border-bottom: 1px solid rgba(184,137,57,0.4);
-      padding: 10px 0;
-      text-align: center;
-      z-index: 3;
-      display: none;
-    }
-
-    .product-card.out-of-stock .out-of-stock-banner {
-      display: block;
+      height: 12.5%;
+      background: var(--crimson);
+      border-top: 3px solid var(--brass-bright);
+      border-bottom: 3px solid var(--brass-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      transform: translateY(100%);
+      transition: transform 0.28s ease;
+      pointer-events: none;
     }
 
     .out-of-stock-banner span {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
+      font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.38em;
       text-transform: uppercase;
-      color: var(--brass-bright);
+      color: #FFD700;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
     }
 
-    .product-card.out-of-stock .product-card-name {
-      opacity: 0.55;
+    /* Slide up on hover */
+    .product-card.out-of-stock:hover .out-of-stock-banner {
+      transform: translateY(0);
     }
 
-    .product-card.out-of-stock .product-card-teaser {
-      opacity: 0.45;
-    }
+    /* Card body — full opacity always */
+    .product-card.out-of-stock .product-card-name,
+    .product-card.out-of-stock .product-card-teaser { opacity: 1; }
 
   </style>
 </head>
@@ -704,9 +729,11 @@
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
+          <span class="cat-divider-emoji">🧄</span>
           <span class="cat-divider-text">Deep-Fried Whole Garlic Cloves</span>
           <span class="cat-divider-count">5 Flavors · Small Batch · Texas Made</span>
         </div>
+        <div class="cat-divider-line right"></div>
       </div>
 
       <div class="product-grid">
@@ -822,46 +849,14 @@
 
   <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
   <footer class="site-footer">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
-        <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
-        <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
-      </div>
-      <div>
-        <span class="footer-col-title">Shop</span>
-        <ul class="footer-col-links">
-          <li><a href="hot-sauces.html">Hot Sauces</a></li>
-          <li><a href="buffalo-condiments.html">Wing &amp; Buffalo</a></li>
-          <li><a href="seasonings-bbq.html">BBQ &amp; Seasonings</a></li>
-          <li><a href="buffalo-condiments.html">Condiments</a></li>
-          <li><a href="snacks.html">Snacks</a></li>
-          <li><a href="olive-oils-vinegar.html">Olive Oils &amp; Vinegars</a></li>
-        </ul>
-      </div>
-      <div>
-        <span class="footer-col-title">Pepper Junction</span>
-        <ul class="footer-col-links">
-          <li><a href="main.html">Home</a></li>
-          <li><a href="index.html">Pairing Bar</a></li>
-          <li><a href="main.html#about">Our Story</a></li>
-          <li><a href="main.html#location">Visit Us</a></li>
-        </ul>
-      </div>
-      <div>
-        <span class="footer-col-title">Help</span>
-        <ul class="footer-col-links">
-          <li><a href="policies.html#damaged">Damaged Products</a></li>
-          <li><a href="policies.html#shipping">Shipping Info</a></li>
-          <li><a href="policies.html#returns">Returns</a></li>
-          <li><a href="policies.html#contact">Contact Us</a></li>
-        </ul>
-      </div>
+    <div class="footer-left">
+      <span class="footer-item"><a href="https://www.pepperjunction401.com">pepperjunction401.com</a></span>
+      <span class="footer-sep"></span>
+      <span class="footer-item">320 Kingstown Rd · Richmond, RI</span>
+      <span class="footer-sep"></span>
+      <span class="footer-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
     </div>
-    <div class="footer-bottom">
-      <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
-      <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
-    </div>
+    <div class="footer-right">© Pepper Junction · Est. 2014</div>
   </footer>
 
   <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
