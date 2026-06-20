@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" /><!DOCTYPE html>
-<html lang="en">
-<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Seasonings, Dry Rubs &amp; BBQ Sauces — Pepper Junction</title>
@@ -326,15 +323,14 @@
 
     .cat-divider-badge {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       gap: 10px;
       padding: 8px 20px;
       border: 1px solid rgba(184,137,57,0.45);
       border-radius: 2px;
       background: rgba(30,48,32,0.7);
       backdrop-filter: blur(4px);
-      
+      white-space: nowrap;
     }
 
     .cat-divider-emoji {
@@ -573,1336 +569,58 @@
     }
 
     /* ── FOOTER ───────────────────────────────────────────────── */
-    .site-footer { background: var(--green-dark); border-top: 2px solid var(--brass); position: relative; z-index: 1; }
-    .footer-top { max-width: 1100px; margin: 0 auto; padding: 48px 48px 40px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
-    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
-    .footer-contact-item { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; }
-    .footer-contact-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
-    .footer-contact-item a:hover { opacity: 1; }
-    .footer-col-title { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass); opacity: 0.8; display: block; margin-bottom: 14px; }
-    .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .footer-col-links li a { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; text-decoration: none; transition: opacity 0.2s; }
-    .footer-col-links li a:hover { opacity: 1; }
-    .footer-bottom { border-top: 1px solid rgba(184,137,57,0.2); padding: 18px 48px; display: flex; align-items: center; justify-content: space-between; max-width: 100%; }
-    .footer-copy { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.35; }
-    .footer-standard { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); opacity: 0.45; }
-    .footer-sep { display: none; }
-    @media (max-width: 768px) {
-      .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; padding: 32px 20px 28px; }
-      .footer-bottom { padding: 14px 20px; flex-direction: column; gap: 6px; text-align: center; }
-    }
-    @media (max-width: 480px) { .footer-top { grid-template-columns: 1fr; } }
-
-    /* ── SCROLL REVEAL ────────────────────────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── BACK TO TOP ──────────────────────────────────────────── */
-    .back-top {
+    .site-footer {
+      background: var(--green-dark);
+      border-top: 2px solid var(--brass);
+      padding: 28px 48px;
       display: flex;
-      justify-content: center;
-      padding: 24px 0 60px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
       position: relative;
       z-index: 1;
     }
 
-    .back-top-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.45;
-      text-decoration: none;
-      transition: opacity 0.2s;
-      padding: 10px 20px;
-      border: 1px solid rgba(184,137,57,0.2);
-      border-radius: 2px;
-    }
-    .back-top-link:hover { opacity: 0.9; border-color: rgba(184,137,57,0.5); }
-
-    /* ── SECTION JUMP NAV ─────────────────────────────────────── */
-    .section-jump {
-      background: rgba(30,48,32,0.85);
-      border-bottom: 1px solid rgba(184,137,57,0.25);
-      padding: 14px 48px;
-      position: relative;
-      z-index: 90;
-      backdrop-filter: blur(4px);
-    }
-
-    .section-jump-inner {
-      max-width: 1100px;
-      margin: 0 auto;
+    .footer-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 24px;
       flex-wrap: wrap;
     }
 
-    .jump-label {
+    .footer-item {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--brass);
-      opacity: 0.6;
-      margin-right: 8px;
-      white-space: nowrap;
-    }
-
-    .jump-link {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--cream);
-      opacity: 0.55;
-      text-decoration: none;
-      padding: 6px 14px;
-      border: 1px solid rgba(184,137,57,0.2);
-      border-radius: 2px;
-      transition: opacity 0.2s, border-color 0.2s, background 0.2s;
-      white-space: nowrap;
-    }
-    .jump-link:hover {
-      opacity: 1;
-      border-color: rgba(184,137,57,0.55);
-      background: rgba(184,137,57,0.08);
-    }
-
-    /* ── RESPONSIVE ───────────────────────────────────────────── */
-    @media (max-width: 900px) {
-      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-    }
-
-    @media (max-width: 640px) {
-      .container { padding: 0 20px; }
-      .site-header { padding: 16px 20px; }
-      .page-hero { padding: 36px 20px 40px; }
-      .section-jump { padding: 12px 20px; }
-      .section-jump-inner { justify-content: center; }
-      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .wood-divider { height: 120px; }
-      .header-nav { display: none; }
-      .maker-badge { top: 18px; left: 14px; }
-      .award-badge { top: 44px; left: 8px; padding: 3px 6px; }
-      .award-badge-text { white-space: nowrap; }
-      .type-badge { bottom: 14px; }
-      body { overflow-x: hidden; }
-      .catalog-section { overflow: hidden; }
-    }
-
-    /* ── OUT OF STOCK TREATMENT ───────────────────────────────── */
-    .product-card.out-of-stock .product-card-image img {
-      filter: grayscale(100%) opacity(0.5);
-      transition: filter 0.3s ease;
-    }
-
-    .out-of-stock-banner {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      transform: translateY(-50%);
-      background: rgba(43,29,21,0.88);
-      border-top: 1px solid rgba(184,137,57,0.4);
-      border-bottom: 1px solid rgba(184,137,57,0.4);
-      padding: 10px 0;
-      text-align: center;
-      z-index: 3;
-      display: none;
-    }
-
-    .product-card.out-of-stock .out-of-stock-banner {
-      display: block;
-    }
-
-    .out-of-stock-banner span {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: var(--brass-bright);
-    }
-
-    .product-card.out-of-stock .product-card-name {
-      opacity: 0.55;
-    }
-
-    .product-card.out-of-stock .product-card-teaser {
-      opacity: 0.45;
-    }
-
-  </style>
-</head>
-<body>
-
-  <!-- ═══ HEADER ══════════════════════════════════════════════ -->
-  <header class="site-header">
-    <a class="header-logo" href="conductor.html">
-      <img src="assets/PJ-logo.png" alt="Pepper Junction" />
-      <div class="header-wordmark">
-        <span class="header-name">Pepper Junction</span>
-        <span class="header-tagline">Est. 2014 · Rhode Island</span>
-      </div>
-    </a>
-    <nav class="header-nav">
-      <a href="main.html#categories">Shop</a>
-      <a href="index.html">Pairing Bar</a>
-      <a href="main.html#location">Visit</a>
-      <a href="https://www.pepperjunction401.com" class="nav-cta" target="_blank">Order Online</a>
-    </nav>
-  </header>
-
-  <!-- ═══ PAGE HERO ════════════════════════════════════════════ -->
-  <section class="page-hero">
-    <div class="page-hero-inner">
-      <div class="breadcrumb">
-        <a href="main.html">Main Street Station</a>
-        <span class="breadcrumb-sep">›</span>
-        <span>Seasonings, Dry Rubs &amp; BBQ Sauces</span>
-      </div>
-      <h1 class="page-hero-headline">Seasonings, Dry Rubs &amp; BBQ Sauces</h1>
-      <p class="page-hero-sub">Competition-grade rubs, all-natural BBQ sauces, and everyday seasonings — built for the backyard pitmaster and the kitchen counter alike.</p>
-    </div>
-  </section>
-
-  <!-- ═══ SECTION JUMP NAV ═════════════════════════════════════ -->
-  <nav class="section-jump" aria-label="Jump to category section">
-    <div class="section-jump-inner">
-      <span class="jump-label">Jump to:</span>
-      <a class="jump-link" href="#bbq-rubs">BBQ Sauces &amp; Dry Rubs</a>
-      <a class="jump-link" href="#seasonings">🧂 Seasonings</a>
-    </div>
-  </nav>
-
-  <!-- ═══ WOOD DIVIDER — BBQ SAUCES & DRY RUBS ════════════════ -->
-  <div class="wood-divider" id="bbq-rubs">
-    <div class="wood-divider__label">
-      <div class="wood-divider__line1">Season It Right</div>
-      <div class="wood-divider__line2">Smoke It Proud</div>
-    </div>
-  </div>
-
-  <!-- ═══ BBQ SAUCES & DRY RUBS CATALOG ════════════════════════ -->
-  <section class="catalog-section">
-    <div class="container">
-
-      <!-- BBQ Sauces sub-header -->
-      <div class="cat-divider">
-        <div class="cat-divider-line left"></div>
-        <div class="cat-divider-badge">
-          <span class="cat-divider-text">BBQ Sauces</span>
-          <span class="cat-divider-count">2 Sauces</span>
-        </div>
-      </div>
-
-      <!-- 2 sauces, 3-col grid, left-aligned -->
-      <div class="product-grid" style="margin-bottom: 48px;">
-
-        <!-- ── Sucklebusters Original BBQ Sauce ── -->
-        <a class="product-card reveal" href="products/sucklebusters-original-bbq.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-original-bbq-sauce.png" alt="Sucklebusters Original BBQ Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji"></span>
-              <span class="type-badge-text">BBQ Sauce</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Original BBQ Sauce</div>
-            <p class="product-card-teaser">All-natural. No HFCS. Balanced sweetness from molasses and sugar, tang from vinegar, mild spice — and a reason it wins awards.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">12 fl oz · $8.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Sucklebusters Chipotle BBQ Sauce ── -->
-        <a class="product-card reveal" href="products/sucklebusters-bbq-chipotle.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-chipotle-bbq-sauce.png" alt="Sucklebusters Chipotle BBQ Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji"></span>
-              <span class="type-badge-text">BBQ Sauce</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Chipotle BBQ Sauce</div>
-            <p class="product-card-teaser">All-natural. No HFCS. Smoky chipotle and sweet tomato base built for Texas-style barbecue where smoke and sauce work in harmony.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">12 fl oz · $9.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-      </div><!-- /bbq sauces grid -->
-
-      <!-- Dry Rubs sub-header -->
-      <div class="cat-divider">
-        <div class="cat-divider-line left"></div>
-        <div class="cat-divider-badge">
-          <span class="cat-divider-text">Dry Rubs</span>
-          <span class="cat-divider-count">6 Rubs</span>
-        </div>
-      </div>
-
-      <!-- 6 dry rubs: Hogwaller, 1836, 2 Pig Mafia, All Purpose, Clucker Dust, BAMM -->
-      <div class="product-grid">
-
-        <!-- ── Sucklebusters Hogwaller ── -->
-        <a class="product-card reveal" href="products/sucklebusters-hogwaller-14oz.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-hogwaller-bbq-dry-rub.png" alt="Sucklebusters Hogwaller BBQ Dry Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji"></span>
-              <span class="type-badge-text">Dry Rub</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Hog Waller Pork &amp; Rib Rub</div>
-            <p class="product-card-teaser">The infamous Hog Waller — known to smoke pork shoulders and ribs right off the bone.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Sucklebusters 1836 Beef Rub ── -->
-        <a class="product-card reveal" href="products/suckelbusters-1836-14oz.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-1836-beef-rub.png" alt="Sucklebusters 1836 Beef Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji"></span>
-              <span class="type-badge-text">Dry Rub</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">1836 Beef Rub</div>
-            <p class="product-card-teaser">Authentic Texas-style beef rub. Cracked peppercorns build a hardy bark on brisket during low-slow cooks.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── 2 Pig Mafia Steak Seasoning ── -->
-        <a class="product-card reveal" href="products/2-pig-mafia-steak-seasoning-14oz.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">2 Pig Mafia</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 2019 World Steak Championship</span></div>
-            <img src="assets/pullman-product-display/cat-two-pig-mafia-steak-seasoning.png" alt="2 Pig Mafia Steak Seasoning" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji"></span>
-              <span class="type-badge-text">Dry Rub</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Steak Seasoning</div>
-            <p class="product-card-teaser">Competition-grade. Built to enhance natural beef flavor and develop a steakhouse-quality crust over open flame or cast iron.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">13 oz · $14.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── PJ All Purpose SPG ── -->
-        <a class="product-card reveal" href="products/pepper-junction-all-purpose-spg-14oz.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Pepper Junction</span></div>
-            <img src="assets/pullman-product-display/cat-pj-all-purpose-spg.png" alt="PJ All Purpose SPG" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🧂</span>
-              <span class="type-badge-text">Dry Rub</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">PJ Competition SPG</div>
-            <p class="product-card-teaser">Texas competition-style SPG developed with a championship barbecue team. Sea salt, cracked pepper, bold garlic — the workhorse rub.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Sucklebusters Clucker Dust ── -->
-        <a class="product-card reveal" href="products/sucklebusters-clucker-dust-14oz.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-cluckerdust-chipotle-bbq-dry-rub.png" alt="Sucklebusters Cluckerdust Chipotle BBQ Dry Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🍗</span>
-              <span class="type-badge-text">Dry Rub</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Clucker Dust Chipotle Rub</div>
-            <p class="product-card-teaser">Pepper Junction's #1 best seller. Nationally award-winning and built specifically for chicken and turkey.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Sucklebusters BAMM ── -->
-        <a class="product-card reveal" href="products/sucklebusters-bamm-14oz.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Sucklebusters</span></div>
-            <img src="assets/pullman-product-display/cat-sucklebusters-bamm-bbq-dry-rub.png" alt="Sucklebusters BAMM BBQ Dry Rub" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji"></span>
-              <span class="type-badge-text">Dry Rub</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">BAMM! Habanero BBQ Rub</div>
-            <p class="product-card-teaser">Elevated sweetness meets habanero heat. The fruity kick perfectly amplifies the natural sweetness of chicken and pork.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">14 oz · $14.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-      </div><!-- /dry rubs grid -->
-    </div>
-  </section>
-
-  <!-- ═══ WOOD DIVIDER — SEASONINGS ════════════════════════════ -->
-  <div class="wood-divider wood-divider--slim" id="seasonings"></div>
-
-  <!-- ═══ SEASONINGS CATALOG ════════════════════════════════════ -->
-  <section class="catalog-section">
-    <div class="container">
-
-      <div class="cat-divider">
-        <div class="cat-divider-line left"></div>
-        <div class="cat-divider-badge">
-          <span class="cat-divider-text">Seasonings</span>
-          <span class="cat-divider-count">4 Products</span>
-        </div>
-      </div>
-
-      <div class="product-grid">
-
-        <!-- ── Slap Ya Mama Original ── -->
-        <a class="product-card reveal" href="products/walker-son-slap-ya-mama-cajun-original.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
-            <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-seasoning-original.png" alt="Slap Ya Mama Cajun Seasoning Original" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🧂</span>
-              <span class="type-badge-text">Seasoning</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Cajun Seasoning Original</div>
-            <p class="product-card-teaser">A great mixture of spices that can be used on any dish. Not too spicy and full of flavor.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">8 oz · $5.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Slap Ya Mama Hot Blend ── -->
-        <a class="product-card reveal" href="products/walker-son-slap-ya-mama-cajun-hot.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
-            <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-seasoning-hot.png" alt="Slap Ya Mama Cajun Seasoning Hot" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🧂</span>
-              <span class="type-badge-text">Seasoning</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Cajun Seasoning Hot Blend</div>
-            <p class="product-card-teaser">Same great Cajun flavor as the Original — just kicks up the heat to set your mouth on fire.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">8 oz · $5.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Slap Ya Mama Low Sodium ── -->
-        <a class="product-card reveal" href="products/walker-son-slap-ya-mama-cajun-low-sodium.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Slap Ya Mama</span></div>
-            <img src="assets/pullman-product-display/cat-slap-ya-mama-cajun-seasoning-low-sodium.png" alt="Slap Ya Mama Cajun Seasoning Low Sodium" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🧂</span>
-              <span class="type-badge-text">Seasoning</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Cajun Seasoning Low Sodium</div>
-            <p class="product-card-teaser">The Cajun flavor you love — crafted for a low-sodium lifestyle without sacrificing anything.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">8 oz · $5.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-        <!-- ── Ass Kickin' Habanero Garlic Salt ── -->
-        <a class="product-card reveal" href="products/ass-kickin-habanero-garlic-salt.html">
-          <div class="product-card-image">
-            <div class="maker-badge"><span class="maker-badge-text">Ass Kickin'</span></div>
-            <img src="assets/pullman-product-display/cat-ass-kickin-habanero-garlic-salt.png" alt="Ass Kickin' Habanero Garlic Salt" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
-            <div class="type-badge">
-              <span class="type-badge-emoji">🧄</span>
-              <span class="type-badge-text">Seasoning</span>
-            </div>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Habanero Garlic Salt</div>
-            <p class="product-card-teaser">Spicy habanero and garlic blended into the ultimate flavored salt — an amazing layer of flavor and heat on everything it touches.</p>
-          </div>
-          <div class="product-card-footer">
-            <span class="product-card-price">4 oz · $8.99</span>
-            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
-          </div>
-        </a>
-
-      </div><!-- /seasonings grid -->
-    </div>
-  </section>
-
-  <!-- ═══ BACK TO TOP ══════════════════════════════════════════ -->
-  <div class="back-top">
-    <a class="back-top-link" href="#top">↑ &nbsp; Back to Top</a>
-  </div>
-
-  <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
-  <footer class="site-footer">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
-        <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
-        <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
-      </div>
-      <div>
-        <span class="footer-col-title">Shop</span>
-        <ul class="footer-col-links">
-          <li><a href="hot-sauces.html">Hot Sauces</a></li>
-          <li><a href="buffalo-condiments.html">Wing &amp; Buffalo</a></li>
-          <li><a href="seasonings-bbq.html">BBQ &amp; Seasonings</a></li>
-          <li><a href="buffalo-condiments.html">Condiments</a></li>
-          <li><a href="snacks.html">Snacks</a></li>
-          <li><a href="olive-oils-vinegar.html">Olive Oils &amp; Vinegars</a></li>
-        </ul>
-      </div>
-      <div>
-        <span class="footer-col-title">Pepper Junction</span>
-        <ul class="footer-col-links">
-          <li><a href="main.html">Home</a></li>
-          <li><a href="index.html">Pairing Bar</a></li>
-          <li><a href="main.html#about">Our Story</a></li>
-          <li><a href="main.html#location">Visit Us</a></li>
-        </ul>
-      </div>
-      <div>
-        <span class="footer-col-title">Help</span>
-        <ul class="footer-col-links">
-          <li><a href="policies.html#damaged">Damaged Products</a></li>
-          <li><a href="policies.html#shipping">Shipping Info</a></li>
-          <li><a href="policies.html#returns">Returns</a></li>
-          <li><a href="policies.html#contact">Contact Us</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
-      <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
-    </div>
-  </footer>
-
-  <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
-  <script>
-  (function () {
-    /* ── SCROLL REVEAL ── */
-    const revealEls = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08 });
-    revealEls.forEach(function (el) { observer.observe(el); });
-
-    /* ── ACTIVE JUMP LINK ── */
-    const sections = [
-      document.getElementById('bbq-rubs'),
-      document.getElementById('seasonings')
-    ];
-    const jumpLinks = document.querySelectorAll('.jump-link');
-
-    const sectionObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          jumpLinks.forEach(function (link) {
-            const active = link.getAttribute('href') === '#' + id;
-            link.style.opacity = active ? '1' : '0.55';
-            link.style.borderColor = active ? 'rgba(184,137,57,0.65)' : 'rgba(184,137,57,0.2)';
-            link.style.background = active ? 'rgba(184,137,57,0.12)' : '';
-          });
-        }
-      });
-    }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
-
-    sections.forEach(function (s) { if (s) sectionObserver.observe(s); });
-  })();
-  </script>
-
-  <script>
-  /* ================================================================
-     PJ CATEGORY PAGE — JSON-DRIVEN RENDERING
-     Dormant until data/Database_Pepper_Junction.json.json is live.
-     Static cards remain as fallback if fetch fails or JSON not ready.
-     Out-of-stock treatment activates when in_stock: false appears.
-  ================================================================ */
-  (function() {
-
-    var JSON_PATH = 'data/Database_Pepper_Junction.json.json';
-
-    // Grid 0 = BBQ Sauces + Dry Rubs, Grid 1 = Seasonings
-    var GRID_CATEGORIES = [
-      ['BBQ SAUCE', 'SEASONINGS/DRY RUBS'],  // grid 0 — bbq-rubs section
-      ['SEASONINGS/DRY RUBS']                 // grid 1 — seasonings section (Slap Ya Mama + Ass Kickin)
-    ];
-
-    var AWARD_BADGES = {
-      'sucklebusters-original-bbq':              "\uD83C\uDFC6 Award Winning",
-      'sucklebusters-bbq-chipotle':              "\uD83C\uDFC6 Award Winning",
-      'sucklebusters-sucklebusters-hogwaller-14oz':   "\uD83C\uDFC6 Award Winning",
-      'sucklebusters-sucklebusters-clucker-dust-14oz':"\uD83C\uDFC6 Award Winning",
-      '2-pig-mafia-2-pig-mafia-steak-seasoning-14oz': "\uD83C\uDFC6 2019 World Steak Championship"
-    };
-
-    var IMAGE_MAP = {
-      'sucklebusters-original-bbq':                    'sucklebusters-original-bbq-sauce',
-      'sucklebusters-bbq-chipotle':                    'sucklebusters-chipotle-bbq-sauce',
-      'sucklebusters-sucklebusters-hogwaller-14oz':    'sucklebusters-hogwaller-bbq-dry-rub',
-      'suckelbusters-suckelbusters-1836-14oz':         'sucklebusters-1836-beef-rub',
-      '2-pig-mafia-2-pig-mafia-steak-seasoning-14oz':  'two-pig-mafia-steak-seasoning',
-      'pepper-junction-all-purpose-spg-14oz':          'pj-all-purpose-spg',
-      'sucklebusters-sucklebusters-clucker-dust-14oz': 'sucklebusters-cluckerdust-chipotle-bbq-dry-rub',
-      'sucklebusters-sucklebusters-bamm-14oz':         'sucklebusters-bamm-bbq-dry-rub',
-      'walker-son-slap-ya-mama-cajun-original':        'slap-ya-mama-cajun-seasoning-original',
-      'walker-son-slap-ya-mama-cajun-hot':             'slap-ya-mama-cajun-seasoning-hot',
-      'walker-son-slap-ya-mama-cajun-low-sodium':      'slap-ya-mama-cajun-seasoning-low-sodium',
-      'ass-kickin-habanero-garlic-salt':               'pj-all-purpose-spg'
-    };
-
-    function getImageStem(slug) {
-      return IMAGE_MAP[slug] || slug;
-    }
-
-    function buildCard(product) {
-      var slug      = product.slug;
-      var name      = product['Product Name'] || '';
-      var brand     = product['Brand'] || '';
-      var price     = product['Price'] ? '$' + parseFloat(product['Price']).toFixed(2) : '';
-      var inStock   = product['in_stock'] !== false;
-      var imgStem   = getImageStem(slug);
-      var imgSrc    = 'assets/pullman-product-display/cat-' + imgStem + '.png';
-      var pageLink  = 'products/' + slug + '.html';
-      var award     = AWARD_BADGES[slug] || null;
-      var oos       = inStock ? '' : ' out-of-stock';
-      var oosBanner = '<div class="out-of-stock-banner"><span>Out of Stock</span></div>';
-      var awardHtml = award ? '<div class="award-badge"><span class="award-badge-text">' + award + '</span></div>' : '';
-
-      return '<a class="product-card reveal' + oos + '" href="' + pageLink + '">' +
-        '<div class="product-card-image">' +
-          '<div class="maker-badge"><span class="maker-badge-text">' + brand + '</span></div>' +
-          awardHtml +
-          '<img src="' + imgSrc + '" alt="' + name + '" loading="lazy" onerror="this.src=\'assets/pullman-product-display/cat-placeholder.png\'" />' +
-          oosBanner +
-        '</div>' +
-        '<div class="product-card-body">' +
-          '<div class="product-card-name">' + name + '</div>' +
-          '<p class="product-card-teaser"></p>' +
-        '</div>' +
-        '<div class="product-card-footer">' +
-          '<span class="product-card-price">' + (price ? price : '') + '</span>' +
-          '<span class="product-card-btn">View <span class="product-card-btn-arrow">\u2192</span></span>' +
-        '</div>' +
-      '</a>';
-    }
-
-    function fetchAndRender() {
-      fetch(JSON_PATH)
-        .then(function(res) {
-          if (!res.ok) throw new Error('JSON not ready');
-          return res.json();
-        })
-        .then(function(data) {
-          // Grid 0: BBQ sauces + dry rubs (exclude Slap Ya Mama seasonings)
-          var bbqRubs = data.filter(function(p) {
-            return (p['Category'] === 'BBQ SAUCE' || p['Category'] === 'SEASONINGS/DRY RUBS') &&
-                   p['Brand'] !== 'Walker & Son' && p['Brand'] !== 'Ass Kickin';
-          });
-
-          // Grid 1: Seasonings (Slap Ya Mama + Ass Kickin)
-          var seasonings = data.filter(function(p) {
-            return p['Category'] === 'SEASONINGS/DRY RUBS' &&
-                   (p['Brand'] === 'Walker & Son' || p['Brand'] === 'Ass Kickin');
-          });
-
-          var groups  = [bbqRubs, seasonings];
-          var revEls  = [];
-
-          document.querySelectorAll('.product-grid').forEach(function(grid, i) {
-            var products = groups[i];
-            if (!products || !products.length) return;
-            grid.innerHTML = products.map(buildCard).join('');
-            grid.querySelectorAll('.reveal').forEach(function(el) { revEls.push(el); });
-          });
-
-          var obs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) {
-              if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-            });
-          }, { threshold: 0.08 });
-          revEls.forEach(function(el) { obs.observe(el); });
-        })
-        .catch(function() {
-          console.log('PJ: JSON not available yet, using static catalog.');
-        });
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', fetchAndRender);
-    } else {
-      fetchAndRender();
-    }
-
-  })();
-  </script>
-
-</body>
-</html>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Seasonings, Dry Rubs &amp; BBQ Sauces — Pepper Junction</title>
-  <meta name="description" content="Shop Pepper Junction's full selection of dry rubs, BBQ seasonings, and sauces — Slap Ya Mama, Sucklebusters, 2 Pig Mafia, and our own PJ All Purpose SPG. Rhode Island's specialty sauce destination since 2014." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <style>
-
-    /* ── CSS VARIABLES (exact match to hot-sauces.html) ──────── */
-    :root {
-      --cream:        #F5ECD6;
-      --cream-deep:   #EDD9B4;
-      --cream-warm:   #FDF6E8;
-      --ink:          #2B1D15;
-      --ink-mid:      #4A3020;
-      --ink-soft:     #6D5440;
-      --brass:        #B88939;
-      --brass-bright: #D4A832;
-      --crimson:      #8F1F0D;
-      --crimson-dim:  #6B1608;
-      --green-dark:   #1E3020;
-      --shadow:       0 8px 32px rgba(43,29,21,0.18);
-      --shadow-card:  0 4px 20px rgba(43,29,21,0.14);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      background-color: var(--green-dark);
-      color: var(--ink);
-      font-family: 'Libre Baskerville', Georgia, serif;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
       opacity: 0.4;
     }
 
-    @font-face {
-      font-family: 'BlackRiver';
-      src: url('assets/fonts/Blackriver-Bold.ttf') format('truetype');
-      font-weight: bold;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    /* ── SHARED UTILITIES ─────────────────────────────────────── */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 48px;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ── HEADER ───────────────────────────────────────────────── */
-    .site-header {
-      background: var(--green-dark);
-      border-bottom: 2px solid var(--brass);
-      padding: 20px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .header-logo {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      text-decoration: none;
-    }
-
-    .header-logo img {
-      height: 52px;
-      width: auto;
-    }
-
-    .header-wordmark {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .header-name {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: 22px;
-      color: var(--cream-warm);
-      line-height: 1;
-      letter-spacing: 0.04em;
-    }
-
-    .header-tagline {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--brass);
-      opacity: 0.8;
-    }
-
-    .header-nav {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-    }
-
-    .header-nav a {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--cream);
-      opacity: 0.65;
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
-    .header-nav a:hover { opacity: 1; }
-
-    .header-nav .nav-cta {
-      background: var(--crimson);
-      color: var(--cream-warm);
-      opacity: 1;
-      padding: 8px 20px;
-      border-radius: 2px;
-      border: 1px solid rgba(143,31,13,0.5);
-      transition: background 0.2s;
-    }
-    .header-nav .nav-cta:hover { background: var(--crimson-dim); }
-
-    /* ── PAGE HERO ────────────────────────────────────────────── */
-    .page-hero {
-      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
-      background-size: cover;
-      background-position: center;
-      padding: 52px 48px 56px;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 2px solid var(--brass);
-    }
-
-    .page-hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      pointer-events: none;
-    }
-
-    .page-hero-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    .breadcrumb {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      color: var(--brass);
-      opacity: 0.75;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .breadcrumb a {
+    .footer-item a {
       color: inherit;
       text-decoration: none;
-      opacity: 0.7;
       transition: opacity 0.2s;
     }
-    .breadcrumb a:hover { opacity: 1; }
-    .breadcrumb-sep { opacity: 0.45; }
+    .footer-item a:hover { opacity: 1; }
 
-    .page-hero-headline {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(28px, 4.5vw, 58px);
-      color: var(--cream-warm);
-      line-height: 1.1;
-      letter-spacing: 0.02em;
-      margin-bottom: 12px;
+    .footer-sep {
+      width: 1px;
+      height: 12px;
+      background: rgba(184,137,57,0.3);
     }
 
-    .page-hero-sub {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(14px, 1.8vw, 20px);
-      font-style: italic;
-      color: var(--cream);
-      opacity: 0.7;
-      max-width: 560px;
-      line-height: 1.6;
-    }
-
-    /* ── WOOD PLANK SECTION DIVIDER ──────────────────────────── */
-    .wood-divider {
-      width: 100%;
-      height: 220px;
-      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .wood-divider::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg,
-        rgba(0,0,0,0.35) 0%,
-        rgba(0,0,0,0.08) 30%,
-        rgba(0,0,0,0.08) 70%,
-        rgba(0,0,0,0.35) 100%);
-      pointer-events: none;
-    }
-
-    .wood-divider__label {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      padding: 10px 28px;
-      border-top: 1px solid rgba(184,137,57,0.4);
-      border-bottom: 1px solid rgba(184,137,57,0.4);
-      background: rgba(0,0,0,0.18);
-    }
-
-    .wood-divider__line1 {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(22px, 4vw, 54px);
-      letter-spacing: 0.02em;
-      color: var(--cream-warm);
-      text-shadow: 0 1px 6px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.6);
-      line-height: 1.2;
-    }
-
-    .wood-divider__line2 {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(22px, 4vw, 54px);
-      letter-spacing: 0.02em;
-      color: var(--brass-bright);
-      text-shadow: 0 1px 6px rgba(0,0,0,0.8);
-      line-height: 1.2;
-    }
-
-    /* ── SLIM WOOD DIVIDER (inter-section, no label) ─────────── */
-    .wood-divider--slim {
-      height: 72px;
-    }
-
-    /* ── CATALOG SECTION — steel panel background ─────────────── */
-    .catalog-section {
-      padding: 64px 0 48px;
-      position: relative;
-      z-index: 1;
-      background-image: url('assets/textures/green-steel-panel-bg.png');
-      background-size: cover;
-      background-position: -8px top;
-      background-repeat: repeat-y;
-    }
-
-    .catalog-section::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--brass), transparent);
-      opacity: 0.5;
-    }
-    .catalog-section::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--brass), transparent);
-      opacity: 0.5;
-    }
-
-    /* ── CATEGORY DIVIDER (replaces heat-divider) ─────────────── */
-    .cat-divider {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 40px;
-      padding: 0 4px;
-    }
-
-    .cat-divider-line {
-      flex: 1;
-      height: 1px;
-    }
-    .cat-divider-line.left {
-      background: linear-gradient(90deg, transparent, var(--brass));
-    }
-    .cat-divider-line.right {
-      background: linear-gradient(90deg, var(--brass), transparent);
-    }
-
-    .cat-divider-badge {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 8px 20px;
-      border: 1px solid rgba(184,137,57,0.45);
-      border-radius: 2px;
-      background: rgba(30,48,32,0.7);
-      backdrop-filter: blur(4px);
-      
-    }
-
-    .cat-divider-emoji {
-      font-size: 14px;
-      line-height: 1;
-    }
-
-    .cat-divider-text {
+    .footer-right {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      color: var(--cream-warm);
-      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
-    }
-
-    .cat-divider-count {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 600;
       letter-spacing: 0.2em;
+      text-transform: uppercase;
       color: var(--brass);
-      opacity: 0.7;
+      opacity: 0.45;
     }
-
-    /* ── PRODUCT CARD GRID ────────────────────────────────────── */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
-    .product-card {
-      position: relative;
-      background: var(--cream-warm);
-      border: none;
-      border-radius: 0;
-      overflow: hidden;
-      box-shadow: none;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.25s ease;
-      text-decoration: none;
-      color: var(--ink);
-    }
-
-    .product-card:hover {
-      transform: translateY(-4px);
-    }
-
-    /* ── MAKER BADGE ─────────────────────────────────────────── */
-    .maker-badge {
-      position: absolute;
-      top: 54px;
-      left: 48px;
-      background: rgba(30,48,32,0.88);
-      border: 1px solid rgba(184,137,57,0.5);
-      border-radius: 2px;
-      padding: 4px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      backdrop-filter: blur(4px);
-      z-index: 2;
-    }
-
-    .maker-badge-text {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 7px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--brass-bright);
-      white-space: nowrap;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-    }
-
-    /* ── AWARD BADGE ─────────────────────────────────────────── */
-    .award-badge {
-      position: absolute;
-      top: 80px;
-      left: 48px;
-      background: rgba(160,20,10,0.92);
-      border: 1px solid rgba(255,215,0,0.5);
-      border-radius: 2px;
-      padding: 4px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      backdrop-filter: blur(4px);
-      z-index: 2;
-    }
-
-    .award-badge-text {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #FFD700;
-      white-space: nowrap;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-    }
-
-    /* Pullman window frame image */
-    .product-card-image {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      overflow: hidden;
-      background: var(--green-dark);
-      flex-shrink: 0;
-    }
-
-    .product-card-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.35s ease;
-    }
-
-    .product-card:hover .product-card-image img {
-      transform: scale(1.04);
-    }
-
-    /* ── TYPE BADGE (replaces heat badge) ───────────────────── */
-    .type-badge {
-      position: absolute;
-      bottom: 36px;
-      left: 10px;
-      background: rgba(30,48,32,0.88);
-      border: 1px solid rgba(184,137,57,0.5);
-      border-radius: 2px;
-      padding: 4px 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      backdrop-filter: blur(4px);
-    }
-
-    .type-badge-emoji {
-      font-size: 11px;
-      line-height: 1;
-    }
-
-    .type-badge-text {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--cream);
-      white-space: nowrap;
-    }
-
-    /* Card body */
-    .product-card-body {
-      padding: 8px 12px 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      flex: 1;
-      background: var(--cream-warm);
-    }
-
-    .product-card-name {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(11px, 1.1vw, 13px);
-      color: var(--ink);
-      line-height: 1.15;
-      letter-spacing: 0.03em;
-    }
-
-    .product-card-teaser {
-      font-size: 9px;
-      line-height: 1.45;
-      color: var(--ink-soft);
-      flex: 1;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .product-card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 12px 8px;
-      border-top: 1px solid rgba(184,137,57,0.18);
-      background: var(--cream-warm);
-    }
-
-    .product-card-price {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      color: var(--ink-mid);
-    }
-
-    .product-card-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 16px;
-      background: var(--green-dark);
-      color: var(--cream-warm);
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 2px;
-      border: 1px solid rgba(184,137,57,0.3);
-      transition: background 0.2s, border-color 0.2s;
-    }
-
-    .product-card-btn:hover {
-      background: var(--crimson);
-      border-color: var(--crimson);
-    }
-
-    .product-card-btn-arrow {
-      font-size: 10px;
-      line-height: 1;
-      transition: transform 0.2s;
-    }
-
-    .product-card:hover .product-card-btn-arrow {
-      transform: translateX(3px);
-    }
-
-    /* ── FOOTER ───────────────────────────────────────────────── */
-    .site-footer { background: var(--green-dark); border-top: 2px solid var(--brass); position: relative; z-index: 1; }
-    .footer-top { max-width: 1100px; margin: 0 auto; padding: 48px 48px 40px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
-    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
-    .footer-contact-item { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; }
-    .footer-contact-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
-    .footer-contact-item a:hover { opacity: 1; }
-    .footer-col-title { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass); opacity: 0.8; display: block; margin-bottom: 14px; }
-    .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .footer-col-links li a { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; text-decoration: none; transition: opacity 0.2s; }
-    .footer-col-links li a:hover { opacity: 1; }
-    .footer-bottom { border-top: 1px solid rgba(184,137,57,0.2); padding: 18px 48px; display: flex; align-items: center; justify-content: space-between; max-width: 100%; }
-    .footer-copy { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.35; }
-    .footer-standard { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); opacity: 0.45; }
-    .footer-sep { display: none; }
-    @media (max-width: 768px) {
-      .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; padding: 32px 20px 28px; }
-      .footer-bottom { padding: 14px 20px; flex-direction: column; gap: 6px; text-align: center; }
-    }
-    @media (max-width: 480px) { .footer-top { grid-template-columns: 1fr; } }
 
     /* ── SCROLL REVEAL ────────────────────────────────────────── */
     .reveal {
@@ -1948,7 +666,8 @@
       background: rgba(30,48,32,0.85);
       border-bottom: 1px solid rgba(184,137,57,0.25);
       padding: 14px 48px;
-      position: relative;
+      position: sticky;
+      top: 92px;
       z-index: 90;
       backdrop-filter: blur(4px);
     }
@@ -2004,60 +723,58 @@
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
       .page-hero { padding: 36px 20px 40px; }
-      .section-jump { padding: 12px 20px; }
-      .section-jump-inner { justify-content: center; }
+      .section-jump { padding: 12px 20px; top: 84px; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .wood-divider { height: 120px; }
       .header-nav { display: none; }
-      .maker-badge { top: 18px; left: 14px; }
-      .award-badge { top: 44px; left: 8px; padding: 3px 6px; }
-      .award-badge-text { white-space: nowrap; }
-      .type-badge { bottom: 14px; }
-      body { overflow-x: hidden; }
-      .catalog-section { overflow: hidden; }
+      .site-footer { padding: 20px; }
     }
 
-    /* ── OUT OF STOCK TREATMENT ───────────────────────────────── */
+        /* ── OUT OF STOCK — hover reveal ─────────────────────────── */
+
+    /* Full color — no gray, no dim */
     .product-card.out-of-stock .product-card-image img {
-      filter: grayscale(100%) opacity(0.5);
-      transition: filter 0.3s ease;
+      filter: none;
+      transition: transform 0.35s ease;
     }
 
+    /* Crimson panel — sits at bottom, hidden off-screen by default */
     .out-of-stock-banner {
       position: absolute;
-      top: 50%;
+      bottom: 0;
       left: 0;
       right: 0;
-      transform: translateY(-50%);
-      background: rgba(43,29,21,0.88);
-      border-top: 1px solid rgba(184,137,57,0.4);
-      border-bottom: 1px solid rgba(184,137,57,0.4);
-      padding: 10px 0;
-      text-align: center;
-      z-index: 3;
-      display: none;
-    }
-
-    .product-card.out-of-stock .out-of-stock-banner {
-      display: block;
+      height: 12.5%;
+      background: var(--crimson);
+      border-top: 3px solid var(--brass-bright);
+      border-bottom: 3px solid var(--brass-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      transform: translateY(100%);
+      transition: transform 0.28s ease;
+      pointer-events: none;
     }
 
     .out-of-stock-banner span {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
+      font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.38em;
       text-transform: uppercase;
-      color: var(--brass-bright);
+      color: #FFD700;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
     }
 
-    .product-card.out-of-stock .product-card-name {
-      opacity: 0.55;
+    /* Slide up on hover */
+    .product-card.out-of-stock:hover .out-of-stock-banner {
+      transform: translateY(0);
     }
 
-    .product-card.out-of-stock .product-card-teaser {
-      opacity: 0.45;
-    }
+    /* Card body — full opacity always */
+    .product-card.out-of-stock .product-card-name,
+    .product-card.out-of-stock .product-card-teaser { opacity: 1; }
 
   </style>
 </head>
@@ -2118,9 +835,11 @@
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
+          <span class="cat-divider-emoji">🍖</span>
           <span class="cat-divider-text">BBQ Sauces</span>
           <span class="cat-divider-count">2 Sauces</span>
         </div>
+        <div class="cat-divider-line right"></div>
       </div>
 
       <!-- 2 sauces, 3-col grid, left-aligned -->
@@ -2174,9 +893,11 @@
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
+          <span class="cat-divider-emoji">🥩</span>
           <span class="cat-divider-text">Dry Rubs</span>
           <span class="cat-divider-count">6 Rubs</span>
         </div>
+        <div class="cat-divider-line right"></div>
       </div>
 
       <!-- 6 dry rubs: Hogwaller, 1836, 2 Pig Mafia, All Purpose, Clucker Dust, BAMM -->
@@ -2319,9 +1040,11 @@
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
+          <span class="cat-divider-emoji">🧂</span>
           <span class="cat-divider-text">Seasonings</span>
           <span class="cat-divider-count">4 Products</span>
         </div>
+        <div class="cat-divider-line right"></div>
       </div>
 
       <div class="product-grid">
@@ -2417,46 +1140,14 @@
 
   <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
   <footer class="site-footer">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
-        <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
-        <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
-      </div>
-      <div>
-        <span class="footer-col-title">Shop</span>
-        <ul class="footer-col-links">
-          <li><a href="hot-sauces.html">Hot Sauces</a></li>
-          <li><a href="buffalo-condiments.html">Wing &amp; Buffalo</a></li>
-          <li><a href="seasonings-bbq.html">BBQ &amp; Seasonings</a></li>
-          <li><a href="buffalo-condiments.html">Condiments</a></li>
-          <li><a href="snacks.html">Snacks</a></li>
-          <li><a href="olive-oils-vinegar.html">Olive Oils &amp; Vinegars</a></li>
-        </ul>
-      </div>
-      <div>
-        <span class="footer-col-title">Pepper Junction</span>
-        <ul class="footer-col-links">
-          <li><a href="main.html">Home</a></li>
-          <li><a href="index.html">Pairing Bar</a></li>
-          <li><a href="main.html#about">Our Story</a></li>
-          <li><a href="main.html#location">Visit Us</a></li>
-        </ul>
-      </div>
-      <div>
-        <span class="footer-col-title">Help</span>
-        <ul class="footer-col-links">
-          <li><a href="policies.html#damaged">Damaged Products</a></li>
-          <li><a href="policies.html#shipping">Shipping Info</a></li>
-          <li><a href="policies.html#returns">Returns</a></li>
-          <li><a href="policies.html#contact">Contact Us</a></li>
-        </ul>
-      </div>
+    <div class="footer-left">
+      <span class="footer-item"><a href="https://www.pepperjunction401.com">pepperjunction401.com</a></span>
+      <span class="footer-sep"></span>
+      <span class="footer-item">320 Kingstown Rd · Richmond, RI</span>
+      <span class="footer-sep"></span>
+      <span class="footer-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
     </div>
-    <div class="footer-bottom">
-      <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
-      <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
-    </div>
+    <div class="footer-right">© Pepper Junction · Est. 2014</div>
   </footer>
 
   <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
