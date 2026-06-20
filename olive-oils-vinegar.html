@@ -1,5 +1,1035 @@
 <!DOCTYPE html>
+<html lang="en"><!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Olive Oils &amp; Vinegar — Pepper Junction</title>
+  <meta name="description" content="Ariston Mediterranean olive oils and balsamic vinegars at Pepper Junction — infused with chili, garlic, lemon, Tuscan herbs, fig, and black cherry. Rhode Island's specialty sauce destination since 2014." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+
+    /* ── CSS VARIABLES (exact match) ─────────────────────────── */
+    :root {
+      --cream:        #F5ECD6;
+      --cream-deep:   #EDD9B4;
+      --cream-warm:   #FDF6E8;
+      --ink:          #2B1D15;
+      --ink-mid:      #4A3020;
+      --ink-soft:     #6D5440;
+      --brass:        #B88939;
+      --brass-bright: #D4A832;
+      --crimson:      #8F1F0D;
+      --crimson-dim:  #6B1608;
+      --green-dark:   #1E3020;
+      --shadow:       0 8px 32px rgba(43,29,21,0.18);
+      --shadow-card:  0 4px 20px rgba(43,29,21,0.14);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--green-dark);
+      color: var(--ink);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    @font-face {
+      font-family: 'BlackRiver';
+      src: url('assets/fonts/Blackriver-Bold.ttf') format('truetype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ── SHARED UTILITIES ─────────────────────────────────────── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── HEADER ───────────────────────────────────────────────── */
+    .site-header {
+      background: var(--green-dark);
+      border-bottom: 2px solid var(--brass);
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+    }
+
+    .header-logo img { height: 52px; width: auto; }
+
+    .header-wordmark {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .header-name {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--cream-warm);
+      line-height: 1;
+      letter-spacing: 0.04em;
+    }
+
+    .header-tagline {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.8;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .header-nav a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.65;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .header-nav a:hover { opacity: 1; }
+
+    .header-nav .nav-cta {
+      background: var(--crimson);
+      color: var(--cream-warm);
+      opacity: 1;
+      padding: 8px 20px;
+      border-radius: 2px;
+      border: 1px solid rgba(143,31,13,0.5);
+      transition: background 0.2s;
+    }
+    .header-nav .nav-cta:hover { background: var(--crimson-dim); }
+
+    /* ── PAGE HERO ────────────────────────────────────────────── */
+    .page-hero {
+      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
+      background-size: cover;
+      background-position: center;
+      padding: 52px 48px 56px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: none;
+    }
+
+    .page-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      pointer-events: none;
+    }
+
+    /* ── BRASS BAND — between hero and wood divider ───────────── */
+    .brass-band {
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(184,137,57,0.4) 8%,
+        var(--brass) 30%,
+        var(--brass-bright) 50%,
+        var(--brass) 70%,
+        rgba(184,137,57,0.4) 92%,
+        transparent 100%);
+      box-shadow:
+        0 0 12px rgba(212,168,50,0.55),
+        0 0 28px rgba(212,168,50,0.25),
+        0 2px 4px rgba(0,0,0,0.4);
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .breadcrumb {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.75;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .breadcrumb a {
+      color: inherit;
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .breadcrumb a:hover { opacity: 1; }
+    .breadcrumb-sep { opacity: 0.45; }
+
+    .page-hero-headline {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(28px, 4.5vw, 58px);
+      color: var(--cream-warm);
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+    }
+
+    .page-hero-sub {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(14px, 1.8vw, 20px);
+      font-style: italic;
+      color: var(--cream);
+      opacity: 0.7;
+      max-width: 520px;
+      line-height: 1.6;
+    }
+
+    /* ── WOOD PLANK SECTION DIVIDER ──────────────────────────── */
+    .wood-divider {
+      width: 100%;
+      height: 160px;
+      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wood-divider::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg,
+        rgba(0,0,0,0.35) 0%,
+        rgba(0,0,0,0.08) 30%,
+        rgba(0,0,0,0.08) 70%,
+        rgba(0,0,0,0.35) 100%);
+      pointer-events: none;
+    }
+
+    .wood-divider__label {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 20px 28px;
+      border-top: 1px solid rgba(184,137,57,0.4);
+      border-bottom: 1px solid rgba(184,137,57,0.4);
+      background: rgba(0,0,0,0.18);
+    }
+
+    .wood-divider__line1 {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(22px, 4vw, 54px);
+      letter-spacing: 0.02em;
+      color: var(--cream-warm);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.6);
+      line-height: 1.2;
+    }
+
+    .wood-divider__line2 {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(22px, 4vw, 54px);
+      letter-spacing: 0.02em;
+      color: var(--brass-bright);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+      line-height: 1.2;
+    }
+
+    /* ── SLIM WOOD DIVIDER (inter-section, no label) ─────────── */
+    .wood-divider--slim {
+      height: 72px;
+    }
+
+    /* ── CATALOG SECTION ──────────────────────────────────────── */
+    .catalog-section {
+      padding: 64px 0 48px;
+      position: relative;
+      z-index: 1;
+      background-image: url('assets/textures/green-steel-panel-bg.png');
+      background-size: cover;
+      background-position: -8px top;
+      background-repeat: repeat-y;
+    }
+
+    .catalog-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--brass), transparent);
+      opacity: 0.5;
+    }
+    .catalog-section::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--brass), transparent);
+      opacity: 0.5;
+    }
+
+    /* ── CATEGORY DIVIDER ─────────────────────────────────────── */
+    .cat-divider {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 40px;
+      padding: 0 4px;
+    }
+
+    .cat-divider-line { flex: 1; height: 1px; }
+    .cat-divider-line.left  { background: linear-gradient(90deg, transparent, var(--brass)); }
+    .cat-divider-line.right { background: linear-gradient(90deg, var(--brass), transparent); }
+
+    .cat-divider-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 20px;
+      border: 1px solid rgba(184,137,57,0.45);
+      border-radius: 2px;
+      background: rgba(30,48,32,0.7);
+      backdrop-filter: blur(4px);
+      white-space: nowrap;
+    }
+
+    .cat-divider-emoji { font-size: 14px; line-height: 1; }
+
+    .cat-divider-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--cream-warm);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+    }
+
+    .cat-divider-count {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--brass);
+      opacity: 0.7;
+    }
+
+    /* ── PRODUCT CARD GRID ────────────────────────────────────── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .product-card {
+      position: relative;
+      background: var(--cream-warm);
+      border: none;
+      border-radius: 0;
+      overflow: hidden;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .product-card:hover { transform: translateY(-4px); }
+
+    /* ── MAKER BADGE ─────────────────────────────────────────── */
+    .maker-badge {
+      position: absolute;
+      top: 54px;
+      left: 48px;
+      background: rgba(30,48,32,0.88);
+      border: 1px solid rgba(184,137,57,0.5);
+      border-radius: 2px;
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(4px);
+      z-index: 2;
+    }
+
+    .maker-badge-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      white-space: nowrap;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    }
+
+    /* Card image */
+    .product-card-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background: var(--green-dark);
+      flex-shrink: 0;
+    }
+
+    .product-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+
+    .product-card:hover .product-card-image img { transform: scale(1.04); }
+
+    /* ── TYPE BADGE ──────────────────────────────────────────── */
+    .type-badge {
+      position: absolute;
+      bottom: 36px;
+      left: 10px;
+      background: rgba(30,48,32,0.88);
+      border: 1px solid rgba(184,137,57,0.5);
+      border-radius: 2px;
+      padding: 4px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(4px);
+    }
+
+    .type-badge-emoji { font-size: 11px; line-height: 1; }
+
+    .type-badge-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--cream);
+      white-space: nowrap;
+    }
+
+    /* Card body */
+    .product-card-body {
+      padding: 8px 12px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+      background: var(--cream-warm);
+    }
+
+    .product-card-name {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(11px, 1.1vw, 13px);
+      color: var(--ink);
+      line-height: 1.15;
+      letter-spacing: 0.03em;
+    }
+
+    .product-card-teaser {
+      font-size: 9px;
+      line-height: 1.45;
+      color: var(--ink-soft);
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 12px 8px;
+      border-top: 1px solid rgba(184,137,57,0.18);
+      background: var(--cream-warm);
+    }
+
+    .product-card-price {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--ink-mid);
+    }
+
+    .product-card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      background: var(--green-dark);
+      color: var(--cream-warm);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      border: 1px solid rgba(184,137,57,0.3);
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .product-card-btn:hover {
+      background: var(--crimson);
+      border-color: var(--crimson);
+    }
+
+    .product-card-btn-arrow {
+      font-size: 10px;
+      line-height: 1;
+      transition: transform 0.2s;
+    }
+
+    .product-card:hover .product-card-btn-arrow { transform: translateX(3px); }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    .site-footer {
+      background: var(--green-dark);
+      border-top: 2px solid var(--brass);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-item {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.4;
+    }
+
+    .footer-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
+    .footer-item a:hover { opacity: 1; }
+
+    .footer-sep { width: 1px; height: 12px; background: rgba(184,137,57,0.3); }
+
+    .footer-right {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.45;
+    }
+
+    /* ── SCROLL REVEAL ────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── BACK TO TOP ──────────────────────────────────────────── */
+    .back-top {
+      display: flex;
+      justify-content: center;
+      padding: 24px 0 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .back-top-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.45;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      padding: 10px 20px;
+      border: 1px solid rgba(184,137,57,0.2);
+      border-radius: 2px;
+    }
+    .back-top-link:hover { opacity: 0.9; border-color: rgba(184,137,57,0.5); }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 20px; }
+      .site-header { padding: 16px 20px; }
+      .page-hero { padding: 36px 20px 40px; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .wood-divider { height: 90px; }
+      .header-nav { display: none; }
+      .site-footer { padding: 20px; }
+    }
+
+        /* ── OUT OF STOCK — hover reveal ─────────────────────────── */
+
+    /* Full color — no gray, no dim */
+    .product-card.out-of-stock .product-card-image img {
+      filter: none;
+      transition: transform 0.35s ease;
+    }
+
+    /* Crimson panel — sits at bottom, hidden off-screen by default */
+    .out-of-stock-banner {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 12.5%;
+      background: var(--crimson);
+      border-top: 3px solid var(--brass-bright);
+      border-bottom: 3px solid var(--brass-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      transform: translateY(100%);
+      transition: transform 0.28s ease;
+      pointer-events: none;
+    }
+
+    .out-of-stock-banner span {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: #FFD700;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    }
+
+    /* Slide up on hover */
+    .product-card.out-of-stock:hover .out-of-stock-banner {
+      transform: translateY(0);
+    }
+
+    /* Card body — full opacity always */
+    .product-card.out-of-stock .product-card-name,
+    .product-card.out-of-stock .product-card-teaser { opacity: 1; }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══ HEADER ══════════════════════════════════════════════ -->
+  <header class="site-header">
+    <a class="header-logo" href="conductor.html">
+      <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+      <div class="header-wordmark">
+        <span class="header-name">Pepper Junction</span>
+        <span class="header-tagline">Est. 2014 · Rhode Island</span>
+      </div>
+    </a>
+    <nav class="header-nav">
+      <a href="main.html#categories">Shop</a>
+      <a href="index.html">Pairing Bar</a>
+      <a href="main.html#location">Visit</a>
+      <a href="https://www.pepperjunction401.com" class="nav-cta" target="_blank">Order Online</a>
+    </nav>
+  </header>
+
+  <!-- ═══ PAGE HERO ════════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb">
+        <a href="main.html">Main Street Station</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Olive Oils &amp; Vinegar</span>
+      </div>
+      <h1 class="page-hero-headline">Olive Oils &amp; Vinegar</h1>
+      <p class="page-hero-sub">Ariston infused olive oils and oak-matured balsamics from Greece and Italy — crafted to finish, drizzle, and elevate everything on the table.</p>
+    </div>
+  </section>
+
+  <!-- ═══ BRASS BAND ══════════════════════════════════════════ -->
+  <div class="brass-band"></div>
+
+  <!-- ═══ WOOD DIVIDER ════════════════════════════════════════ -->
+  <div class="wood-divider" id="collection">
+    <div class="wood-divider__label">
+      <div class="wood-divider__line1">Mediterranean Collection</div>
+      <div class="wood-divider__line2">Greece &amp; Italy</div>
+    </div>
+  </div>
+
+  <!-- ═══ INFUSED OLIVE OILS CATALOG ══════════════════════════ -->
+  <section class="catalog-section" id="olive-oils">
+    <div class="container">
+
+      <div class="cat-divider">
+        <div class="cat-divider-line left"></div>
+        <div class="cat-divider-badge">
+          <span class="cat-divider-emoji">🫒</span>
+          <span class="cat-divider-text">Infused Olive Oils</span>
+          <span class="cat-divider-count">4 Oils · 8.45 fl oz</span>
+        </div>
+        <div class="cat-divider-line right"></div>
+      </div>
+
+      <div class="product-grid">
+
+        <!-- Chile Infused Olive Oil -->
+        <a class="product-card reveal" href="products/ariston-chili-infused-olive-oil.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Ariston</span></div>
+            <img src="assets/pullman-product-display/cat-ariston-chili-infused-olive-oil.png" alt="Ariston Chile Infused Olive Oil" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🫒</span>
+              <span class="type-badge-text">Olive Oil</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">Chile Infused Olive Oil</div>
+            <p class="product-card-teaser">Silky Koroneiki olive oil from Greece with balanced chili warmth — just enough spark to elevate pizza, pasta, and fresh bread.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">8.45 fl oz · $15.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+        <!-- Garlic Infused Olive Oil -->
+        <a class="product-card reveal" href="products/ariston-garlic-infused-olive-oil.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Ariston</span></div>
+            <img src="assets/pullman-product-display/cat-ariston-garlic-infused-olive-oil.png" alt="Ariston Garlic Infused Olive Oil" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🫒</span>
+              <span class="type-badge-text">Olive Oil</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">Garlic Infused Olive Oil</div>
+            <p class="product-card-teaser">Fresh garlic slowly infused into smooth, buttery Koroneiki olive oil. Deep savory character, clean finish — essential for pasta and grilled meats.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">8.45 fl oz · $15.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+        <!-- Tuscan Herb Infused Olive Oil -->
+        <a class="product-card reveal" href="products/ariston-tuscan-herb-infused-olive-oil.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Ariston</span></div>
+            <img src="assets/pullman-product-display/cat-ariston-tuscan-herb-infused-olive-oil.png" alt="Ariston Tuscan Herb Infused Olive Oil" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🫒</span>
+              <span class="type-badge-text">Olive Oil</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">Tuscan Herb Infused Olive Oil</div>
+            <p class="product-card-teaser">Oregano, basil, garlic, and rosemary in Koroneiki olive oil — savory, herb-forward, and earthy. Built to live on your counter.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">8.45 fl oz · $15.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+        <!-- Lemon Infused Olive Oil -->
+        <a class="product-card reveal" href="products/ariston-lemon-infused-olive-oil.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Ariston</span></div>
+            <img src="assets/pullman-product-display/cat-ariston-lemon-infused-olive-oil.png" alt="Ariston Lemon Infused Olive Oil" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🫒</span>
+              <span class="type-badge-text">Olive Oil</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">Lemon Infused Olive Oil</div>
+            <p class="product-card-teaser">Bright citrus lift without overpowering the olive — silky and aromatic. Wakes up seafood, salads, and Mediterranean dishes naturally.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">8.45 fl oz · $15.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+      </div><!-- /olive oils grid -->
+    </div>
+  </section>
+
+  <!-- ═══ SLIM WOOD DIVIDER ════════════════════════════════════ -->
+  <div class="wood-divider wood-divider--slim" id="balsamics"></div>
+
+  <!-- ═══ BALSAMIC VINEGARS CATALOG ════════════════════════════ -->
+  <section class="catalog-section">
+    <div class="container">
+
+      <div class="cat-divider">
+        <div class="cat-divider-line left"></div>
+        <div class="cat-divider-badge">
+          <span class="cat-divider-emoji">🍷</span>
+          <span class="cat-divider-text">Balsamic Vinegars</span>
+          <span class="cat-divider-count">2 Vinegars · 8.45 fl oz · Oak Aged</span>
+        </div>
+        <div class="cat-divider-line right"></div>
+      </div>
+
+      <div class="product-grid">
+
+        <!-- Fig Balsamic Vinegar -->
+        <a class="product-card reveal" href="products/ariston-fig-balsamic.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Ariston</span></div>
+            <img src="assets/pullman-product-display/cat-ariston-fig-balsamic.png" alt="Ariston Fig Balsamic Vinegar" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🍷</span>
+              <span class="type-badge-text">Balsamic Vinegar</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">Fig Balsamic Vinegar</div>
+            <p class="product-card-teaser">Oak-aged grape must with lush fig infusion — velvety, fruit-forward, with soft warmth. Ideal over burrata, arugula, and cheese boards.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">8.45 fl oz · $15.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+        <!-- Black Cherry Balsamic Vinegar -->
+        <a class="product-card reveal" href="products/ariston-black-cherry-balsamic.html">
+          <div class="product-card-image">
+            <div class="maker-badge"><span class="maker-badge-text">Ariston</span></div>
+            <img src="assets/pullman-product-display/cat-ariston-black-cherry-balsamic.png" alt="Ariston Black Cherry Balsamic Vinegar" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
+            <div class="type-badge">
+              <span class="type-badge-emoji">🍷</span>
+              <span class="type-badge-text">Balsamic Vinegar</span>
+            </div>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-name">Black Cherry Balsamic Vinegar</div>
+            <p class="product-card-teaser">60-day oak-aged Italian grape must with natural black cherry must — rich, fruit-forward, bright acidity. Exceptional over salads, pork, and aged cheeses.</p>
+          </div>
+          <div class="product-card-footer">
+            <span class="product-card-price">8.45 fl oz · $15.99</span>
+            <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
+          </div>
+        </a>
+
+      </div><!-- /balsamics grid -->
+    </div>
+  </section>
+
+  <!-- ═══ BACK TO TOP ══════════════════════════════════════════ -->
+  <div class="back-top">
+    <a class="back-top-link" href="#top">↑ &nbsp; Back to Top</a>
+  </div>
+
+  <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-left">
+      <span class="footer-item"><a href="https://www.pepperjunction401.com">pepperjunction401.com</a></span>
+      <span class="footer-sep"></span>
+      <span class="footer-item">320 Kingstown Rd · Richmond, RI</span>
+      <span class="footer-sep"></span>
+      <span class="footer-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+    </div>
+    <div class="footer-right">© Pepper Junction · Est. 2014</div>
+  </footer>
+
+  <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
+  <script>
+  (function () {
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    revealEls.forEach(function (el) { observer.observe(el); });
+  })();
+  </script>
+
+  <script>
+  /* ================================================================
+     PJ CATEGORY PAGE — JSON-DRIVEN RENDERING
+     Dormant until data/Database_Pepper_Junction.json is live.
+     Static cards remain as fallback if fetch fails or JSON not ready.
+     Out-of-stock treatment activates when in_stock: false appears.
+  ================================================================ */
+  (function() {
+
+    var JSON_PATH = 'data/Database_Pepper_Junction.json';
+    var CATEGORY  = 'Olive Oil/Vinegar';
+
+    // Sub-category split — oils first grid, vinegars second grid
+    var FOOD_STYLE_MAP = {
+      0: 'Olive Oil',
+      1: 'Balsamic Vinegar'
+    };
+
+    var IMAGE_MAP = {
+      'ariston-chili-infused-olive-oil':              'ariston-chili-infused-olive-oil',
+      'ariston-garlic-infused-olive-oil':             'ariston-garlic-infused-olive-oil',
+      'ariston-tuscan-herb-infused-olive-oil':        'ariston-tuscan-herb-infused-olive-oil',
+      'ariston-lemon-infused-olive-oil':              'ariston-lemon-infused-olive-oil',
+      'ariston-fig-infused-balsamic-vinegar':         'ariston-fig-balsamic',
+      'ariston-black-cherry-infused-balsamic-vinegar':'ariston-black-cherry-balsamic'
+    };
+
+    function getImageStem(slug) {
+      return IMAGE_MAP[slug] || slug;
+    }
+
+    function buildCard(product) {
+      var slug      = product.slug;
+      var name      = product['Product Name'] || '';
+      var brand     = product['Brand'] || '';
+      var price     = product['Price'] ? '$' + parseFloat(product['Price']).toFixed(2) : '';
+      var inStock   = product['in_stock'] !== false;
+      var imgStem   = getImageStem(slug);
+      var imgSrc    = 'assets/pullman-product-display/cat-' + imgStem + '.png';
+      var pageLink  = 'products/' + slug + '.html';
+      var oos       = inStock ? '' : ' out-of-stock';
+      var oosBanner = '<div class="out-of-stock-banner"><span>Out of Stock</span></div>';
+
+      return '<a class="product-card reveal' + oos + '" href="' + pageLink + '">' +
+        '<div class="product-card-image">' +
+          '<div class="maker-badge"><span class="maker-badge-text">' + brand + '</span></div>' +
+          '<img src="' + imgSrc + '" alt="' + name + '" loading="lazy" onerror="this.src=\'assets/pullman-product-display/cat-placeholder.png\'" />' +
+          oosBanner +
+        '</div>' +
+        '<div class="product-card-body">' +
+          '<div class="product-card-name">' + name + '</div>' +
+          '<p class="product-card-teaser"></p>' +
+        '</div>' +
+        '<div class="product-card-footer">' +
+          '<span class="product-card-price">' + (price ? price : '') + '</span>' +
+          '<span class="product-card-btn">View <span class="product-card-btn-arrow">\u2192</span></span>' +
+        '</div>' +
+      '</a>';
+    }
+
+    function fetchAndRender() {
+      fetch(JSON_PATH)
+        .then(function(res) {
+          if (!res.ok) throw new Error('JSON not ready');
+          return res.json();
+        })
+        .then(function(data) {
+          var all = data.filter(function(p) { return p['Category'] === CATEGORY; });
+          if (!all.length) return;
+
+          // Split into oils and vinegars by Food Style
+          var oils      = all.filter(function(p) { return p['Food Style'] === 'Olive Oil'; });
+          var vinegars  = all.filter(function(p) { return p['Food Style'] === 'Balsamic Vinegar'; });
+          var groups    = [oils, vinegars];
+
+          var revEls = [];
+          document.querySelectorAll('.product-grid').forEach(function(grid, i) {
+            var products = groups[i];
+            if (!products || !products.length) return;
+            grid.innerHTML = products.map(buildCard).join('');
+            grid.querySelectorAll('.reveal').forEach(function(el) { revEls.push(el); });
+          });
+
+          var obs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+              if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+            });
+          }, { threshold: 0.08 });
+          revEls.forEach(function(el) { obs.observe(el); });
+        })
+        .catch(function() {
+          console.log('PJ: JSON not available yet, using static catalog.');
+        });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fetchAndRender);
+    } else {
+      fetchAndRender();
+    }
+
+  })();
+  </script>
+
+</body>
+</html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
