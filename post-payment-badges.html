@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pepper Junction — Badges Earned</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/post-payment-badges.css" />
+</head>
+
+<body>
+  <header class="pj-postpay-header">
+    <a class="pj-brand" href="index.html" aria-label="Pepper Junction Home">
+      <img class="pj-brand-logo" src="assets/PJ-logo.png" alt="Pepper Junction" />
+      <span>
+        <strong>Pepper Junction</strong>
+        <small>Badge Awards · Post-Payment</small>
+      </span>
+    </a>
+  </header>
+
+  <main class="pj-postpay-shell" data-customer-state="signed-out">
+    <!--
+      DATA NOTE:
+      This first-run template uses mock badge data in post-payment-badges.js.
+      Later, Square/Supabase will supply:
+      - order/session id
+      - signed-in state
+      - badges earned
+      - major reward flags
+      - badge-in-your-grasp near-miss data
+    -->
+
+    <section class="pj-hero-card" aria-labelledby="postpay-title">
+      <p class="pj-eyebrow">Order Confirmed</p>
+      <h1 id="postpay-title">Badges Earned</h1>
+      <p class="pj-hero-copy">
+        Nice run. These are the full badge-card reveals from this trip — the cart was only the teaser.
+      </p>
+      <div class="pj-hero-actions">
+        <a class="pj-btn pj-btn-primary" href="#badges-earned">See Badges</a>
+        <a class="pj-btn pj-btn-ghost" href="index.html">Return to Shop</a>
+      </div>
+    </section>
+
+    <section class="pj-status-card pj-status-signed-in" aria-live="polite">
+      <div>
+        <p class="pj-eyebrow">Badge Depot</p>
+        <h2>Added to Your Badge Depot</h2>
+        <p>You're signed in, so these badges were saved automatically. No extra step, no extra button.</p>
+      </div>
+      <a class="pj-btn pj-btn-primary" href="badge-depot.html">View Badge Depot</a>
+    </section>
+
+    <section class="pj-status-card pj-status-signed-out" aria-live="polite">
+      <div>
+        <p class="pj-eyebrow">Don’t Lose Track</p>
+        <h2>Save Your Badge Collection</h2>
+        <p>
+          Create an account to save your badge collection before this trip leaves the station — otherwise,
+          your progress returns to <span class="pj-go-tile" aria-label="GO square">GO</span>.
+        </p>
+      </div>
+      <a class="pj-btn pj-btn-primary" href="account.html?return=post-payment">Sign In / Create Account to Collect Badges</a>
+    </section>
+
+    <section class="pj-section" id="badges-earned" aria-labelledby="earned-title">
+      <div class="pj-section-head">
+        <div>
+          <p class="pj-eyebrow">Full Reveal</p>
+          <h2 id="earned-title">Badges Earned</h2>
+          <p>Tap any card when you're ready to flip it over. The reveal is yours to control.</p>
+        </div>
+        <span class="pj-count-pill" id="badge-count">0 Earned</span>
+      </div>
+
+      <div class="pj-earned-grid" id="earned-badge-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="pj-section pj-grasp-section" id="badge-in-your-grasp" aria-labelledby="grasp-title" hidden>
+      <div class="pj-section-head">
+        <div>
+          <p class="pj-eyebrow">Badge in Your Grasp</p>
+          <h2 id="grasp-title">One More Bottle Keeps This Achievement From Leaving the Platform</h2>
+          <p>Only close calls appear here — under $10 away or literally one bottle away.</p>
+        </div>
+      </div>
+      <div class="pj-grasp-grid" id="grasp-grid"></div>
+    </section>
+
+    <section class="pj-review-card" aria-labelledby="review-title">
+      <div>
+        <p class="pj-eyebrow">Google Review</p>
+        <h2 id="review-title">Tell Folks How the Trip Went</h2>
+        <p>If Pepper Junction treated you right, a quick Google review helps the next passenger find the station.</p>
+      </div>
+      <a class="pj-btn pj-btn-review" href="https://g.page/r/CTI8YAonEJngEBM/review" target="_blank" rel="noopener">
+        Leave a Google Review
+      </a>
+    </section>
+
+    <nav class="pj-bottom-nav" aria-label="Post-payment navigation">
+      <a class="pj-btn pj-btn-ghost" href="badge-depot.html">Badge Depot</a>
+      <a class="pj-btn pj-btn-ghost" href="pairing-bar.html">Pairing Bar</a>
+      <a class="pj-btn pj-btn-ghost" href="index.html">Back to Shop</a>
+    </nav>
+  </main>
+
+  <button class="pj-sound-toggle" type="button" aria-pressed="false" title="Toggle badge sounds">
+    Sound: On
+  </button>
+
+  <audio id="pj-badge-bell" preload="auto">
+    <source src="assets/audio/railroad-crossing-bell.mp3" type="audio/mpeg">
+    <source src="assets/audio/railroad-crossing-bell.ogg" type="audio/ogg">
+  </audio>
+
+  <script src="assets/js/post-payment-badges.js"></script>
+</body>
+</html>
