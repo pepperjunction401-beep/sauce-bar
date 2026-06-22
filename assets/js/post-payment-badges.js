@@ -73,7 +73,7 @@
   var nearMissBadges = [
     {
       title: 'Badge in Your Grasp',
-      copy: 'One more bottle keeps this achievement from leaving the platform.',
+      copy: 'Before the chance leaves the station, one more item grabs this achievement.',
       cta: 'Return to shop before this trip closes'
     }
   ];
@@ -87,8 +87,15 @@
 
   function createEl(tag, className, text) {
     var el = document.createElement(tag);
-    if (className) el.className = className;
-    if (text) el.textContent = text;
+
+    if (className) {
+      el.className = className;
+    }
+
+    if (text) {
+      el.textContent = text;
+    }
+
     return el;
   }
 
@@ -107,6 +114,7 @@
     front.appendChild(ribbon);
 
     var artWrap = createEl('div', 'pj-award-art-wrap');
+
     var img = createEl('img', 'pj-award-art');
     img.src = badge.image;
     img.alt = badge.title;
@@ -171,7 +179,9 @@
     var grid = qs('#earned-badge-grid');
     var count = qs('#badge-count');
 
-    if (!grid) return;
+    if (!grid) {
+      return;
+    }
 
     grid.innerHTML = '';
 
@@ -188,7 +198,9 @@
     var section = qs('#badge-in-your-grasp');
     var grid = qs('#grasp-grid');
 
-    if (!section || !grid) return;
+    if (!section || !grid) {
+      return;
+    }
 
     /*
       Keep hidden unless current session has a true near-miss.
@@ -221,7 +233,9 @@
   function setupCustomerState() {
     var shell = qs('.pj-postpay-shell');
 
-    if (!shell) return;
+    if (!shell) {
+      return;
+    }
 
     /*
       Prototype toggle:
@@ -240,7 +254,9 @@
   function setupSoundToggle() {
     var btn = qs('.pj-sound-toggle');
 
-    if (!btn) return;
+    if (!btn) {
+      return;
+    }
 
     btn.addEventListener('click', function() {
       soundMuted = !soundMuted;
@@ -250,11 +266,15 @@
   }
 
   function playBell(userRequested) {
-    if (soundMuted) return;
+    if (soundMuted) {
+      return;
+    }
 
     var audio = qs('#pj-badge-bell');
 
-    if (!audio) return;
+    if (!audio) {
+      return;
+    }
 
     try {
       audio.currentTime = 0;
@@ -275,7 +295,9 @@
   }
 
   function tryMajorRewardSoundOnce() {
-    if (soundAttempted) return;
+    if (soundAttempted) {
+      return;
+    }
 
     soundAttempted = true;
 
@@ -283,7 +305,9 @@
       return badge.sound;
     });
 
-    if (!hasMajorSound) return;
+    if (!hasMajorSound) {
+      return;
+    }
 
     /*
       Browser may block this.
