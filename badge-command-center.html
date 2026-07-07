@@ -1370,6 +1370,11 @@
   </div>
   <div class="stat-divider"></div>
   <div class="stat">
+    <div class="stat-val">5</div>
+    <div class="stat-label">Shop O'Round the Clock</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
     <div class="stat-val">2</div>
     <div class="stat-label">Secret Badges</div>
   </div>
@@ -1395,6 +1400,7 @@
   <a class="nav-pill" href="#widget">Widget Badges</a>
   <a class="nav-pill" href="#events">Event Badges</a>
   <a class="nav-pill" href="#states">State Badges</a>
+  <a class="nav-pill" href="#shop-oround-the-clock">Shop O'Round the Clock</a>
   <a class="nav-pill" href="#secret">Secret Badges</a>
 </nav>
 
@@ -4171,6 +4177,107 @@
       </div>
     </div><!-- /{name} -->
 
+  </section>
+
+  <!-- ═══ SHOP O'ROUND THE CLOCK ══════════════════════════════════ -->
+  <section class="badge-category" id="shop-oround-the-clock">
+    <div class="category-header">
+      <div class="category-icon">🕐</div>
+      <div class="category-titles">
+        <div class="category-name">Shop O'Round the Clock</div>
+        <div class="category-desc">5 Time-Window Badges + 1 Secret · Triggered by Customer Local Time at Transaction Completion · Level Up = Every Qualifying Purchase in That Window · Intentional Gaps, No Badge Awarded · Path: assets/badges/shop-oround-the-clock/</div>
+      </div>
+      <div class="category-count">5</div>
+    </div>
+    <div class="pending-note">Trigger: 1 qualifying purchase within the defined local-time window = Level Up for that window's badge. No cap on levels. Badge awarded strictly at transaction completion time — never at start of shopping session. Customer local time determined via browser-reported IANA timezone (e.g. America/New_York), converted against the Square-confirmed completion timestamp. Time windows are intentional gaps — periods outside the 5 defined windows award nothing, by design, permanently. Time frames are never shown in customer-facing badge copy. Secret badge "Clocked Out" awarded for earning all 5 time-window badges — filed under Secret Badges, never shown before earned.</div>
+    <div class="coin-grid">
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-early-bird.png" alt="Early Bird" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Early Bird</div>
+            <div class="coin-items-label">5:30 – 7:00 AM</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Early Bird</div>
+            <div class="coin-back-fact">"Easy there, sunshine. The coffee hasn't even finished waking up yet."</div>
+            <div class="coin-back-threshold">Level Up this badge with a qualifying purchase between 5:30–7:00 AM local time.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-lunch-rush.png" alt="Lunch Hour" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Lunch Hour</div>
+            <div class="coin-items-label">11:30 AM – 1:00 PM</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Lunch Hour</div>
+            <div class="coin-back-fact">"Clocked out for lunch and clocked straight into Pepper Junction, we like that."</div>
+            <div class="coin-back-threshold">Level Up this badge with a qualifying purchase between 11:30 AM–1:00 PM local time.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-evening-commute.png" alt="Evening Commute" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Evening Commute</div>
+            <div class="coin-items-label">4:30 – 6:00 PM</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Evening Commute</div>
+            <div class="coin-back-fact">"You made it out of the rat race. Now run like somebody scheduled another meeting."</div>
+            <div class="coin-back-threshold">Level Up this badge with a qualifying purchase between 4:30–6:00 PM local time.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-late-night.png" alt="Late Night" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Late Night</div>
+            <div class="coin-items-label">10:30 PM – 12:00 AM</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Late Night</div>
+            <div class="coin-back-fact">"Late-night shopping from the trash-can district. Respect."</div>
+            <div class="coin-back-threshold">Level Up this badge with a qualifying purchase between 10:30 PM–12:00 AM local time.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1A1A1A;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-night-owl.png" alt="Night Owl" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Night Owl</div>
+            <div class="coin-items-label">1:30 – 3:00 AM</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-back-section-label">Night Owl</div>
+            <div class="coin-back-fact">"You're either a night owl or tomorrow's biggest problem."</div>
+            <div class="coin-back-threshold">Level Up this badge with a qualifying purchase between 1:30–3:00 AM local time.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </section>
 
   <!-- ═══ SECRET BADGES ══════════════════════════════════════════ -->
