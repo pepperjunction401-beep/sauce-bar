@@ -335,6 +335,7 @@
       height: 120px;
       object-fit: contain;
       filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6));
+      transition: transform 0.3s ease;
     }
 
     .timeslot-info {
@@ -2023,7 +2024,7 @@
       </div>
       <div class="category-count">12</div>
     </div>
-    <div class="pending-note">Current month: June 2026 (Gemini). Jan–May = RETIRED. June = current/earnable. July–Dec = future/gray. Secret badge "Year of the Horse" awarded for completing all 12 — filed under Secret Badges, never shown before earned. Click/tap any badge to flip.</div>
+    <div class="pending-note">Current month: July 2026 (Cancer). Jan–June = RETIRED. July = current/earnable. Aug–Dec = future/gray. Secret badge "Year of the Horse" awarded for completing all 12 — filed under Secret Badges, never shown before earned. Click/tap any badge to flip.</div>
 
     <div class="celestial-grid">
 
@@ -2122,36 +2123,37 @@
         </div>
       </div>
 
-      <!-- GEMINI — June — CURRENT -->
-      <div class="celestial-flip-card current" onclick="this.classList.toggle('flipped')" style="border:1px solid rgba(212,168,50,0.5);">
+      <!-- GEMINI — June — RETIRED -->
+      <div class="celestial-flip-card retired" onclick="this.classList.toggle('flipped')">
         <div class="celestial-flip-inner">
-          <div class="celestial-face celestial-front" style="border-color:rgba(212,168,50,0.5);background:#1E3020;">
+          <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-gemini-2026.png" alt="Gemini">
+              <div class="celestial-banner">Retired</div>
             </div>
             <div class="celestial-badge-name">Gemini</div>
-            <div class="celestial-badge-month">June · 2026 · Now</div>
+            <div class="celestial-badge-month">June · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
           </div>
-          <div class="celestial-face celestial-back" style="border-color:rgba(212,168,50,0.5);">
+          <div class="celestial-face celestial-back">
             <div class="celestial-back-greeting">"Can't decide between hot or hotter? Classic Gemini. We stocked both."</div>
             <div class="celestial-back-nudge">Visit next time for the Celestial Badge.</div>
           </div>
         </div>
       </div>
 
-      <!-- CANCER — July — FUTURE -->
-      <div class="celestial-flip-card future" onclick="this.classList.toggle('flipped')">
+      <!-- CANCER — July — CURRENT -->
+      <div class="celestial-flip-card current" onclick="this.classList.toggle('flipped')" style="border:1px solid rgba(212,168,50,0.5);">
         <div class="celestial-flip-inner">
-          <div class="celestial-face celestial-front">
+          <div class="celestial-face celestial-front" style="border-color:rgba(212,168,50,0.5);background:#1E3020;">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-cancer-2026.png" alt="Cancer">
             </div>
             <div class="celestial-badge-name">Cancer</div>
-            <div class="celestial-badge-month">July · 2026</div>
+            <div class="celestial-badge-month">July · 2026 · Now</div>
             <div class="celestial-flip-hint">Tap to flip</div>
           </div>
-          <div class="celestial-face celestial-back">
+          <div class="celestial-face celestial-back" style="border-color:rgba(212,168,50,0.5);">
             <div class="celestial-back-greeting">"Cancers cook for everyone. We just make sure it's worth eating."</div>
             <div class="celestial-back-nudge">Visit next time for the Celestial Badge.</div>
           </div>
