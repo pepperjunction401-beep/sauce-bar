@@ -242,14 +242,14 @@
       align-items: center;
       gap: 10px;
       padding: 16px 12px;
-      background: rgba(255,255,255,0.02);
+      background: #1E3020;
       border: 1px solid rgba(184,137,57,0.12);
       transition: all 0.25s ease;
       position: relative;
     }
 
     .badge-card:hover {
-      background: rgba(184,137,57,0.06);
+      background: #24392A;
       border-color: rgba(184,137,57,0.35);
       transform: translateY(-3px);
       box-shadow: 0 8px 32px rgba(0,0,0,0.4);
@@ -261,13 +261,13 @@
     }
 
     .badge-card.secret {
-      border-color: rgba(143,31,13,0.4);
-      background: rgba(143,31,13,0.05);
+      border-color: rgba(143,31,13,0.6);
+      background: #8F1F0D;
     }
 
     .badge-card.secret:hover {
-      border-color: rgba(143,31,13,0.7);
-      background: rgba(143,31,13,0.1);
+      border-color: rgba(212,168,50,0.6);
+      background: #A3260F;
     }
 
     .badge-img {
@@ -317,6 +317,95 @@
       text-transform: uppercase;
       color: var(--brass);
       opacity: 0.55;
+    }
+
+    .timeslot-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      padding: 16px 12px;
+      background: #1E3020;
+      border: 1px solid rgba(184,137,57,0.12);
+      position: relative;
+      aspect-ratio: 1 / 1.5;
+      width: 100%;
+    }
+
+    .timeslot-img-wrap {
+      position: relative;
+      width: 100%;
+      padding-bottom: 100%;
+      flex-shrink: 0;
+    }
+
+    .timeslot-img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6));
+      transition: transform 0.3s ease;
+    }
+
+    .timeslot-info {
+      text-align: center;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .timeslot-name {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--chalk);
+      line-height: 1.4;
+      margin-bottom: 5px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .timeslot-catchphrase {
+      font-size: 9px;
+      font-weight: 500;
+      font-style: italic;
+      letter-spacing: 0.01em;
+      color: var(--brass);
+      opacity: 0.85;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Narrative badge exception (e.g. Olive Oil & Vin) — needs extra
+       room to display readable narrative text. Spans 2 grid columns
+       (wider only). The base .timeslot-card aspect-ratio (1/1.5) is
+       overridden here — without this, doubling the width via
+       grid-column:span 2 would also triple the height, since
+       aspect-ratio locks height proportional to width. This override
+       keeps the height roughly matching a normal single-column card. */
+    .timeslot-card-narrative {
+      grid-column: span 2;
+      aspect-ratio: 4 / 3;
+    }
+
+    .timeslot-card-narrative .timeslot-name {
+      font-size: 12px;
+    }
+
+    .timeslot-card-narrative .timeslot-catchphrase {
+      font-size: 11px;
+      -webkit-line-clamp: 6;
     }
 
     .badge-status {
@@ -391,7 +480,7 @@
       align-items: center;
       justify-content: flex-start;
       padding: 10px 8px 12px;
-      background: #1A1A1A;
+      background: #1E3020;
       border: 1px solid rgba(184,137,57,0.2);
     }
 
@@ -593,7 +682,7 @@
       align-items: center;
       justify-content: flex-start;
       padding: 8px 6px 10px;
-      background: #1A1A1A;
+      background: #1E3020;
       border: 1px solid rgba(184,137,57,0.15);
       overflow: visible;
     }
@@ -634,21 +723,49 @@
       background: #000;
     }
 
-    /* RETIRED / SECRET diagonal banner */
+    /* RETIRED / SECRET diagonal banner — dedicated clip container covering
+       the ENTIRE card face (not just the image square), so the ribbon
+       reaches the true corners of the card. This container sits as a
+       sibling to the image wrap, not nested inside it. */
+    .celestial-banner-clip {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    /* Retired badges are closed/inactive — no hover behavior, no flip,
+       no clickable cursor, and the "Tap to flip" hint is misleading
+       once the flip is removed. */
+    .celestial-flip-card.retired {
+      cursor: default;
+      z-index: auto !important;
+    }
+    .celestial-flip-card.retired:not(.pj-expanded):not(.pj-flipped):hover {
+      z-index: auto;
+    }
+    .celestial-flip-card.retired:not(.pj-expanded):not(.pj-flipped):hover .celestial-img {
+      transform: none;
+    }
+    .celestial-flip-card.retired .celestial-flip-hint {
+      display: none;
+    }
+
     .celestial-banner {
       position: absolute;
-      top: 18px;
-      left: -28px;
-      width: 110px;
+      top: 50%;
+      left: 50%;
+      width: 168%;
       background: #8F1F0D;
       color: #D4A832;
-      font-size: 7px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
       text-align: center;
-      padding: 3px 0;
-      transform: rotate(-45deg);
+      padding: 5px 0;
+      transform: translate(-50%, -50%) rotate(-53.5deg);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
       z-index: 10;
       pointer-events: none;
     }
@@ -765,7 +882,7 @@
       align-items: center;
       justify-content: flex-start;
       padding: 8px 6px 10px;
-      background: #1A1A1A;
+      background: #1E3020;
       border: 1px solid rgba(184,137,57,0.2);
       overflow: visible;
     }
@@ -985,6 +1102,20 @@
       opacity: 0.7;
     }
 
+    /* ── REGION LABELS ── */
+    .region-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brass);
+      padding: 1.2rem 0 0.6rem;
+      border-top: 1px solid rgba(212,168,50,0.2);
+      margin-top: 1rem;
+      width: 100%;
+    }
+
     /* ── NARRATIVE CARDS ── */
     .narrative-card {
       background: rgba(255,255,255,0.02);
@@ -1095,7 +1226,8 @@
     .token-flip-card,
     .celestial-flip-card,
     .coin-flip-card,
-    .badge-card {
+    .badge-card,
+    .timeslot-card {
       transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       overflow: visible;
     }
@@ -1104,14 +1236,16 @@
     .token-face,
     .celestial-face,
     .coin-face,
-    .badge-card {
+    .badge-card,
+    .timeslot-card {
       overflow: visible;
     }
 
     /* Token and coin image wrappers — allow overflow */
     .token-img-wrap,
     .celestial-img-wrap,
-    .coin-img-wrap {
+    .coin-img-wrap,
+    .timeslot-img-wrap {
       overflow: visible;
     }
 
@@ -1130,7 +1264,8 @@
     .token-flip-card:not(.pj-expanded):not(.pj-flipped):hover,
     .celestial-flip-card:not(.pj-expanded):not(.pj-flipped):hover,
     .coin-flip-card:not(.pj-expanded):not(.pj-flipped):hover,
-    .badge-card:not(.pj-expanded):hover {
+    .badge-card:not(.pj-expanded):hover,
+    .timeslot-card:not(.pj-expanded):hover {
       z-index: 50;
       position: relative;
     }
@@ -1139,20 +1274,44 @@
     .token-flip-card:not(.pj-expanded):not(.pj-flipped):hover .token-coin-img,
     .celestial-flip-card:not(.pj-expanded):not(.pj-flipped):hover .celestial-img,
     .coin-flip-card:not(.pj-expanded):not(.pj-flipped):hover .coin-img,
-    .badge-card:not(.pj-expanded):hover .badge-img {
+    .badge-card:not(.pj-expanded):hover .badge-img,
+    .timeslot-card:not(.pj-expanded):hover .timeslot-img {
       transform: scale(2);
       transform-origin: center center;
       z-index: 50;
     }
 
-    /* ── CLICK 1 — EXPANDED STATE ── */
+    /* CLICK 1 — card remains original size */
     .token-flip-card.pj-expanded,
     .celestial-flip-card.pj-expanded,
     .coin-flip-card.pj-expanded,
-    .badge-card.pj-expanded {
-      transform: scale(2);
+    .badge-card.pj-expanded,
+    .timeslot-card.pj-expanded,
+    .token-flip-card.pj-flipped,
+    .celestial-flip-card.pj-flipped,
+    .coin-flip-card.pj-flipped {
+      transform: none;
       z-index: 100;
       position: relative;
+    }
+
+    /* CLICK 1 — enlarge only the badge artwork, not the card frame */
+    .token-flip-card.pj-expanded .token-coin-img,
+    .celestial-flip-card.pj-expanded .celestial-img,
+    .coin-flip-card.pj-expanded .coin-img,
+    .badge-card.pj-expanded .badge-img,
+    .timeslot-card.pj-expanded .timeslot-img {
+      transform: scale(1.35);
+      transform-origin: center center;
+      z-index: 50;
+    }
+
+    /* CLICK 2 — flipped state resets image enlargement so the reverse
+       face stays readable at normal scale */
+    .token-flip-card.pj-flipped .token-coin-img,
+    .celestial-flip-card.pj-flipped .celestial-img,
+    .coin-flip-card.pj-flipped .coin-img {
+      transform: none;
     }
 
     /* Coins hover at 1.5x — already naturally larger than other badges */
@@ -1161,31 +1320,12 @@
       transform-origin: center center;
       z-index: 50;
     }
-    .token-flip-card.pj-expanded:hover .token-coin-img,
-    .token-flip-card.pj-flipped:hover .token-coin-img,
-    .celestial-flip-card.pj-expanded:hover .celestial-img,
-    .celestial-flip-card.pj-flipped:hover .celestial-img,
-    .coin-flip-card.pj-expanded:hover .coin-img,
-    .coin-flip-card.pj-flipped:hover .coin-img,
-    .badge-card.pj-expanded:hover .badge-img {
-      transform: none;
-      z-index: auto;
-    }
 
     /* ── CLICK 2 — FLIPPED STATE ── */
     .token-flip-card.pj-flipped .token-flip-inner,
     .celestial-flip-card.pj-flipped .celestial-flip-inner,
     .coin-flip-card.pj-flipped .coin-flip-inner {
       transform: rotateY(180deg);
-    }
-
-    /* Flipped card stays expanded */
-    .token-flip-card.pj-flipped,
-    .celestial-flip-card.pj-flipped,
-    .coin-flip-card.pj-flipped {
-      transform: scale(2);
-      z-index: 100;
-      position: relative;
     }
 
     /* ── L2 CLASSIC SONGS SECTION HEADER ── */
@@ -1316,7 +1456,7 @@
   </div>
   <div class="stat-divider"></div>
   <div class="stat">
-    <div class="stat-val">13</div>
+    <div class="stat-val">12</div>
     <div class="stat-label">Celestial 2026</div>
   </div>
   <div class="stat-divider"></div>
@@ -1337,7 +1477,7 @@
   <div class="stat-divider"></div>
   <div class="stat">
     <div class="stat-val">9</div>
-    <div class="stat-label">Check-Total</div>
+    <div class="stat-label">Game Piece Badges</div>
   </div>
   <div class="stat-divider"></div>
   <div class="stat">
@@ -1348,6 +1488,21 @@
   <div class="stat">
     <div class="stat-val">15</div>
     <div class="stat-label">Loyalty Tokens</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <div class="stat-val">50</div>
+    <div class="stat-label">State Badges</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <div class="stat-val">7</div>
+    <div class="stat-label">Milestone Badges</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <div class="stat-val">5</div>
+    <div class="stat-label">Shop O'Round the Clock</div>
   </div>
   <div class="stat-divider"></div>
   <div class="stat">
@@ -1368,13 +1523,16 @@
   <a class="nav-pill" href="#celestial">Celestial</a>
   <a class="nav-pill" href="#food">Food Categories</a>
   <a class="nav-pill" href="#coins">Bottle-Purchase Coins</a>
-  <a class="nav-pill" href="#check-total">Check-Total</a>
+  <a class="nav-pill" href="#check-total">Game Piece Badges</a>
   <a class="nav-pill" href="#purchase-progress">Purchase Progress</a>
   <a class="nav-pill" href="#reviews">Review Badges</a>
   <a class="nav-pill" href="#loyalty">Loyalty Tiers</a>
   <a class="nav-pill" href="#narrative">Narrative Series</a>
   <a class="nav-pill" href="#widget">Widget Badges</a>
   <a class="nav-pill" href="#events">Event Badges</a>
+  <a class="nav-pill" href="#states">State Badges</a>
+  <a class="nav-pill" href="#milestone">Milestone Badges</a>
+  <a class="nav-pill" href="#shop-oround-the-clock">Shop O'Round the Clock</a>
   <a class="nav-pill" href="#secret">Secret Badges</a>
 </nav>
 
@@ -1531,7 +1689,7 @@
       <!-- TOKEN 7 — Railroad Magnate -->
       <div class="token-flip-card" style="border-color:rgba(212,168,50,0.4);" onclick="this.classList.toggle('flipped')">
         <div class="token-flip-inner">
-          <div class="token-face token-front" style="border-color:rgba(212,168,50,0.4);background:rgba(212,168,50,0.04);">
+          <div class="token-face token-front" style="border-color:rgba(212,168,50,0.4);background:#1E3020;">
             <div class="token-img-wrap">
               <img class="token-coin-img" src="assets/badges/tokens/token-railroad-magnate.png" alt="Railroad Magnate" onerror="this.style.opacity='0.2'">
               <div class="token-rr-name">New York New Haven &amp; Hartford Railroad</div>
@@ -1570,13 +1728,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-mild.png" alt="Mild L1" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Keep the Milk for Cookies</div>
             <div class="coin-items-label">Mild · Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Mild · L1</div>
             <div class="coin-back-text">You're here for flavor, not fire. Mild heat lets the food speak and the sauce support it. There's nothing wrong with knowing what you like.</div>
             <div class="coin-back-threshold">Earn with 5 Mild heat purchases. Level Up Rule applies.</div>
@@ -1586,13 +1744,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-medium.png" alt="Medium L1" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Farmer's Market Heat</div>
             <div class="coin-items-label">Medium · Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Medium · L1</div>
             <div class="coin-back-text">You know what heat is and you're not afraid of it. Medium is the most honest heat level — enough to notice, not enough to regret. The sweet spot of the sauce world.</div>
             <div class="coin-back-threshold">Earn with 5 Medium heat purchases. Level Up Rule applies.</div>
@@ -1602,13 +1760,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-hot.png" alt="Hot L1" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Sauce Boss</div>
             <div class="coin-items-label">Hot · Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Hot · L1</div>
             <div class="coin-back-text">Your face says everything. Hot heat means you've moved past curiosity into commitment. You're not just tolerating it — you're chasing it. That's the difference.</div>
             <div class="coin-back-threshold">Earn with 5 Hot heat purchases. Level Up Rule applies.</div>
@@ -1618,13 +1776,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-very-hot.png" alt="Very Hot L1" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Pucker Up, Pepper Head</div>
             <div class="coin-items-label">Very Hot · Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Very Hot · L1</div>
             <div class="coin-back-text">You're running the kitchen now. Very Hot is where casual heat ends and serious heat begins. The Sauce Boss doesn't ask for mild. The Sauce Boss doesn't apologize.</div>
             <div class="coin-back-threshold">Earn with 5 Very Hot heat purchases. Level Up Rule applies.</div>
@@ -1634,13 +1792,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-super-hot.png" alt="Super Hot L1" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Have Anything Hotter?</div>
             <div class="coin-items-label">Super Hot · Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Super Hot · L1</div>
             <div class="coin-back-text">You finished the Super Hot and looked up. That question is its own answer. The people who ask if there's anything hotter are the people who need to find out.</div>
             <div class="coin-back-threshold">Earn with 5 Super Hot heat purchases. Level Up Rule applies.</div>
@@ -1650,13 +1808,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-extreme.png" alt="Extreme L1" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Pass the $%&amp;@#! Carton!</div>
             <div class="coin-items-label">Extreme · Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Extreme · L1</div>
             <div class="coin-back-text">When the table starts asking for milk you're doing something right. Extreme heat is not a category — it's a reputation. You've earned yours.</div>
             <div class="coin-back-threshold">Earn with 5 Extreme heat purchases. Level Up Rule applies.</div>
@@ -1666,13 +1824,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/badge-inferno.png" alt="Inferno L1" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Incinerator</div>
             <div class="coin-items-label">Inferno · Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Inferno · L1</div>
             <div class="coin-back-text">There is no higher tier. This is the end of the heat scale and you live here. The Incinerator badge doesn't need an explanation. Everyone else at the table already knows.</div>
             <div class="coin-back-threshold">Earn with 5 Inferno heat purchases. Level Up Rule applies.</div>
@@ -1694,13 +1852,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-mild.png" alt="Mild L2" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Fever</div>
             <div class="coin-items-label">Mild · Level 2</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Trivia</div>
             <div class="coin-back-text">Peggy Lee rewrote the original lyrics — adding verses about Romeo & Juliet and Captain Smith & Pocahontas — and recorded it with no guitar whatsoever. Just bass, drums, and finger snaps. She added some of the snaps herself. What year did she record it?</div>
             <div class="coin-back-threshold">Answer: 1958 · Earn with 10 Mild heat purchases.</div>
@@ -1710,13 +1868,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-medium.png" alt="Medium L2" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Cruel Summer</div>
             <div class="coin-items-label">Medium · Level 2</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Trivia</div>
             <div class="coin-back-text">Bananarama refused to allow this song on the official soundtrack album — but it still became their first US top-10 hit after appearing in a 1984 film. The band didn't profit from the placement. The song did anyway. Which film put Cruel Summer on the map?</div>
             <div class="coin-back-threshold">Answer: The Karate Kid · Earn with 10 Medium heat purchases.</div>
@@ -1726,13 +1884,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-hot.png" alt="Hot L2" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">I Like it Hot, Hot, Hot</div>
             <div class="coin-items-label">Hot · Level 2</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Trivia</div>
             <div class="coin-back-text">The Buster Poindexter music video for this song featured a surprise cameo from a famous comedic actor — who later starred alongside Poindexter in a 1988 Christmas film. Name the actor and the film.</div>
             <div class="coin-back-threshold">Answer: Bill Murray / Scrooged · Earn with 10 Hot heat purchases.</div>
@@ -1742,13 +1900,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-very-hot.png" alt="Very Hot L2" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Hot Blooded</div>
             <div class="coin-items-label">Very Hot · Level 2</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Trivia</div>
             <div class="coin-back-text">Hot Blooded powered a pivotal training montage in a 1985 coming-of-age wrestling film set in Spokane, Washington — starring a young Matthew Modine and featuring an early Madonna performance. Name the film.</div>
             <div class="coin-back-threshold">Answer: Vision Quest · Earn with 10 Very Hot heat purchases.</div>
@@ -1758,13 +1916,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-super-hot.png" alt="Super Hot L2" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Highway to the Danger Zone</div>
             <div class="coin-items-label">Super Hot · Level 2</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Trivia</div>
             <div class="coin-back-text">Kenny Loggins recorded this song specifically for a 1986 film. It became so inseparable from that film that you cannot hear one without seeing the other. Aviator sunglasses. Fighter jets. Volleyball. Name the film.</div>
             <div class="coin-back-threshold">Answer: Top Gun · Earn with 10 Super Hot heat purchases.</div>
@@ -1774,13 +1932,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-extreme.png" alt="Extreme L2" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Burning Down the House</div>
             <div class="coin-items-label">Extreme · Level 2</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Trivia</div>
             <div class="coin-back-text">Burning Down the House plays during an actual house fire early in a 1984 college comedy that put nerds on the map. The placement was so literal it became legendary. Name the film.</div>
             <div class="coin-back-threshold">Answer: Revenge of the Nerds · Earn with 10 Extreme heat purchases.</div>
@@ -1790,13 +1948,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L2-badge-inferno.png" alt="Inferno L2" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Ring of Fire</div>
             <div class="coin-items-label">Inferno · Level 2</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Trivia</div>
             <div class="coin-back-text">Ring of Fire anchors the biographical film that introduced Johnny Cash to a generation that never saw him perform live. Name the film and the actor who played Cash.</div>
             <div class="coin-back-threshold">Answer: Walk the Line / Joaquin Phoenix · Earn with 10 Inferno heat purchases.</div>
@@ -1818,13 +1976,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-mild.png" alt="Mild L3" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Ferris Wheel</div>
             <div class="coin-items-label">Mild · Level 3</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Rocky Point · Ferris Wheel</div>
             <div class="coin-back-text">One of the oldest attractions at Rocky Point. The Spanish Fandango — a rotating wheel ride and forerunner to the modern Ferris wheel — was installed on the grounds as early as 1858. The Ferris wheel itself was built by Charles Looff, the same craftsman responsible for the legendary Crescent Park carousel just down the bay.</div>
             <div class="coin-back-threshold">Earn with 15 Mild heat purchases. Level Up Rule applies.</div>
@@ -1834,13 +1992,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-medium.png" alt="Medium L3" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">The Sky Line</div>
             <div class="coin-items-label">Medium · Level 3</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Rocky Point · The Sky Line</div>
             <div class="coin-back-text">Ski-lift style chairs gliding over the entire park. Installed in 1966, the Sky Line offered a scenic — if slightly terrifying — aerial view of the rides and Narragansett Bay below. Its towers still stand at Rocky Point State Park today. Everything else is gone. The towers remain.</div>
             <div class="coin-back-threshold">Earn with 15 Medium heat purchases. Level Up Rule applies.</div>
@@ -1850,13 +2008,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-hot.png" alt="Hot L3" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">The Flume</div>
             <div class="coin-items-label">Hot · Level 3</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Rocky Point · The Flume</div>
             <div class="coin-back-text">Sixty-foot drop. Constant long lines. One of the park's most beloved rides for decades. After Rocky Point closed the Flume was purchased by Enchanted Kingdom in the Philippines, where it still operates today as the Jungle Log Jam. The ride outlived the park.</div>
             <div class="coin-back-threshold">Earn with 15 Hot heat purchases. Level Up Rule applies.</div>
@@ -1866,13 +2024,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-very-hot.png" alt="Very Hot L3" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Tilt-A-Whirl</div>
             <div class="coin-items-label">Very Hot · Level 3</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Rocky Point · Tilt-A-Whirl</div>
             <div class="coin-back-text">A Rocky Point staple for decades. Regulars knew the secret — watch the cars before you board and find the one that spins the most, then grab it. It wasn't luck. It was strategy. The Tilt-A-Whirl rewarded the people who paid attention.</div>
             <div class="coin-back-threshold">Earn with 15 Very Hot heat purchases. Level Up Rule applies.</div>
@@ -1882,13 +2040,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-super-hot.png" alt="Super Hot L3" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">The Yo Yo</div>
             <div class="coin-items-label">Super Hot · Level 3</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Rocky Point · The Yo Yo</div>
             <div class="coin-back-text">Officially listed as Ride #23 on Rocky Point's brochure map. A Chance Rides swing attraction — elevated circular motion, outward-swinging chairs, the midway and the bay in every direction. A fixture of the park from the 1970s through the 1990s. Families, teenagers, and everyone in between lined up for it every summer.</div>
             <div class="coin-back-threshold">Earn with 15 Super Hot heat purchases. Level Up Rule applies.</div>
@@ -1898,13 +2056,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-extreme.png" alt="Extreme L3" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">Free Fall</div>
             <div class="coin-items-label">Extreme · Level 3</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Rocky Point · Free Fall</div>
             <div class="coin-back-text">13 stories. 55 mph. There is not much else to say about the Free Fall except that people rode it willingly, repeatedly, and then got back in line.</div>
             <div class="coin-back-threshold">Earn with 15 Extreme heat purchases. Level Up Rule applies.</div>
@@ -1914,13 +2072,13 @@
 
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/heat/L3-badge-inferno.png" alt="Inferno L3" onerror="this.style.opacity='0.2'"></div>
             <div class="coin-badge-name">The Corkscrew</div>
             <div class="coin-items-label">Inferno · Level 3</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Rocky Point · The Corkscrew</div>
             <div class="coin-back-text">First-of-its-kind in New England when it opened in 1984. One 360-degree loop. Two full twists. First riders described it as "getting tossed around in a clothes dryer" and "strapped on a giant runaway roller skate." After Rocky Point closed the Corkscrew sold for $805,000 and now operates at Wild Waves Theme Park in Federal Way, Washington as the Wild Thing. Rhode Island's most notorious ride is still running — just not here.</div>
             <div class="coin-back-threshold">Earn with 15 Inferno heat purchases. Level Up Rule applies.</div>
@@ -1937,22 +2095,23 @@
       <div class="category-icon">✨</div>
       <div class="category-titles">
         <div class="category-name">Celestial Badges — 2026</div>
-        <div class="category-desc">Annual · Retiring · 12 Zodiac Badges · Missed months show RETIRED banner · Secret 13th slot · Resets Jan 1</div>
+        <div class="category-desc">Annual · Retiring · 12 Zodiac Badges · Missed months show RETIRED banner · Resets Jan 1</div>
       </div>
-      <div class="category-count">13</div>
+      <div class="category-count">12</div>
     </div>
-    <div class="pending-note">Current month: June 2026 (Gemini). Jan–May = RETIRED. June = current/earnable. July–Dec = future/gray. 13th slot = SECRET. Click/tap any badge to flip.</div>
+    <div class="pending-note">Current month: July 2026 (Cancer). Jan–June = RETIRED. July = current/earnable. Aug–Dec = future/gray. Secret badge "Year of the Horse" awarded for completing all 12 — filed under Secret Badges, never shown before earned. Click/tap any badge to flip.</div>
 
     <div class="celestial-grid">
 
       <!-- CAPRICORN — January — RETIRED -->
-      <div class="celestial-flip-card retired" onclick="this.classList.toggle('flipped')">
+      <div class="celestial-flip-card retired">
         <div class="celestial-flip-inner">
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-capricorn-2026.png" alt="Capricorn">
-              <div class="celestial-banner">Retired</div>
+              
             </div>
+            <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
             <div class="celestial-badge-name">Capricorn</div>
             <div class="celestial-badge-month">January · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
@@ -1965,13 +2124,14 @@
       </div>
 
       <!-- AQUARIUS — February — RETIRED -->
-      <div class="celestial-flip-card retired" onclick="this.classList.toggle('flipped')">
+      <div class="celestial-flip-card retired">
         <div class="celestial-flip-inner">
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-aquarius-2026.png" alt="Aquarius">
-              <div class="celestial-banner">Retired</div>
+              
             </div>
+            <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
             <div class="celestial-badge-name">Aquarius</div>
             <div class="celestial-badge-month">February · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
@@ -1984,13 +2144,14 @@
       </div>
 
       <!-- PISCES — March — RETIRED -->
-      <div class="celestial-flip-card retired" onclick="this.classList.toggle('flipped')">
+      <div class="celestial-flip-card retired">
         <div class="celestial-flip-inner">
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-pisces-2026.png" alt="Pisces">
-              <div class="celestial-banner">Retired</div>
+              
             </div>
+            <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
             <div class="celestial-badge-name">Pisces</div>
             <div class="celestial-badge-month">March · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
@@ -2003,13 +2164,14 @@
       </div>
 
       <!-- ARIES — April — RETIRED -->
-      <div class="celestial-flip-card retired" onclick="this.classList.toggle('flipped')">
+      <div class="celestial-flip-card retired">
         <div class="celestial-flip-inner">
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-aries-2026.png" alt="Aries">
-              <div class="celestial-banner">Retired</div>
+              
             </div>
+            <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
             <div class="celestial-badge-name">Aries</div>
             <div class="celestial-badge-month">April · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
@@ -2022,13 +2184,14 @@
       </div>
 
       <!-- TAURUS — May — RETIRED -->
-      <div class="celestial-flip-card retired" onclick="this.classList.toggle('flipped')">
+      <div class="celestial-flip-card retired">
         <div class="celestial-flip-inner">
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-taurus-2026.png" alt="Taurus">
-              <div class="celestial-banner">Retired</div>
+              
             </div>
+            <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
             <div class="celestial-badge-name">Taurus</div>
             <div class="celestial-badge-month">May · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
@@ -2040,36 +2203,38 @@
         </div>
       </div>
 
-      <!-- GEMINI — June — CURRENT -->
-      <div class="celestial-flip-card current" onclick="this.classList.toggle('flipped')" style="border:1px solid rgba(212,168,50,0.5);">
+      <!-- GEMINI — June — RETIRED -->
+      <div class="celestial-flip-card retired">
         <div class="celestial-flip-inner">
-          <div class="celestial-face celestial-front" style="border-color:rgba(212,168,50,0.5);background:rgba(212,168,50,0.04);">
+          <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-gemini-2026.png" alt="Gemini">
+              
             </div>
+            <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
             <div class="celestial-badge-name">Gemini</div>
-            <div class="celestial-badge-month">June · 2026 · Now</div>
+            <div class="celestial-badge-month">June · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
           </div>
-          <div class="celestial-face celestial-back" style="border-color:rgba(212,168,50,0.5);">
+          <div class="celestial-face celestial-back">
             <div class="celestial-back-greeting">"Can't decide between hot or hotter? Classic Gemini. We stocked both."</div>
             <div class="celestial-back-nudge">Visit next time for the Celestial Badge.</div>
           </div>
         </div>
       </div>
 
-      <!-- CANCER — July — FUTURE -->
-      <div class="celestial-flip-card future" onclick="this.classList.toggle('flipped')">
+      <!-- CANCER — July — CURRENT -->
+      <div class="celestial-flip-card current" onclick="this.classList.toggle('flipped')" style="border:1px solid rgba(212,168,50,0.5);">
         <div class="celestial-flip-inner">
-          <div class="celestial-face celestial-front">
+          <div class="celestial-face celestial-front" style="border-color:rgba(212,168,50,0.5);background:#1E3020;">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-cancer-2026.png" alt="Cancer">
             </div>
             <div class="celestial-badge-name">Cancer</div>
-            <div class="celestial-badge-month">July · 2026</div>
+            <div class="celestial-badge-month">July · 2026 · Now</div>
             <div class="celestial-flip-hint">Tap to flip</div>
           </div>
-          <div class="celestial-face celestial-back">
+          <div class="celestial-face celestial-back" style="border-color:rgba(212,168,50,0.5);">
             <div class="celestial-back-greeting">"Cancers cook for everyone. We just make sure it's worth eating."</div>
             <div class="celestial-back-nudge">Visit next time for the Celestial Badge.</div>
           </div>
@@ -2166,23 +2331,6 @@
         </div>
       </div>
 
-      <!-- 13TH SLOT — SECRET -->
-      <div class="celestial-flip-card secret" onclick="this.classList.toggle('flipped')">
-        <div class="celestial-flip-inner">
-          <div class="celestial-face celestial-front">
-            <div class="celestial-secret-block">
-              <div class="celestial-banner">Secret</div>
-            </div>
-            <div class="celestial-badge-name">Secret Badge</div>
-            <div class="celestial-badge-month">2026</div>
-            <div class="celestial-flip-hint">Tap to flip</div>
-          </div>
-          <div class="celestial-face celestial-back">
-            <div class="celestial-back-greeting">"Collect all 12 to reveal."</div>
-          </div>
-        </div>
-      </div>
-
     </div><!-- /celestial-grid -->
   </section>
 
@@ -2192,29 +2340,138 @@
       <div class="category-icon">🍽️</div>
       <div class="category-titles">
         <div class="category-name">Food Category Badges</div>
-        <div class="category-desc">18 Categories · All Complete · Triggered by Best Food Pairings keyword matching</div>
+        <div class="category-desc">18 Categories · Lifetime Cumulative · Every 5 Purchases = Level Up · Triggered by Best Food Pairings Keyword Matching</div>
       </div>
       <div class="category-count">18</div>
     </div>
-    <div class="badge-grid">
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-bbq.png" alt="BBQ" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🔥</div><div class="badge-info"><div class="badge-name">Smoking Section</div><div class="badge-sub">BBQ / Dry Rubs</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-asian.png" alt="Asian" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍣</div><div class="badge-info"><div class="badge-name"></div><div class="badge-sub">Asian</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-indian.png" alt="Indian" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">💃</div><div class="badge-info"><div class="badge-name"></div><div class="badge-sub">Indian — No Label</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-wings.png" alt="Wings" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">✈️</div><div class="badge-info"><div class="badge-name">Epic Wingman</div><div class="badge-sub">Chicken Wings</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-verde.png" alt="Verde" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🌿</div><div class="badge-info"><div class="badge-name">Señor Verde</div><div class="badge-sub">Verde Sauce</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-fruit.png" alt="Fruit" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍓</div><div class="badge-info"><div class="badge-name">Fruity Pants</div><div class="badge-sub">Fruit</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-caribbean.png" alt="Caribbean" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🥁</div><div class="badge-info"><div class="badge-name">Is This Love</div><div class="badge-sub">Caribbean</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-taco.png" alt="Taco" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🌮</div><div class="badge-info"><div class="badge-name">Taco Fever</div><div class="badge-sub">Taco Sauce</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-breakfast.png" alt="Breakfast" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍳</div><div class="badge-info"><div class="badge-name">This Is Your Brain on Hot Sauce</div><div class="badge-sub">Eggs / Breakfast</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-cajun.png" alt="Cajun" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🎭</div><div class="badge-info"><div class="badge-name">Marty Bras</div><div class="badge-sub">Cajun</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-garlic.png" alt="Garlic" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🧄</div><div class="badge-info"><div class="badge-name">Garlic Breath</div><div class="badge-sub">Garlic</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-veggies.png" alt="Veggies" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🌿</div><div class="badge-info"><div class="badge-name">The Veggie Outlaws</div><div class="badge-sub">Veggies</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-mexican.png" alt="Mexican" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🥑</div><div class="badge-info"><div class="badge-name">Muy Rico!</div><div class="badge-sub">Mexican</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-seasonings.png" alt="Seasonings" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍴</div><div class="badge-info"><div class="badge-name">Flavortown Mayor</div><div class="badge-sub">Seasonings — Text: Triple D</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-condiments.png" alt="Condiments" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍶</div><div class="badge-info"><div class="badge-name">Flavor Junkie</div><div class="badge-sub">Condiments</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-snacks.png" alt="Snacks" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🍿</div><div class="badge-info"><div class="badge-name">Snack Shack</div><div class="badge-sub">Snacks</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-seafood.png" alt="Seafood" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🦞</div><div class="badge-info"><div class="badge-name"></div><div class="badge-sub">Seafood — Rocky Point Shore Dinner Hall</div></div></div>
-      <div class="badge-card"><span class="badge-status complete">✅</span><img class="badge-img" src="assets/badges/food/badge-food-mediterranean.png" alt="Mediterranean" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="badge-placeholder" style="display:none;">🫒</div><div class="badge-info"><div class="badge-name">Olive Oil & Vin — Ch. 1</div><div class="badge-sub">Mediterranean · Narrative Entry</div></div></div>
+    <div class="pending-note">Trigger: 5 qualifying purchases in that food category = badge earned at Lvl 1. Every additional 5 purchases in that category = Level Up, no cap. Independent per category — a single purchase can progress multiple food badges simultaneously if the product matches multiple categories. Mediterranean is a narrative-series entry (Olive Oil &amp; Vin) rather than a standard bartender catchphrase. Single-face card — no flip behavior. Hover enlarges image; click toggles enlarged card view; click again returns to original size.</div>
+    <div class="coin-grid">
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-bbq.png" alt="BBQ" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Smoking Section</div>
+          <div class="timeslot-catchphrase">"Five more trips through the smoke. At this point, your table's permanently reserved in the Smoking Section."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-asian.png" alt="Asian" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Wok Star</div>
+          <div class="timeslot-catchphrase">"Five more Asian flavors served up. You're not just working the wok—you're headlining it."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-indian.png" alt="Indian" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Curry On</div>
+          <div class="timeslot-catchphrase">"Five more passes through the spice route. Whatever happens from here, just Curry On."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-wings.png" alt="Wings" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Epic Wingman</div>
+          <div class="timeslot-catchphrase">"Another five wing runs in the books. Every great sauce needs an Epic Wingman."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-verde.png" alt="Verde" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Señor Verde</div>
+          <div class="timeslot-catchphrase">"Five more green ones across the bar. Señor Verde rides again."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-fruit.png" alt="Fruit" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Fruity Pants</div>
+          <div class="timeslot-catchphrase">"Five more fruit-forward troublemakers. Go ahead—put your Fruity Pants back on."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-caribbean.png" alt="Caribbean" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Is This Love</div>
+          <div class="timeslot-catchphrase">"Five more tastes of the islands. Is this love? At this point, I'd say it's getting serious."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-taco.png" alt="Taco" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Taco Fever</div>
+          <div class="timeslot-catchphrase">"Five more bottles for taco night. Bad news—the fever's spreading."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-breakfast.png" alt="Breakfast" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">This Is Your Brain on Hot Sauce</div>
+          <div class="timeslot-catchphrase">"Five more breakfasts with a little burn. This is your brain on hot sauce—and apparently it wants seconds."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-cajun.png" alt="Cajun" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Marty Bras</div>
+          <div class="timeslot-catchphrase">"Five more Cajun picks and the whole joint's starting to shake. Marty Bras has entered the building."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-garlic.png" alt="Garlic" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Garlic Breath</div>
+          <div class="timeslot-catchphrase">"Five more garlic-heavy choices. Your flavor is fearless. Your breath is now everybody else's problem."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-veggies.png" alt="Veggies" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">The Veggie Outlaws</div>
+          <div class="timeslot-catchphrase">"Five more vegetables gone rogue. The Veggie Outlaws just added another notch to the belt."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-mexican.png" alt="Mexican" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Muy Rico!</div>
+          <div class="timeslot-catchphrase">"Five more bold Mexican flavors. That's not just good—that's Muy Rico!"</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-seasonings.png" alt="Seasonings" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Flavortown Mayor</div>
+          <div class="timeslot-catchphrase">"Five more seasonings under your watch. The mayor has officially won another term."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-condiments.png" alt="Condiments" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Flavor Junkie</div>
+          <div class="timeslot-catchphrase">"Five more condiments for the collection. You're not browsing anymore—you need the flavor."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-snacks.png" alt="Snacks" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Snack Shack</div>
+          <div class="timeslot-catchphrase">"Five more snack attacks handled. The Snack Shack is open, and apparently you've got the keys."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-seafood.png" alt="Seafood" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Shore Dinner Regular</div>
+          <div class="timeslot-catchphrase">"Five more tastes from the sea. Pull up a chair—the Shore Dinner Norm is back."</div>
+        </div>
+      </div>
+      <div class="timeslot-card no-flip timeslot-card-narrative">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-mediterranean.png" alt="Mediterranean" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Olive Oil &amp; Vin — Ch. 1</div>
+          <div class="timeslot-catchphrase">Mediterranean · Narrative Entry</div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -2365,7 +2622,7 @@
       <!-- COIN 6 — Peace Dollar — 9 items -->
       <div class="coin-flip-card" style="border-color:rgba(212,168,50,0.4);" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="border-color:rgba(212,168,50,0.4);background:#1A1A1A;">
+          <div class="coin-face coin-front" style="border-color:rgba(212,168,50,0.4);background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/bottle-purchase-coins/badge-coin-peace-dollar-obverse.png" alt="Peace Dollar Obverse" onerror="this.style.opacity='0.2'">
             </div>
@@ -2396,7 +2653,7 @@
     <div class="category-header">
       <div class="category-icon">🎲</div>
       <div class="category-titles">
-        <div class="category-name">Check-Total Badges</div>
+        <div class="category-name">Game Piece Badges</div>
         <div class="category-desc">9 Badges · Single Transaction Dollar Amount · $10–$100 · 1920s–1940s Board Game Era · Level Up Rule · All Art Complete</div>
       </div>
       <div class="category-count">9</div>
@@ -2408,7 +2665,7 @@
       <!-- PICKUP STICKS — $10 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/check-total/badge-check-total-pickup-sticks.png" alt="Pickup Sticks" onerror="this.style.opacity='0.2'">
             </div>
@@ -2417,7 +2674,7 @@
             <div class="coin-level">Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Pickup Sticks</div>
             <div class="coin-back-text">1930s commercial version. Born in the Depression era when entertainment had to cost nothing. A handful of colored sticks, a steady hand, and the whole family was occupied for an hour. Simple, portable, and requiring no board or special equipment — perfect when pennies counted.</div>
             <div class="coin-back-threshold">Leveling up to the next badge is $15 away. · Level Up Rule applies.</div>
@@ -2428,7 +2685,7 @@
       <!-- CHINESE CHECKERS — $25 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/check-total/badge-check-total-chinese-checkers.png" alt="Chinese Checkers" onerror="this.style.opacity='0.2'">
             </div>
@@ -2437,7 +2694,7 @@
             <div class="coin-level">Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Chinese Checkers</div>
             <div class="coin-back-text">Despite the name, invented in Germany in 1892 as Stern-Halma. Rebranded as Chinese Checkers in America in 1928 and became a nationwide craze through the 1930s. The star-shaped board made it instantly recognizable on any shelf — and the name, completely unrelated to its origin, stuck forever.</div>
             <div class="coin-back-threshold">Leveling up to the next badge is $15 away. · Level Up Rule applies.</div>
@@ -2448,7 +2705,7 @@
       <!-- DOMINOES — $40 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/check-total/badge-check-total-dominoes.png" alt="Dominoes" onerror="this.style.opacity='0.2'">
             </div>
@@ -2457,7 +2714,7 @@
             <div class="coin-level">Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Dominoes</div>
             <div class="coin-back-text">European dominoes date to the 18th century, derived from Chinese tile games. By the 1920s and 1930s they were a fixture of American parlor life — kitchen tables, front porches, barbershops. The game had rules. The real joy was standing them up in a line and letting them fall.</div>
             <div class="coin-back-threshold">Leveling up to the next badge is $10 away. · Level Up Rule applies.</div>
@@ -2468,7 +2725,7 @@
       <!-- BINGO — $50 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/check-total/badge-check-total-bingo.png" alt="Bingo" onerror="this.style.opacity='0.2'">
             </div>
@@ -2477,7 +2734,7 @@
             <div class="coin-level">Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Bingo</div>
             <div class="coin-back-text">Standardized and mass marketed in 1929 by Edwin Lowe after he witnessed a carnival game called Beano. By the early 1930s an estimated 10,000 Bingo games were being played weekly across North America. A Depression-era staple — cheap, social, and available everywhere. The number O-69 is historically documented.</div>
             <div class="coin-back-threshold">Leveling up to the next badge is $10 away. · Level Up Rule applies.</div>
@@ -2488,7 +2745,7 @@
       <!-- CHECKERS — $60 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/check-total/badge-check-total-checkers.png" alt="Checkers" onerror="this.style.opacity='0.2'">
             </div>
@@ -2497,7 +2754,7 @@
             <div class="coin-level">Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Checkers</div>
             <div class="coin-back-text">Ancient origins, codified into modern rules in the 1800s. By the 1920s and 1930s checkers was the quintessential American parlor game — found in every home, every barbershop, every general store. No era defined checkers more than the Depression years when entertainment had to be free. Getting kinged was the whole point.</div>
             <div class="coin-back-threshold">Leveling up to the next badge is $10 away. · Level Up Rule applies.</div>
@@ -2508,7 +2765,7 @@
       <!-- PARCHEESI — $70 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/check-total/badge-check-total-parcheesi.png" alt="Parcheesi" onerror="this.style.opacity='0.2'">
             </div>
@@ -2517,7 +2774,7 @@
             <div class="coin-level">Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Parcheesi</div>
             <div class="coin-back-text">An American adaptation of the ancient Indian game Pachisi, trademarked by Selchow and Righter in 1874. By the 1920s and 1930s it was one of the most widely owned board games in America — a fixture in parlors, sunrooms, and vacation cottages. The safe space was a lie. Someone always sent you back.</div>
             <div class="coin-back-threshold">Leveling up to the next badge is $10 away. · Level Up Rule applies.</div>
@@ -2528,7 +2785,7 @@
       <!-- MONOPOLY — $80 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/check-total/badge-check-total-monopoly.png" alt="Monopoly" onerror="this.style.opacity='0.2'">
             </div>
@@ -2537,7 +2794,7 @@
             <div class="coin-level">Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Monopoly</div>
             <div class="coin-back-text">Charles Darrow sold it to Parker Brothers in 1935 during the height of the Depression. The irony of a game about accumulating wealth during America's poorest decade made it an instant phenomenon. Over 20,000 sets sold in its first year. The railroads on the board — B&O, Reading, Pennsylvania, Short Line — were all real. Free Parking was a house rule. It was never in the original instructions.</div>
             <div class="coin-back-threshold">Leveling up to the next badge is $10 away. · Level Up Rule applies.</div>
@@ -2548,7 +2805,7 @@
       <!-- SCRABBLE — $90 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#8F1F0D;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/check-total/badge-check-total-scrabble.png" alt="Scrabble" onerror="this.style.opacity='0.2'">
             </div>
@@ -2557,7 +2814,7 @@
             <div class="coin-level">Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;">
+          <div class="coin-face coin-back" style="background:#8F1F0D;">
             <div class="coin-back-section-label">Scrabble</div>
             <div class="coin-back-text">Invented by Alfred Mosher Butts in 1938 as Criss-Cross Words. Largely ignored until 1948 when James Brunot acquired the rights and refined it. Became a national sensation in the early 1950s when Macy's placed a large order. One of the great slow-burn success stories in game history. PEPPER JUNCTION on a triple word score — that's the whole game right there.</div>
             <div class="coin-back-threshold">Leveling up to the next badge is $10 away. · Level Up Rule applies.</div>
@@ -2568,7 +2825,7 @@
       <!-- SORRY! — $100 -->
       <div class="coin-flip-card" style="border-color:rgba(212,168,50,0.4);" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;border-color:rgba(212,168,50,0.4);">
+          <div class="coin-face coin-front" style="background:#8F1F0D;border-color:rgba(212,168,50,0.4);">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/check-total/badge-check-total-sorry.png" alt="Sorry!" onerror="this.style.opacity='0.2'">
             </div>
@@ -2577,7 +2834,7 @@
             <div class="coin-level">Level 1</div>
             <div class="coin-flip-hint">Tap to flip</div>
           </div>
-          <div class="coin-face coin-back" style="background:#1E3020;border-color:rgba(212,168,50,0.4);">
+          <div class="coin-face coin-back" style="background:#8F1F0D;border-color:rgba(212,168,50,0.4);">
             <div class="coin-back-section-label">Sorry!</div>
             <div class="coin-back-text">Based on the ancient Indian game Pachisi, Sorry! was patented in England in 1929 and introduced to North America by Parker Brothers in 1934. The concept of sending opponents back to start with a cheerful apology made it an instant family favorite — equal parts strategy and gleeful sabotage. The slide was the whole reason you played.</div>
             <div class="coin-back-threshold">You've reached the top tier. Nothing left to prove. · Level Up Rule applies.</div>
@@ -2605,7 +2862,7 @@
       <!-- FUEL — $10 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/purchase-progress/badge-purchase-progress-fuel.png" alt="Fuel" onerror="this.style.opacity='0.2'">
             </div>
@@ -2625,7 +2882,7 @@
       <!-- SPIRITS — $25 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/purchase-progress/badge-purchase-progress-spirits.png" alt="Spirits" onerror="this.style.opacity='0.2'">
             </div>
@@ -2645,7 +2902,7 @@
       <!-- MOVIES — $40 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/purchase-progress/badge-purchase-progress-movies.png" alt="Movies" onerror="this.style.opacity='0.2'">
             </div>
@@ -2665,7 +2922,7 @@
       <!-- RADIO — $50 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/purchase-progress/badge-purchase-progress-radio.png" alt="Radio" onerror="this.style.opacity='0.2'">
             </div>
@@ -2685,7 +2942,7 @@
       <!-- GROCERIES — $60 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/purchase-progress/badge-purchase-progress-groceries.png" alt="Groceries" onerror="this.style.opacity='0.2'">
             </div>
@@ -2705,7 +2962,7 @@
       <!-- FREE SHIPPING — $70 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/purchase-progress/badge-purchase-progress-free-shipping.png" alt="Free Shipping" onerror="this.style.opacity='0.2'">
             </div>
@@ -2725,7 +2982,7 @@
       <!-- TAXI — $80 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/purchase-progress/badge-purchase-progress-taxi.png" alt="Taxi" onerror="this.style.opacity='0.2'">
             </div>
@@ -2745,7 +3002,7 @@
       <!-- DOCTOR — $90 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/purchase-progress/badge-purchase-progress-doctor.png" alt="Doctor" onerror="this.style.opacity='0.2'">
             </div>
@@ -2765,7 +3022,7 @@
       <!-- MORTGAGE — $100 -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/purchase-progress/badge-purchase-progress-mortgage.png" alt="Mortgage" onerror="this.style.opacity='0.2'">
             </div>
@@ -2785,7 +3042,7 @@
       <!-- BOAT — $125 -->
       <div class="coin-flip-card" style="border-color:rgba(212,168,50,0.4);" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;border-color:rgba(212,168,50,0.4);">
+          <div class="coin-face coin-front" style="background:#1E3020;border-color:rgba(212,168,50,0.4);">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/purchase-progress/badge-purchase-progress-boat.png" alt="Boat" onerror="this.style.opacity='0.2'">
             </div>
@@ -2848,7 +3105,7 @@
       <!-- Token 1: Bixby Creek -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-bixby-creek.png" alt="Bixby Creek Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -2871,7 +3128,7 @@
       <!-- Token 2: Seven Mile -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-seven-mile.png" alt="Seven Mile Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -2894,7 +3151,7 @@
       <!-- Token 3: Sunshine Skyway -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-sunshine-skyway.png" alt="Sunshine Skyway Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -2917,7 +3174,7 @@
       <!-- Token 4: Coronado -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-coronado.png" alt="Coronado Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -2940,7 +3197,7 @@
       <!-- Token 5: Mackinac -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-mackinac.png" alt="Mackinac Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -2963,7 +3220,7 @@
       <!-- Token 6: Chesapeake Bay -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-chesapeake-bay.png" alt="Chesapeake Bay Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -2986,7 +3243,7 @@
       <!-- Token 7: New River Gorge -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-new-river-gorge.png" alt="New River Gorge Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -3009,7 +3266,7 @@
       <!-- Token 8: Tacoma Narrows -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-tacoma-narrows.png" alt="Tacoma Narrows Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -3032,7 +3289,7 @@
       <!-- Token 9: Zakim -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-zakim-bunker-hill.png" alt="Zakim Bunker Hill Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -3055,7 +3312,7 @@
       <!-- Token 10: Verrazzano-Narrows -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-verrazzano-narrows.png" alt="Verrazzano-Narrows Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -3078,7 +3335,7 @@
       <!-- Token 11: SF-Oakland Bay -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-sf-oakland-bay.png" alt="SF-Oakland Bay Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -3101,7 +3358,7 @@
       <!-- Token 12: George Washington -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-george-washington.png" alt="George Washington Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -3124,7 +3381,7 @@
       <!-- Token 13: Brooklyn -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-brooklyn.png" alt="Brooklyn Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -3147,7 +3404,7 @@
       <!-- Token 14: Lake Pontchartrain -->
       <div class="coin-flip-card">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;">
+          <div class="coin-face coin-front" style="background:#1E3020;">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-lake-pontchartrain.png" alt="Lake Pontchartrain Causeway" onerror="this.style.opacity='0.2'">
             </div>
@@ -3170,7 +3427,7 @@
       <!-- Token 15: Golden Gate -->
       <div class="coin-flip-card" style="border-color:rgba(212,168,50,0.4);">
         <div class="coin-flip-inner">
-          <div class="coin-face coin-front" style="background:#1A1A1A;border-color:rgba(212,168,50,0.4);">
+          <div class="coin-face coin-front" style="background:#1E3020;border-color:rgba(212,168,50,0.4);">
             <div class="coin-img-wrap">
               <img class="coin-img" src="assets/badges/loyalty/badge-loyalty-golden-gate.png" alt="Golden Gate Bridge" onerror="this.style.opacity='0.2'">
             </div>
@@ -3291,6 +3548,996 @@
     </div>
   </section>
 
+  <!-- ═══ STATE ENTRY BADGES ═════════════════════════════════════ -->
+  <section class="badge-category" id="states">
+    <div class="category-header">
+      <div class="category-icon">🗺️</div>
+      <div class="category-titles">
+        <div class="category-name">State Entry Badges</div>
+        <div class="category-desc">50 Badges · 8 Regions · Triggered by Shipping Destination · Level Up = Every Shipment to Same State · Gold Token Format · 2000×2000px · Path: assets/badges/states/</div>
+      </div>
+      <div class="category-count">50</div>
+    </div>
+    <div class="pending-note">Awarded on first completed order shipped to that state. Level Up on every subsequent shipment to the same state — no cap. Lvl = total shipments to that state (1:1). Same gold token format across all 50. Reverse face: same token art + year of statehood + landmark historical narrative + current level. Sectioned by region. Left-aligned grid — incomplete rows left as-is. Regional completion secret badges: ON HOLD.</div>
+
+    <div class="region-label">New England</div>
+    <div class="coin-grid">
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-connecticut.png" alt="Connecticut" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Connecticut</div>
+            <div class="coin-items-label">Mystic Seaport — Charles W. Morgan</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-connecticut.png" alt="Connecticut" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Connecticut · Statehood 1788</div>
+            <div class="coin-back-fact">The Charles W. Morgan, launched in 1841 at New Bedford and now berthed at Mystic Seaport, is the last surviving wooden whaleship in the world. She made 37 voyages over 80 years of active service. No vessel better represents the age of American sail.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-maine.png" alt="Maine" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Maine</div>
+            <div class="coin-items-label">Portland Head Light</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-maine.png" alt="Maine" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Maine · Statehood 1820</div>
+            <div class="coin-back-fact">Commissioned by George Washington in 1787 and completed in 1791, Portland Head Light is the oldest lighthouse in Maine and one of the most photographed in America. It stands 80 feet above the Atlantic at the entrance to Portland Harbor, guarding one of New England's most important ports for over 230 years.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-massachusetts.png" alt="Massachusetts" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Massachusetts</div>
+            <div class="coin-items-label">Faneuil Hall</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-massachusetts.png" alt="Massachusetts" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Massachusetts · Statehood 1788</div>
+            <div class="coin-back-fact">Built in 1742 by merchant Peter Faneuil and donated to the city of Boston, Faneuil Hall has been called the Cradle of Liberty. Samuel Adams, James Otis, and the Sons of Liberty used its great hall to organize resistance to British taxation before the Revolution. It has been in continuous public use for over 280 years.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-new-hampshire.png" alt="New Hampshire" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">New Hampshire</div>
+            <div class="coin-items-label">Mount Washington Cog Railway</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-new-hampshire.png" alt="New Hampshire" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">New Hampshire · Statehood 1788</div>
+            <div class="coin-back-fact">Opened in 1869, the Mount Washington Cog Railway was the world's first mountain-climbing cog railway. It climbs 6,288 feet to the summit of the highest peak in the Northeast — where a wind speed of 231 mph was recorded on April 12, 1934, holding the world record for 76 years. The train still runs on steam.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-rhode-island.png" alt="Rhode Island" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Rhode Island</div>
+            <div class="coin-items-label">Claiborne Pell Newport Bridge</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-rhode-island.png" alt="Rhode Island" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Rhode Island · Statehood 1790</div>
+            <div class="coin-back-fact">Spanning 1.6 miles across Narragansett Bay between Jamestown and Newport, the Claiborne Pell Bridge opened in 1969 and remains the longest suspension bridge in New England. It connects Aquidneck Island — home to Newport's Gilded Age mansions and America's Cup sailing heritage — to the Rhode Island mainland. The defining landmark of the Ocean State's skyline.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-vermont.png" alt="Vermont" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Vermont</div>
+            <div class="coin-items-label">Stowe Ski Resort</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-vermont.png" alt="Vermont" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Vermont · Statehood 1791</div>
+            <div class="coin-back-fact">Stowe Mountain Resort sits beneath Mount Mansfield — Vermont's highest peak at 4,395 feet. Skiing began here in the 1930s, making it one of the oldest ski destinations in the Eastern United States. The von Trapp family of Sound of Music fame settled in Stowe after fleeing Austria in 1938 and still operates a lodge on the hillside above the village.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /{name} -->
+
+    <div class="region-label">Mid-Atlantic</div>
+    <div class="coin-grid">
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-delaware.png" alt="Delaware" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Delaware</div>
+            <div class="coin-items-label">Fort Delaware</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-delaware.png" alt="Delaware" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Delaware · Statehood 1787</div>
+            <div class="coin-back-fact">Fort Delaware sits on Pea Patch Island in the Delaware River and was built between 1848 and 1859 to defend Philadelphia and Wilmington. During the Civil War it held up to 12,500 Confederate prisoners — more than any other Union prison. The island itself formed naturally from a raft of pea sacks that ran aground and collected silt over decades.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-maryland.png" alt="Maryland" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Maryland</div>
+            <div class="coin-items-label">Fort McHenry</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-maryland.png" alt="Maryland" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Maryland · Statehood 1788</div>
+            <div class="coin-back-fact">On September 13–14, 1814, Fort McHenry withstood 25 hours of British naval bombardment during the Battle of Baltimore. When Francis Scott Key saw the American flag still flying at dawn, he wrote the poem that became The Star-Spangled Banner. The flag that flew that night — 30 by 42 feet — is preserved at the Smithsonian.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-new-jersey.png" alt="New Jersey" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">New Jersey</div>
+            <div class="coin-items-label">Cape May Lighthouse</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-new-jersey.png" alt="New Jersey" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">New Jersey · Statehood 1787</div>
+            <div class="coin-back-fact">Built in 1859 and standing 157 feet tall, the Cape May Lighthouse is the third lighthouse built at the southern tip of New Jersey. It guards the entrance to Delaware Bay and has guided ships through one of the busiest shipping lanes on the East Coast for over 165 years. Over 100,000 visitors climb its 199 steps annually.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-new-york.png" alt="New York" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">New York</div>
+            <div class="coin-items-label">Statue of Liberty</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-new-york.png" alt="New York" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">New York · Statehood 1788</div>
+            <div class="coin-back-fact">A gift from France dedicated on October 28, 1886, the Statue of Liberty stands 305 feet above New York Harbor. For millions of immigrants arriving by ship through Ellis Island between 1892 and 1954, Lady Liberty was the first image of America they ever saw. She has appeared in more films and works of art than any other American landmark.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-pennsylvania.png" alt="Pennsylvania" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Pennsylvania</div>
+            <div class="coin-items-label">Liberty Bell / Independence Hall</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-pennsylvania.png" alt="Pennsylvania" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Pennsylvania · Statehood 1787</div>
+            <div class="coin-back-fact">The Liberty Bell was cast in 1752 and rang to summon citizens to hear the first public reading of the Declaration of Independence on July 8, 1776. Independence Hall behind it is where both the Declaration of Independence and the U.S. Constitution were signed — arguably the most historically significant block of ground in the Western Hemisphere.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-virginia.png" alt="Virginia" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Virginia</div>
+            <div class="coin-items-label">Colonial Williamsburg</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-virginia.png" alt="Virginia" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Virginia · Statehood 1788</div>
+            <div class="coin-back-fact">Colonial Williamsburg served as the capital of the Virginia Colony from 1699 to 1780 — the most populous British colony in America. Its 301-acre Historic Area preserves 88 original 18th-century buildings. Patrick Henry delivered his first major political speech here in 1765. The restoration began in 1926 funded by John D. Rockefeller Jr.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-west-virginia.png" alt="West Virginia" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">West Virginia</div>
+            <div class="coin-items-label">New River Gorge Bridge</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-west-virginia.png" alt="West Virginia" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">West Virginia · Statehood 1863</div>
+            <div class="coin-back-fact">Completed in 1977, the New River Gorge Bridge rises 876 feet above one of the oldest rivers on the continent and held the title of world's longest steel arch span for 26 years. Featured on the West Virginia state quarter. Every October, Bridge Day brings 100,000 visitors and hundreds of BASE jumpers who legally leap from its deck — the only day of the year it's permitted.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /{name} -->
+
+    <div class="region-label">Southeast</div>
+    <div class="coin-grid">
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-alabama.png" alt="Alabama" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Alabama</div>
+            <div class="coin-items-label">Vulcan Park & Museum, Birmingham</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-alabama.png" alt="Alabama" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Alabama · Statehood 1819</div>
+            <div class="coin-back-fact">Cast in 1904 for the St. Louis World's Fair, the Vulcan statue stands 56 feet tall atop a 124-foot sandstone pedestal on Red Mountain overlooking Birmingham — the tallest cast iron statue in the world. Vulcan, Roman god of the forge, was chosen to represent Birmingham's iron and steel industry. He has stood watch over the city for over 120 years.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-florida.png" alt="Florida" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Florida</div>
+            <div class="coin-items-label">Kennedy Space Center</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-florida.png" alt="Florida" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Florida · Statehood 1845</div>
+            <div class="coin-back-fact">Kennedy Space Center at Cape Canaveral has been the launch site for every American human spaceflight since 1968. Apollo 11 launched from here on July 16, 1969 — carrying the first humans to walk on the Moon. The Space Shuttle program launched 135 missions from this complex between 1981 and 2011. No ground on Earth has sent more people into space.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-georgia.png" alt="Georgia" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Georgia</div>
+            <div class="coin-items-label">Savannah Historic District</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-georgia.png" alt="Georgia" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Georgia · Statehood 1788</div>
+            <div class="coin-back-fact">Established in 1733 by James Oglethorpe, Savannah is America's first planned city — its original grid of 22 public squares still intact nearly 300 years later. Spanish moss hangs from live oaks over cobblestone streets lined with Federal and Regency architecture. Forrest Gump's bench was here. There is no city in America quite like it.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-kentucky.png" alt="Kentucky" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Kentucky</div>
+            <div class="coin-items-label">Churchill Downs, Louisville</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-kentucky.png" alt="Kentucky" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Kentucky · Statehood 1792</div>
+            <div class="coin-back-fact">Churchill Downs opened in 1875 and has hosted the Kentucky Derby every May since — the oldest continuously held major sporting event in the United States. The twin spires above the grandstand, completed in 1895, are the most recognized symbol in American horse racing. The Run for the Roses draws 150,000 spectators and is watched by millions worldwide.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-mississippi.png" alt="Mississippi" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Mississippi</div>
+            <div class="coin-items-label">Vicksburg National Military Park</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-mississippi.png" alt="Mississippi" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Mississippi · Statehood 1817</div>
+            <div class="coin-back-fact">The 47-day siege of Vicksburg ended on July 4, 1863 — the same day as Gettysburg. Union control of the Mississippi River split the Confederacy in two and decided the western campaign of the Civil War. The park preserves 1,325 monuments and markers — the largest collection of Civil War monuments anywhere in the country.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-north-carolina.png" alt="North Carolina" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">North Carolina</div>
+            <div class="coin-items-label">Cape Hatteras Lighthouse</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-north-carolina.png" alt="North Carolina" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">North Carolina · Statehood 1789</div>
+            <div class="coin-back-fact">At 198 feet, Cape Hatteras Lighthouse is the tallest brick lighthouse in the United States. Built in 1870 to warn ships away from Diamond Shoals — the Graveyard of the Atlantic — its distinctive black-and-white spiral stripe is visible 20 miles out to sea. In 1999 it was moved 2,900 feet inland to save it from erosion — the largest lighthouse relocation in history.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-south-carolina.png" alt="South Carolina" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">South Carolina</div>
+            <div class="coin-items-label">Fort Sumter, Charleston Harbor</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-south-carolina.png" alt="South Carolina" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">South Carolina · Statehood 1788</div>
+            <div class="coin-back-fact">At 4:30 AM on April 12, 1861, Confederate artillery opened fire on Fort Sumter — the first shots of the Civil War. The Union garrison surrendered after 34 hours. No one was killed in the bombardment. The war that followed would kill over 620,000 Americans. Fort Sumter is now a national monument accessible only by ferry from Charleston.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-tennesee.png" alt="Tennessee" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Tennessee</div>
+            <div class="coin-items-label">Grand Ole Opry, Nashville</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-tennesee.png" alt="Tennessee" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Tennessee · Statehood 1796</div>
+            <div class="coin-back-fact">Established November 28, 1925 as a radio barn dance on WSM Nashville, the Grand Ole Opry is the longest-running live radio broadcast in American history — still airing every weekend. It launched the careers of Hank Williams, Patsy Cline, Dolly Parton, and Johnny Cash. Country music as an American genre was built on its stage.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /{name} -->
+
+    <div class="region-label">Midwest</div>
+    <div class="coin-grid">
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-iowa.png" alt="Iowa" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Iowa</div>
+            <div class="coin-items-label">Field of Dreams</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-iowa.png" alt="Iowa" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Iowa · Statehood 1846</div>
+            <div class="coin-back-fact">Built for the 1989 Kevin Costner film on a working farm in Dyersville, the Field of Dreams baseball diamond has become one of the most visited sports sites in America. The line — "If you build it, he will come" — entered the American cultural vocabulary permanently. The field still hosts games every summer. People drive hours through cornfields just to stand on it.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-illinois.png" alt="Illinois" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Illinois</div>
+            <div class="coin-items-label">Willis Tower, Chicago</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-illinois.png" alt="Illinois" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Illinois · Statehood 1818</div>
+            <div class="coin-back-fact">Completed in 1973 and standing 1,451 feet tall, the Willis Tower held the title of world's tallest building for 25 years. Chicago invented the skyscraper, and the Willis Tower was the city's ultimate proof of concept. The Skydeck's glass-floored Ledge on the 103rd floor extends 4 feet out from the building over 1,353 feet of open air.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-indiana.png" alt="Indiana" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Indiana</div>
+            <div class="coin-items-label">Indianapolis Motor Speedway</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-indiana.png" alt="Indiana" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Indiana · Statehood 1816</div>
+            <div class="coin-back-fact">Built in 1909 and covering 253 acres, Indianapolis Motor Speedway is the largest spectator sports venue in the world with permanent seating for over 250,000. The Indianapolis 500 has been run every Memorial Day weekend since 1911 — the longest-running major motorsport event on Earth. The yard of bricks at the start-finish line is all that remains of the original 1909 surface.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-kansas.png" alt="Kansas" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Kansas</div>
+            <div class="coin-items-label">Tallgrass Prairie</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-kansas.png" alt="Kansas" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Kansas · Statehood 1861</div>
+            <div class="coin-back-fact">Less than 4% of the original 170 million acres of tallgrass prairie that once covered North America still exists. The Tallgrass Prairie National Preserve in the Kansas Flint Hills protects the largest remaining tract. Before European settlement, an estimated 30 million bison roamed this landscape — a rolling sea of big bluestem grass stretching beyond the horizon in every direction.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-michigan.png" alt="Michigan" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Michigan</div>
+            <div class="coin-items-label">Mackinac Bridge</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-michigan.png" alt="Michigan" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Michigan · Statehood 1837</div>
+            <div class="coin-back-fact">Opened November 1, 1957, the Mackinac Bridge connects Michigan's Upper and Lower Peninsulas across the Straits of Mackinac — where Lake Huron meets Lake Michigan. At 26,372 feet of total length it is one of the longest suspension bridges in the Western Hemisphere. Every Labor Day it closes to traffic so thousands of people can walk it — the only day pedestrians are permitted.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-minnesota.png" alt="Minnesota" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Minnesota</div>
+            <div class="coin-items-label">Stone Arch Bridge, Minneapolis</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-minnesota.png" alt="Minnesota" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Minnesota · Statehood 1858</div>
+            <div class="coin-back-fact">Built in 1883 by James J. Hill for his Great Northern Railway, the Stone Arch Bridge spans 2,100 feet across the Mississippi River at Saint Anthony Falls — the only natural waterfall on the entire Mississippi. It was the only curved stone arch railroad bridge in North America. Converted to a pedestrian and bike path in 1994, it anchors Minneapolis's historic riverfront.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-missouri.png" alt="Missouri" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Missouri</div>
+            <div class="coin-items-label">Gateway Arch, St. Louis</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-missouri.png" alt="Missouri" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Missouri · Statehood 1821</div>
+            <div class="coin-back-fact">Completed in 1965 and standing 630 feet — the tallest man-made monument in the United States — the Gateway Arch sits on the west bank of the Mississippi in St. Louis, marking the starting point of America's westward expansion. Architect Eero Saarinen's stainless steel catenary curve contains no straight lines anywhere in its structure.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-nebraska.png" alt="Nebraska" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Nebraska</div>
+            <div class="coin-items-label">Chimney Rock</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-nebraska.png" alt="Nebraska" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Nebraska · Statehood 1867</div>
+            <div class="coin-back-fact">A 325-foot spire of ancient volcanic ash rising from the Nebraska plains, Chimney Rock was the most noted landmark on the entire Oregon Trail. Pioneer journals mention it more than any other landmark on the 2,000-mile route — it told travelers they were a quarter of the way to Oregon. Visible for miles in every direction, it was the first thing that felt like the West.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-north-dakota.png" alt="North Dakota" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">North Dakota</div>
+            <div class="coin-items-label">Painted Canyon Overlook</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-north-dakota.png" alt="North Dakota" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">North Dakota · Statehood 1889</div>
+            <div class="coin-back-fact">The Painted Canyon Overlook in Theodore Roosevelt National Park offers the first dramatic view of the North Dakota badlands — eroded buttes and coulees carved over millions of years by the Little Missouri River. Roosevelt came here in 1883 to hunt bison, lost his wife and mother on the same day in 1884, and stayed. The land shaped the conservationist who would protect 230 million acres of American wilderness.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-ohio.png" alt="Ohio" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Ohio</div>
+            <div class="coin-items-label">Rock & Roll Hall of Fame, Cleveland</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-ohio.png" alt="Ohio" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Ohio · Statehood 1803</div>
+            <div class="coin-back-fact">Designed by I.M. Pei and opened in 1995 on the shores of Lake Erie, the Rock and Roll Hall of Fame is housed in a striking glass pyramid complex. Cleveland was chosen because DJ Alan Freed coined the phrase "rock and roll" here and hosted the first rock concert in history — the Moondog Coronation Ball — in Cleveland in 1952.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-south-dakota.png" alt="South Dakota" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">South Dakota</div>
+            <div class="coin-items-label">Mount Rushmore</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-south-dakota.png" alt="South Dakota" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">South Dakota · Statehood 1889</div>
+            <div class="coin-back-fact">Carved between 1927 and 1941 by sculptor Gutzon Borglum and his son Lincoln, Mount Rushmore features 60-foot granite faces of Washington, Jefferson, Roosevelt, and Lincoln in the Black Hills. The project used 800 million pounds of dynamite and took 14 years. Originally planned to show the presidents from head to waist, funding ran out. Nearly 3 million people visit annually.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-wisconsin.png" alt="Wisconsin" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Wisconsin</div>
+            <div class="coin-items-label">Devil's Lake State Park</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-wisconsin.png" alt="Wisconsin" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Wisconsin · Statehood 1848</div>
+            <div class="coin-back-fact">Wisconsin's most visited state park, Devil's Lake sits in a 500-foot deep glacial valley in the Baraboo Range — among the oldest hills on Earth, formed over 1.6 billion years ago. The lake has no inlet or outlet — fed entirely by springs and precipitation. Quartzite bluffs rise dramatically on its north and south shores, drawing climbers, hikers, and swimmers from across the Midwest every season.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /{name} -->
+
+    <div class="region-label">Southwest</div>
+    <div class="coin-grid">
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-arizona.png" alt="Arizona" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Arizona</div>
+            <div class="coin-items-label">Horseshoe Bend</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-arizona.png" alt="Arizona" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Arizona · Statehood 1912</div>
+            <div class="coin-back-fact">Horseshoe Bend is a horseshoe-shaped meander of the Colorado River near Page, Arizona. The river drops 1,000 feet below the canyon rim in a nearly perfect 270-degree arc carved through Navajo sandstone over millions of years. It has become one of the most photographed natural landmarks in America — drawing over 2 million visitors annually to stand at the edge of a cliff with no guardrail.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-new-mexico.png" alt="New Mexico" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">New Mexico</div>
+            <div class="coin-items-label">Fajada Butte</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-new-mexico.png" alt="New Mexico" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">New Mexico · Statehood 1912</div>
+            <div class="coin-back-fact">Fajada Butte rises 443 feet from the floor of Chaco Canyon — the center of ancestral Puebloan civilization from 850 to 1150 CE. Near its summit, three stone slabs create a solar calendar — the Sun Dagger — that marks summer solstice, winter solstice, and the equinoxes with perfect precision using only light and shadow. It remains one of the most remarkable astronomical achievements of any ancient culture.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-oklahoma.png" alt="Oklahoma" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Oklahoma</div>
+            <div class="coin-items-label">First Americans Museum</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-oklahoma.png" alt="Oklahoma" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Oklahoma · Statehood 1907</div>
+            <div class="coin-back-fact">Opened in 2021 in Oklahoma City, the First Americans Museum tells the story of the 39 sovereign tribal nations that call Oklahoma home — many forcibly relocated here during the Trail of Tears in the 1830s. The building's design is rooted in Native cosmology: a 400-foot mound, a 200-foot promontory aligned to the solstice, and a Great Meadow following traditional circular Indigenous architectural forms.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-texas.png" alt="Texas" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Texas</div>
+            <div class="coin-items-label">The Alamo, San Antonio</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-texas.png" alt="Texas" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Texas · Statehood 1845</div>
+            <div class="coin-back-fact">From February 23 to March 6, 1836, a garrison of 189 Texan defenders held the Alamo against approximately 1,800 Mexican soldiers for 13 days before the fort fell and all defenders were killed — including Jim Bowie and Davy Crockett. "Remember the Alamo" became the rallying cry that won Texas its independence six weeks later at the Battle of San Jacinto.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /{name} -->
+
+    <div class="region-label">Mountain West</div>
+    <div class="coin-grid">
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-colorado.png" alt="Colorado" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Colorado</div>
+            <div class="coin-items-label">Rocky Mountain National Park</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-colorado.png" alt="Colorado" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Colorado · Statehood 1876</div>
+            <div class="coin-back-fact">Established in 1915, Rocky Mountain National Park encompasses 415 square miles of alpine terrain including 77 peaks over 12,000 feet. Trail Ridge Road — the highest continuous paved highway in the United States — crosses the Continental Divide at 12,183 feet and traverses 11 miles above treeline. On a clear day from the summit, you can see the curvature of the Earth.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-idaho.png" alt="Idaho" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Idaho</div>
+            <div class="coin-items-label">Shoshone Falls</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-idaho.png" alt="Idaho" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Idaho · Statehood 1890</div>
+            <div class="coin-back-fact">Known as the Niagara of the West, Shoshone Falls on the Snake River drops 212 feet — 36 feet higher than Niagara Falls — and stretches 900 feet wide at peak spring flow. Unlike Niagara, virtually no water is diverted for power generation during peak season. The falls were a sacred gathering place for the Shoshone people for thousands of years before European contact.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-montana.png" alt="Montana" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Montana</div>
+            <div class="coin-items-label">Glacier National Park</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-montana.png" alt="Montana" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Montana · Statehood 1889</div>
+            <div class="coin-back-fact">Called the Crown of the Continent, Glacier National Park once held over 150 glaciers. Today 26 remain — and scientists project those will be gone before 2050. The Going-to-the-Sun Road, completed in 1932 after 11 years of construction, crosses the Continental Divide at Logan Pass through terrain so steep that workers were lowered on ropes to drill the cliff face.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-nevada.png" alt="Nevada" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Nevada</div>
+            <div class="coin-items-label">The Las Vegas Strip</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-nevada.png" alt="Nevada" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Nevada · Statehood 1864</div>
+            <div class="coin-back-fact">The Las Vegas Strip stretches 4.2 miles along Las Vegas Boulevard South and contains the highest concentration of luxury hotel rooms on Earth. The Flamingo, opened by Bugsy Siegel in 1946, started it all. Today the Strip generates over $7 billion in gaming revenue annually and is visible from space on satellite imagery — one of the brightest man-made light sources on the planet.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-utah.png" alt="Utah" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Utah</div>
+            <div class="coin-items-label">Delicate Arch, Arches National Park</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-utah.png" alt="Utah" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Utah · Statehood 1896</div>
+            <div class="coin-back-fact">Standing 60 feet tall and spanning 46 feet, Delicate Arch is the most recognized natural arch in the world and the symbol on Utah's license plate. It formed over an estimated 100 million years as water seeped into cracks in Entrada Sandstone, froze, expanded, and slowly dissolved the rock around it. At sunset the arch glows deep red against the La Sal Mountains.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-wyoming.png" alt="Wyoming" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Wyoming</div>
+            <div class="coin-items-label">Old Faithful Geyser</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-wyoming.png" alt="Wyoming" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Wyoming · Statehood 1890</div>
+            <div class="coin-back-fact">Old Faithful has erupted approximately every 91 minutes since Yellowstone became the world's first national park in 1872. Each eruption sends 3,700 to 8,400 gallons of boiling water up to 185 feet into the air. Yellowstone sits atop one of the largest active supervolcanoes on Earth — the magma chamber beneath it is roughly the size of the city of Los Angeles.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /{name} -->
+
+    <div class="region-label">Pacific Coast</div>
+    <div class="coin-grid">
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-california.png" alt="California" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">California</div>
+            <div class="coin-items-label">Golden Gate Bridge</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-california.png" alt="California" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">California · Statehood 1850</div>
+            <div class="coin-back-fact">Opened May 28, 1937 in International Orange — chosen to remain visible through Pacific fog — the Golden Gate Bridge spans 4,200 feet across the entrance to San Francisco Bay. It held the title of world's longest suspension bridge for 27 years. Over 10 million people visit annually. It is the most recognized bridge on Earth.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-oregon.png" alt="Oregon" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Oregon</div>
+            <div class="coin-items-label">Crater Lake</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-oregon.png" alt="Oregon" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Oregon · Statehood 1859</div>
+            <div class="coin-back-fact">Crater Lake formed approximately 7,700 years ago when the volcano Mount Mazama collapsed following a catastrophic eruption 42 times larger than Mount St. Helens. At 1,943 feet it is the deepest lake in the United States. Its water — fed only by rain and snow, never by rivers — is among the clearest on Earth, producing a blue so vivid it appears unnatural in photographs.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-washington.png" alt="Washington" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Washington</div>
+            <div class="coin-items-label">Mount Rainier</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-washington.png" alt="Washington" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Washington · Statehood 1889</div>
+            <div class="coin-back-fact">Mount Rainier is a massive stratovolcano standing 14,411 feet above sea level — the most glaciated peak in the contiguous United States, with 26 named glaciers covering 35 square miles. Visible from Seattle on clear days, it dominates the entire Pacific Northwest skyline. Geologists consider it one of the most dangerous volcanoes in the world due to the volume of ice it carries.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /{name} -->
+
+    <div class="region-label">Outer Reach</div>
+    <div class="coin-grid">
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-alaska.png" alt="Alaska" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Alaska</div>
+            <div class="coin-items-label">Denali</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-alaska.png" alt="Alaska" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Alaska · Statehood 1959</div>
+            <div class="coin-back-fact">At 20,310 feet, Denali is the tallest peak in North America and the third highest on Earth by topographic prominence. Known as Denali — The High One — by the Athabascan people for thousands of years, it was officially renamed from Mount McKinley in 2015. Only about half of climbers who attempt the summit reach it. On the clearest days it is visible from Anchorage — 130 miles away.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+      <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
+        <div class="coin-flip-inner">
+          <div class="coin-face coin-front" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-hawaii.png" alt="Hawaii" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-badge-name">Hawaii</div>
+            <div class="coin-items-label">Akaka Falls</div>
+            <div class="coin-level">Lvl 1</div>
+            <div class="coin-flip-hint">Tap to flip</div>
+          </div>
+          <div class="coin-face coin-back" style="background:#1E3020;">
+            <div class="coin-img-wrap"><img class="coin-img" src="assets/badges/states/badges-states-hawaii.png" alt="Hawaii" onerror="this.style.opacity='0.2'"></div>
+            <div class="coin-back-section-label">Hawaii · Statehood 1959</div>
+            <div class="coin-back-fact">Akaka Falls plunges 442 feet in a single unbroken drop through lush rainforest on the Big Island's Hamakua Coast — one of the tallest waterfalls in the United States. Surrounded by wild ginger, bamboo, and ti plants, the falls are sacred in Native Hawaiian tradition. The name Akaka is believed to derive from a Hawaiian word meaning to shine or gleam — describing how the waterfall catches light through the rainforest canopy.</div>
+            <div class="coin-back-threshold">Lvl 1</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /{name} -->
+
+  </section>
+
+  <!-- ═══ MILESTONE BADGES ══════════════════════════════════════════ -->
+  <section class="badge-category" id="milestone">
+    <div class="category-header">
+      <div class="category-icon">🌶️</div>
+      <div class="category-titles">
+        <div class="category-name">Milestone Badges</div>
+        <div class="category-desc">7 Tiers · Lifetime Cumulative Hot Sauce + Buffalo Sauce Count · All Thresholds Crossed Awarded Simultaneously · Path: assets/badges/milestone/</div>
+      </div>
+      <div class="category-count">7</div>
+    </div>
+    <div class="pending-note">Trigger: Lifetime cumulative count of Hot Sauce + Buffalo Sauce items purchased, across all orders. Thresholds: 10 / 25 / 50 / 100 / 250 / 500 / 1000. If a single purchase or the first purchase crosses multiple thresholds at once, every threshold crossed is awarded simultaneously — no partial cascade. 1000 (Sauce Dementia) is the current top tier. Single-face card — no flip behavior. Hover enlarges image; click toggles enlarged card view; click again returns to original size.</div>
+    <div class="coin-grid">
+
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-fiend-10.png" alt="Sauce Fiend" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Sauce Fiend · 10</div>
+          <div class="timeslot-catchphrase">"Ten sauces deep and already ignoring the speed limit. I like your style."</div>
+        </div>
+      </div>
+
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-fanatic-25.png" alt="Sauce Fanatic" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Sauce Fanatic · 25</div>
+          <div class="timeslot-catchphrase">"Mile marker 25. At this point, you're not sightseeing—you're committed."</div>
+        </div>
+      </div>
+
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-addict-50.png" alt="Sauce Addict" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Sauce Addict · 50</div>
+          <div class="timeslot-catchphrase">"Fifty sauces down. The exits are behind you now."</div>
+        </div>
+      </div>
+
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-cra-cra-100.png" alt="Sauce Cra-Cra" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Sauce Cra-Cra · 100</div>
+          <div class="timeslot-catchphrase">"One hundred sauces. You didn't just take the scenic route—you paved it."</div>
+        </div>
+      </div>
+
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-freak-250.png" alt="Sauce Freak" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Sauce Freak · 250</div>
+          <div class="timeslot-catchphrase">"Two-fifty on the odometer. Even I'm starting to worry about you."</div>
+        </div>
+      </div>
+
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-psycho-500.png" alt="Sauce Psycho" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Sauce Psycho · 500</div>
+          <div class="timeslot-catchphrase">"Five hundred sauces. The wheels are smoking, but somehow you're still asking what's next."</div>
+        </div>
+      </div>
+
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-dementia-1000.png" alt="Sauce Dementia" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Sauce Dementia · 1000</div>
+          <div class="timeslot-catchphrase">"One thousand sauces. You may not remember how this started—but the bartender sure does."</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ SHOP O'ROUND THE CLOCK ══════════════════════════════════ -->
+  <section class="badge-category" id="shop-oround-the-clock">
+    <div class="category-header">
+      <div class="category-icon">🕐</div>
+      <div class="category-titles">
+        <div class="category-name">Shop O'Round the Clock</div>
+        <div class="category-desc">5 Time-Window Badges + 1 Secret · Triggered by Customer Local Time at Transaction Completion · Level Up = Every Qualifying Purchase in That Window · Intentional Gaps, No Badge Awarded · Path: assets/badges/shop-oround-the-clock/</div>
+      </div>
+      <div class="category-count">5</div>
+    </div>
+    <div class="pending-note">Trigger: 1 qualifying purchase within the defined local-time window = Level Up for that window's badge. No cap on levels. Badge awarded strictly at transaction completion time — never at start of shopping session. Customer local time determined via browser-reported IANA timezone (e.g. America/New_York), converted against the Square-confirmed completion timestamp. Time windows are intentional gaps — periods outside the 5 defined windows award nothing, by design, permanently. Time frames are never shown in customer-facing badge copy. Single-face card — no flip behavior. Hover enlarges image; click toggles enlarged card view; click again returns to original size. Secret badge "Clocked Out" awarded for earning all 5 time-window badges — filed under Secret Badges, never shown before earned.</div>
+    <div class="coin-grid">
+
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-early-bird.png" alt="Early Bird" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Early Bird</div>
+          <div class="timeslot-catchphrase">"Easy there, sunshine. The coffee hasn't even finished waking up yet."</div>
+        </div>
+      </div>
+
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-lunch-rush.png" alt="Lunch Hour" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Lunch Hour</div>
+          <div class="timeslot-catchphrase">"Clocked out for lunch and clocked straight into Pepper Junction, we like that."</div>
+        </div>
+      </div>
+
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-evening-commute.png" alt="Evening Commute" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Evening Commute</div>
+          <div class="timeslot-catchphrase">"You made it out of the rat race. Now run like somebody scheduled another meeting."</div>
+        </div>
+      </div>
+
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-late-night.png" alt="Late Night" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Late Night</div>
+          <div class="timeslot-catchphrase">"Late-night shopping from the trash-can district. Respect."</div>
+        </div>
+      </div>
+
+      <div class="timeslot-card no-flip">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-night-owl.png" alt="Night Owl" onerror="this.style.opacity='0.2'"></div>
+        <div class="timeslot-info">
+          <div class="timeslot-name">Night Owl</div>
+          <div class="timeslot-catchphrase">"You're either a night owl or tomorrow's biggest problem."</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- ═══ SECRET BADGES ══════════════════════════════════════════ -->
   <section class="badge-category" id="secret">
     <div class="category-header">
@@ -3299,7 +4546,7 @@
         <div class="category-name">Secret Badges</div>
         <div class="category-desc">Never Revealed Until Earned · Owner Eyes Only on This Page</div>
       </div>
-      <div class="category-count">2</div>
+      <div class="category-count">3</div>
     </div>
     <div class="badge-grid">
       <div class="badge-card secret">
@@ -3318,6 +4565,16 @@
         <div class="badge-info">
           <div class="badge-name">Year of the Horse</div>
           <div class="badge-sub">Complete All 12 Celestial Badges · 2026 · Retiring</div>
+        </div>
+      </div>
+      <div class="badge-card secret no-flip">
+        <span class="badge-status secret-tag">🔒 Secret</span>
+        <img class="badge-img" src="assets/badges/secret/badge-secret-shop-oround-the-clock-clocked-out.png" alt="Clocked Out" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="badge-placeholder" style="display:none;">🕐</div>
+        <div class="badge-info">
+          <div class="badge-name">Clocked Out</div>
+          <div class="timeslot-catchphrase">"Congratulations. The cuckoo has officially had enough of you."</div>
+          <div class="badge-sub" style="margin-top:5px;">Earn All 5 Shop O'Round the Clock Badges</div>
         </div>
       </div>
     </div>
@@ -3349,7 +4606,8 @@
     '.token-flip-card',
     '.celestial-flip-card',
     '.coin-flip-card',
-    '.badge-card'
+    '.badge-card',
+    '.timeslot-card'
   ].join(', ');
 
   /* Remove legacy flipped class used by old onclick handlers */
@@ -3380,13 +4638,17 @@
   function handleClick(e) {
     var card = e.currentTarget;
 
-    /* Block interaction on unearned cards */
+    /* Block interaction on unearned or retired cards */
     if (card.classList.contains('unearned')) return;
+    if (card.classList.contains('retired')) return;
 
     cleanLegacy(card);
 
     var current = getState(card);
-    var next = (current + 1) % 3;
+    /* Cards marked no-flip (e.g. Shop O'Round the Clock) use a 2-state
+       toggle: default → enlarged → default. No flip state exists. */
+    var cycleLength = card.classList.contains('no-flip') ? 2 : 3;
+    var next = (current + 1) % cycleLength;
     setState(card, next);
   }
 
