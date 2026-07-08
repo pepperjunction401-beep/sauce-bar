@@ -367,6 +367,10 @@
       color: var(--chalk);
       line-height: 1.4;
       margin-bottom: 5px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .timeslot-catchphrase {
@@ -384,20 +388,24 @@
     }
 
     /* Narrative badge exception (e.g. Olive Oil & Vin) — needs extra
-       room to display readable narrative text. Spans 2x2 grid cells
-       instead of the standard single cell. */
+       room to display readable narrative text. Spans 2 grid columns
+       (wider only). The base .timeslot-card aspect-ratio (1/1.5) is
+       overridden here — without this, doubling the width via
+       grid-column:span 2 would also triple the height, since
+       aspect-ratio locks height proportional to width. This override
+       keeps the height roughly matching a normal single-column card. */
     .timeslot-card-narrative {
       grid-column: span 2;
-      grid-row: span 2;
+      aspect-ratio: 4 / 3;
     }
 
     .timeslot-card-narrative .timeslot-name {
-      font-size: 14px;
+      font-size: 12px;
     }
 
     .timeslot-card-narrative .timeslot-catchphrase {
-      font-size: 13px;
-      -webkit-line-clamp: 10;
+      font-size: 11px;
+      -webkit-line-clamp: 6;
     }
 
     .badge-status {
