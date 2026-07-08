@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -386,27 +385,6 @@
       -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
       overflow: hidden;
-    }
-
-    /* Narrative badge exception (e.g. Olive Oil & Vin) — needs extra
-       room to display readable narrative text. Spans 2 grid columns
-       (wider only). The base .timeslot-card aspect-ratio (1/1.5) is
-       overridden here — without this, doubling the width via
-       grid-column:span 2 would also triple the height, since
-       aspect-ratio locks height proportional to width. This override
-       keeps the height roughly matching a normal single-column card. */
-    .timeslot-card-narrative {
-      grid-column: span 2;
-      aspect-ratio: 4 / 3;
-    }
-
-    .timeslot-card-narrative .timeslot-name {
-      font-size: 12px;
-    }
-
-    .timeslot-card-narrative .timeslot-catchphrase {
-      font-size: 11px;
-      -webkit-line-clamp: 6;
     }
 
     .badge-status {
@@ -1282,15 +1260,37 @@
       z-index: 50;
     }
 
-    /* ── CLICK 1 — EXPANDED STATE ── */
+    /* CLICK 1 — card remains original size */
     .token-flip-card.pj-expanded,
     .celestial-flip-card.pj-expanded,
     .coin-flip-card.pj-expanded,
     .badge-card.pj-expanded,
-    .timeslot-card.pj-expanded {
-      transform: scale(2);
+    .timeslot-card.pj-expanded,
+    .token-flip-card.pj-flipped,
+    .celestial-flip-card.pj-flipped,
+    .coin-flip-card.pj-flipped {
+      transform: none;
       z-index: 100;
       position: relative;
+    }
+
+    /* CLICK 1 — enlarge only the badge artwork, not the card frame */
+    .token-flip-card.pj-expanded .token-coin-img,
+    .celestial-flip-card.pj-expanded .celestial-img,
+    .coin-flip-card.pj-expanded .coin-img,
+    .badge-card.pj-expanded .badge-img,
+    .timeslot-card.pj-expanded .timeslot-img {
+      transform: scale(1.35);
+      transform-origin: center center;
+      z-index: 50;
+    }
+
+    /* CLICK 2 — flipped state resets image enlargement so the reverse
+       face stays readable at normal scale */
+    .token-flip-card.pj-flipped .token-coin-img,
+    .celestial-flip-card.pj-flipped .celestial-img,
+    .coin-flip-card.pj-flipped .coin-img {
+      transform: none;
     }
 
     /* Coins hover at 1.5x — already naturally larger than other badges */
@@ -1299,32 +1299,12 @@
       transform-origin: center center;
       z-index: 50;
     }
-    .token-flip-card.pj-expanded:hover .token-coin-img,
-    .token-flip-card.pj-flipped:hover .token-coin-img,
-    .celestial-flip-card.pj-expanded:hover .celestial-img,
-    .celestial-flip-card.pj-flipped:hover .celestial-img,
-    .coin-flip-card.pj-expanded:hover .coin-img,
-    .coin-flip-card.pj-flipped:hover .coin-img,
-    .badge-card.pj-expanded:hover .badge-img,
-    .timeslot-card.pj-expanded:hover .timeslot-img {
-      transform: none;
-      z-index: auto;
-    }
 
     /* ── CLICK 2 — FLIPPED STATE ── */
     .token-flip-card.pj-flipped .token-flip-inner,
     .celestial-flip-card.pj-flipped .celestial-flip-inner,
     .coin-flip-card.pj-flipped .coin-flip-inner {
       transform: rotateY(180deg);
-    }
-
-    /* Flipped card stays expanded */
-    .token-flip-card.pj-flipped,
-    .celestial-flip-card.pj-flipped,
-    .coin-flip-card.pj-flipped {
-      transform: scale(2);
-      z-index: 100;
-      position: relative;
     }
 
     /* ── L2 CLASSIC SONGS SECTION HEADER ── */
@@ -2464,7 +2444,7 @@
           <div class="timeslot-catchphrase">"Five more tastes from the sea. Pull up a chair—the Shore Dinner Norm is back."</div>
         </div>
       </div>
-      <div class="timeslot-card no-flip timeslot-card-narrative">
+      <div class="timeslot-card no-flip">
         <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-mediterranean.png" alt="Mediterranean" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Olive Oil &amp; Vin — Ch. 1</div>
