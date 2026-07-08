@@ -323,16 +323,28 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
       gap: 10px;
       padding: 16px 12px;
       background: #1E3020;
       border: 1px solid rgba(184,137,57,0.12);
       position: relative;
+      aspect-ratio: 1 / 1.5;
+      width: 100%;
+    }
+
+    .timeslot-img-wrap {
+      position: relative;
+      width: 70%;
+      padding-bottom: 70%;
+      flex-shrink: 0;
     }
 
     .timeslot-img {
-      width: 120px;
-      height: 120px;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
       object-fit: contain;
       filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6));
       transition: transform 0.3s ease;
@@ -341,6 +353,10 @@
     .timeslot-info {
       text-align: center;
       width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .timeslot-name {
@@ -361,6 +377,10 @@
       color: var(--brass);
       opacity: 0.85;
       line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .badge-status {
@@ -683,17 +703,17 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 150%;
+      width: 128%;
       background: #8F1F0D;
       color: #D4A832;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 800;
-      letter-spacing: 0.3em;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
       text-align: center;
-      padding: 8px 0;
-      transform: translate(-50%, -50%) rotate(-35deg);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+      padding: 5px 0;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
       z-index: 10;
       pointer-events: none;
     }
@@ -1172,7 +1192,8 @@
     /* Token and coin image wrappers — allow overflow */
     .token-img-wrap,
     .celestial-img-wrap,
-    .coin-img-wrap {
+    .coin-img-wrap,
+    .timeslot-img-wrap {
       overflow: visible;
     }
 
@@ -2266,126 +2287,126 @@
     <div class="pending-note">Trigger: 5 qualifying purchases in that food category = badge earned at Lvl 1. Every additional 5 purchases in that category = Level Up, no cap. Independent per category — a single purchase can progress multiple food badges simultaneously if the product matches multiple categories. Mediterranean is a narrative-series entry (Olive Oil &amp; Vin) rather than a standard bartender catchphrase. Single-face card — no flip behavior. Hover enlarges image; click toggles enlarged card view; click again returns to original size.</div>
     <div class="coin-grid">
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-bbq.png" alt="BBQ" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-bbq.png" alt="BBQ" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Smoking Section</div>
           <div class="timeslot-catchphrase">"Five more trips through the smoke. At this point, your table's permanently reserved in the Smoking Section."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-asian.png" alt="Asian" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-asian.png" alt="Asian" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Wok Star</div>
           <div class="timeslot-catchphrase">"Five more Asian flavors served up. You're not just working the wok—you're headlining it."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-indian.png" alt="Indian" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-indian.png" alt="Indian" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Curry On</div>
           <div class="timeslot-catchphrase">"Five more passes through the spice route. Whatever happens from here, just Curry On."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-wings.png" alt="Wings" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-wings.png" alt="Wings" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Epic Wingman</div>
           <div class="timeslot-catchphrase">"Another five wing runs in the books. Every great sauce needs an Epic Wingman."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-verde.png" alt="Verde" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-verde.png" alt="Verde" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Señor Verde</div>
           <div class="timeslot-catchphrase">"Five more green ones across the bar. Señor Verde rides again."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-fruit.png" alt="Fruit" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-fruit.png" alt="Fruit" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Fruity Pants</div>
           <div class="timeslot-catchphrase">"Five more fruit-forward troublemakers. Go ahead—put your Fruity Pants back on."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-caribbean.png" alt="Caribbean" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-caribbean.png" alt="Caribbean" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Is This Love</div>
           <div class="timeslot-catchphrase">"Five more tastes of the islands. Is this love? At this point, I'd say it's getting serious."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-taco.png" alt="Taco" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-taco.png" alt="Taco" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Taco Fever</div>
           <div class="timeslot-catchphrase">"Five more bottles for taco night. Bad news—the fever's spreading."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-breakfast.png" alt="Breakfast" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-breakfast.png" alt="Breakfast" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">This Is Your Brain on Hot Sauce</div>
           <div class="timeslot-catchphrase">"Five more breakfasts with a little burn. This is your brain on hot sauce—and apparently it wants seconds."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-cajun.png" alt="Cajun" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-cajun.png" alt="Cajun" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Marty Bras</div>
           <div class="timeslot-catchphrase">"Five more Cajun picks and the whole joint's starting to shake. Marty Bras has entered the building."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-garlic.png" alt="Garlic" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-garlic.png" alt="Garlic" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Garlic Breath</div>
           <div class="timeslot-catchphrase">"Five more garlic-heavy choices. Your flavor is fearless. Your breath is now everybody else's problem."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-veggies.png" alt="Veggies" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-veggies.png" alt="Veggies" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">The Veggie Outlaws</div>
           <div class="timeslot-catchphrase">"Five more vegetables gone rogue. The Veggie Outlaws just added another notch to the belt."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-mexican.png" alt="Mexican" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-mexican.png" alt="Mexican" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Muy Rico!</div>
           <div class="timeslot-catchphrase">"Five more bold Mexican flavors. That's not just good—that's Muy Rico!"</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-seasonings.png" alt="Seasonings" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-seasonings.png" alt="Seasonings" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Flavortown Mayor</div>
           <div class="timeslot-catchphrase">"Five more seasonings under your watch. The mayor has officially won another term."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-condiments.png" alt="Condiments" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-condiments.png" alt="Condiments" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Flavor Junkie</div>
           <div class="timeslot-catchphrase">"Five more condiments for the collection. You're not browsing anymore—you need the flavor."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-snacks.png" alt="Snacks" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-snacks.png" alt="Snacks" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Snack Shack</div>
           <div class="timeslot-catchphrase">"Five more snack attacks handled. The Snack Shack is open, and apparently you've got the keys."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-seafood.png" alt="Seafood" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-seafood.png" alt="Seafood" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Shore Dinner Regular</div>
           <div class="timeslot-catchphrase">"Five more tastes from the sea. Pull up a chair—the Shore Dinner Norm is back."</div>
         </div>
       </div>
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/food/badge-food-mediterranean.png" alt="Mediterranean" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-mediterranean.png" alt="Mediterranean" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Olive Oil &amp; Vin — Ch. 1</div>
           <div class="timeslot-catchphrase">Mediterranean · Narrative Entry</div>
@@ -4343,7 +4364,7 @@
     <div class="coin-grid">
 
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-fiend-10.png" alt="Sauce Fiend" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-fiend-10.png" alt="Sauce Fiend" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Sauce Fiend · 10</div>
           <div class="timeslot-catchphrase">"Ten sauces deep and already ignoring the speed limit. I like your style."</div>
@@ -4351,7 +4372,7 @@
       </div>
 
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-fanatic-25.png" alt="Sauce Fanatic" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-fanatic-25.png" alt="Sauce Fanatic" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Sauce Fanatic · 25</div>
           <div class="timeslot-catchphrase">"Mile marker 25. At this point, you're not sightseeing—you're committed."</div>
@@ -4359,7 +4380,7 @@
       </div>
 
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-addict-50.png" alt="Sauce Addict" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-addict-50.png" alt="Sauce Addict" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Sauce Addict · 50</div>
           <div class="timeslot-catchphrase">"Fifty sauces down. The exits are behind you now."</div>
@@ -4367,7 +4388,7 @@
       </div>
 
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-cra-cra-100.png" alt="Sauce Cra-Cra" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-cra-cra-100.png" alt="Sauce Cra-Cra" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Sauce Cra-Cra · 100</div>
           <div class="timeslot-catchphrase">"One hundred sauces. You didn't just take the scenic route—you paved it."</div>
@@ -4375,7 +4396,7 @@
       </div>
 
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-freak-250.png" alt="Sauce Freak" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-freak-250.png" alt="Sauce Freak" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Sauce Freak · 250</div>
           <div class="timeslot-catchphrase">"Two-fifty on the odometer. Even I'm starting to worry about you."</div>
@@ -4383,7 +4404,7 @@
       </div>
 
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-psycho-500.png" alt="Sauce Psycho" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-psycho-500.png" alt="Sauce Psycho" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Sauce Psycho · 500</div>
           <div class="timeslot-catchphrase">"Five hundred sauces. The wheels are smoking, but somehow you're still asking what's next."</div>
@@ -4391,7 +4412,7 @@
       </div>
 
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-dementia-1000.png" alt="Sauce Dementia" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/milestone/badge-milestone-sauce-dementia-1000.png" alt="Sauce Dementia" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Sauce Dementia · 1000</div>
           <div class="timeslot-catchphrase">"One thousand sauces. You may not remember how this started—but the bartender sure does."</div>
@@ -4415,7 +4436,7 @@
     <div class="coin-grid">
 
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-early-bird.png" alt="Early Bird" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-early-bird.png" alt="Early Bird" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Early Bird</div>
           <div class="timeslot-catchphrase">"Easy there, sunshine. The coffee hasn't even finished waking up yet."</div>
@@ -4423,7 +4444,7 @@
       </div>
 
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-lunch-rush.png" alt="Lunch Hour" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-lunch-rush.png" alt="Lunch Hour" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Lunch Hour</div>
           <div class="timeslot-catchphrase">"Clocked out for lunch and clocked straight into Pepper Junction, we like that."</div>
@@ -4431,7 +4452,7 @@
       </div>
 
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-evening-commute.png" alt="Evening Commute" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-evening-commute.png" alt="Evening Commute" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Evening Commute</div>
           <div class="timeslot-catchphrase">"You made it out of the rat race. Now run like somebody scheduled another meeting."</div>
@@ -4439,7 +4460,7 @@
       </div>
 
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-late-night.png" alt="Late Night" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-late-night.png" alt="Late Night" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Late Night</div>
           <div class="timeslot-catchphrase">"Late-night shopping from the trash-can district. Respect."</div>
@@ -4447,7 +4468,7 @@
       </div>
 
       <div class="timeslot-card no-flip">
-        <img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-night-owl.png" alt="Night Owl" onerror="this.style.opacity='0.2'">
+        <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/shop-oround-the-clock/badge-shop-oround-the-clock-night-owl.png" alt="Night Owl" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Night Owl</div>
           <div class="timeslot-catchphrase">"You're either a night owl or tomorrow's biggest problem."</div>
