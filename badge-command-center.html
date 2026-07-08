@@ -387,27 +387,6 @@
       overflow: hidden;
     }
 
-    /* Narrative badge exception (e.g. Olive Oil & Vin) — needs extra
-       room to display readable narrative text. Spans 2 grid columns
-       (wider only). The base .timeslot-card aspect-ratio (1/1.5) is
-       overridden here — without this, doubling the width via
-       grid-column:span 2 would also triple the height, since
-       aspect-ratio locks height proportional to width. This override
-       keeps the height roughly matching a normal single-column card. */
-    .timeslot-card-narrative {
-      grid-column: span 2;
-      aspect-ratio: 4 / 3;
-    }
-
-    .timeslot-card-narrative .timeslot-name {
-      font-size: 12px;
-    }
-
-    .timeslot-card-narrative .timeslot-catchphrase {
-      font-size: 11px;
-      -webkit-line-clamp: 6;
-    }
-
     .badge-status {
       position: absolute;
       top: 8px;
@@ -2465,7 +2444,7 @@
           <div class="timeslot-catchphrase">"Five more tastes from the sea. Pull up a chair—the Shore Dinner Norm is back."</div>
         </div>
       </div>
-      <div class="timeslot-card no-flip timeslot-card-narrative">
+      <div class="timeslot-card no-flip">
         <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-mediterranean.png" alt="Mediterranean" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Olive Oil &amp; Vin — Ch. 1</div>
