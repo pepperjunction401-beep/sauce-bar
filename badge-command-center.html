@@ -4610,8 +4610,9 @@
   function handleClick(e) {
     var card = e.currentTarget;
 
-    /* Block interaction on unearned cards */
+    /* Block interaction on unearned or retired cards */
     if (card.classList.contains('unearned')) return;
+    if (card.classList.contains('retired')) return;
 
     cleanLegacy(card);
 
