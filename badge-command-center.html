@@ -709,14 +709,20 @@
       pointer-events: none;
     }
 
-    /* Retired badges are closed/inactive — no hover behavior at all,
-       including the z-index raise that let the card float above the
-       banner. */
+    /* Retired badges are closed/inactive — no hover behavior, no flip,
+       no clickable cursor, and the "Tap to flip" hint is misleading
+       once the flip is removed. */
+    .celestial-flip-card.retired {
+      cursor: default;
+    }
     .celestial-flip-card.retired:hover {
       z-index: auto;
     }
     .celestial-flip-card.retired:not(.pj-expanded):not(.pj-flipped):hover .celestial-img {
       transform: none;
+    }
+    .celestial-flip-card.retired .celestial-flip-hint {
+      display: none;
     }
 
     .celestial-banner {
@@ -2070,7 +2076,7 @@
     <div class="celestial-grid">
 
       <!-- CAPRICORN — January — RETIRED -->
-      <div class="celestial-flip-card retired" onclick="this.classList.toggle('flipped')">
+      <div class="celestial-flip-card retired">
         <div class="celestial-flip-inner">
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
@@ -2090,7 +2096,7 @@
       </div>
 
       <!-- AQUARIUS — February — RETIRED -->
-      <div class="celestial-flip-card retired" onclick="this.classList.toggle('flipped')">
+      <div class="celestial-flip-card retired">
         <div class="celestial-flip-inner">
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
@@ -2110,7 +2116,7 @@
       </div>
 
       <!-- PISCES — March — RETIRED -->
-      <div class="celestial-flip-card retired" onclick="this.classList.toggle('flipped')">
+      <div class="celestial-flip-card retired">
         <div class="celestial-flip-inner">
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
@@ -2130,7 +2136,7 @@
       </div>
 
       <!-- ARIES — April — RETIRED -->
-      <div class="celestial-flip-card retired" onclick="this.classList.toggle('flipped')">
+      <div class="celestial-flip-card retired">
         <div class="celestial-flip-inner">
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
@@ -2150,7 +2156,7 @@
       </div>
 
       <!-- TAURUS — May — RETIRED -->
-      <div class="celestial-flip-card retired" onclick="this.classList.toggle('flipped')">
+      <div class="celestial-flip-card retired">
         <div class="celestial-flip-inner">
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
@@ -2170,7 +2176,7 @@
       </div>
 
       <!-- GEMINI — June — RETIRED -->
-      <div class="celestial-flip-card retired" onclick="this.classList.toggle('flipped')">
+      <div class="celestial-flip-card retired">
         <div class="celestial-flip-inner">
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
