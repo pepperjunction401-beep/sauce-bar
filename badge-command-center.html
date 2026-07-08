@@ -383,6 +383,23 @@
       overflow: hidden;
     }
 
+    /* Narrative badge exception (e.g. Olive Oil & Vin) — needs extra
+       room to display readable narrative text. Spans 2x2 grid cells
+       instead of the standard single cell. */
+    .timeslot-card-narrative {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .timeslot-card-narrative .timeslot-name {
+      font-size: 14px;
+    }
+
+    .timeslot-card-narrative .timeslot-catchphrase {
+      font-size: 13px;
+      -webkit-line-clamp: 10;
+    }
+
     .badge-status {
       position: absolute;
       top: 8px;
@@ -714,8 +731,9 @@
        once the flip is removed. */
     .celestial-flip-card.retired {
       cursor: default;
+      z-index: auto !important;
     }
-    .celestial-flip-card.retired:hover {
+    .celestial-flip-card.retired:not(.pj-expanded):not(.pj-flipped):hover {
       z-index: auto;
     }
     .celestial-flip-card.retired:not(.pj-expanded):not(.pj-flipped):hover .celestial-img {
@@ -2437,7 +2455,7 @@
           <div class="timeslot-catchphrase">"Five more tastes from the sea. Pull up a chair—the Shore Dinner Norm is back."</div>
         </div>
       </div>
-      <div class="timeslot-card no-flip">
+      <div class="timeslot-card no-flip timeslot-card-narrative">
         <div class="timeslot-img-wrap"><img class="timeslot-img" src="assets/badges/food/badge-food-mediterranean.png" alt="Mediterranean" onerror="this.style.opacity='0.2'"></div>
         <div class="timeslot-info">
           <div class="timeslot-name">Olive Oil &amp; Vin — Ch. 1</div>
