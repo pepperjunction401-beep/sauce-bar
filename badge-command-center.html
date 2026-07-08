@@ -698,11 +698,10 @@
       background: #000;
     }
 
-    /* RETIRED / SECRET diagonal banner — dedicated clip container so the
-       ribbon tucks cleanly at the corners without overhanging past the
-       card edges. This container is intentionally NOT part of the
-       "overflow:visible" hover-pop rule, so overflow:hidden here actually
-       takes effect. */
+    /* RETIRED / SECRET diagonal banner — dedicated clip container covering
+       the ENTIRE card face (not just the image square), so the ribbon
+       reaches the true corners of the card. This container sits as a
+       sibling to the image wrap, not nested inside it. */
     .celestial-banner-clip {
       position: absolute;
       inset: 0;
@@ -710,7 +709,12 @@
       pointer-events: none;
     }
 
-    /* Retired badges are closed/inactive — no hover-pop enlargement. */
+    /* Retired badges are closed/inactive — no hover behavior at all,
+       including the z-index raise that let the card float above the
+       banner. */
+    .celestial-flip-card.retired:hover {
+      z-index: auto;
+    }
     .celestial-flip-card.retired:not(.pj-expanded):not(.pj-flipped):hover .celestial-img {
       transform: none;
     }
@@ -719,7 +723,7 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 141.5%;
+      width: 168%;
       background: #8F1F0D;
       color: #D4A832;
       font-size: 11px;
@@ -728,7 +732,7 @@
       text-transform: uppercase;
       text-align: center;
       padding: 5px 0;
-      transform: translate(-50%, -50%) rotate(-45deg);
+      transform: translate(-50%, -50%) rotate(-53.5deg);
       box-shadow: 0 2px 10px rgba(0,0,0,0.5);
       z-index: 10;
       pointer-events: none;
@@ -2071,8 +2075,9 @@
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-capricorn-2026.png" alt="Capricorn">
-              <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
+              
             </div>
+            <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
             <div class="celestial-badge-name">Capricorn</div>
             <div class="celestial-badge-month">January · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
@@ -2090,8 +2095,9 @@
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-aquarius-2026.png" alt="Aquarius">
-              <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
+              
             </div>
+            <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
             <div class="celestial-badge-name">Aquarius</div>
             <div class="celestial-badge-month">February · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
@@ -2109,8 +2115,9 @@
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-pisces-2026.png" alt="Pisces">
-              <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
+              
             </div>
+            <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
             <div class="celestial-badge-name">Pisces</div>
             <div class="celestial-badge-month">March · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
@@ -2128,8 +2135,9 @@
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-aries-2026.png" alt="Aries">
-              <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
+              
             </div>
+            <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
             <div class="celestial-badge-name">Aries</div>
             <div class="celestial-badge-month">April · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
@@ -2147,8 +2155,9 @@
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-taurus-2026.png" alt="Taurus">
-              <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
+              
             </div>
+            <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
             <div class="celestial-badge-name">Taurus</div>
             <div class="celestial-badge-month">May · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
@@ -2166,8 +2175,9 @@
           <div class="celestial-face celestial-front">
             <div class="celestial-img-wrap">
               <img class="celestial-img" src="assets/badges/celestial/badge-celestial-gemini-2026.png" alt="Gemini">
-              <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
+              
             </div>
+            <div class="celestial-banner-clip"><div class="celestial-banner">Retired</div></div>
             <div class="celestial-badge-name">Gemini</div>
             <div class="celestial-badge-month">June · 2026</div>
             <div class="celestial-flip-hint">Tap to flip</div>
