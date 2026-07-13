@@ -33,6 +33,36 @@
   var CART_BUTTON_ID = 'pj-cart-toggle';
   var CART_COUNT_ID = 'pj-cart-count';
 
+  function getCartBasePath() {
+    var path = window.location.pathname || '';
+
+    if (path.indexOf('/products/') !== -1) {
+      return '../';
+    }
+
+    return './';
+  }
+
+  function cartPath(value) {
+    var raw = String(value || '');
+
+    if (!raw) return '';
+
+    if (
+      raw.indexOf('http://') === 0 ||
+      raw.indexOf('https://') === 0 ||
+      raw.indexOf('//') === 0 ||
+      raw.indexOf('data:') === 0 ||
+      raw.indexOf('blob:') === 0
+    ) {
+      return raw;
+    }
+
+    raw = raw.replace(/^(\.\.\/|\.\/)+/, '');
+
+    return getCartBasePath() + raw;
+  }
+
   function esc(value) {
     return String(value || '')
       .replace(/&/g, '&amp;')
@@ -110,12 +140,12 @@
 
         '<div class="pj-cart-teaser" aria-label="Badge progress preview">' +
           '<div class="pj-cart-teaser-row">' +
-            '<img class="pj-cart-teaser-img" id="pj-cart-bottle-img" src="../assets/badges/bottle-purchase-coins/badge-coin-penny-obverse.png" alt="" loading="lazy">' +
+            '<img class="pj-cart-teaser-img" id="pj-cart-bottle-img" src="' + cartPath('assets/badges/bottle-purchase-coins/badge-coin-penny-obverse.png') + '" alt="" loading="lazy">' +
             '<span class="pj-cart-teaser-val" id="pj-cart-bottle-teaser">Add 3 items to unlock your first Item-Purchase Coin.</span>' +
           '</div>' +
 
           '<div class="pj-cart-teaser-row">' +
-            '<img class="pj-cart-teaser-img" id="pj-cart-total-img" src="../assets/badges/purchase-progress/badge-purchase-progress-fuel.png" alt="" loading="lazy">' +
+            '<img class="pj-cart-teaser-img" id="pj-cart-total-img" src="' + cartPath('assets/badges/purchase-progress/badge-purchase-progress-fuel.png') + '" alt="" loading="lazy">' +
             '<span class="pj-cart-teaser-val" id="pj-cart-total-teaser">Start your lineup to begin Purchase Progress.</span>' +
           '</div>' +
         '</div>' +
@@ -128,7 +158,7 @@
         '</div>' +
 
         '<button class="pj-cart-action pj-cart-continue" type="button">Continue Shopping</button>' +
-        '<a class="pj-cart-action pj-cart-view" href="../cart-page.html">View Full Cart</a>' +
+        '<a class="pj-cart-action pj-cart-view" href="' + cartPath('cart-page.html') + '">View Full Cart</a>' +
         '<button class="pj-cart-action pj-cart-checkout" type="button">Checkout Now</button>' +
 
         '<div class="pj-cart-note">Checkout bridge coming soon. Square remains the register.</div>' +
@@ -289,7 +319,7 @@
         Number(item.price || 0) *
         Number(item.quantity || 1);
 
-      var image = item.image || '../assets/PJ-logo.png';
+      var image = cartPath(item.image || 'assets/PJ-logo.png');
 
       return (
         '<div class="pj-cart-item" data-product-id="' +
@@ -301,7 +331,7 @@
               esc(image) +
             '" alt="' +
               esc(item.product_name) +
-            '" loading="lazy" onerror="this.src=\'../assets/PJ-logo.png\'">' +
+            '" loading="lazy" onerror="this.src=\'' + cartPath('assets/PJ-logo.png') + '\'">' +
           '</div>' +
 
           '<div class="pj-cart-item-main">' +
@@ -370,7 +400,7 @@
     var purchaseProgressImg =
       document.getElementById('pj-cart-total-img');
 
-    var badgeBase = '../assets/badges/';
+    var badgeBase = cartPath('assets/badges/');
 
     /*
      * Preferred current names:
