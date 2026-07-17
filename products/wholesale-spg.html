@@ -344,20 +344,18 @@
             id="buy-now-btn"
             type="button"
           >
-            Add To Cart — $52.00
+            Add To Cart — 6 lb Jar — $52
           </button>
 
-          <!-- Share -->
-          <div class="share-btn-wrap">
-            <button class="share-btn" id="share-btn">
-              <span class="share-icon">↑</span>
-              Share This Product
-            </button>
-            <div class="share-panel" id="share-panel">
-              <button class="share-panel-btn" id="share-email">✉ &nbsp;Send by Email</button>
-              <button class="share-panel-btn" id="share-copy">🔗 Copy Link</button>
-            </div>
-          </div>
+          <!-- Add To Cart — 14 oz -->
+          <button
+            class="buy-now-btn"
+            id="buy-now-btn-14oz"
+            type="button"
+            style="margin-top:10px;"
+          >
+            Add To Cart — 14 oz Jar — $10
+          </button>
 
         </div><!-- /product-content -->
       </div><!-- /product-layout -->
@@ -458,43 +456,27 @@
     });
   }
 
-  /* ── SHARE BUTTON ── */
-  var shareBtn   = document.getElementById('share-btn');
-  var sharePanel = document.getElementById('share-panel');
+  /* ── 14 OZ PRODUCT OBJECT ── */
+  window.PJCurrentProduct14oz = {
+    product_id:   'wholesale-spg-14oz',
+    slug:         'wholesale-spg-14oz',
+    product_name: 'Pepper Junction Competition Dry Rub — SPG (14 oz)',
+    brand:        'Pepper Junction',
+    price:        10.00,
+    square_id:    '',
+    square_url:   '',
+    image:        '../assets/sauces/pepper-junction-all-purpose-spg-14oz.png',
+    category:     'SEASONINGS/DRY RUBS',
+    heat_category: 'Medium',
+    food_style:   'BBQ'
+  };
 
-  if (shareBtn) {
-    shareBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      if (navigator.share && window.innerWidth <= 640) {
-        navigator.share({ title: document.title, url: window.location.href }).catch(function(){});
-        return;
-      }
-      if (sharePanel) sharePanel.classList.toggle('open');
-    });
-  }
-
-  document.addEventListener('click', function(e) {
-    if (sharePanel && !sharePanel.contains(e.target) && e.target !== shareBtn) {
-      sharePanel.classList.remove('open');
-    }
-  });
-
-  var copyBtn  = document.getElementById('share-copy');
-  var emailBtn = document.getElementById('share-email');
-
-  if (copyBtn) {
-    copyBtn.addEventListener('click', function() {
-      navigator.clipboard.writeText(window.location.href).then(function() {
-        copyBtn.textContent = '✓ Copied!';
-        setTimeout(function() { copyBtn.textContent = '🔗 Copy Link'; }, 2000);
-      });
-    });
-  }
-
-  if (emailBtn) {
-    emailBtn.addEventListener('click', function() {
-      window.location.href = 'mailto:?subject=' + encodeURIComponent(document.title) +
-        '&body=' + encodeURIComponent('Check this out from Pepper Junction:\n\n' + window.location.href);
+  /* ── ADD TO CART HANDLER — 14 oz ── */
+  var buyBtn14 = document.getElementById('buy-now-btn-14oz');
+  if (buyBtn14 && window.PJCurrentProduct14oz) {
+    buyBtn14.addEventListener('click', function() {
+      PJCart.addItem(Object.assign({}, window.PJCurrentProduct14oz, { quantity: 1 }));
+      PJCartDrawer.open();
     });
   }
 
