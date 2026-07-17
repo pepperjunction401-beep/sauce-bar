@@ -214,12 +214,18 @@
                 onerror="this.src='../assets/PJ-logo.png'; this.style.height='200px'; this.style.objectFit='contain'; this.style.opacity='0.65';"
               />
             </div>
-            <div id="jar-14oz-banner" style="position:absolute; left:0; right:0; bottom:0; background:var(--crimson, #6B0F1A); color:var(--brass-bright, #D4A832); font-family:'Josefin Sans', sans-serif; font-size:13px; line-height:1.5; padding:16px 18px; transform:translateY(100%); transition:transform 0.35s ease; z-index:5;">
+            <div id="jar-14oz-banner" style="position:absolute; left:0; right:0; bottom:0; background:var(--crimson, #6B0F1A); color:var(--brass-bright, #D4A832); font-family:'Josefin Sans', sans-serif; font-size:13px; line-height:1.5; padding:16px 18px; z-index:5;">
               <strong>14 oz Jar</strong> — For best application practices a 14 oz jar is recommended due to the perforated holes to allow equal distribution. Using your own, Pepper Junction can not guarantee optimized flavor or cooking results. Discounted price for wholesale accounts.
             </div>
           </div>
 
           <style>
+            /* Resting state: banner parked below the frame edge, clipped by overflow:hidden */
+            #jar-14oz-banner {
+              transform: translateY(100%);
+              transition: transform 0.35s ease;
+            }
+            /* Hover state: banner slides up into view */
             #jar-14oz-hover-frame:hover #jar-14oz-banner {
               transform: translateY(0);
             }
