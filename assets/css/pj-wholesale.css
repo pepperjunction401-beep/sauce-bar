@@ -37,3 +37,21 @@
 .hover-frame:hover .hover-banner {
   transform: translateY(0);
 }
+
+/* ── APPLICATION NOTICE ────────────────────────────────────────
+   Disclaimer block placed below the 14 oz Add To Cart button on
+   every wholesale item page. Markup: a div with class
+   "application-notice" containing the notice copy.
+   ────────────────────────────────────────────────────────────── */
+
+.application-notice {
+  margin-top: 18px;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.04);
+  border-left: 2px solid var(--brass, #C9A84C);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--cream-warm, #F5EDD6);
+  opacity: 0.8;
+}
