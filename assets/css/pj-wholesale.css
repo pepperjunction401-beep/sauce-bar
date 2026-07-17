@@ -1,0 +1,39 @@
+/* ═══════════════════════════════════════════════════════════════
+   PEPPER JUNCTION — WHOLESALE STYLESHEET
+   Loaded ONLY by wholesale item pages. Never link this file from
+   retail product item pages or category pages. Wholesale pages are
+   not connected for public view and maintain separate architecture.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── HOVER BANNER PATTERN ──────────────────────────────────────
+   Frame:  add class "hover-frame" alongside "img-frame"
+   Banner: a div with class "hover-banner" placed inside the frame,
+           after the img-frame-inner block. Banner copy goes inside.
+   Resting state: banner parked below the frame's bottom edge,
+   clipped by overflow:hidden. Slides up into view on hover.
+   ────────────────────────────────────────────────────────────── */
+
+.hover-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-banner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--crimson, #6B0F1A);
+  color: var(--brass-bright, #D4A832);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 16px 18px;
+  transform: translateY(100%);
+  transition: transform 0.35s ease;
+  z-index: 5;
+}
+
+.hover-frame:hover .hover-banner {
+  transform: translateY(0);
+}
