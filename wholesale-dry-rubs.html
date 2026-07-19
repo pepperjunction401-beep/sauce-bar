@@ -3,506 +3,775 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pepper Junction Competition Dry Rub — SPG · Wholesale</title>
+  <title>Wholesale BBQ Dry Rubs — Pepper Junction</title>
+  <meta name="description" content="Wholesale competition-grade BBQ dry rubs for restaurants and kitchens. Pepper Junction, Rhode Island." />
   <meta name="robots" content="noindex, nofollow" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="../assets/css/pj-product.css">
-  <link rel="stylesheet" href="../assets/css/cart.css">
-  <link rel="stylesheet" href="../assets/css/pj-wholesale.css">
-
-  <script src="../assets/js/pj-product.js"></script>
-  <script src="../assets/js/cart-engine.js"></script>
-  <script src="../assets/js/cart-drawer.js"></script>
-
   <style>
-    /* ── WHOLESALE PAGE OVERRIDES ── */
-    .wholesale-badge {
-      display: inline-block;
-      background: var(--crimson, #6B0F1A);
-      color: #fff;
+
+    /* ── CSS VARIABLES (exact match to category pages) ────────── */
+    :root {
+      --cream:        #F5ECD6;
+      --cream-deep:   #EDD9B4;
+      --cream-warm:   #FDF6E8;
+      --ink:          #2B1D15;
+      --ink-mid:      #4A3020;
+      --ink-soft:     #6D5440;
+      --brass:        #B88939;
+      --brass-bright: #D4A832;
+      --crimson:      #8F1F0D;
+      --crimson-dim:  #6B1608;
+      --green-dark:   #1E3020;
+      --shadow:       0 8px 32px rgba(43,29,21,0.18);
+      --shadow-card:  0 4px 20px rgba(43,29,21,0.14);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--green-dark);
+      color: var(--ink);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    @font-face {
+      font-family: 'BlackRiver';
+      src: url('assets/fonts/Blackriver-Bold.ttf') format('truetype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       PASSWORD GATE
+    ══════════════════════════════════════════════════════════ */
+    #pj-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: var(--green-dark);
+      background-image:
+        radial-gradient(ellipse at center, rgba(184,137,57,0.08) 0%, transparent 60%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    #pj-gate.hidden { display: none; }
+
+    .gate-panel {
+      width: 100%;
+      max-width: 420px;
+      background: var(--cream-warm);
+      border: 1px solid rgba(184,137,57,0.4);
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .gate-header {
+      background: var(--green-dark);
+      padding: 28px 32px 24px;
+      border-bottom: 2px solid var(--brass);
+    }
+
+    .gate-eyebrow {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.34em;
       text-transform: uppercase;
-      padding: 4px 12px;
+      color: var(--brass);
+      opacity: 0.85;
+      display: block;
       margin-bottom: 10px;
     }
 
-    .benefits-grid {
+    .gate-title {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--cream-warm);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    .gate-body {
+      padding: 28px 32px 32px;
+    }
+
+    .gate-desc {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    .gate-input {
+      width: 100%;
+      padding: 13px 16px;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--cream);
+      border: 1px solid rgba(184,137,57,0.4);
+      border-radius: 2px;
+      outline: none;
+      margin-bottom: 14px;
+      transition: border-color 0.2s;
+    }
+    .gate-input:focus { border-color: var(--brass); }
+    .gate-input::placeholder { color: var(--ink-soft); opacity: 0.5; font-style: italic; }
+
+    .gate-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--crimson);
+      color: var(--cream-warm);
+      border: none;
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 16px;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+    .gate-submit:hover { background: var(--crimson-dim); }
+
+    .gate-error {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--crimson);
+      margin-top: 12px;
+      display: none;
+    }
+    .gate-error.show { display: block; }
+
+    .gate-footer-note {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      opacity: 0.55;
+      margin-top: 18px;
+    }
+    .gate-footer-note a { color: var(--brass); text-decoration: none; }
+
+    #pj-content { display: none; }
+    #pj-content.unlocked { display: block; }
+
+    /* ── HEADER ───────────────────────────────────────────────── */
+    .site-header {
+      background: var(--green-dark);
+      border-bottom: 2px solid var(--brass);
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-logo { display: flex; align-items: center; gap: 16px; text-decoration: none; }
+    .header-logo img { height: 52px; width: auto; }
+    .header-wordmark { display: flex; flex-direction: column; gap: 2px; }
+    .header-name { font-family: 'BlackRiver', 'Playfair Display', serif; font-size: 22px; color: var(--cream-warm); line-height: 1; letter-spacing: 0.04em; }
+    .header-tagline { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; color: var(--brass); opacity: 0.8; }
+
+    .header-nav { display: flex; align-items: center; gap: 32px; }
+    .header-nav a { font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--cream); opacity: 0.65; text-decoration: none; transition: opacity 0.2s; }
+    .header-nav a:hover { opacity: 1; }
+    .header-nav .nav-cta { background: var(--crimson); color: var(--cream-warm); opacity: 1; padding: 8px 20px; border-radius: 2px; border: 1px solid rgba(143,31,13,0.5); transition: background 0.2s; }
+    .header-nav .nav-cta:hover { background: var(--crimson-dim); }
+
+    /* ── BURGUNDY HERO ────────────────────────────────────────── */
+    .wholesale-hero {
+      background: linear-gradient(180deg, #5C1A14 0%, #4A130F 60%, #3A0E0A 100%);
+      border-bottom: 2px solid var(--brass);
+      padding: 60px 48px 56px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wholesale-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.05) 3px, rgba(0,0,0,0.05) 4px);
+    }
+
+    .wholesale-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .wholesale-eyebrow {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .wholesale-headline {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(30px, 5vw, 58px);
+      color: var(--cream-warm);
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+
+    .wholesale-sub-1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(14px, 1.8vw, 19px);
+      font-style: italic;
+      color: var(--cream);
+      opacity: 0.85;
+      max-width: 640px;
+      margin: 0 auto 10px;
+      line-height: 1.6;
+    }
+
+    .wholesale-sub-2 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(11px, 1.3vw, 13px);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--brass-bright);
+      opacity: 0.9;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       CHALKBOARD MENU BOARD
+    ══════════════════════════════════════════════════════════ */
+    .menu-board-section {
+      padding: 64px 0 56px;
+      position: relative;
+      z-index: 1;
+      background: var(--green-dark);
+    }
+
+    .menu-board-frame {
+      max-width: 980px;
+      margin: 0 auto;
+      background-image: url('assets/textures/dark-rustic-wood-planks-texture.jpg');
+      background-size: cover;
+      background-position: center;
+      border-radius: 4px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .menu-board-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .menu-board-inner {
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(160deg, #1C1C1C 0%, #141414 40%, #181818 70%, #101010 100%);
+      border: 1px solid rgba(184,137,57,0.35);
+      border-radius: 2px;
+      padding: 40px 36px 36px;
+    }
+
+    .menu-board-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 900;
+      font-style: italic;
+      color: #F0EDE0;
+      text-align: center;
+      letter-spacing: 0.02em;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.1), 0 1px 3px rgba(0,0,0,0.9);
+    }
+
+    .menu-board-title-rule {
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(230,226,210,0.5), transparent);
+      margin: 0 auto 28px;
+    }
+
+    .menu-board-items {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 10px;
+      gap: 22px 36px;
     }
 
-    .benefit-item {
-      background: rgba(255,255,255,0.04);
-      border-left: 2px solid var(--brass, #C9A84C);
-      padding: 10px 14px;
-    }
-
-    .benefit-title {
+    .menu-board-item-title {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--brass-bright, #D4A832);
-      margin-bottom: 4px;
-    }
-
-    .benefit-body {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 15px;
-      line-height: 1.55;
-      color: var(--cream-warm, #F5EDD6);
-      opacity: 0.85;
-    }
-
-    .cost-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 15px;
-    }
-
-    .cost-table td {
-      padding: 8px 12px;
-      border-bottom: 1px solid rgba(201,168,76,0.15);
-      color: var(--cream-warm, #F5EDD6);
-    }
-
-    .cost-table td:first-child {
-      color: var(--brass-bright, #D4A832);
-      font-weight: 600;
       letter-spacing: 0.08em;
-      width: 60%;
+      color: var(--brass-bright);
+      margin-bottom: 5px;
     }
 
-    .cost-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .cost-note {
+    .menu-board-item-body {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 13px;
-      color: var(--cream-warm, #F5EDD6);
-      opacity: 0.6;
-      margin-top: 10px;
-      line-height: 1.5;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: #B8B4A0;
+      line-height: 1.6;
     }
 
-    /* Section label and body overrides for wholesale page */
-    .product-content .section-label { font-size: 15px; }
-    .product-content .section-body  { font-size: 16px; }
-
-    .wholesale-price-block {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      margin: 16px 0;
+    @media (max-width: 700px) {
+      .menu-board-items { grid-template-columns: 1fr; }
+      .menu-board-inner { padding: 30px 22px 26px; }
     }
 
-    .wholesale-price {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: 36px;
-      color: var(--brass-bright, #D4A832);
-      letter-spacing: 0.04em;
+    /* ══════════════════════════════════════════════════════════
+       KITCHEN SHELF — SHOPPABLE SCENE
+    ══════════════════════════════════════════════════════════ */
+    .kitchen-shelf-section {
+      padding: 0 0 72px;
+      position: relative;
+      z-index: 1;
+      background: var(--green-dark);
     }
 
-    .wholesale-unit {
+    .kitchen-shelf-intro {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+    }
+
+    .kitchen-shelf-eyebrow {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 12px;
-      letter-spacing: 0.15em;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.34em;
       text-transform: uppercase;
-      color: var(--cream-warm, #F5EDD6);
-      opacity: 0.7;
+      color: var(--brass);
+      opacity: 0.8;
+      margin-bottom: 10px;
+      display: block;
     }
+
+    .kitchen-shelf-heading {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(20px, 2.6vw, 30px);
+      color: var(--cream-warm);
+      letter-spacing: 0.02em;
+    }
+
+    .kitchen-shelf-wrap {
+      position: relative;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .kitchen-shelf-image-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1698 / 926;
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(184,137,57,0.3);
+    }
+
+    .kitchen-shelf-image-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Product hotspot — positioned by percentage over the scene */
+    .shelf-product {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      transition: transform 0.25s ease;
+      z-index: 2;
+    }
+
+    .shelf-product:hover { transform: translateY(-4px) scale(1.09); }
+
+    .shelf-product img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 8px 10px rgba(0,0,0,0.55));
+    }
+
+    .shelf-product-btn {
+      margin-top: 4px;
+      padding: 3px 12px;
+      background: rgba(30,48,32,0.92);
+      color: var(--cream-warm);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      border: 1px solid rgba(184,137,57,0.5);
+      border-radius: 12px;
+      white-space: nowrap;
+      opacity: 0.92;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    .shelf-product:hover .shelf-product-btn {
+      background: var(--crimson);
+      opacity: 1;
+    }
+
+    /* Top rail — 3 products */
+    .shelf-product.top-hogwaller   { top: 3.3%;  left: 18%;   width: 20%; transform-origin: center; }
+    .shelf-product.top-cluckerdust { top: 2.8%;  left: 42%;   width: 20%; }
+    .shelf-product.top-bamm        { top: 3.4%;  left: 62%;   width: 20%; }
+
+    /* Lower bays — 3 products */
+    .shelf-product.low-allpurpose  { top: 43.6%; left: 17%;   width: 20%; }
+    .shelf-product.low-1836        { top: 43.5%; left: 40.7%; width: 20%; }
+    .shelf-product.low-texaspecan  { top: 44.3%; left: 61.8%; width: 20%; }
 
     @media (max-width: 640px) {
-      .benefits-grid {
-        grid-template-columns: 1fr;
-      }
+      .shelf-product-btn { font-size: 6px; padding: 2px 8px; }
     }
+
+    /* Top row buttons */
+    .top-hogwaller .shelf-product-btn,
+    .top-bamm .shelf-product-btn {
+      margin-top: -8px;
+      font-size: 16px;
+      padding: 6px 24px;
+    }
+
+    .top-cluckerdust .shelf-product-btn {
+      margin-top: -4px;
+      font-size: 16px;
+      padding: 6px 24px;
+    }
+
+    /* Bottom row buttons — lowered 6px, enlarged 2x */
+    .low-allpurpose .shelf-product-btn {
+      margin-top: 16px;
+      font-size: 16px;
+      padding: 6px 24px;
+    }
+
+    .low-texaspecan .shelf-product-btn {
+      margin-top: 10px;
+      font-size: 16px;
+      padding: 6px 24px;
+    }
+
+    .low-1836 .shelf-product-btn {
+      margin-top: 18px;
+      font-size: 16px;
+      padding: 6px 24px;
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    .site-footer { background: var(--green-dark); border-top: 2px solid var(--brass); position: relative; z-index: 1; }
+    .footer-top { max-width: 1100px; margin: 0 auto; padding: 48px 48px 40px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
+    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
+    .footer-contact-item { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; }
+    .footer-contact-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
+    .footer-contact-item a:hover { opacity: 1; }
+    .footer-col-title { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass); opacity: 0.8; display: block; margin-bottom: 14px; }
+    .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col-links li a { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; text-decoration: none; transition: opacity 0.2s; }
+    .footer-col-links li a:hover { opacity: 1; }
+    .footer-bottom { border-top: 1px solid rgba(184,137,57,0.2); padding: 18px 48px; display: flex; align-items: center; justify-content: space-between; max-width: 100%; }
+    .footer-copy { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.35; }
+    .footer-standard { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); opacity: 0.45; }
+    @media (max-width: 768px) {
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; padding: 32px 20px 28px; }
+      .footer-bottom { padding: 14px 20px; flex-direction: column; gap: 6px; text-align: center; }
+    }
+    @media (max-width: 480px) { .footer-top { grid-template-columns: 1fr; } }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .container { padding: 0 20px; }
+      .site-header { padding: 16px 20px; }
+      .header-nav { display: none; }
+      .wholesale-hero { padding: 40px 20px 40px; }
+      body { overflow-x: hidden; }
+    }
+
   </style>
-
 </head>
-
 <body>
 
-<!-- ═══ HEADER ══════════════════════════════════════════════════ -->
-<header class="site-header">
-  <a class="header-logo" href="../conductor.html">
-    <img src="../assets/PJ-logo.png" alt="Pepper Junction" />
-    <div class="header-wordmark">
-      <span class="header-name">Pepper Junction</span>
-      <span class="header-tagline">Est. 2014 · Rhode Island</span>
+  <!-- ═══ PASSWORD GATE ═══════════════════════════════════════ -->
+  <div id="pj-gate">
+    <div class="gate-panel">
+      <div class="gate-header">
+        <span class="gate-eyebrow">Pepper Junction · Wholesale</span>
+        <div class="gate-title">Authorized Access Only</div>
+      </div>
+      <div class="gate-body">
+        <p class="gate-desc">This page is reserved for approved wholesale accounts. Enter your access code to continue.</p>
+        <input type="password" id="pj-gate-input" class="gate-input" placeholder="Access code" autocomplete="off" />
+        <button type="button" id="pj-gate-submit" class="gate-submit">Enter</button>
+        <div class="gate-error" id="pj-gate-error">Incorrect access code. Please try again.</div>
+        <div class="gate-footer-note">Need access? <a href="mailto:pepperjunction401@gmail.com">Contact us</a></div>
+      </div>
     </div>
-  </a>
-  <nav class="header-nav">
-    <a href="../hot-sauces.html">Hot Sauces</a>
-    <a href="../main.html">Home</a>
-    <a href="../index.html">Pairing Bar</a>
-    <a href="../main.html#location">Visit</a>
-  </nav>
-</header>
-
-<!-- ═══ BREADCRUMB ══════════════════════════════════════════════ -->
-<div class="breadcrumb">
-  <div class="breadcrumb-inner">
-    <a href="../main.html">Home</a>
-    <span>›</span>
-    <a href="../wholesale-dry-rubs.html">Wholesale</a>
-    <span>›</span>
-    Pepper Junction Competition Dry Rub — SPG
   </div>
-</div>
 
-<!-- ═══ HERO BANNER ═════════════════════════════════════════════ -->
-<div class="product-hero">
-  <div class="product-hero-eyebrow">Pepper Junction · Wholesale · Competition BBQ</div>
-  <div class="product-hero-name">Wholesale</div>
-</div>
+  <!-- ═══ GATED CONTENT ═══════════════════════════════════════ -->
+  <div id="pj-content">
 
-<!-- ═══ PAGE BODY ════════════════════════════════════════════════ -->
-<div class="page-outer">
-  <div class="chalkboard-wrap reveal">
-    <div class="chalk-corner tl"></div>
-    <div class="chalk-corner tr"></div>
-    <div class="chalk-corner bl"></div>
-    <div class="chalk-corner br"></div>
+    <!-- ═══ HEADER ══════════════════════════════════════════════ -->
+    <header class="site-header">
+      <a class="header-logo" href="conductor.html">
+        <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+        <div class="header-wordmark">
+          <span class="header-name">Pepper Junction</span>
+          <span class="header-tagline">Est. 2014 · Rhode Island</span>
+        </div>
+      </a>
+      <nav class="header-nav">
+        <a href="main.html#categories">Shop</a>
+        <a href="index.html">Pairing Bar</a>
+        <a href="main.html#location">Visit</a>
+      </nav>
+    </header>
 
-    <div class="chalkboard-surface">
-      <div class="product-layout">
+    <!-- ═══ BURGUNDY HERO ═══════════════════════════════════════ -->
+    <section class="wholesale-hero">
+      <div class="wholesale-hero-inner">
+        <span class="wholesale-eyebrow">Wholesale · Rhode Island</span>
+        <h1 class="wholesale-headline">Wholesale BBQ Dry Rubs</h1>
+        <p class="wholesale-sub-1">Competition-grade dry rubs — crafted for the circuit, built for flavor, and works as hard as your kitchen does.</p>
+        <p class="wholesale-sub-2">Award-winning flavor. Kitchen-proof consistency.</p>
+      </div>
+    </section>
 
-        <!-- IMAGE COLUMN -->
-        <aside class="product-images">
+    <!-- ═══ CHALKBOARD MENU BOARD ═══════════════════════════════ -->
+    <section class="menu-board-section">
+      <div class="container">
+        <div class="menu-board-frame">
+          <div class="menu-board-inner">
+            <div class="menu-board-title">Why Kitchens Choose Pepper Junction Dry Rubs</div>
+            <div class="menu-board-title-rule"></div>
+            <div class="menu-board-items">
 
-          <div class="img-frame">
-            <div class="frame-bolt tl"></div>
-            <div class="frame-bolt tr"></div>
-            <div class="frame-bolt bl"></div>
-            <div class="frame-bolt br"></div>
-            <div class="img-frame-inner" style="height:340px;">
-              <img
-                src="../assets/sauces/6lb-dry-rub-all-purpose.png"
-                alt="Pepper Junction Competition Dry Rub SPG 6lb"
-                loading="eager"
-                style="width:100%; height:100%; object-fit:cover;"
-                onerror="this.style.opacity='0.3'"
-              />
-            </div>
-          </div>
-          <div class="img-label">Pepper Junction</div>
-
-          <div class="img-frame hover-frame">
-            <div class="frame-bolt tl"></div>
-            <div class="frame-bolt tr"></div>
-            <div class="frame-bolt bl"></div>
-            <div class="frame-bolt br"></div>
-            <div class="img-frame-inner" style="height:340px; display:flex; align-items:center; justify-content:center;">
-              <img
-                src="../assets/sauces/pepper-junction-all-purpose-spg-14oz.png"
-                alt="Pepper Junction Competition Dry Rub SPG"
-                loading="lazy"
-                style="width:50%; height:auto;"
-                onerror="this.src='../assets/PJ-logo.png'; this.style.height='200px'; this.style.objectFit='contain'; this.style.opacity='0.65';"
-              />
-            </div>
-            <div class="hover-banner">
-              <strong>14 oz Jar</strong> — For best application practices a 14 oz jar is recommended due to the perforated holes to allow equal distribution. Using your own, Pepper Junction can not guarantee optimized flavor or cooking results. Discounted price for wholesale accounts.
-            </div>
-          </div>
-
-        </aside>
-
-        <!-- CONTENT COLUMN -->
-        <div class="product-content">
-
-          <div style="font-family:'BlackRiver','Playfair Display',serif; font-size:clamp(28px, 5vw, 64px); color:var(--brass-bright,#D4A832); letter-spacing:0.06em; margin-bottom:16px;">All Purpose Rub: SPG</div>
-
-          <!-- Price -->
-          <div class="wholesale-price-block">
-            <span class="wholesale-price">$52.00</span>
-            <span class="wholesale-unit">per 6 lb container</span>
-          </div>
-
-          <!-- Classification pills -->
-          <div class="product-title-block">
-            <div class="meta-pills">
-              <span class="meta-pill">Dry Rub</span>
-              <span class="meta-pill">Competition BBQ</span>
-              <span class="meta-pill">SPG</span>
-              <span class="meta-pill heat">Medium · 3/10</span>
-            </div>
-          </div>
-
-          <!-- What It Is -->
-          <div class="editorial">
-            <div class="section-label">Product Overview</div>
-            <div class="section-body">
-              <p>Pepper Junction Competition Dry Rub is a competition-style SPG seasoning developed with guidance from a Texas barbecue team. Built around sea salt, cracked black pepper, and bold garlic, it delivers the familiar foundation of traditional Texas barbecue with the balance, consistency, and visual performance expected on the competition circuit.</p>
-              <p style="margin-top:12px;">The coarse granules create excellent coverage and help develop a flavorful, well-defined bark on brisket, ribs, pork butts, beef roasts, and other smoked meats. Its straightforward savory profile also makes it an adaptable kitchen workhorse for steaks, burgers, tuna, roasted vegetables, soups, sauces, and seasoning bases.</p>
-              <p style="margin-top:12px;">Designed to perform consistently across smokers, pellet grills, charcoal pits, gas grills, and cast-iron cooking, this blend gives commercial kitchens a dependable seasoning without the variation, measuring, and preparation required by an in-house SPG recipe.</p>
-            </div>
-          </div>
-
-          <!-- Commercial Kitchen Benefits -->
-          <div class="editorial">
-            <div class="section-label">Commercial Kitchen Benefits</div>
-            <div class="benefits-grid">
-              <div class="benefit-item">
-                <div class="benefit-title">Competition-Developed</div>
-                <div class="benefit-body">Created with guidance from a Texas competition barbecue team for balance, bark development, and dependable performance.</div>
+              <div class="menu-board-item">
+                <div class="menu-board-item-title">Flavor First</div>
+                <div class="menu-board-item-body">Nationally award-winning BBQ dry rubs. That is not a marketing claim—it is an honest fact.</div>
               </div>
-              <div class="benefit-item">
-                <div class="benefit-title">Consistent Every Time</div>
-                <div class="benefit-body">Provides the same balanced seasoning from container to container, reducing recipe variation and guesswork between cooks and shifts.</div>
+
+              <div class="menu-board-item">
+                <div class="menu-board-item-title">Batch-to-Batch Consistency</div>
+                <div class="menu-board-item-body">Every jar delivers the same flavor profile, every time. No measuring mistakes, no guesswork, and no recipe drifting because someone interpreted the blend differently.</div>
               </div>
-              <div class="benefit-item">
-                <div class="benefit-title">Saves Prep Time</div>
-                <div class="benefit-body">Eliminates the measuring, mixing, and ongoing preparation required to maintain an in-house SPG blend.</div>
+
+              <div class="menu-board-item">
+                <div class="menu-board-item-title">Less Prep, More Time</div>
+                <div class="menu-board-item-body">Skip the weighing, mixing, and portioning. These ready-to-use blends put valuable time back in the hands of your chef, kitchen manager, and prep team.</div>
               </div>
-              <div class="benefit-item">
-                <div class="benefit-title">Reduces Labor Costs</div>
-                <div class="benefit-body">Keeps chefs and prep staff focused on production rather than repeatedly assembling seasoning batches.</div>
+
+              <div class="menu-board-item">
+                <div class="menu-board-item-title">Lower Labor Costs</div>
+                <div class="menu-board-item-body">Less preparation means fewer paid labor hours spent producing seasoning blends in-house.</div>
               </div>
-              <div class="benefit-item">
-                <div class="benefit-title">Dependable Execution</div>
-                <div class="benefit-body">Helps ensure brisket, beef, pork, and other menu items receive the intended flavor regardless of who is working the station.</div>
+
+              <div class="menu-board-item">
+                <div class="menu-board-item-title">Dependable Results</div>
+                <div class="menu-board-item-body">Take one more variable out of the kitchen. There is no wondering whether the blend was made correctly—or whether it was made at all.</div>
               </div>
-              <div class="benefit-item">
-                <div class="benefit-title">Versatile Across the Menu</div>
-                <div class="benefit-body">Performs as a primary seasoning, barbecue base layer, finishing blend, or savory foundation for proteins, vegetables, soups, and sauces.</div>
+
+              <div class="menu-board-item">
+                <div class="menu-board-item-title">Freshness That Lasts</div>
+                <div class="menu-board-item-body">The resealable screw-top jar helps protect the blend between services, keeping it fresh, organized, and ready when the kitchen needs it.</div>
               </div>
-              <div class="benefit-item">
-                <div class="benefit-title">Built for Bark</div>
-                <div class="benefit-body">The larger granules provide visible coverage and support consistent bark development during long cooks.</div>
-              </div>
-              <div class="benefit-item">
-                <div class="benefit-title">Resealable Freshness</div>
-                <div class="benefit-body">The screw-top container helps protect the seasoning between services while keeping storage and station use convenient.</div>
-              </div>
+
             </div>
           </div>
+        </div>
+      </div>
+    </section>
 
-          <!-- Culinary Performance -->
-          <div class="editorial">
-            <div class="section-label">Culinary Performance</div>
-            <div class="section-body">
-              <p>Apply evenly and allow meats to rest for 30–60 minutes before cooking. For brisket and other large cuts, season generously and refrigerate overnight when production schedules allow. The blend pairs especially well with oak, hickory, charcoal, and traditional smoke profiles.</p>
-            </div>
-          </div>
+    <!-- ═══ KITCHEN SHELF — SHOPPABLE SCENE ═════════════════════ -->
+    <section class="kitchen-shelf-section">
+      <div class="kitchen-shelf-intro">
+        <span class="kitchen-shelf-eyebrow">The Wholesale Case</span>
+        <h2 class="kitchen-shelf-heading">Six Rubs. One Kitchen. Every Service.</h2>
+      </div>
 
-          <!-- Ingredient Transparency -->
-          <div class="editorial">
-            <div class="section-label">Ingredient Transparency</div>
-            <div class="section-body">
-              <p>Sea salt, black pepper, garlic, turbinado sugar, onion powder, and natural spices.</p>
-            </div>
-          </div>
+      <div class="kitchen-shelf-wrap">
+        <div class="kitchen-shelf-image-frame">
+          <img src="assets/kitchen-car-shelf-bg.png" alt="Pepper Junction dining car kitchen shelf" />
 
-          <!-- Cost Breakdown -->
-          <div class="editorial">
-            <div class="section-label">Cost Breakdown</div>
-            <div class="section-body">
-              <p>A 6-pound container provides 96 dry ounces of seasoning.</p>
-            </div>
-            <table class="cost-table">
-              <tr>
-                <td>Container Price</td>
-                <td>$52.00</td>
-              </tr>
-              <tr>
-                <td>Cost per Dry Ounce</td>
-                <td>Approximately $0.54</td>
-              </tr>
-              <tr>
-                <td>Estimated Cost per Tablespoon</td>
-                <td>Approximately $0.27</td>
-              </tr>
-              <tr>
-                <td>Estimated Cost per Teaspoon</td>
-                <td>Approximately $0.09</td>
-              </tr>
-            </table>
-            <p class="cost-note">Tablespoon and teaspoon costs are estimates based on approximately ½ dry ounce of seasoning per tablespoon. Actual yield may vary slightly depending on the blend's granule size, settling, and measuring method.</p>
-          </div>
+          <!-- Top rail: Hogwaller, Cluckerdust, BAMM -->
+          <a class="shelf-product top-hogwaller" href="products/sucklebusters-sucklebusters-hogwaller-14oz.html">
+            <img src="assets/sauces/6lb-dry-rub-hog-waller.png" alt="Sucklebusters Hogwaller BBQ Dry Rub — 6lb Wholesale" />
+            <span class="shelf-product-btn">BBQ</span>
+          </a>
 
-          <!-- PJ Standard -->
-          <div class="editorial">
-            <div class="pj-standard">
-              <div class="pj-standard-text">✓ &nbsp;Approved under The Pepper Junction Standard™ for ingredient integrity and functional culinary performance</div>
-            </div>
-          </div>
+          <a class="shelf-product top-cluckerdust" href="products/sucklebusters-sucklebusters-clucker-dust-14oz.html">
+            <img src="assets/sauces/6lb-dry-rub-clucker-dust.png" alt="Sucklebusters Cluckerdust Chipotle BBQ Dry Rub — 6lb Wholesale" />
+            <span class="shelf-product-btn">Chipotle BBQ</span>
+          </a>
 
-          <!-- Add To Cart -->
-          <button
-            class="buy-now-btn"
-            id="buy-now-btn"
-            type="button"
-          >
-            Add To Cart — 6 lb Jar — $52
-          </button>
+          <a class="shelf-product top-bamm" href="products/sucklebusters-sucklebusters-bamm-14oz.html">
+            <img src="assets/sauces/6lb-dry-rub-bamm.png" alt="Sucklebusters BAMM BBQ Dry Rub — 6lb Wholesale" />
+            <span class="shelf-product-btn">Sweet Heat</span>
+          </a>
 
-          <!-- Add To Cart — 14 oz -->
-          <button
-            class="buy-now-btn"
-            id="buy-now-btn-14oz"
-            type="button"
-            style="margin-top:10px;"
-          >
-            Add To Cart — 14 oz Jar — $10
-          </button>
+          <!-- Lower bays: All Purpose, 1836, Texas Pecan -->
+          <a class="shelf-product low-allpurpose" href="products/pepper-junction-all-purpose-spg-14oz.html">
+            <img src="assets/sauces/6lb-dry-rub-all-purpose.png" alt="PJ All Purpose SPG — 6lb Wholesale" />
+            <span class="shelf-product-btn">All Purpose SPG</span>
+          </a>
 
-          <!-- Application Notice -->
-          <div class="application-notice">
-            For best application practices, Pepper Junction recommends using the 14 oz logo-labeled application jar, designed with perforated holes to help ensure even distribution, consistent seasoning coverage, and optimized cooking results. Wholesale accounts receive this jar at a discounted rate. Clients may choose to use their own shaker, container, or application method; however, Pepper Junction cannot guarantee optimized flavor, product performance, or cooking results when the recommended jar is not used. Pepper Junction cannot be held responsible for diminished product quality, inconsistent application, altered presentation, clumping, over-application, under-application, product waste, or any other issue caused by the Client’s chosen application method.
-          </div>
+          <a class="shelf-product low-1836" href="products/suckelbusters-suckelbusters-1836-14oz.html">
+            <img src="assets/sauces/6lb-dry-rub-1836-beef-rub.png" alt="Sucklebusters 1836 Beef Rub — 6lb Wholesale" />
+            <span class="shelf-product-btn">Beef Rub</span>
+          </a>
 
-        </div><!-- /product-content -->
-      </div><!-- /product-layout -->
-    </div><!-- /chalkboard-surface -->
-  </div><!-- /chalkboard-wrap -->
-</div><!-- /page-outer -->
+          <a class="shelf-product low-texaspecan" href="products/sucklebusters-texas-pecan-14oz.html">
+            <img src="assets/sauces/6lb-dry-rub-texas-pecan.png" alt="Sucklebusters Texas Pecan BBQ Dry Rub — 6lb Wholesale" />
+            <span class="shelf-product-btn">Pecan BBQ</span>
+          </a>
 
-<!-- ═══ FOOTER ═══════════════════════════════════════════════════ -->
-<footer class="site-footer">
-  <div class="footer-top">
+        </div>
+      </div>
+    </section>
 
-    <div class="footer-brand">
-      <img src="../assets/PJ-logo.png" alt="Pepper Junction" />
-      <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
-      <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
-      <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
-    </div>
-
-    <div>
-      <span class="footer-col-title">Shop</span>
-      <ul class="footer-col-links">
-        <li><a href="../hot-sauces.html">Hot Sauces</a></li>
-        <li><a href="../buffalo-condiments.html">Wing & Buffalo</a></li>
-        <li><a href="../seasonings-bbq.html">BBQ & Seasonings</a></li>
-        <li><a href="../buffalo-condiments.html">Condiments</a></li>
-        <li><a href="../snacks.html">Snacks</a></li>
-        <li><a href="../olive-oils-vinegar.html">Olive Oils & Vinegars</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <span class="footer-col-title">Pepper Junction</span>
-      <ul class="footer-col-links">
-        <li><a href="../main.html">Home</a></li>
-        <li><a href="../index.html">Pairing Bar</a></li>
-        <li><a href="../main.html#about">Our Story</a></li>
-        <li><a href="../main.html#location">Visit Us</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <span class="footer-col-title">Help</span>
-      <ul class="footer-col-links">
-        <li><a href="../policies.html#damaged">Damaged Products</a></li>
-        <li><a href="../policies.html#shipping">Shipping Info</a></li>
-        <li><a href="../policies.html#returns">Returns</a></li>
-        <li><a href="../policies.html#contact">Contact Us</a></li>
-      </ul>
-    </div>
+    <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
+    <footer class="site-footer">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
+          <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
+          <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+        </div>
+        <div>
+          <span class="footer-col-title">Shop</span>
+          <ul class="footer-col-links">
+            <li><a href="hot-sauces.html">Hot Sauces</a></li>
+            <li><a href="buffalo-condiments.html">Wing &amp; Buffalo</a></li>
+            <li><a href="seasonings-bbq.html">BBQ &amp; Seasonings</a></li>
+            <li><a href="buffalo-condiments.html">Condiments</a></li>
+            <li><a href="snacks.html">Snacks</a></li>
+            <li><a href="olive-oils-vinegar.html">Olive Oils &amp; Vinegars</a></li>
+          </ul>
+        </div>
+        <div>
+          <span class="footer-col-title">Pepper Junction</span>
+          <ul class="footer-col-links">
+            <li><a href="main.html">Home</a></li>
+            <li><a href="index.html">Pairing Bar</a></li>
+            <li><a href="main.html#about">Our Story</a></li>
+            <li><a href="main.html#location">Visit Us</a></li>
+          </ul>
+        </div>
+        <div>
+          <span class="footer-col-title">Help</span>
+          <ul class="footer-col-links">
+            <li><a href="policies.html#damaged">Damaged Products</a></li>
+            <li><a href="policies.html#shipping">Shipping Info</a></li>
+            <li><a href="policies.html#returns">Returns</a></li>
+            <li><a href="policies.html#contact">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
+        <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
+      </div>
+    </footer>
 
   </div>
-  <div class="footer-bottom">
-    <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
-    <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
-  </div>
-</footer>
 
-<!-- ═══ DELIVERY MODAL ══════════════════════════════════════════ -->
-<div class="modal-overlay" id="delivery-modal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <button class="modal-close" id="modal-close" aria-label="Close">×</button>
-    <div class="modal-title">Local RI Delivery</div>
-    <div class="modal-sub">How to select it at checkout</div>
-    <ol class="modal-steps">
-      <li><span class="modal-step-num">01</span><span>Click Add To Cart — you'll land on the Square checkout page.</span></li>
-      <li><span class="modal-step-num">02</span><span>In the top right look for a small section that reads <span class="modal-highlight">"How to get it"</span> with the word <span class="modal-highlight">Edit</span> off to its right. Click it.</span></li>
-      <li><span class="modal-step-num">03</span><span>A box pops up with two options — <span class="modal-highlight">Delivery</span> and <span class="modal-highlight">Shipping</span>. Toggle to <span class="modal-highlight">Delivery</span>.</span></li>
-      <li><span class="modal-step-num">04</span><span>Enter your delivery address. If you're within our local RI delivery zone the checkout updates accordingly.</span></li>
-    </ol>
-  </div>
-</div>
+  <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
+  <script>
+  (function () {
+    var CORRECT_PASSWORD = 'Pepper_Junction_Wholesale_2026';
+    var gate = document.getElementById('pj-gate');
+    var content = document.getElementById('pj-content');
+    var input = document.getElementById('pj-gate-input');
+    var submitBtn = document.getElementById('pj-gate-submit');
+    var errorMsg = document.getElementById('pj-gate-error');
 
-<!-- ═══ SCRIPTS ══════════════════════════════════════════════════ -->
-<script>
-(function () {
-
-  /* ── WHOLESALE CART SETUP — hardcoded, no JSON fetch ── */
-  window.PJCurrentProduct = {
-    product_id:   'wholesale-spg-6lb',
-    slug:         'wholesale-spg-6lb',
-    product_name: 'Pepper Junction Competition Dry Rub — SPG (6 lb)',
-    brand:        'Pepper Junction',
-    price:        52.00,
-    square_id:    '',
-    square_url:   '',
-    image:        '../assets/sauces/6lb-dry-rub-all-purpose.png',
-    category:     'SEASONINGS/DRY RUBS',
-    heat_category: 'Medium',
-    food_style:   'BBQ'
-  };
-
-  /* ── ADD TO CART HANDLER ── */
-  var buyBtn = document.getElementById('buy-now-btn');
-  if (buyBtn && window.PJCurrentProduct) {
-    buyBtn.addEventListener('click', function() {
-      PJCart.addItem(Object.assign({}, window.PJCurrentProduct, { quantity: 1 }));
-      PJCartDrawer.open();
-    });
-  }
-
-  /* ── 14 OZ PRODUCT OBJECT ── */
-  window.PJCurrentProduct14oz = {
-    product_id:   'wholesale-spg-14oz',
-    slug:         'wholesale-spg-14oz',
-    product_name: 'Pepper Junction Competition Dry Rub — SPG (14 oz)',
-    brand:        'Pepper Junction',
-    price:        10.00,
-    square_id:    '',
-    square_url:   '',
-    image:        '../assets/sauces/pepper-junction-all-purpose-spg-14oz.png',
-    category:     'SEASONINGS/DRY RUBS',
-    heat_category: 'Medium',
-    food_style:   'BBQ'
-  };
-
-  /* ── ADD TO CART HANDLER — 14 oz ── */
-  var buyBtn14 = document.getElementById('buy-now-btn-14oz');
-  if (buyBtn14 && window.PJCurrentProduct14oz) {
-    buyBtn14.addEventListener('click', function() {
-      PJCart.addItem(Object.assign({}, window.PJCurrentProduct14oz, { quantity: 1 }));
-      PJCartDrawer.open();
-    });
-  }
-
-  /* ── SCROLL REVEAL ── */
-  var revEls = document.querySelectorAll('.reveal');
-  var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        obs.unobserve(entry.target);
+    function attemptUnlock() {
+      if (input.value === CORRECT_PASSWORD) {
+        gate.classList.add('hidden');
+        content.classList.add('unlocked');
+        try { sessionStorage.setItem('pj_wholesale_unlocked', '1'); } catch (e) {}
+      } else {
+        errorMsg.classList.add('show');
+        input.value = '';
+        input.focus();
       }
-    });
-  }, { threshold: 0.06 });
-  revEls.forEach(function(el) { obs.observe(el); });
+    }
 
-})();
-</script>
+    submitBtn.addEventListener('click', attemptUnlock);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') attemptUnlock();
+    });
+
+    // Check if already unlocked this session
+    try {
+      if (sessionStorage.getItem('pj_wholesale_unlocked') === '1') {
+        gate.classList.add('hidden');
+        content.classList.add('unlocked');
+      }
+    } catch (e) {}
+  })();
+  </script>
 
 </body>
 </html>
