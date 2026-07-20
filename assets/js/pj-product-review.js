@@ -26,13 +26,25 @@
 var SHARED_REVIEW_PAGE = '../review.html';
 var TWO_OR_MORE_SYMBOLS = /[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?~`\/]{2,}/;
 
+/*
+ * Phase 1 prototype gate: mock review data activates ONLY
+ * when the page URL carries ?pjmock=1. Without it, mocks
+ * return null/empty exactly as before, so live product
+ * pages are completely unaffected during the build.
+ */
+var MOCK_ENABLED = /[?&]pjmock=1/.test(window.location.search);
+
 var state = {
 productSlug: null,
 reviewButtonId: null,
 customerLineId: null,
 lineShown: false,
 customerLinePool: [],
-dismissTimer: null
+dismissTimer: null,
+/* Phase 1 — Passenger Reviews display */
+publicReviews: [],
+totalReviewCount: 0,
+viewMode: 'compact'
 };
 
 /* ── INIT ───────────────────────────────────────────────── */
@@ -49,6 +61,7 @@ state.customerLineId = opts.customerLineId || 'customer-line';
 createPassengerReviewsSection();
 bindReviewButton();
 loadSummary();
+initReviewDisplay();
 prefetchCustomerLines();
 bindCustomerLineDismissal();
 
@@ -280,6 +293,182 @@ function buildStars(rating) {
 }
 
 /* ══════════════════════════════════════════════════════════
+PASSENGER REVIEWS DISPLAY — PHASE 1 EXPANSION
+State flow: Compact → 3-Review Preview → All Reviews → Compact.
+Show Less always returns to Compact.
+
+Privacy rule: this display receives ONLY public data —
+review text, first name, passenger class, aggregate, count.
+Phase 6 swaps the mock provider for a restricted Supabase
+view; nothing here requires redesign for that swap.
+══════════════════════════════════════════════════════════ */
+function initReviewDisplay() {
+var data = getMockReviewData(state.productSlug);
+
+/*
+ * Zero-review state: with no approved public reviews the
+ * section simply carries no Expand control and no list —
+ * the existing hide-when-no-aggregate behavior keeps the
+ * page clean and intentional. No broken controls appear.
+ */
+if (!data || !data.reviews || !data.reviews.length) {
+  return;
+}
+
+state.publicReviews = data.reviews.filter(isLineSafe);
+state.totalReviewCount = data.count || state.publicReviews.length;
+
+if (!state.publicReviews.length) {
+  return;
+}
+
+buildReviewDisplayScaffold();
+setViewMode('compact');
+
+}
+
+function buildReviewDisplayScaffold() {
+var section = document.getElementById(
+'passenger-reviews-section'
+);
+
+if (!section || document.getElementById('pj-review-display')) {
+  return;
+}
+
+var wrap = document.createElement('div');
+wrap.id = 'pj-review-display';
+wrap.className = 'pj-review-display';
+
+var list = document.createElement('div');
+list.id = 'pj-review-list';
+list.className = 'pj-review-list';
+list.setAttribute('aria-live', 'polite');
+
+var controls = document.createElement('div');
+controls.id = 'pj-review-controls';
+controls.className = 'pj-review-controls';
+
+wrap.appendChild(list);
+wrap.appendChild(controls);
+section.appendChild(wrap);
+
+}
+
+function makeReviewControl(labelText, onClick) {
+var b = document.createElement('button');
+b.type = 'button';
+b.className = 'pj-review-control';
+b.textContent = labelText;
+b.addEventListener('click', onClick);
+return b;
+}
+
+function setViewMode(mode) {
+state.viewMode = mode;
+
+var list = document.getElementById('pj-review-list');
+var controls = document.getElementById('pj-review-controls');
+
+if (!list || !controls) {
+  return;
+}
+
+/*
+ * Rebuild list and controls for the requested state.
+ * All customer content is inserted via textContent only.
+ */
+list.textContent = '';
+controls.textContent = '';
+
+var total = state.totalReviewCount;
+
+if (mode === 'compact') {
+  controls.appendChild(
+    makeReviewControl('Expand', function () {
+      setViewMode('preview');
+    })
+  );
+  return;
+}
+
+var toShow =
+  mode === 'preview'
+    ? state.publicReviews.slice(0, 3)
+    : state.publicReviews;
+
+toShow.forEach(function (review) {
+  list.appendChild(renderReviewItem(review));
+});
+
+controls.appendChild(
+  makeReviewControl('Show Less', function () {
+    setViewMode('compact');
+    scrollReviewSectionIntoView();
+  })
+);
+
+/*
+ * View All only appears in preview, and only when there
+ * is genuinely more to see — no meaningless controls.
+ */
+if (mode === 'preview' && state.publicReviews.length > 3) {
+  controls.appendChild(
+    makeReviewControl(
+      'View All ' + total + ' Reviews',
+      function () {
+        setViewMode('all');
+      }
+    )
+  );
+}
+
+}
+
+function renderReviewItem(review) {
+var item = document.createElement('figure');
+item.className = 'pj-review-item';
+
+var quote = document.createElement('blockquote');
+quote.className = 'pj-review-quote';
+quote.textContent = '\u201C' + (review.text || '') + '\u201D';
+
+var attr = document.createElement('figcaption');
+attr.className = 'pj-review-attr';
+attr.textContent =
+  '\u2014 ' +
+  (review.firstName || '') +
+  ', ' +
+  (review.passengerClass || '');
+
+item.appendChild(quote);
+item.appendChild(attr);
+
+return item;
+
+}
+
+function scrollReviewSectionIntoView() {
+var section = document.getElementById(
+'passenger-reviews-section'
+);
+
+if (!section) {
+  return;
+}
+
+var reduced =
+  window.matchMedia &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+section.scrollIntoView({
+  behavior: reduced ? 'auto' : 'smooth',
+  block: 'start'
+});
+
+}
+
+/* ══════════════════════════════════════════════════════════
 CUSTOMER LINE
 ══════════════════════════════════════════════════════════ */
 function prefetchCustomerLines() {
@@ -455,20 +644,103 @@ container.addEventListener(
 /* ══════════════════════════════════════════════════════════
 MOCK DATA — PROTOTYPE ONLY
 Replace with live Supabase requests during Phase 6.
+Mock data activates ONLY with ?pjmock=1 in the URL.
+Without the flag, every provider returns null/empty and
+live product pages behave exactly as before Phase 1.
+
+Public-display fields only: text, firstName, passengerClass.
+No customer IDs, no questionnaire data, nothing private.
 ══════════════════════════════════════════════════════════ */
-function getMockAggregate() {
+var MOCK_REVIEW_DATA = {
+'2-pig-mafia-steak-seasoning-14oz': {
+rating: 4.75,
+reviews: [
+{ text: 'Perfect balance of smoke and heat. This has retired every other steak rub in my cabinet.', firstName: 'Melissa', passengerClass: 'Dining Car Regular' },
+{ text: 'Absolutely killer on ribeyes and grilled chicken. The crust it builds is unreal.', firstName: 'John', passengerClass: 'Day Coach Passenger' },
+{ text: 'Great flavor up front before the warmth rolls in. Staying in the rotation for good.', firstName: 'Sarah', passengerClass: 'Parlor Car Passenger' },
+{ text: 'Rubbed it on pork chops for Sunday dinner and the table went quiet. That kind of good.', firstName: 'Marcus', passengerClass: 'Sleeper Car Passenger' },
+{ text: 'My brisket finally tastes like the one I brag about. Worth every penny.', firstName: 'Dana', passengerClass: 'Day Coach Passenger' },
+{ text: 'Even works on roasted potatoes and corn. It left the steak station a long time ago.', firstName: 'Priya', passengerClass: 'Dining Car Regular' },
+{ text: 'Bought one for my father-in-law and had to go back for my own. Lesson learned.', firstName: 'Tom', passengerClass: 'Caboose Rider' }
+]
+},
+'high-river-sauces-tears-of-the-sun': {
+rating: 4.5,
+reviews: [
+{ text: 'Bright citrus first, then the burn shows up fashionably late. Beautiful on fish tacos.', firstName: 'Elena', passengerClass: 'Parlor Car Passenger' },
+{ text: 'The heat is honest and the flavor never quits. My eggs demand it now.', firstName: 'Ray', passengerClass: 'Day Coach Passenger' },
+{ text: 'Sweet, sharp, and sneaky. One of the best balanced bottles on my shelf.', firstName: 'Kim', passengerClass: 'Dining Car Regular' }
+]
+},
+'mikey-vs-reaper-jalapeno-dill-pickle': {
+rating: 4.25,
+reviews: [
+{ text: 'Pickle brine and reaper heat should not work together. They absolutely do.', firstName: 'Chris', passengerClass: 'Day Coach Passenger' },
+{ text: 'Put this on a burger and briefly saw through time. Ten out of ten.', firstName: 'Ashley', passengerClass: 'Caboose Rider' }
+]
+},
+'13-stars-dragons-breath': {
+rating: 4.0,
+reviews: [
+{ text: 'Mild enough for the whole family, flavorful enough that nobody noticed it was mild.', firstName: 'Grace', passengerClass: 'Parlor Car Passenger' }
+]
+}
+};
+
+function getMockReviewData(slug) {
 /*
-* Return null until approved aggregate data is connected.
-*/
-return null;
+ * Return null unless the ?pjmock=1 development gate is on.
+ */
+if (!MOCK_ENABLED) {
+  return null;
 }
 
-function getMockCustomerLines() {
+var data = MOCK_REVIEW_DATA[slug];
+
+if (!data) {
+  return null;
+}
+
+return {
+  rating: data.rating,
+  count: data.reviews.length,
+  reviews: data.reviews.slice()
+};
+
+}
+
+function getMockAggregate(slug) {
+/*
+* Return null until approved aggregate data is connected.
+* With ?pjmock=1, derive the aggregate from the mock
+* review pool so summary and list always agree.
+*/
+var data = getMockReviewData(slug);
+
+if (!data) {
+  return null;
+}
+
+return { rating: data.rating, count: data.count };
+
+}
+
+function getMockCustomerLines(slug) {
 /*
 * Return an empty array until approved customer-line data
-* is connected.
+* is connected. With ?pjmock=1, the customer-line pool is
+* the same approved public review pool — per the rules,
+* lines come from approved "What do you love about this
+* sauce?" responses for the current product.
 */
-return [];
+var data = getMockReviewData(slug);
+
+if (!data) {
+  return [];
+}
+
+return data.reviews.slice();
+
 }
 
 /* ══════════════════════════════════════════════════════════
