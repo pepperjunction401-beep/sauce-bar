@@ -418,7 +418,7 @@ input[type='range'].pjr-slider:focus-visible {
 .pjr-q {
   padding: clamp(16px, 2.8vw, 24px);
   margin-top: 14px;
-  border-width: 2px;
+  border-width: 5px; /* matches the personal-rating slider track height */
   scroll-margin-top: 110px;
 }
 
@@ -448,7 +448,7 @@ input[type='range'].pjr-slider:focus-visible {
 }
 
 /* Missed-question state — "Looks like you skipped a stop" */
-.pjr-q.pjr-missed { border-color: var(--pj-crimson-bright); border-width: 3px; }
+.pjr-q.pjr-missed { border-color: var(--pj-crimson-bright); border-width: 5px; }
 
 .pjr-missed-msg {
   display: none;
