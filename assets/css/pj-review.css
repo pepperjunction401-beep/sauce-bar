@@ -119,18 +119,14 @@ a { color: inherit; }
 h1, h2, h3 { margin: 0; }
 
 /* ── PRODUCT HERO ── */
-/* Burgundy per punch list. --pj-burgundy currently uses the crimson
-   token as a stand-in — swap in the exact hero-banner hex from
-   pj-product.css when provided. */
+/* Pullman Burgundy — the same hero-banner texture used on
+   product pages (assets/textures/Hero-Banner-Pullman-Burgandy.png). */
 .pjr-hero {
-  --pj-burgundy: var(--pj-crimson);
   padding: clamp(28px, 5vw, 48px);
   text-align: center;
   position: relative;
   overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.32)),
-    var(--pj-burgundy);
+  background: url('../textures/Hero-Banner-Pullman-Burgandy.png') center center / 100% 100% no-repeat;
   border-color: rgba(184, 137, 57, 0.45);
 }
 
