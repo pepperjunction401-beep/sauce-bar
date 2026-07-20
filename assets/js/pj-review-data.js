@@ -28,7 +28,7 @@
   /* ── LOCKED VOCABULARIES — sourced from CNS v7.1 ── */
   var HEAT_LADDER = ['Mild', 'Medium', 'Hot', 'Very Hot', 'Super Hot', 'Extreme', 'Inferno'];
   var HOW_IT_HITS = ['Delayed Escalation', "Hit'n Run", 'Plane Take-Off'];
-  var HEAT_FINISH = ['Ends With Flavor', 'Feel the Flame', 'Fire Pole Down', 'Plane Landing', 'Say Goodnight', 'Stays for Coffee'];
+  var HEAT_FINISH = ['Ends With Flavor', 'Plane Landing', 'Fire Pole Down', 'Stays for Coffee', 'Feel the Flame', 'Say Goodnight'];
 
   var VALID_STATES = ['ELIGIBLE', 'NOT_SIGNED_IN', 'NOT_PURCHASED', 'ALREADY_REVIEWED', 'SUBMITTED', 'ERROR'];
 
