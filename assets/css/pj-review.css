@@ -419,6 +419,7 @@ input[type='range'].pjr-slider:focus-visible {
   padding: clamp(16px, 2.8vw, 24px);
   margin-top: 14px;
   border-width: 5px; /* matches the personal-rating slider track height */
+  border-color: var(--pj-brass-bright); /* full-strength brass — no transparency */
   scroll-margin-top: 110px;
 }
 
