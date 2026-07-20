@@ -123,19 +123,8 @@
 
       <div id="pjr-questions"></div>
 
-      <!-- Public display permission — all in or all out -->
-      <section class="pjr-card pjr-q pjr-consent" id="pjr-consent" data-qid="consent">
-        <p class="pjr-q-stop">Final Stop · Public Display</p>
-        <h3>Can We Share Your Words?</h3>
-        <p class="pjr-q-hint">If your review is approved, your two written answers could appear on the product page as a passenger line — first name and passenger class only. Either both may appear, or neither. Your review counts the same either way.</p>
-        <div class="pjr-options stacked" role="group" aria-label="Public display permission">
-          <button type="button" class="pjr-bubble" data-value="ALL_IN">All in — my written answers may be shared on the product page.</button>
-          <button type="button" class="pjr-bubble" data-value="ALL_OUT">All out — keep my written answers private.</button>
-        </div>
-        <p class="pjr-missed-msg">Looks like you skipped a stop</p>
-      </section>
-
       <div class="pjr-submit-wrap">
+        <p class="pjr-credit-note">Pepper Junction gives credit where credit is due, we will most definitely use <em>only</em> your first name and passenger class with your review.</p>
         <button type="button" class="pjr-btn pjr-btn-primary" id="pjr-submit">Send It Down the Line</button>
         <p class="pjr-submit-missing" id="pjr-submit-missing"></p>
       </div>
@@ -308,7 +297,7 @@
         options: D.getFoodStyles() },
       { id: 'q11', type: 'multi', max: 3,
         prompt: 'Which pepper notes stood out to you?',
-        hint: 'Pick up to three.',
+        hint: 'Select up to three.',
         options: pepperOpts },
       { id: 'q12', type: 'single',
         prompt: 'How did the heat hit?',
@@ -316,10 +305,6 @@
       { id: 'q13', type: 'single',
         prompt: 'How did the heat finish?',
         options: D.getHeatFinish() },
-      { id: 'q14', type: 'text', limit: 200,
-        prompt: 'What food do you love it on?' },
-      { id: 'q15', type: 'text', limit: 200,
-        prompt: 'What do you love about this sauce?' },
       { id: 'q16', type: 'single', stacked: true,
         prompt: "Was this sauce's heat level in your lane?",
         options: [
@@ -330,13 +315,16 @@
         ] },
       { id: 'q17', type: 'scale5',
         prompt: "How accurate was Pepper Junction's description of this item?",
-        labels: ['Way off', 'A little off', 'Mostly accurate', 'Very accurate', 'Nailed it'] }
+        labels: ['Way off', 'A little off', 'Mostly accurate', 'Very accurate', 'Nailed it'] },
+      { id: 'q14', type: 'text', limit: 200,
+        prompt: 'What food do you love it on?' },
+      { id: 'q15', type: 'text', limit: 200,
+        prompt: 'What do you love about this sauce?' }
     ];
 
     /* Answers — field-level by design: each answer is its own field so
        non-scoring answers can be made editable later without migration. */
     var answers = {};
-    var consent = null;
     var submitted = false;
 
     var required = QUESTIONS.filter(function (q) {
@@ -384,7 +372,7 @@
 
       var stop = document.createElement('p');
       stop.className = 'pjr-q-stop';
-      stop.textContent = 'Stop ' + (idx + 1) + ' of ' + QUESTIONS.length;
+      stop.textContent = 'Train Stop ' + (idx + 1) + ' of ' + QUESTIONS.length;
       card.appendChild(stop);
 
       var h = document.createElement('h3');
@@ -539,22 +527,6 @@
       qWrap.appendChild(card);
     });
 
-    /* Consent bubbles */
-    var consentCard = document.getElementById('pjr-consent');
-    consentCard.querySelectorAll('.pjr-bubble').forEach(function (b) {
-      b.setAttribute('aria-pressed', 'false');
-      b.addEventListener('click', function () {
-        consentCard.querySelectorAll('.pjr-bubble').forEach(function (x) {
-          x.classList.remove('selected');
-          x.setAttribute('aria-pressed', 'false');
-        });
-        b.classList.add('selected');
-        b.setAttribute('aria-pressed', 'true');
-        consent = b.dataset.value;
-        clearMissed(consentCard);
-      });
-    });
-
     /* ── VALIDATION + SUBMIT ── */
     var submitBtn = document.getElementById('pjr-submit');
 
@@ -567,8 +539,6 @@
         if (!isAnswered(q)) { card.classList.add('pjr-missed'); missedCards.push(card); }
         else { card.classList.remove('pjr-missed'); }
       });
-      if (!consent) { consentCard.classList.add('pjr-missed'); missedCards.push(consentCard); }
-      else { consentCard.classList.remove('pjr-missed'); }
 
       updateMissingCount();
 
@@ -586,7 +556,6 @@
       var payload = {
         productSlug: slug,
         answers: Object.assign({}, answers),
-        publicDisplayConsent: consent,
         submittedAt: new Date().toISOString()
       };
 
