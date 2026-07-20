@@ -119,11 +119,19 @@ a { color: inherit; }
 h1, h2, h3 { margin: 0; }
 
 /* ── PRODUCT HERO ── */
+/* Burgundy per punch list. --pj-burgundy currently uses the crimson
+   token as a stand-in — swap in the exact hero-banner hex from
+   pj-product.css when provided. */
 .pjr-hero {
+  --pj-burgundy: var(--pj-crimson);
   padding: clamp(28px, 5vw, 48px);
   text-align: center;
   position: relative;
   overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.32)),
+    var(--pj-burgundy);
+  border-color: rgba(184, 137, 57, 0.45);
 }
 
 .pjr-hero::before {
@@ -407,10 +415,10 @@ input[type='range'].pjr-slider:focus-visible {
   white-space: nowrap;
 }
 
-.pjr-q { padding: clamp(20px, 3.5vw, 30px); scroll-margin-top: 110px; }
+.pjr-q { padding: clamp(60px, 10.5vw, 90px); scroll-margin-top: 110px; }
 
 .pjr-q-stop {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -561,6 +569,16 @@ input[type='range'].pjr-slider:focus-visible {
 
 /* Submit area */
 .pjr-submit-wrap { margin-top: 28px; text-align: center; }
+
+.pjr-credit-note {
+  max-width: 560px;
+  margin: 0 auto 16px;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--pj-chalk);
+  opacity: 0.82;
+}
 
 .pjr-submit-wrap .pjr-btn { width: min(420px, 100%); min-height: 52px; font-size: 11px; }
 
