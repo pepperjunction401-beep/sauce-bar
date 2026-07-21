@@ -238,7 +238,7 @@
     /* ── QUESTION DEFINITIONS — wording locked by the Review Architecture,
        vocabularies sourced from the CNS (the Database is the Bible) ── */
     var heatOpts = D.getHeatOptions(product.heatCategory);
-    var pepperOpts = D.getPepperOptions(product);
+    var flavorOpts = D.getFlavorOptions(product);
 
     var QUESTIONS = [
       { id: 'q1', type: 'single', stacked: true,
@@ -296,9 +296,9 @@
         prompt: 'What food style best matches how you used it?',
         options: D.getFoodStyles() },
       { id: 'q11', type: 'multi', max: 3,
-        prompt: 'Which pepper notes stood out to you?',
+        prompt: 'Which flavors stood out to you the most?',
         hint: 'Select up to three.',
-        options: pepperOpts },
+        options: flavorOpts },
       { id: 'q12', type: 'single',
         prompt: 'How did the heat hit?',
         options: D.getHowItHits() },
