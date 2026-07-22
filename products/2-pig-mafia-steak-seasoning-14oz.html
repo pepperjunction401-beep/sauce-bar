@@ -3,894 +3,2611 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2 Pig Mafia 2 Pig Mafia Steak Seasoning 13oz — Pepper Junction</title>
-  <meta name="description" content="2 Pig Mafia 2 Pig Mafia Steak Seasoning 13oz. Approved under The Pepper Junction Standard™." />
-
-  <!-- ── OPEN GRAPH — social share preview ── -->
-  <meta property="og:type"        content="product" />
-  <meta property="og:site_name"   content="Pepper Junction" />
-  <meta property="og:title"       content="2 Pig Mafia 2 Pig Mafia Steak Seasoning 13oz — Pepper Junction" />
-  <meta property="og:description" content="2 Pig Mafia 2 Pig Mafia Steak Seasoning 13oz. Approved under The Pepper Junction Standard™." />
-  <meta property="og:url"         content="https://pepperjunction401-beep.github.io/sauce-bar/products/2-pig-mafia-steak-seasoning-13oz.html" />
-  <meta property="og:image"       content="https://pepperjunction401-beep.github.io/sauce-bar/assets/sauces/2-pig-mafia-steak-seasoning-13oz.png" />
-  <meta property="og:image:alt"   content="2 Pig Mafia 2 Pig Mafia Steak Seasoning 13oz" />
-  <meta name="twitter:card"       content="summary_large_image" />
-
+  <title>Pepper Junction — Main Street Station</title>
+  <meta name="description" content="Pepper Junction — A flavor-first approach to craft hot sauces, spicy condiments, BBQ dry rubs, and artisan infused olive oils. Rhode Island's specialty sauce destination since 2014." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
 
-  <!-- ── PRODUCT PAGE STYLESHEET ── -->
-  <link rel="stylesheet" href="../assets/css/pj-product.css">
-  <link rel="stylesheet" href="../assets/css/cart.css">
-
-  <!-- ── SCHEMA.ORG — product structured data, values injected from JSON ── -->
-  <script type="application/ld+json" id="product-schema">
-  {
-    "@context": "https://schema.org/",
-    "@type": "Product",
-    "name": "",
-    "brand": { "@type": "Brand", "name": "2 Pig Mafia" },
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "USD",
-      "price": "",
-      "url": ""
+    /* ── CSS VARIABLES ────────────────────────────────────────── */
+    :root {
+      --cream:        #F5ECD6;
+      --cream-deep:   #EDD9B4;
+      --cream-warm:   #FDF6E8;
+      --ink:          #2B1D15;
+      --ink-mid:      #4A3020;
+      --ink-soft:     #6D5440;
+      --brass:        #B88939;
+      --brass-bright: #D4A832;
+      --crimson:      #8F1F0D;
+      --crimson-dim:  #6B1608;
+      --green-dark:   #1E3020;
+      --plank-light:  rgba(255,255,255,0.06);
+      --plank-dark:   rgba(0,0,0,0.07);
+      --shadow:       0 8px 32px rgba(43,29,21,0.18);
+      --shadow-card:  0 4px 20px rgba(43,29,21,0.14);
     }
-  }
-  </script>
 
-  <!-- ── SCHEMA.ORG — breadcrumb structured data ── -->
-  <script type="application/ld+json" id="breadcrumb-schema">
-  {
-    "@context": "https://schema.org/",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://pepperjunction401-beep.github.io/sauce-bar/main.html"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Hot Sauces",
-        "item": "https://pepperjunction401-beep.github.io/sauce-bar/hot-sauces.html"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "2 Pig Mafia Steak Seasoning 13oz",
-        "item": "https://pepperjunction401-beep.github.io/sauce-bar/products/2-pig-mafia-steak-seasoning-13oz.html"
-      }
-    ]
-  }
-  </script>
+    /* ── RESET ────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
-  <!-- ── PRODUCT INTELLIGENCE LAYER ── -->
-  <script src="../assets/js/pj-product.js"></script>
-  <script src="../assets/js/cart-engine.js"></script>
-  <script src="../assets/js/cart-drawer.js"></script>
-  <script src="../assets/js/pj-product-review.js"></script>
+    /* ── BODY — warm parlor car interior ─────────────────────── */
+    body {
+      background-color: #F5E1B5;
+      background-image: url('assets/textures/Main_Background_Ivory.png');
+      background-size: 1024px 1536px;
+      background-repeat: repeat;
+      background-position: top left;
+      color: var(--ink);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      overflow-x: hidden;
+    }
 
+
+    /* Grain overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── BLACKRIVER FONT ──────────────────────────────────────── */
+    @font-face {
+      font-family: 'BlackRiver';
+      src: url('assets/fonts/Blackriver-Bold.ttf') format('truetype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ── SHARED UTILITIES ─────────────────────────────────────── */
+    .section-rule {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .section-rule-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--brass), transparent);
+    }
+    .section-rule-line.right {
+      background: linear-gradient(90deg, transparent, var(--brass));
+    }
+    .section-rule-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--cream-warm);
+      opacity: 1;
+      white-space: nowrap;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── HEADER ───────────────────────────────────────────────── */
+    .site-header {
+      background: var(--green-dark);
+      border-bottom: 2px solid var(--brass);
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+    }
+
+    .header-logo img {
+      height: 52px;
+      width: auto;
+    }
+
+    .header-wordmark {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .header-name {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--cream-warm);
+      line-height: 1;
+      letter-spacing: 0.04em;
+    }
+
+    .header-tagline {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.8;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .header-nav a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.65;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .header-nav a:hover { opacity: 1; }
+
+    .header-nav .nav-cta {
+      background: var(--crimson);
+      color: var(--cream-warm);
+      opacity: 1;
+      padding: 8px 20px;
+      border-radius: 2px;
+      border: 1px solid rgba(143,31,13,0.5);
+      transition: background 0.2s;
+    }
+    .header-nav .nav-cta:hover { background: var(--crimson-dim); }
+
+    /* ── HERO ─────────────────────────────────────────────────── */
+    .hero {
+      background: url('assets/textures/Hero-Banner-Pullman-Burgandy.png') center center / 100% 100% no-repeat;
+      aspect-ratio: 4 / 1;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(184,137,57,0.3);
+    }
+
+    .hero::before {
+      content: none;
+    }
+
+    .hero-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 8%;
+      z-index: 1;
+    }
+
+    .hero-headline {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(20px, 4.1vw, 64px);
+      color: var(--cream-warm);
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      padding: 4px 0;
+    }
+
+    .hero-sub {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(20px, 2.2vw, 26px);
+      font-style: italic;
+      color: var(--cream);
+      opacity: 0.72;
+      max-width: 560px;
+      line-height: 1.4;
+      margin-bottom: 0;
+      white-space: nowrap;
+    }
+
+    .hero-tag {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(11px, 1.8vw, 22px);
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--brass-bright);
+      opacity: 0.85;
+      margin-bottom: 10px;
+    }
+
+    /* ── COMING SOON RIBBON ───────────────────────────────────── */
+    .panel-card.coming-soon {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .panel-card.coming-soon::after {
+      content: 'Coming Soon';
+      position: absolute;
+      top: 36px;
+      right: -36px;
+      width: 160px;
+      padding: 8px 0;
+      background: #8F1F0D;
+      color: var(--cream-warm);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-align: center;
+      transform: rotate(45deg);
+      transform-origin: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* ── PANORAMA SECTION ─────────────────────────────────────── */
+    .panorama-section {
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+      font-size: 0;
+    }
+
+    /* ── BARTENDER PANORAMA ───────────────────────────────────── */
+    .bartender-panorama-wrap {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .bartender-panorama {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .bartender-video-overlay {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .bartender-video-overlay video {
+      height: 100%;
+      width: auto;
+      max-width: 100%;
+      display: block;
+      margin: 0;
+      padding: 0;
+      border: none;
+      outline: none;
+      vertical-align: top;
+    }
+
+    /* ── BARTENDER SECTION ────────────────────────────────────── */
+    .bartender-section {
+      padding: 80px 0 72px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bartender-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .bartender-video-wrap {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(184,137,57,0.3);
+      box-shadow: var(--shadow);
+      width: 100%;
+      aspect-ratio: 1600 / 928;
+    }
+
+    .bartender-video-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border: 1px solid rgba(184,137,57,0.12);
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .bartender-video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .bartender-chat {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .bartender-chat-info {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .bartender-chat-label {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(28px, 3.2vw, 42px);
+      letter-spacing: 0.06em;
+      color: var(--cream-warm);
+      padding: 4px 0;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .bartender-chat-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 2.2vw, 28px);
+      font-style: italic;
+      color: var(--cream-warm);
+      line-height: 1.3;
+      letter-spacing: 0.01em;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .bartender-chat-desc {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--ink-soft);
+    }
+
+    .chat-window {
+      border: 1px solid rgba(184,137,57,0.35);
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--cream-warm);
+      box-shadow: var(--shadow-card);
+      margin-top: 8px;
+    }
+
+    .chat-messages {
+      padding: 20px;
+      min-height: 160px;
+      max-height: 280px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chat-msg {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .chat-msg.user { flex-direction: row-reverse; }
+
+    .chat-bubble {
+      padding: 10px 14px;
+      border-radius: 3px;
+      font-size: 13px;
+      line-height: 1.55;
+      max-width: 80%;
+    }
+
+    .chat-msg.bartender .chat-bubble {
+      background: var(--green-dark);
+      color: var(--cream);
+    }
+
+    .chat-msg.user .chat-bubble {
+      background: var(--cream-deep);
+      color: var(--ink);
+    }
+
+    .chat-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--brass);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--ink);
+      flex-shrink: 0;
+      letter-spacing: 0.05em;
+    }
+
+    .chat-input-row {
+      display: flex;
+      border-top: 1px solid rgba(184,137,57,0.25);
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 12px 16px;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 13px;
+      color: var(--ink);
+      background: var(--cream-warm);
+      border: none;
+      outline: none;
+    }
+
+    .chat-input::placeholder {
+      color: var(--ink-soft);
+      opacity: 0.5;
+      font-style: italic;
+    }
+
+    .chat-send {
+      padding: 12px 20px;
+      background: var(--crimson);
+      color: var(--cream-warm);
+      border: none;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .chat-send:hover { background: var(--crimson-dim); }
+
+    .chat-thinking {
+      display: none;
+      padding: 8px 20px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--brass);
+      opacity: 0.65;
+      font-style: italic;
+    }
+
+    /* ── CATEGORY PANELS ──────────────────────────────────────── */
+    .categories-section {
+      padding: 72px 0 80px;
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(43,29,21,0.04) 50%,
+        transparent 100%
+      );
+    }
+
+    .panels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .panel-card {
+      position: relative;
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid rgba(184,137,57,0.3);
+      box-shadow: var(--shadow-card);
+      text-decoration: none;
+      display: block;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .panel-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(43,29,21,0.22);
+      border-color: rgba(184,137,57,0.65);
+    }
+
+    .panel-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+
+    .panel-card:hover img {
+      transform: scale(1.03);
+    }
+
+    /* ── DISPATCH BOARD ───────────────────────────────────────── */
+    .dispatch-section {
+      padding: 80px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .dispatch-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .dispatch-form-wrap {
+      border: 1px solid rgba(184,137,57,0.4);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: var(--cream-warm);
+      position: relative;
+    }
+
+    .dispatch-form-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border: 1px solid rgba(184,137,57,0.12);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    .dispatch-header {
+      background: var(--green-dark);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--brass);
+    }
+
+    .dispatch-header-left {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.55;
+    }
+
+    .dispatch-header-title {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 32px;
+      color: var(--cream-warm);
+      letter-spacing: 0.04em;
+    }
+
+    .dispatch-header-right {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.65;
+    }
+
+    .dispatch-body {
+      padding: 36px 40px 40px;
+    }
+
+    .dispatch-desc {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-style: italic;
+      color: var(--ink-soft);
+      line-height: 1.65;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .dispatch-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .dispatch-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .dispatch-field label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .dispatch-field input {
+      padding: 12px 16px;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--cream);
+      border: 1px solid rgba(184,137,57,0.35);
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .dispatch-field input:focus {
+      border-color: var(--brass);
+    }
+
+    .dispatch-field input::placeholder {
+      color: var(--ink-soft);
+      opacity: 0.45;
+      font-style: italic;
+    }
+
+    .dispatch-submit {
+      width: 100%;
+      padding: 15px;
+      background: var(--crimson);
+      color: var(--cream-warm);
+      border: none;
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+    .dispatch-submit:hover { background: var(--crimson-dim); }
+
+    /* ── BRAND STORY ──────────────────────────────────────────── */
+    .story-section {
+      padding: 80px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .story-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .story-heading {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(28px, 3.5vw, 48px);
+      color: var(--ink);
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+      margin-bottom: 24px;
+    }
+
+    .story-heading em {
+      font-style: italic;
+      color: var(--crimson);
+      font-family: 'Playfair Display', serif;
+    }
+
+    .story-body {
+      font-size: 15px;
+      line-height: 1.85;
+      color: var(--ink-soft);
+      margin-bottom: 20px;
+    }
+
+    .story-right {
+      padding-top: 8px;
+    }
+
+    .standard-card {
+      border: 1px solid rgba(184,137,57,0.35);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+
+    .standard-card-header {
+      background: var(--green-dark);
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--brass);
+    }
+
+    .standard-card-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.75;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .standard-card-title {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 16px;
+      color: var(--cream-warm);
+      letter-spacing: 0.04em;
+    }
+
+    .standard-card-body {
+      padding: 24px;
+      background: var(--cream-warm);
+    }
+
+    .standard-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(184,137,57,0.15);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+
+    .standard-item:last-child { border-bottom: none; }
+
+    .standard-item-dash {
+      color: var(--brass);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── LOCATION ─────────────────────────────────────────────── */
+    .location-section {
+      padding: 72px 0 96px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .location-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .location-heading {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(24px, 3vw, 38px);
+      color: var(--ink);
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+      margin-bottom: 28px;
+    }
+
+    .location-table {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid rgba(184,137,57,0.3);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .location-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      border-bottom: 1px solid rgba(184,137,57,0.15);
+    }
+
+    .location-row:last-child { border-bottom: none; }
+
+    .location-key {
+      padding: 14px 16px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--brass);
+      background: rgba(184,137,57,0.08);
+      border-right: 1px solid rgba(184,137,57,0.15);
+    }
+
+    .location-val {
+      padding: 14px 16px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink-mid);
+      background: var(--cream-warm);
+    }
+
+    .location-note {
+      margin-top: 20px;
+      padding: 16px 20px;
+      border: 1px solid rgba(184,137,57,0.25);
+      border-radius: 3px;
+      background: rgba(184,137,57,0.06);
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.65;
+      color: var(--ink-soft);
+    }
+
+    .location-right {
+      padding-top: 52px;
+    }
+
+    .contact-block {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--cream-warm);
+      border: 1px solid rgba(184,137,57,0.25);
+      border-radius: 3px;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .contact-item:hover {
+      border-color: rgba(184,137,57,0.6);
+      background: var(--cream);
+    }
+
+    .contact-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--brass);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .contact-value {
+      font-size: 14px;
+      color: var(--ink-mid);
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    .site-footer {
+      background: var(--green-dark);
+      border-top: 2px solid var(--brass);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-item {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.4;
+    }
+
+    .footer-item a {
+      color: inherit;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .footer-item a:hover { opacity: 1; }
+
+    .footer-sep {
+      width: 1px;
+      height: 12px;
+      background: rgba(184,137,57,0.3);
+    }
+
+    .footer-right {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.45;
+    }
+
+    /* ── SCROLL REVEAL ────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .bartender-chat { grid-template-columns: 1fr; gap: 24px; }
+      .story-inner { grid-template-columns: 1fr; gap: 40px; }
+      .location-inner { grid-template-columns: 1fr; gap: 36px; }
+      .location-right { padding-top: 0; }
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 20px; }
+      .site-header { padding: 16px 20px; }
+      .hero { aspect-ratio: 4 / 1; }
+      .panels-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .header-nav { display: none; }
+      .dispatch-body { padding: 24px 20px; }
+      .site-footer { padding: 20px; }
+    }
+
+
+    /* ═══════════════════════════════════
+       PICTURE RAIL LIGHT — Section Headers
+       ═══════════════════════════════════ */
+    .pic-light {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pic-light__plate {
+      width: 200px;
+      height: 48px;
+      background: linear-gradient(180deg,
+        #e8d070 0%, #c8a84b 15%, #d4a93a 35%,
+        #b8891e 55%, #9a7010 75%, #c8a84b 90%, #a07818 100%);
+      border-radius: 4px 4px 0 0;
+      position: relative;
+      box-shadow:
+        inset 0 1px 3px rgba(255,240,150,0.5),
+        inset 0 -2px 4px rgba(0,0,0,0.5),
+        0 4px 12px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pic-light__plate::before {
+      content: '';
+      position: absolute;
+      inset: 5px 8px;
+      border: 1.5px solid rgba(0,0,0,0.25);
+      border-radius: 2px;
+      box-shadow: inset 0 0 0 1px rgba(255,240,130,0.18);
+    }
+
+    .pic-light__plate::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%,
+        #e8c96e 0%, #b8891e 50%, #7a5c0a 100%);
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.6), 24px 0 0 0 #b8891e, 164px 0 0 0 #b8891e;
+    }
+
+    .pic-light__arms {
+      width: 160px;
+      height: 38px;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 30px;
+      margin-top: -1px;
+    }
+
+    .pic-light__arm {
+      width: 16px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pic-light__arm::before {
+      content: '';
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%,
+        #e8c96e 0%, #c8a84b 35%, #8a6010 70%, #5a3c08 100%);
+      box-shadow: inset -2px -2px 4px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.5);
+      flex-shrink: 0;
+    }
+
+    .arm-shaft {
+      width: 8px;
+      flex: 1;
+      background: linear-gradient(90deg,
+        #7a5c0a 0%, #c8a84b 25%, #e8c96e 50%, #c8a84b 75%, #7a5c0a 100%);
+      position: relative;
+    }
+
+    .arm-shaft::before, .arm-shaft::after {
+      content: '';
+      position: absolute;
+      left: -3px;
+      width: 14px;
+      height: 5px;
+      background: linear-gradient(90deg,
+        #5a3c08 0%, #c8a84b 30%, #e8c96e 50%, #c8a84b 70%, #5a3c08 100%);
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .arm-shaft::before { top: 4px; }
+    .arm-shaft::after  { bottom: 4px; }
+
+    .arm-bottom-ball {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%,
+        #d4a93a 0%, #a07010 50%, #5a3c08 100%);
+      box-shadow: inset -1px -1px 3px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.4);
+      flex-shrink: 0;
+    }
+
+    .pic-light__bar-wrap {
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-top: -2px;
+    }
+
+    .pic-light__finial {
+      width: 22px;
+      height: 44px;
+      flex-shrink: 0;
+      background: linear-gradient(180deg,
+        #c8a84b 0%, #e8c96e 20%, #b8891e 50%, #8a6010 80%, #5a3c08 100%);
+      border-radius: 50% 0 0 50% / 50% 0 0 50%;
+      box-shadow:
+        inset 2px 0 4px rgba(255,240,150,0.3),
+        inset -2px 0 4px rgba(0,0,0,0.4),
+        -4px 0 8px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    .pic-light__finial:last-child {
+      border-radius: 0 50% 50% 0 / 0 50% 50% 0;
+      box-shadow:
+        inset -2px 0 4px rgba(255,240,150,0.3),
+        inset 2px 0 4px rgba(0,0,0,0.4),
+        4px 0 8px rgba(0,0,0,0.5);
+    }
+
+    .pic-light__finial::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #e8c96e, #9a7010 60%, #5a3c08 100%);
+      top: 50%;
+      transform: translateY(-50%);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+    .pic-light__finial::after      { left: -6px; }
+    .pic-light__finial:last-child::after { right: -6px; left: auto; }
+
+    .pic-light__collar {
+      width: 18px;
+      height: 44px;
+      flex-shrink: 0;
+      background: linear-gradient(90deg,
+        #5a3c08 0%, #c8a84b 25%, #e8d070 50%, #c8a84b 75%, #5a3c08 100%);
+      position: relative;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(0,0,0,0.3);
+    }
+
+    .pic-light__collar::before, .pic-light__collar::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: rgba(0,0,0,0.35);
+    }
+    .pic-light__collar::before { top: 10px; }
+    .pic-light__collar::after  { bottom: 10px; }
+
+    .pic-light__tube {
+      flex: 1;
+      height: 44px;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg,
+          rgba(180,255,200,0.55) 0%,
+          rgba(100,220,140,0.20) 12%,
+          transparent 25%,
+          transparent 70%,
+          rgba(0,60,20,0.3) 100%
+        ),
+        linear-gradient(180deg,
+          #1a7a38 0%, #22a050 20%, #1a8040 50%, #145c2c 80%, #0e3c1c 100%);
+      box-shadow:
+        inset 0 4px 8px rgba(0,0,0,0.3),
+        inset 0 -4px 6px rgba(0,0,0,0.4),
+        0 0 30px rgba(34,197,94,0.25),
+        0 0 60px rgba(34,197,94,0.12),
+        0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    .pic-light__tube::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%,
+        rgba(120,255,160,0.30) 0%, rgba(34,197,94,0.15) 50%, transparent 100%);
+      animation: tubeFlicker 8s ease-in-out infinite;
+    }
+
+    .pic-light__tube::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 5%;
+      right: 5%;
+      height: 8px;
+      background: linear-gradient(180deg,
+        rgba(200,255,220,0.5) 0%, rgba(150,255,190,0.15) 100%);
+      border-radius: 4px;
+      filter: blur(1px);
+    }
+
+    @keyframes tubeFlicker {
+      0%,100% { opacity: 1; }
+      25%      { opacity: 0.88; }
+      50%      { opacity: 0.95; }
+      75%      { opacity: 0.91; }
+    }
+
+    .pic-light__label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .pic-light__label span {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #d4ffde;
+      text-shadow:
+        0 0 8px rgba(120,255,160,0.9),
+        0 0 20px rgba(34,197,94,0.7),
+        0 0 40px rgba(34,197,94,0.4),
+        0 1px 2px rgba(0,0,0,0.8);
+      white-space: nowrap;
+    }
+
+    .pic-light__glow {
+      width: 90%;
+      height: 60px;
+      background: radial-gradient(ellipse 70% 100% at 50% 0%,
+        rgba(34,197,94,0.18) 0%, rgba(34,197,94,0.07) 50%, transparent 100%);
+      pointer-events: none;
+      animation: tubeFlicker 8s ease-in-out infinite;
+    }
+
+    @media (max-width: 640px) {
+      .pic-light__label span { font-size: 16px; letter-spacing: 0.18em; }
+      .pic-light__plate { width: 140px; }
+    }
+
+
+    /* ═══════════════════════════════════
+       CHALKBOARD — Bartender Info Panel
+       ═══════════════════════════════════ */
+    .chalkboard-wrap {
+      position: relative;
+      padding: 14px;
+      background: linear-gradient(145deg,
+        #8B6914 0%, #A07820 15%, #6B4F0E 30%,
+        #C49A2A 45%, #8B6914 60%, #7A5C10 75%,
+        #B08020 90%, #6B4F0E 100%);
+      border-radius: 4px;
+      box-shadow:
+        inset 0 2px 6px rgba(255,220,100,0.3),
+        inset 0 -3px 8px rgba(0,0,0,0.5),
+        0 8px 32px rgba(0,0,0,0.5),
+        0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    /* Decorative frame corner details */
+    .chalkboard-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 2px solid rgba(212,168,50,0.5);
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Brass corner accents */
+    .chalkboard-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(255,220,100,0.2);
+      border-radius: 3px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .chalkboard-corner {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      z-index: 4;
+      background: radial-gradient(circle at 40% 40%,
+        #e8c96e 0%, #c8a84b 40%, #8a6010 80%, #5a3c08 100%);
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6), inset -1px -1px 3px rgba(0,0,0,0.4);
+    }
+    .chalkboard-corner.tl { top: 4px; left: 4px; }
+    .chalkboard-corner.tr { top: 4px; right: 4px; }
+    .chalkboard-corner.bl { bottom: 4px; left: 4px; }
+    .chalkboard-corner.br { bottom: 4px; right: 4px; }
+
+    .chalkboard-surface {
+      background:
+        /* chalk dust texture */
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
+        linear-gradient(160deg,
+          #2A3828 0%, #1E2E1E 25%,
+          #243222 50%, #1A2818 75%,
+          #223020 100%);
+      border-radius: 2px;
+      padding: 36px 32px 40px;
+      position: relative;
+      overflow: hidden;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* Chalk smudge/erase marks */
+    .chalkboard-surface::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 10%;
+      width: 40%;
+      height: 30%;
+      background: radial-gradient(ellipse,
+        rgba(255,255,255,0.03) 0%, transparent 70%);
+      transform: rotate(-8deg);
+      pointer-events: none;
+    }
+
+    .chalkboard-surface::after {
+      content: '';
+      position: absolute;
+      bottom: 15%;
+      right: 8%;
+      width: 35%;
+      height: 25%;
+      background: radial-gradient(ellipse,
+        rgba(255,255,255,0.02) 0%, transparent 70%);
+      transform: rotate(5deg);
+      pointer-events: none;
+    }
+
+    .chalkboard-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.2vw, 42px);
+      font-weight: 900;
+      font-style: italic;
+      color: #F0EDE0;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      text-shadow:
+        0 0 12px rgba(255,255,255,0.15),
+        0 1px 3px rgba(0,0,0,0.8);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Decorative chalk underline */
+    .chalkboard-title::after {
+      content: '';
+      display: block;
+      margin-top: 10px;
+      height: 2px;
+      width: 80%;
+      background: linear-gradient(90deg,
+        transparent, rgba(240,237,224,0.5) 20%,
+        rgba(240,237,224,0.5) 80%, transparent);
+      border-radius: 1px;
+    }
+
+    .chalkboard-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(16px, 1.8vw, 22px);
+      font-style: italic;
+      color: #D8D4C0;
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+      position: relative;
+      z-index: 1;
+    }
+
+    .chalkboard-desc {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(12px, 1.2vw, 14px);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: #B8B4A0;
+      line-height: 1.75;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* CHALKBOARD — Bartender Info Panel */
+    .chalkboard-wrap {
+      position: relative;
+      padding: 18px;
+      background: linear-gradient(135deg,
+        #5C3310 0%, #7A4A20 12%, #4A2808 25%,
+        #8B5E30 38%, #5C3310 50%, #6B4018 62%,
+        #9A6838 75%, #4A2808 88%, #6B4018 100%);
+      border-radius: 4px;
+      box-shadow:
+        inset 0 2px 8px rgba(255,200,120,0.2),
+        inset 0 -4px 10px rgba(0,0,0,0.6),
+        inset 4px 0 8px rgba(0,0,0,0.3),
+        inset -4px 0 8px rgba(0,0,0,0.3),
+        0 12px 40px rgba(0,0,0,0.6),
+        0 4px 12px rgba(0,0,0,0.4);
+      aspect-ratio: 3 / 4;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chalkboard-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 3px solid rgba(60,30,8,0.8);
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 3;
+      box-shadow:
+        inset 0 0 0 1px rgba(180,120,50,0.3),
+        0 0 0 1px rgba(180,120,50,0.15);
+    }
+
+    .chalkboard-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(180,120,50,0.2);
+      border-radius: 1px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .chalkboard-corner {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      z-index: 4;
+      background: linear-gradient(135deg,
+        #9A6838 0%, #6B4018 35%, #4A2808 60%, #7A4A20 100%);
+      box-shadow:
+        inset 1px 1px 3px rgba(180,130,60,0.4),
+        inset -1px -1px 3px rgba(0,0,0,0.5),
+        0 2px 6px rgba(0,0,0,0.5);
+    }
+    .chalkboard-corner.tl { top: 0; left: 0; border-radius: 4px 0 0 0; }
+    .chalkboard-corner.tr { top: 0; right: 0; border-radius: 0 4px 0 0; }
+    .chalkboard-corner.bl { bottom: 0; left: 0; border-radius: 0 0 0 4px; }
+    .chalkboard-corner.br { bottom: 0; right: 0; border-radius: 0 0 4px 0; }
+
+    .chalkboard-surface {
+      flex: 1;
+      margin: 18px;
+      background:
+        linear-gradient(160deg,
+          #1C1C1C 0%, #141414 30%,
+          #181818 60%, #101010 100%);
+      border-radius: 1px;
+      padding: 36px 28px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+      box-shadow:
+        inset 0 2px 8px rgba(0,0,0,0.8),
+        inset 0 -2px 8px rgba(0,0,0,0.6);
+    }
+
+    .chalkboard-surface::before {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 5%;
+      width: 50%;
+      height: 20%;
+      background: radial-gradient(ellipse,
+        rgba(255,255,255,0.025) 0%, transparent 70%);
+      transform: rotate(-6deg);
+      pointer-events: none;
+    }
+
+    .chalkboard-surface::after {
+      content: '';
+      position: absolute;
+      bottom: 20%;
+      right: 5%;
+      width: 40%;
+      height: 15%;
+      background: radial-gradient(ellipse,
+        rgba(255,255,255,0.018) 0%, transparent 70%);
+      transform: rotate(4deg);
+      pointer-events: none;
+    }
+
+    .chalkboard-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 3vw, 40px);
+      font-weight: 900;
+      font-style: italic;
+      color: #EEEAE0;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      text-shadow:
+        0 0 10px rgba(255,255,255,0.12),
+        0 1px 3px rgba(0,0,0,0.9);
+      position: relative;
+      z-index: 1;
+    }
+
+    .chalkboard-title::after {
+      content: '';
+      display: block;
+      margin-top: 12px;
+      height: 2px;
+      width: 75%;
+      background: linear-gradient(90deg,
+        rgba(230,226,210,0.6) 0%,
+        rgba(230,226,210,0.6) 70%, transparent);
+      border-radius: 1px;
+      filter: blur(0.5px);
+    }
+
+    .chalkboard-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(15px, 1.6vw, 20px);
+      font-style: italic;
+      color: #D0CCC0;
+      letter-spacing: 0.02em;
+      line-height: 1.5;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+      position: relative;
+      z-index: 1;
+    }
+
+    .chalkboard-desc {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(11px, 1.1vw, 13px);
+      font-weight: 400;
+      letter-spacing: 0.09em;
+      color: #A8A49A;
+      line-height: 1.8;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ═══════════════════════════════════
+       PJ CHALKBOARD FRAME — Reusable
+       ═══════════════════════════════════ */
+    .pj-chalkboard-frame {
+      --frame-w: 700px;
+      --frame-h: 1050px;
+      --brass-dark: #4d3112;
+      --brass-mid: #8b5b20;
+      --brass-light: #c78b3b;
+      --brass-highlight: #e0b76a;
+      --ornament: #cf984a;
+      --inner-line: rgba(224, 183, 106, 0.75);
+      --shadow: rgba(0, 0, 0, 0.35);
+      position: relative;
+      width: min(var(--frame-w), 92vw);
+      aspect-ratio: 2 / 3;
+      margin: 40px auto;
+    }
+    .pj-hanger {
+      position: absolute;
+      top: -6px;
+      width: 34px;
+      height: 34px;
+      border-radius: 14px 14px 10px 10px;
+      background: linear-gradient(180deg, var(--brass-highlight), var(--brass-mid));
+      border: 2px solid var(--brass-dark);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        0 2px 4px rgba(0,0,0,0.2);
+      z-index: 3;
+    }
+    .pj-hanger::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      right: 7px;
+      top: 4px;
+      height: 16px;
+      border: 3px solid var(--brass-dark);
+      border-bottom: none;
+      border-radius: 14px 14px 0 0;
+    }
+    .pj-hanger-left { left: 18%; }
+    .pj-hanger-right { right: 18%; }
+    .pj-frame-outer {
+      position: absolute;
+      inset: 18px 0 0;
+      border-radius: 28px;
+      padding: 14px;
+      background:
+        linear-gradient(135deg,
+          var(--brass-dark) 0%,
+          var(--brass-mid) 18%,
+          var(--brass-highlight) 35%,
+          var(--brass-mid) 52%,
+          #6e4518 70%,
+          var(--brass-dark) 100%);
+      box-shadow:
+        0 16px 30px var(--shadow),
+        inset 0 1px 0 rgba(255,255,255,0.2),
+        inset 0 -2px 0 rgba(0,0,0,0.28);
+    }
+    .pj-frame-middle {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 22px;
+      padding: 10px;
+      background:
+        linear-gradient(135deg,
+          #3b230c 0%,
+          #a66e2a 20%,
+          #d6a357 35%,
+          #9e6826 55%,
+          #5b3915 100%);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.08),
+        inset 0 0 0 3px rgba(90, 53, 18, 0.7);
+    }
+    .pj-frame-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #141414;
+      box-shadow:
+        inset 0 0 0 2px var(--inner-line),
+        inset 0 0 0 8px rgba(55, 33, 12, 0.95);
+    }
+    .pj-frame-inner::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(224, 183, 106, 0.8);
+      border-radius: 10px;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .pj-frame-inner::after {
+      content: "";
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(75, 45, 16, 0.85);
+      border-radius: 8px;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .pj-center {
+      position: absolute;
+      inset: 34px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+      overflow-y: auto;
+      padding: 8px 4px;
+    }
+    .pj-corner {
+      position: absolute;
+      width: 74px;
+      height: 74px;
+      display: grid;
+      place-items: center;
+      color: var(--ornament);
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 64px;
+      line-height: 1;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+      z-index: 4;
+      pointer-events: none;
+    }
+    .pj-corner-tl { top: 18px; left: 18px; }
+    .pj-corner-tr { top: 18px; right: 18px; transform: scaleX(-1); }
+    .pj-corner-bl { bottom: 18px; left: 18px; transform: scaleY(-1); }
+    .pj-corner-br { bottom: 18px; right: 18px; transform: scale(-1); }
+    .pj-divider {
+      position: absolute;
+      left: 18%;
+      right: 18%;
+      height: 18px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .pj-divider::before, .pj-divider::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--ornament), transparent);
+      transform: translateY(-50%);
+    }
+    .pj-divider::before { left: 0; }
+    .pj-divider::after { right: 0; }
+    .pj-divider-top { top: 18%; }
+    .pj-divider-mid { top: 50%; }
+    .pj-divider-bottom { top: 82%; }
+
+    /* Content inside frames */
+    .pj-frame-title {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(18px, 2.2vw, 28px);
+      color: #E0B76A;
+      letter-spacing: 0.04em;
+      text-align: center;
+      line-height: 1.2;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }
+    .pj-frame-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(13px, 1.4vw, 17px);
+      font-style: italic;
+      color: #C8A85A;
+      text-align: center;
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+    }
+    .pj-frame-body {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(11px, 1.1vw, 13px);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: #B8A888;
+      line-height: 1.75;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+    .pj-frame-rule {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--ornament), transparent);
+      margin: 4px 0;
+      flex-shrink: 0;
+    }
+    .pj-frame-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(9px, 0.9vw, 11px);
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #E0B76A;
+      text-align: center;
+      opacity: 0.75;
+    }
+    .pj-frame-input {
+      width: 100%;
+      padding: 10px 14px;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 13px;
+      color: #2B1D15;
+      background: rgba(240, 220, 170, 0.9);
+      border: 1px solid rgba(184,137,57,0.5);
+      border-radius: 2px;
+      outline: none;
+    }
+    .pj-frame-input:focus {
+      border-color: var(--brass-highlight);
+      background: rgba(253, 246, 232, 0.95);
+    }
+    .pj-frame-input::placeholder {
+      color: #6D5440;
+      opacity: 0.6;
+      font-style: italic;
+    }
+    .pj-frame-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--brass-mid), var(--brass-dark));
+      color: #F5ECD6;
+      border: 1px solid var(--brass-highlight);
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(14px, 1.4vw, 18px);
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.2s;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+    .pj-frame-btn:hover {
+      background: linear-gradient(135deg, var(--brass-light), var(--brass-mid));
+    }
+    .pj-location-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .pj-location-key {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(8px, 0.85vw, 10px);
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #E0B76A;
+      white-space: nowrap;
+      padding-top: 2px;
+      flex-shrink: 0;
+      width: 70px;
+    }
+    .pj-location-val {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(10px, 1vw, 12px);
+      letter-spacing: 0.06em;
+      color: #C8B898;
+      line-height: 1.6;
+    }
+    .pj-contact-link {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      padding: 8px 4px;
+      border-bottom: 1px solid rgba(207,152,74,0.2);
+      transition: border-color 0.2s;
+    }
+    .pj-contact-link:last-child { border-bottom: none; }
+    .pj-contact-link:hover { border-color: rgba(207,152,74,0.6); }
+
+    /* Wider frame for dispatch/location */
+    .pj-chalkboard-frame.wide {
+      --frame-w: 580px;
+      aspect-ratio: 3 / 4;
+    }
+
+    @media (max-width: 768px) {
+      .pj-corner { width: 54px; height: 54px; font-size: 46px; }
+      .pj-center { inset: 26px; }
+    }
+
+
+    /* ═══════════════════════════════════
+       PJ STANDARD BOARD — Reusable Frame
+       ═══════════════════════════════════ */
+    .pj-standard-board {
+      --board-width: 580px;
+      --frame-dark: #5c3716;
+      --frame-mid: #9a6429;
+      --frame-light: #d7ab61;
+      --frame-highlight: #f0cd84;
+      --gold: #cf984a;
+      --gold-soft: #d9ac63;
+      --inner-shadow: rgba(0, 0, 0, 0.28);
+      position: relative;
+      width: min(var(--board-width), 94vw);
+      aspect-ratio: 1024 / 1456;
+      margin: 24px auto;
+    }
+    .pj-ring {
+      position: absolute;
+      top: 14px;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #8e6b37;
+      border-radius: 50%;
+      z-index: 5;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset;
+    }
+    .pj-ring::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 12px;
+      width: 2px;
+      height: 10px;
+      background: #8e6b37;
+      transform: translateX(-50%);
+    }
+    .pj-ring-left { left: 17%; }
+    .pj-ring-right { right: 17%; }
+    .pj-board-frame {
+      position: absolute;
+      inset: 0;
+      border-radius: 2px;
+      padding: 18px;
+      background:
+        linear-gradient(135deg,
+          #593618 0%, #9c652a 12%, #e0b870 24%,
+          #8f5f29 38%, #6f451c 50%, #c99047 66%,
+          #f1cd87 82%, #7c4d20 100%);
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.24),
+        inset 0 0 0 1px rgba(255,255,255,0.2),
+        inset 0 0 0 3px rgba(83,49,18,0.6),
+        inset 0 0 0 7px rgba(218,170,96,0.55),
+        inset 0 0 0 10px rgba(88,54,21,0.7);
+    }
+    .pj-board-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #141414;
+      overflow: hidden;
+      box-shadow:
+        inset 0 0 0 2px rgba(49, 30, 11, 0.9),
+        inset 0 0 0 7px rgba(226, 188, 104, 0.58),
+        inset 0 0 0 9px rgba(62, 38, 14, 0.82);
+    }
+    .pj-board-inner::before,
+    .pj-board-inner::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .pj-board-inner::before {
+      inset: 26px;
+      border: 2px solid rgba(210, 154, 67, 0.9);
+    }
+    .pj-board-inner::after {
+      inset: 38px;
+      border: 1px solid rgba(230, 182, 92, 0.78);
+    }
+    .pj-content {
+      position: absolute;
+      inset: 54px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+      overflow-y: auto;
+      padding: 4px 8px;
+    }
+    .pj-ornament,
+    .pj-center-crest,
+    .pj-side {
+      color: var(--gold);
+      position: absolute;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .pj-ornament svg,
+    .pj-center-crest svg,
+    .pj-side svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .pj-top-left    { top: 34px; left: 36px; width: 92px; height: 92px; }
+    .pj-top-right   { top: 34px; right: 36px; width: 92px; height: 92px; transform: scaleX(-1); }
+    .pj-bottom-left { bottom: 34px; left: 36px; width: 92px; height: 92px; transform: scaleY(-1); }
+    .pj-bottom-right{ bottom: 34px; right: 36px; width: 92px; height: 92px; transform: scale(-1); }
+    .pj-center-crest-top {
+      top: 36px; left: 50%; width: 45%; height: 42px; transform: translateX(-50%);
+    }
+    .pj-center-crest-bottom {
+      bottom: 34px; left: 50%; width: 45%; height: 42px; transform: translateX(-50%);
+    }
+    .pj-side-left  { left: 52px;  top: 130px; width: 28px; height: 78%; }
+    .pj-side-right { right: 52px; top: 130px; width: 28px; height: 78%; }
+
+    /* Content styles inside board */
+    .pj-board-title {
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(16px, 2vw, 24px);
+      color: #E0B76A;
+      letter-spacing: 0.04em;
+      text-align: center;
+      line-height: 1.2;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }
+    .pj-board-rule {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #cf984a, transparent);
+      margin: 2px 0;
+      flex-shrink: 0;
+    }
+    .pj-board-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(12px, 1.3vw, 16px);
+      font-style: italic;
+      color: #C8A85A;
+      text-align: center;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+    }
+    .pj-board-body {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(10px, 1vw, 12px);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: #B8A888;
+      line-height: 1.7;
+      text-align: center;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+    }
+    .pj-board-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(8px, 0.8vw, 10px);
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #E0B76A;
+      text-align: center;
+      opacity: 0.8;
+    }
+    .pj-board-input {
+      width: 100%;
+      padding: 8px 12px;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 12px;
+      color: #2B1D15;
+      background: rgba(240, 220, 170, 0.88);
+      border: 1px solid rgba(184,137,57,0.5);
+      border-radius: 2px;
+      outline: none;
+    }
+    .pj-board-input:focus {
+      border-color: #E0B76A;
+      background: rgba(253, 246, 232, 0.95);
+    }
+    .pj-board-input::placeholder {
+      color: #6D5440;
+      opacity: 0.6;
+      font-style: italic;
+    }
+    .pj-board-btn {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(135deg, #9a6429, #5c3716);
+      color: #F5ECD6;
+      border: 1px solid #E0B76A;
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: clamp(13px, 1.3vw, 17px);
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.2s;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+    .pj-board-btn:hover {
+      background: linear-gradient(135deg, #d7ab61, #9a6429);
+    }
+    .pj-loc-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .pj-loc-key {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(7px, 0.75vw, 9px);
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #E0B76A;
+      white-space: nowrap;
+      padding-top: 2px;
+      flex-shrink: 0;
+      width: 60px;
+    }
+    .pj-loc-val {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(9px, 0.9vw, 11px);
+      letter-spacing: 0.05em;
+      color: #C8B898;
+      line-height: 1.55;
+    }
+    .pj-contact-row {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      padding: 6px 4px;
+      border-bottom: 1px solid rgba(207,152,74,0.2);
+      transition: border-color 0.2s;
+    }
+    .pj-contact-row:last-child { border-bottom: none; }
+    .pj-contact-row:hover { border-color: rgba(207,152,74,0.6); }
+
+    @media (max-width: 700px) {
+      .pj-board-frame { padding: 12px; }
+      .pj-board-inner::before { inset: 18px; }
+      .pj-board-inner::after  { inset: 28px; }
+      .pj-content { inset: 40px; }
+      .pj-top-left, .pj-top-right,
+      .pj-bottom-left, .pj-bottom-right { width: 68px; height: 68px; }
+      .pj-side-left, .pj-side-right { top: 104px; height: 80%; }
+      .pj-center-crest-top,
+      .pj-center-crest-bottom { width: 54%; }
+    }
+
+
+    /* ── Dispatch Board image + form overlay ── */
+    .dispatch-board-wrap {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .dispatch-board-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .dispatch-form-overlay {
+      position: absolute;
+      bottom: 14%;
+      left: 12%;
+      right: 12%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .dispatch-form-overlay input {
+      width: 100%;
+      padding: 10px 14px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      color: #2B1D15;
+      background: rgba(240, 220, 170, 0.88);
+      border: 1px solid rgba(184,137,57,0.5);
+      border-radius: 2px;
+      outline: none;
+    }
+    .dispatch-form-overlay input:focus {
+      border-color: #E0B76A;
+      background: rgba(253,246,232,0.95);
+    }
+    .dispatch-form-overlay input::placeholder {
+      color: #6D5440;
+      opacity: 0.6;
+      font-style: italic;
+    }
+    .dispatch-form-overlay .mc-submit {
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(135deg, #9a6429, #5c3716);
+      color: #F5ECD6;
+      border: 1px solid #E0B76A;
+      font-family: 'BlackRiver', 'Playfair Display', serif;
+      font-size: 16px;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+    .dispatch-form-overlay .mc-submit:hover {
+      background: linear-gradient(135deg, #d7ab61, #9a6429);
+    }
+    /* Hide default Mailchimp styles */
+    #mc_embed_signup { background: transparent !important; }
+    #mc_embed_signup h2,
+    #mc_embed_signup .indicates-required { display: none !important; }
+    #mc_embed_signup .mc-field-group { margin-bottom: 0 !important; }
+    #mc_embed_signup .mc-field-group label { display: none !important; }
+    #mc_embed_signup input.email,
+    #mc_embed_signup input.text {
+      width: 100% !important;
+      padding: 10px 14px !important;
+      font-family: 'Josefin Sans', sans-serif !important;
+      font-size: 13px !important;
+      letter-spacing: 0.06em !important;
+      color: #2B1D15 !important;
+      background: rgba(240,220,170,0.88) !important;
+      border: 1px solid rgba(184,137,57,0.5) !important;
+      border-radius: 2px !important;
+      outline: none !important;
+      box-sizing: border-box !important;
+    }
+    #mc_embed_signup input.email:focus,
+    #mc_embed_signup input.text:focus {
+      border-color: #E0B76A !important;
+      background: rgba(253,246,232,0.95) !important;
+    }
+    #mc_embed_signup .button {
+      width: 100% !important;
+      padding: 11px !important;
+      background: linear-gradient(135deg, #9a6429, #5c3716) !important;
+      color: #F5ECD6 !important;
+      border: 1px solid #E0B76A !important;
+      font-family: 'BlackRiver', 'Playfair Display', serif !important;
+      font-size: 16px !important;
+      letter-spacing: 0.06em !important;
+      cursor: pointer !important;
+      border-radius: 2px !important;
+      height: auto !important;
+    }
+    #mc_embed_signup .button:hover {
+      background: linear-gradient(135deg, #d7ab61, #9a6429) !important;
+    }
+    #mc_embed_signup_scroll {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+
+    /* Art Deco burgundy lines — ivory sections only */
+    .ivory-section {
+      position: relative;
+    }
+    .ivory-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 177px;
+      height: 100%;
+      background-image: url('assets/textures/Art_Deco_Burgundy_Lines.png');
+      background-size: 177px 100%;
+      background-repeat: no-repeat;
+      background-position: top left;
+      pointer-events: none;
+      z-index: 2;
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- ═══ HEADER ══════════════════════════════════════════════════ -->
-<header class="site-header">
-  <a class="header-logo" href="../conductor.html">
-    <img src="../assets/PJ-logo.png" alt="Pepper Junction" />
-    <div class="header-wordmark">
-      <span class="header-name">Pepper Junction</span>
-      <span class="header-tagline">Est. 2014 · Rhode Island</span>
-    </div>
-  </a>
-  <nav class="header-nav">
-    <a href="../hot-sauces.html" id="nav-category">Hot Sauces</a>
-    <a href="../main.html">Home</a>
-    <a href="../index.html">Pairing Bar</a>
-    <a href="../main.html#location">Visit</a>
-  </nav>
-</header>
-
-<!-- ═══ BREADCRUMB ══════════════════════════════════════════════ -->
-<div class="breadcrumb">
-  <div class="breadcrumb-inner">
-    <a href="../main.html">Home</a>
-    <span>›</span>
-    <a href="../hot-sauces.html" id="breadcrumb-category">Hot Sauces</a>
-    <span>›</span>
-    2 Pig Mafia Steak Seasoning 13oz
-  </div>
-</div>
-
-<!-- ═══ HERO BANNER ═════════════════════════════════════════════ -->
-<div class="product-hero">
-  <div class="product-hero-eyebrow">2 Pig Mafia · Seasonings/Dry Rubs · BBQ</div>
-  <div class="product-hero-name">2 Pig Mafia Steak Seasoning 13oz</div>
-  <div class="product-hero-sub"><span id="hero-sub"></span> · <span id="hero-size"></span> · <span id="hero-price"></span></div>
-</div>
-
-<!-- ═══ PAGE BODY ════════════════════════════════════════════════ -->
-<div class="page-outer">
-  <div class="chalkboard-wrap reveal">
-    <div class="chalk-corner tl"></div>
-    <div class="chalk-corner tr"></div>
-    <div class="chalk-corner bl"></div>
-    <div class="chalk-corner br"></div>
-
-    <div class="chalkboard-surface">
-      <div class="product-layout">
-
-        <!-- IMAGE COLUMN -->
-        <aside class="product-images">
-
-          <div class="img-frame">
-            <div class="frame-bolt tl"></div>
-            <div class="frame-bolt tr"></div>
-            <div class="frame-bolt bl"></div>
-            <div class="frame-bolt br"></div>
-            <div class="img-frame-inner">
-              <img
-                src="../assets/sauces/2-pig-mafia-steak-seasoning-13oz.png"
-                alt="2 Pig Mafia 2 Pig Mafia Steak Seasoning 13oz"
-                loading="eager"
-                onerror="this.style.opacity='0.3'"
-              />
-            </div>
-          </div>
-          <div class="img-label">2 Pig Mafia</div>
-
-          <div class="img-frame">
-            <div class="frame-bolt tl"></div>
-            <div class="frame-bolt tr"></div>
-            <div class="frame-bolt bl"></div>
-            <div class="frame-bolt br"></div>
-            <div class="img-frame-inner" style="height:340px;">
-              <img
-                id="food-img"
-                src="../assets/sauces/food/food-2-pig-mafia-steak-seasoning-13oz.png"
-                alt="2 Pig Mafia 2 Pig Mafia Steak Seasoning 13oz food pairing"
-                loading="lazy"
-                style="width:100%; height:100%; object-fit:cover;"
-                onerror="this.src='../assets/PJ-logo.png'; this.style.height='200px'; this.style.objectFit='contain'; this.style.opacity='0.65';"
-              />
-            </div>
-          </div>
-
-          <div class="img-frame">
-            <div class="frame-bolt tl"></div>
-            <div class="frame-bolt tr"></div>
-            <div class="frame-bolt bl"></div>
-            <div class="frame-bolt br"></div>
-            <div class="img-frame-inner" style="min-height:340px;">
-              <img
-                src="../assets/PJ-logo.png"
-                alt="Pepper Junction"
-                loading="lazy"
-                style="max-height:100px; opacity:0.65;"
-              />
-            </div>
-          </div>
-
-        </aside>
-
-        <!-- CONTENT COLUMN -->
-        <div class="product-content">
-
-          <!-- Badge Car -->
-          <div class="badge-station-wrap">
-            <div class="badge-station-header">
-              <span class="badge-station-title">Badge Car
-                <span class="badge-info-btn" id="badge-info-btn" title="What is the Badge Car?"><img src="../assets/badge-car-bell.png" alt="Badge Car Info" style="width:38px;height:38px;object-fit:contain;vertical-align:middle;margin-top:-4px;"></span>
-              </span>
-              <span class="badge-station-sub">Earn these badges with qualifying purchases</span>
-            </div>
-            <div class="product-badges" id="product-badges"></div>
-            <div class="carousel-hint" id="badge-hint"></div>
-
-            <!-- Badge Car Info Popup -->
-            <div class="badge-info-popup" id="badge-info-popup">
-              <button class="badge-info-close" id="badge-info-close">×</button>
-              <div class="badge-info-title">What is the Badge Car?</div>
-              <div class="badge-info-body">Every sauce you buy earns you something. <span class="modal-highlight">Heat badges:</span> track how far up the scale you've gone. <span class="modal-highlight">Food badges:</span> mark your flavor territory. <span class="modal-highlight">Narrative badges:</span> connect you to the Pepper Junction story. Your Badge Depot, your personal display case of accomplishments and map of how to discover more. <span class="modal-highlight">But note: Some badges you'll see coming. Some will surprise you.</span></div>
-            </div>
-          </div>
-
-          <!-- Classification pills -->
-          <div class="product-title-block">
-            <div class="meta-pills">
-              <span class="meta-pill">Dry Rub</span>
-              <span class="meta-pill">Grilling</span>
-              <span class="meta-pill">Champion</span>
-              <span class="meta-pill heat" id="heat-pill">Medium · 4/10</span>
-            </div>
-            <div class="classification-row">
-              <div class="class-item">
-                <span class="class-key">Heat Category</span>
-                <span class="class-val" id="class-heat-cat">Medium</span>
-              </div>
-              <div class="class-item">
-                <span class="class-key">How it Hits™</span>
-                <span class="class-val" id="class-how-hits">Immediate Hit</span>
-              </div>
-              <div class="class-item">
-                <span class="class-key">Heat Finish™</span>
-                <span class="class-val" id="class-heat-finish">Escalator Down</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- What It Is -->
-          <div class="editorial">
-            <div class="section-label">What It Is</div>
-            <div class="section-body">
-              <p>2 Pig Mafia Steak Seasoning is a competition-grade steak rub formulated for beef-forward applications and high-heat cooking environments. Designed to enhance natural meat flavor rather than mask it, this blend delivers savory depth, balanced salt structure, and controlled pepper heat for clean searing and proper crust development. This seasoning promotes strong Maillard browning, helping develop a steakhouse-quality crust over open flame, cast iron, or flat-top cooking. Winner of the 2019 World Steak Championship.</p>
-            </div>
-          </div>
-
-          <!-- Flavor Profile -->
-          <div class="editorial">
-            <div class="section-label">Flavor Profile</div>
-            <div class="flavor-grid">
-              <div class="flavor-cell">
-                <div class="flavor-key">Primary Notes</div>
-                <div class="flavor-val">A slight sweet SPG with a light kick of chili powder</div>
-              </div>
-              <div class="flavor-cell">
-                <div class="flavor-key">Secondary Notes</div>
-                <div class="flavor-val">Savory salt backbone and subtle chile powder warmth</div>
-              </div>
-              <div class="flavor-cell">
-                <div class="flavor-key">Heat Source</div>
-                <div class="flavor-val">Chili peppers</div>
-              </div>
-              <div class="flavor-cell">
-                <div class="flavor-key">Finish</div>
-                <div class="flavor-val">Ends With Flavor™</div>
-              </div>
-            </div>
-            <div class="section-body">
-              <p>Savory salt leads with balanced pepper warmth and gentle chile heat — clean searing with no lingering burn.</p>
-            </div>
-          </div>
-
-          <!-- Best Used For -->
-          <div class="editorial">
-            <div class="section-label">Best Used For</div>
-            <ul class="uses-list">
-              <li>Reverse-seared ribeye</li>
-              <li>Cast iron New York strip</li>
-              <li>Grilled sirloin tips</li>
-              <li>Filet mignon</li>
-              <li>Smoked tri-tip</li>
-              <li>Steakhouse-style burgers</li>
-            </ul>
-            <div class="section-body" style="margin-top:12px;">
-              <p>Also performs well on roasted pork, grilled portobello mushrooms, and butter-basted vegetables.</p>
-            </div>
-          </div>
-
-          <!-- Culinary Performance Notes -->
-          <div class="editorial">
-            <div class="section-label">Culinary Performance Notes</div>
-            <div class="section-body">
-              <p>2 Pig Mafia is built for competition barbecue and steak-focused cooking where balance and bark formation matter. Lightly brush steak with olive oil for a flavorful binder. Apply evenly 30–45 minutes prior to cooking. Finish with compound butter for enhanced richness. Performs exceptionally over charcoal, hardwood, pellet smokers, gas grills, and cast iron searing.</p>
-            </div>
-          </div>
-
-          <!-- Pepper Junction Pairing Notes -->
-          <div class="editorial">
-            <div class="section-label">Pepper Junction Pairing Notes</div>
-            <ul class="pairing-list">
-              <li>Top with garlic herb butter</li>
-              <li>Serve alongside crispy smashed Yukon gold potatoes</li>
-              <li>Beverage pairing: Cabernet Sauvignon, Malbec, or a savory bourbon</li>
-            </ul>
-          </div>
-
-          <!-- Ingredient Transparency -->
-          <div class="editorial">
-            <div class="section-label">Ingredient Transparency</div>
-            <div class="section-body">
-              <p>Salt, black pepper, garlic, chile powder, turbinado sugar, onion, sugar, cumin, honey powder and natural spices.</p>
-            </div>
-          </div>
-
-          <!-- Heat Classification -->
-          <div class="editorial">
-            <div class="section-label">Heat Classification — Pepper Junction Scale™</div>
-            <div class="heat-block">
-              <div class="heat-peppers">🌶🌶🌶🌶</div>
-              <div>
-                <div class="heat-label" id="heat-label">Medium — 4 / 10</div>
-                <div class="heat-desc">Medium chile warmth — savory salt and pepper lead, gentle heat follows with no lingering burn.</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Why It Stands Out -->
-          <div class="editorial">
-            <div class="section-label">Why It Stands Out</div>
-            <div class="section-body">
-              <p>A competition-grade steak seasoning designed to enhance beef's natural flavor while promoting strong crust development and balanced seasoning. 2 Pig Mafia delivers reliable performance for backyard cooks and pitmasters seeking consistent, high-quality results.</p>
-            </div>
-          </div>
-
-
-          <!-- Award -->
-          <div class="editorial">
-            <div class="pj-standard">
-              <div class="pj-standard-text">🏆 &nbsp;2019 World Steak Championship Winner</div>
-            </div>
-          </div>
-          <!-- PJ Standard -->
-          <div class="editorial">
-            <div class="pj-standard">
-              <div class="pj-standard-text">✓ &nbsp;Approved under The Pepper Junction Standard™ for ingredient integrity and functional culinary performance</div>
-            </div>
-          </div>
-
-          <!-- Review Button — activated by the shared review integration -->
-          <button class="review-btn" id="pj-review" disabled aria-disabled="true">
-            Tell Other Passengers About This Item
-          </button>
-
-          <!-- Share -->
-          <div class="share-btn-wrap">
-            <button class="share-btn" id="share-btn">
-              <span class="share-icon">↑</span>
-              Share This Sauce
-            </button>
-            <div class="share-panel" id="share-panel">
-              <button class="share-panel-btn" id="share-twitter">𝕏 &nbsp;Post on X</button>
-              <button class="share-panel-btn" id="share-email">✉ &nbsp;Send by Email</button>
-              <button class="share-panel-btn" id="share-copy">🔗 Copy Link</button>
-            </div>
-          </div>
-
-          <!-- Local Delivery Callout -->
-          <div class="delivery-callout" id="delivery-callout" role="button" tabindex="0">
-            <span class="delivery-icon">🚂</span>
-            <span class="delivery-text">Ordering for local RI delivery? Tap here first — Square buries the option.</span>
-            <span class="delivery-arrow">›</span>
-          </div>
-
-          <!-- Add To Cart -->
-          <button
-            class="buy-now-btn"
-            id="buy-now-btn"
-            type="button"
-          >
-            Add To Cart — $14.99
-          </button>
-
-        </div><!-- /product-content -->
-      </div><!-- /product-layout -->
-
-      <!-- Similar Products -->
-      <div class="similar-section">
-        <div class="section-rule">
-          <div class="rule-line"></div>
-          <span class="rule-text">Bartender's Recommendations</span>
-          <div class="rule-line right"></div>
-        </div>
-        <div class="similar-grid reveal" id="similar-products">
-          <div class="similar-loading">Loading similar products…</div>
-        </div>
-        <div class="carousel-hint" id="similar-hint"></div>
+  <!-- ═══ HEADER ══════════════════════════════════════════════ -->
+  <header class="site-header">
+    <a class="header-logo" href="conductor.html">
+      <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+      <div class="header-wordmark">
+        <span class="header-name">Pepper Junction</span>
+        <span class="header-tagline">Est. 2014 · Rhode Island</span>
       </div>
+    </a>
+    <nav class="header-nav">
+      <a href="#categories">Shop</a>
+      <a href="index.html">Pairing Bar</a>
+      <a href="#location">Visit</a>
+      <a href="https://www.pepperjunction401.com" class="nav-cta" target="_blank">Order Online</a>
+    </nav>
+  </header>
 
-    </div><!-- /chalkboard-surface -->
-  </div><!-- /chalkboard-wrap -->
-</div><!-- /page-outer -->
-
-<!-- ═══ FOOTER ═══════════════════════════════════════════════════ -->
-<footer class="site-footer">
-  <div class="footer-top">
-
-    <div class="footer-brand">
-      <img src="../assets/PJ-logo.png" alt="Pepper Junction" />
-      <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
-      <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
-      <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+  <!-- ═══ HERO ════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="hero-tag">Find Your Heat · Find Your Flavor</span>
+      <h1 class="hero-headline">We're Sauce Enthusiasts First</h1>
+      <p class="hero-sub">Each item carefully selected with a Flavor First priority.</p>
     </div>
+  </section>
 
-    <div>
-      <span class="footer-col-title">Shop</span>
-      <ul class="footer-col-links">
-        <li><a href="../hot-sauces.html">Hot Sauces</a></li>
-        <li><a href="../buffalo-condiments.html">Wing & Buffalo</a></li>
-        <li><a href="../seasonings-bbq.html">BBQ & Seasonings</a></li>
-        <li><a href="../buffalo-condiments.html">Condiments</a></li>
-        <li><a href="../snacks.html">Snacks</a></li>
-        <li><a href="../olive-oils-vinegar.html">Olive Oils & Vinegars</a></li>
-      </ul>
+  <!-- ═══ PANORAMA ═════════════════════════════════════════════ -->
+  <section class="panorama-section">
+    <div class="bartender-panorama-wrap">
+      <img class="bartender-panorama" src="assets/textures/Welcome-Panoramic-Pairing-Bar.png" alt="Pepper Junction Pairing Bar" />
+      <div class="bartender-video-overlay">
+        <video
+          src="assets/video/Bartender-Welcome-Parlor-Car.mp4/Bartender-Welcome-Parlor-Car.mp4"
+          autoplay muted playsinline controls
+        ></video>
+      </div>
     </div>
+  </section>
 
-    <div>
-      <span class="footer-col-title">Pepper Junction</span>
-      <ul class="footer-col-links">
-        <li><a href="../main.html">Home</a></li>
-        <li><a href="../index.html">Pairing Bar</a></li>
-        <li><a href="../main.html#about">Our Story</a></li>
-        <li><a href="../main.html#location">Visit Us</a></li>
-      </ul>
+  <!-- ═══ BARTENDER ════════════════════════════════════════════ -->
+  <section class=" ivory-section bartender-section" ivory-section >
+    <div class="container">
+      <div class="bartender-inner">
+
+        <div class="bartender-chat reveal">
+          <img
+            src="assets/bartender-sign.png"
+            alt="The Bartender — Ask me anything about Pepper Junction"
+            style="width:100%;height:auto;display:block;"
+          />
+
+          <div class="chat-window">
+            <div class="chat-messages" id="chat-messages">
+              <div class="chat-msg bartender">
+                <div class="chat-avatar">PJ</div>
+                <div class="chat-bubble">Come on in. Welcome to Pepper Junction. You can shop the usual way below, or head to the Pairing Bar where I'll match you with sauces based on heat, flavor, or what you're cooking. What can I help you with?</div>
+              </div>
+            </div>
+            <div class="chat-thinking" id="chat-thinking">The bartender is thinking...</div>
+            <div class="chat-input-row">
+              <input
+                class="chat-input"
+                id="chat-input"
+                type="text"
+                placeholder="Ask about the brand, hours, events..."
+                maxlength="300"
+              />
+              <button class="chat-send" id="chat-send">Send</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
+  </section>
 
-    <div>
-      <span class="footer-col-title">Help</span>
-      <ul class="footer-col-links">
-        <li><a href="../policies.html#damaged">Damaged Products</a></li>
-        <li><a href="../policies.html#shipping">Shipping Info</a></li>
-        <li><a href="../policies.html#returns">Returns</a></li>
-        <li><a href="../policies.html#contact">Contact Us</a></li>
-      </ul>
+  <!-- ═══ CATEGORIES ═══════════════════════════════════════════ -->
+  <section class=" ivory-section categories-section" ivory-section  id="categories">
+    <div class="container">
+      <div class="pic-light">
+        <div class="pic-light__plate"></div>
+        <div class="pic-light__arms">
+          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
+          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
+        </div>
+        <div class="pic-light__bar-wrap">
+          <div class="pic-light__finial"></div>
+          <div class="pic-light__collar"></div>
+          <div class="pic-light__tube">
+            <div class="pic-light__label"><span>Browse the Selection</span></div>
+          </div>
+          <div class="pic-light__collar"></div>
+          <div class="pic-light__finial"></div>
+        </div>
+        <div class="pic-light__glow"></div>
+      </div>
+      <div class="panels-grid">
+        <a class="panel-card reveal" href="index.html?category=hot-sauce-mild">
+          <img src="assets/category-panels/Hot-Sauces-Mild-Medium.png" alt="Hot Sauces Mild Medium" loading="lazy" />
+        </a>
+        <a class="panel-card reveal" href="index.html?category=hot-sauce-hot">
+          <img src="assets/category-panels/Hot-Sauces-Hot-Very-Hot.png" alt="Hot Sauces Hot Very Hot" loading="lazy" />
+        </a>
+        <a class="panel-card reveal" href="index.html?category=hot-sauce-inferno">
+          <img src="assets/category-panels/Hot-Sauces-Extreme-Heat-Inferno.png" alt="Hot Sauces Extreme Heat Inferno" loading="lazy" />
+        </a>
+        <a class="panel-card reveal" href="index.html?category=seasonings">
+          <img src="assets/category-panels/Seasonings-Dry-Rubs-BBQ-Sauces.png" alt="Seasonings Dry Rubs BBQ Sauces" loading="lazy" />
+        </a>
+        <a class="panel-card reveal" href="index.html?category=buffalo-sauce">
+          <img src="assets/category-panels/Buffalo-Sauce.png" alt="Buffalo Sauce" loading="lazy" />
+        </a>
+        <a class="panel-card reveal" href="index.html?category=condiments">
+          <img src="assets/category-panels/Condiments-With-A-Kick.png" alt="Condiments With a Kick" loading="lazy" />
+        </a>
+        <a class="panel-card reveal" href="index.html?category=snacks">
+          <img src="assets/category-panels/Snacks-Fried-Garlic.png" alt="Snacks Fried Garlic" loading="lazy" />
+        </a>
+        <a class="panel-card reveal" href="index.html?category=olive-oil-vinegar">
+          <img src="assets/category-panels/Specialty-Olive-Oils-Vinegar.png" alt="Specialty Olive Oils Vinegar" loading="lazy" />
+        </a>
+        <a class="panel-card reveal" href="index.html?category=recipes">
+          <img src="assets/category-panels/Recipes-Home-Made.png" alt="Recipes Home Made" loading="lazy" />
+        </a>
+        <div class="panel-card coming-soon reveal">
+          <img src="assets/category-panels/Elite-Wings-RI-Restaurants.png" alt="Elite Wings RI Restaurants" loading="lazy" />
+        </div>
+        <div class="panel-card coming-soon reveal">
+          <img src="assets/category-panels/Merch.png" alt="Merch" loading="lazy" />
+        </div>
+      </div>
     </div>
+  </section>
 
-  </div>
-  <div class="footer-bottom">
-    <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
-    <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
-  </div>
-</footer>
-
-<!-- ═══ DELIVERY MODAL ══════════════════════════════════════════ -->
-<div class="modal-overlay" id="delivery-modal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <button class="modal-close" id="modal-close" aria-label="Close">×</button>
-    <div class="modal-title">Local RI Delivery</div>
-    <div class="modal-sub">How to select it at checkout</div>
-    <ol class="modal-steps">
-      <li><span class="modal-step-num">01</span><span>Click Buy Now — you'll land on the Square checkout page.</span></li>
-      <li><span class="modal-step-num">02</span><span>In the top right look for a small section that reads <span class="modal-highlight">"How to get it"</span> with the word <span class="modal-highlight">Edit</span> off to its right. Click it.</span></li>
-      <li><span class="modal-step-num">03</span><span>A box pops up with two options — <span class="modal-highlight">Delivery</span> and <span class="modal-highlight">Shipping</span>. Toggle to <span class="modal-highlight">Delivery</span>.</span></li>
-      <li><span class="modal-step-num">04</span><span>Enter your delivery address. If you're within our local RI delivery zone the checkout updates accordingly.</span></li>
-    </ol>
-    <div class="modal-screenshot">
-      <span class="modal-screenshot-placeholder">Screenshot placeholder — add Square checkout image</span>
+  <!-- ═══ DISPATCH BOARD ═══════════════════════════════════════ -->
+  <section class=" ivory-section dispatch-section" ivory-section  id="dispatch">
+    <div class="container">
+      <div class="pic-light">
+        <div class="pic-light__plate"></div>
+        <div class="pic-light__arms">
+          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
+          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
+        </div>
+        <div class="pic-light__bar-wrap">
+          <div class="pic-light__finial"></div>
+          <div class="pic-light__collar"></div>
+          <div class="pic-light__tube">
+            <div class="pic-light__label"><span>Stay on Schedule</span></div>
+          </div>
+          <div class="pic-light__collar"></div>
+          <div class="pic-light__finial"></div>
+        </div>
+        <div class="pic-light__glow"></div>
+      </div>
+<div class="dispatch-board-wrap reveal">
+          <img
+            src="assets/Dispatch_Board.png"
+            alt="The Dispatch Board — Stay on Schedule with Pepper Junction"
+          />
+          <div class="dispatch-form-overlay">
+            <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
+            <div id="mc_embed_signup">
+              <form action="https://gmail.us7.list-manage.com/subscribe/post?u=afdc5db581ce8d66f18ca7bb2&amp;id=ddfc8a4386&amp;f_id=0074d7e4f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+                <div id="mc_embed_signup_scroll">
+                  <div class="mc-field-group">
+                    <label for="mce-EMAIL">Email Address</label>
+                    <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required placeholder="Email address *" value="">
+                  </div>
+                  <div class="mc-field-group">
+                    <label for="mce-FNAME">First Name</label>
+                    <input type="text" name="FNAME" class="text" id="mce-FNAME" placeholder="First name" value="">
+                  </div>
+                  <div class="mc-field-group">
+                    <label for="mce-LNAME">Last Name</label>
+                    <input type="text" name="LNAME" class="text" id="mce-LNAME" placeholder="Last name" value="">
+                  </div>
+                  <div id="mce-responses" class="clear">
+                    <div class="response" id="mce-error-response" style="display:none"></div>
+                    <div class="response" id="mce-success-response" style="display:none"></div>
+                  </div>
+                  <div aria-hidden="true" style="position:absolute;left:-5000px;">
+                    <input type="text" name="b_afdc5db581ce8d66f18ca7bb2_ddfc8a4386" tabindex="-1" value="">
+                  </div>
+                  <div class="clear">
+                    <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Send Dispatch">
+                  </div>
+                </div>
+              </form>
+            </div>
+            <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+            <script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+          </div>
+        </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- ═══ SCRIPTS ══════════════════════════════════════════════════ -->
-<script>
-(function () {
+  <!-- ═══ BRAND STORY ══════════════════════════════════════════ -->
+  <section class=" ivory-section story-section" ivory-section  id="story">
+    <div class="container">
+      <div class="pic-light">
+        <div class="pic-light__plate"></div>
+        <div class="pic-light__arms">
+          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
+          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
+        </div>
+        <div class="pic-light__bar-wrap">
+          <div class="pic-light__finial"></div>
+          <div class="pic-light__collar"></div>
+          <div class="pic-light__tube">
+            <div class="pic-light__label"><span>All You Need to Know</span></div>
+          </div>
+          <div class="pic-light__collar"></div>
+          <div class="pic-light__finial"></div>
+        </div>
+        <div class="pic-light__glow"></div>
+      </div>
+      <div class="story-inner">
+        <div class="story-left reveal">
+          <img
+            src="assets/Philosophy_Board.png"
+            alt="Sauce is the binder between food and the experience — Pepper Junction philosophy"
+            style="width:100%;height:auto;display:block;"
+          />
+        </div>
+        <div class="story-right reveal">
+          <img
+            src="assets/Framework_Board.png"
+            alt="The Pepper Junction Standard — Internal Governance Framework"
+            style="width:100%;height:auto;display:block;"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
 
-  /* ── PAGE SLUG — the only hardcoded value ── */
-  const PAGE_SLUG = '2-pig-mafia-steak-seasoning-13oz';
-  const DB_PATH   = '../data/Database_Pepper_Junction.json';
+  <!-- ═══ LOCATION & HOURS ══════════════════════════════════════ -->
+  <section class=" ivory-section location-section" ivory-section  id="location">
+    <div class="container">
+      <div class="pic-light">
+        <div class="pic-light__plate"></div>
+        <div class="pic-light__arms">
+          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
+          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
+        </div>
+        <div class="pic-light__bar-wrap">
+          <div class="pic-light__finial"></div>
+          <div class="pic-light__collar"></div>
+          <div class="pic-light__tube">
+            <div class="pic-light__label"><span>Find Us</span></div>
+          </div>
+          <div class="pic-light__collar"></div>
+          <div class="pic-light__finial"></div>
+        </div>
+        <div class="pic-light__glow"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
+        <img
+          src="assets/Jules_Antiques_Board.png"
+          alt="Jules Antiques and General Store — location and hours"
+          style="width:100%;height:auto;display:block;"
+          class="reveal"
+        />
+        <img
+          src="assets/Get_In_Touch_Board.png"
+          alt="Get in Touch — contact information for Pepper Junction"
+          style="width:100%;height:auto;display:block;"
+          class="reveal"
+        />
+      </div>
+    </div>
+  </section>
 
-  /* ── INIT — write this page to session browsing history ── */
-  PJProduct.init(PAGE_SLUG);
+  <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-left">
+      <span class="footer-item"><a href="https://www.pepperjunction401.com">pepperjunction401.com</a></span>
+      <span class="footer-sep"></span>
+      <span class="footer-item">320 Kingstown Rd · Richmond, RI</span>
+      <span class="footer-sep"></span>
+      <span class="footer-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+    </div>
+    <div class="footer-right">© Pepper Junction · Est. 2014</div>
+  </footer>
 
-  /* ── CATEGORY → PAGE MAP ── */
-  const CAT_PAGE = {
-    'HOT SAUCE':          { label: 'Hot Sauces',         href: '../hot-sauces.html' },
-    'WING SAUCE':         { label: 'Buffalo & Wing',      href: '../buffalo-condiments.html' },
-    'BBQ SAUCE':          { label: 'Seasonings & BBQ',    href: '../seasonings-bbq.html' },
-    'CONDIMENTS':         { label: 'Condiments',          href: '../buffalo-condiments.html' },
-    'SEASONINGS/DRY RUBS':{ label: 'Seasonings & BBQ',    href: '../seasonings-bbq.html' },
-    'SNACKS':             { label: 'Snacks',               href: '../snacks.html' },
-    'Olive Oil/Vinegar':  { label: 'Olive Oils & Vinegar', href: '../olive-oils-vinegar.html' }
-  };
+  <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
+  <script>
+  (function () {
 
-  function esc(s) {
-    return String(s||'')
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  /* ── LOAD PRODUCT DATA ── */
-  fetch(DB_PATH)
-    .then(function(r){ return r.json(); })
-    .then(function(data) {
-
-      var product = data.find(function(p){ return p.slug === PAGE_SLUG; });
-      if (!product) { console.warn('Product not found:', PAGE_SLUG); return; }
-
-      var heatCat   = product['Heat Category'] || '';
-      var heatLevel = product['Heat Level']    || '';
-      var howHits   = product['How it Hits']   || '';
-      var heatFin   = product['Heat Finish']   || '';
-      var price     = product['Price']         ? '$' + parseFloat(product['Price']).toFixed(2) : '';
-      var sqId      = product['Square_ID']     || '';
-      var category  = product['Category']      || '';
-
-      /* ── CART PRODUCT OBJECT ── */
-      window.PJCurrentProduct = {
-        product_id:   PAGE_SLUG,
-        slug:         PAGE_SLUG,
-        product_name: product['Product Name']  || '',
-        brand:        product['Brand']         || '',
-        price:        parseFloat(product['Price']) || 0,
-        square_id:    sqId,
-        square_url:   product['Product URL']   || '',
-        image:        '../assets/sauces/' + PAGE_SLUG + '.png',
-        category:     category,
-        heat_category: heatCat,
-        food_style:   product['Food Style']    || ''
-      };
-
-      setTxt('class-heat-cat',   heatCat);
-      setTxt('class-how-hits',   howHits);
-      setTxt('class-heat-finish',heatFin);
-      setTxt('heat-pill',        heatCat + ' · ' + heatLevel + '/10');
-      setTxt('heat-label',       heatCat + ' — ' + heatLevel + ' / 10');
-      setTxt('hero-sub',  product['hero sub'] || '');
-        setTxt('hero-size', product['Size']     || '');
-        if (price) {
-        setTxt('hero-price', price);
-        var btn = document.getElementById('buy-now-btn');
-        if (btn) btn.textContent = 'Add To Cart — ' + price;
-      }
-
-      /* ── ADD TO CART HANDLER ── */
-      var buyBtn = document.getElementById('buy-now-btn');
-      if (buyBtn && window.PJCurrentProduct) {
-        buyBtn.addEventListener('click', function() {
-          PJCart.addItem(Object.assign({}, window.PJCurrentProduct, { quantity: 1 }));
-          PJCartDrawer.open();
-        });
-      }
-
-      /* ── REVIEW INTEGRATION — initialize shared product-review system ── */
-      if (window.PJProductReview && typeof PJProductReview.init === 'function') {
-        PJProductReview.init({
-          productSlug:    PAGE_SLUG,
-          reviewButtonId: 'pj-review',
-          customerLineId: 'customer-line'
-        });
-      }
-
-      var catInfo = CAT_PAGE[category];
-      if (catInfo) {
-        var navCat = document.getElementById('nav-category');
-        var bcCat  = document.getElementById('breadcrumb-category');
-        if (navCat) { navCat.textContent = catInfo.label; navCat.href = catInfo.href; }
-        if (bcCat)  { bcCat.textContent  = catInfo.label; bcCat.href  = catInfo.href; }
-      }
-
-      var article = document.querySelector('.product-content');
-      if (article) {
-        article.dataset.productId    = PAGE_SLUG;
-        article.dataset.squareId     = sqId;
-        article.dataset.heatCategory = heatCat;
-        article.dataset.howItHits    = howHits;
-        article.dataset.heatFinish   = heatFin;
-        article.dataset.foodStyle    = product['Food Style'] || '';
-        article.dataset.category     = category;
-        article.dataset.pjApproved   = 'true';
-      }
-
-      var ratingEl = document.querySelector('.pj-rating-container');
-      if (ratingEl) {
-        ratingEl.dataset.productId            = PAGE_SLUG;
-        ratingEl.dataset.expectedHeatCategory = heatCat;
-        ratingEl.dataset.expectedHowItHits    = howHits;
-        ratingEl.dataset.expectedHeatFinish   = heatFin;
-        ratingEl.dataset.squareId             = sqId;
-      }
-
-      var schema = document.getElementById('product-schema');
-      if (schema) {
-        var s = JSON.parse(schema.textContent);
-        s.name = product['Product Name'] || '';
-        s.offers.price = product['Price'] || '';
-        s.offers.url   = product['Product URL'] || '';
-        schema.textContent = JSON.stringify(s, null, 2);
-      }
-
-      /* Update breadcrumb schema with correct category */
-      var bcSchema = document.getElementById('breadcrumb-schema');
-      if (bcSchema && catInfo) {
-        var bc = JSON.parse(bcSchema.textContent);
-        bc.itemListElement[1].name = catInfo.label;
-        bc.itemListElement[1].item = 'https://pepperjunction401-beep.github.io/sauce-bar/' + catInfo.href.replace('../', '');
-        bc.itemListElement[2].name = product['Product Name'] || '';
-        bcSchema.textContent = JSON.stringify(bc, null, 2);
-      }
-
-      /* ── OUT OF STOCK TREATMENT ── */
-      var inStock = product['in_stock'];
-      if (inStock === false || String(inStock).toLowerCase() === 'false') {
-        /* Disable Add To Cart button */
-        var buyBtn = document.getElementById('buy-now-btn');
-        if (buyBtn) {
-          buyBtn.classList.add('out-of-stock');
-          buyBtn.textContent = 'Currently Out of Stock';
-          buyBtn.disabled = true;
-          buyBtn.setAttribute('aria-disabled', 'true');
-          buyBtn.setAttribute('tabindex', '-1');
+    /* ── SCROLL REVEAL ── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
         }
-
-        /* Hide local delivery callout — not relevant if out of stock */
-        var calloutEl = document.getElementById('delivery-callout');
-        if (calloutEl) calloutEl.style.display = 'none';
-
-        /* Add out of stock pill to meta pills */
-        var pillsEl = document.querySelector('.meta-pills');
-        if (pillsEl) {
-          var osPill = document.createElement('span');
-          osPill.className = 'meta-pill out-of-stock';
-          osPill.textContent = 'Out of Stock';
-          pillsEl.appendChild(osPill);
-        }
-      }
-
-      /* ── BADGES — powered by pj-product.js ── */
-      PJProduct.initBadges({
-        heatCategory:    heatCat,
-        bestPairings:    product['Best Food Pairings'],
-        foodStyle:       product['Food Style'],
-        narrativeSeries: product['narrative_series'] || ''
       });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function (el) { observer.observe(el); });
 
-      /* ── SIMILAR PRODUCTS — powered by pj-product.js ── */
-      PJProduct.loadSimilar(data, product, PAGE_SLUG);
+    /* ── BARTENDER CHAT ── */
+    const messagesEl  = document.getElementById('chat-messages');
+    const inputEl     = document.getElementById('chat-input');
+    const sendBtn     = document.getElementById('chat-send');
+    const thinkingEl  = document.getElementById('chat-thinking');
 
-    })
-    .catch(function(e){ console.error('DB load error:', e); });
+    const SYSTEM_PROMPT = `You are the Pepper Junction Bartender — brand ambassador, storyteller, and general guide. Warm, knowledgeable, conversational. The voice of someone who has been in hospitality their whole life. Genuinely helpful, personable, never robotic.
 
-  function setTxt(id, val) {
-    var el = document.getElementById(id);
-    if (el) el.textContent = val;
-  }
+You handle: brand story and philosophy, The Pepper Junction Standard™, location (Jules Antiques & General Store, 320 Kingstown Rd, Richmond RI, Mon-Sun 10am-5pm), contact info (phone: 401-300-1474, email: pepperjunction401@gmail.com), events (seasonal pop-up appearances — follow email list for updates), online store and shipping ($9.99 flat rate, free local delivery on orders $20+ within 15 miles of Cranston RI), returns (30 days, unopened, authorization required), general product category overview.
 
-  /* ── BADGE CAR INFO POPUP ── */
-  var badgeInfoBtn   = document.getElementById('badge-info-btn');
-  var badgeInfoPopup = document.getElementById('badge-info-popup');
-  var badgeInfoClose = document.getElementById('badge-info-close');
+For specific sauce recommendations, heat levels, flavor notes, or food pairings — always direct to the Sauce Discovery Engine / Pairing Bar.
 
-  if (badgeInfoBtn) {
-    badgeInfoBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      badgeInfoPopup.classList.toggle('open');
+Hard rules:
+- Never mention Facebook under any circumstances
+- Keep responses under 90 words — conversational, not a brochure
+- Never invent product details
+- Never state pop-up schedule is fixed — seasonal and subject to change
+- Never mention farmers markets specifically`;
+
+    let history = [];
+
+    function addMessage(role, text) {
+      const wrap = document.createElement('div');
+      wrap.className = 'chat-msg ' + (role === 'bartender' ? 'bartender' : 'user');
+      const avatar = document.createElement('div');
+      avatar.className = 'chat-avatar';
+      avatar.textContent = role === 'bartender' ? 'PJ' : 'You';
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble';
+      bubble.textContent = text;
+      wrap.appendChild(avatar);
+      wrap.appendChild(bubble);
+      messagesEl.appendChild(wrap);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text = inputEl.value.trim();
+      if (!text) return;
+      inputEl.value = '';
+      addMessage('user', text);
+      history.push({ role: 'user', content: text });
+      thinkingEl.style.display = 'block';
+      sendBtn.disabled = true;
+
+      try {
+        const response = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1000,
+            system: SYSTEM_PROMPT,
+            messages: history
+          })
+        });
+        const data = await response.json();
+        const reply = data.content && data.content[0] ? data.content[0].text : "I'll be right with you — try again in a moment.";
+        history.push({ role: 'assistant', content: reply });
+        addMessage('bartender', reply);
+      } catch (e) {
+        addMessage('bartender', "Sorry, the bar's a little busy right now. Try again in a moment.");
+      }
+
+      thinkingEl.style.display = 'none';
+      sendBtn.disabled = false;
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    inputEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') sendMessage();
     });
-  }
-  if (badgeInfoClose) {
-    badgeInfoClose.addEventListener('click', function() {
-      badgeInfoPopup.classList.remove('open');
-    });
-  }
-  document.addEventListener('click', function(e) {
-    if (badgeInfoPopup && !badgeInfoPopup.contains(e.target) && !badgeInfoBtn.contains(e.target)) {
-      badgeInfoPopup.classList.remove('open');
-    }
-  });
 
-  /* ── MOBILE CAROUSEL DOTS ── */
-  function initCarouselDots(scrollEl, hintEl, itemSelector) {
-    if (!scrollEl || !hintEl) return;
-    if (window.innerWidth > 640) return;
-    var items = scrollEl.querySelectorAll(itemSelector);
-    if (items.length <= 1) { hintEl.style.display = 'none'; return; }
-    var visibleAtOnce = 3;
-    var pageCount = Math.max(1, items.length - visibleAtOnce + 1);
-    if (pageCount <= 1) { hintEl.style.display = 'none'; return; }
-    hintEl.innerHTML = '';
-    var dots = [];
-    for (var i = 0; i < pageCount; i++) {
-      var dot = document.createElement('div');
-      dot.className = 'carousel-hint-dot' + (i === 0 ? ' active' : '');
-      hintEl.appendChild(dot);
-      dots.push(dot);
-    }
-    scrollEl.addEventListener('scroll', function() {
-      var maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
-      if (maxScroll <= 0) return;
-      var index = Math.round((scrollEl.scrollLeft / maxScroll) * (pageCount - 1));
-      index = Math.max(0, Math.min(index, pageCount - 1));
-      dots.forEach(function(d, i) {
-        d.classList.toggle('active', i === index);
-      });
-    }, { passive: true });
-  }
-
-  /* Init dots after badges and similar products render */
-  var _origInitBadges = PJProduct.initBadges.bind(PJProduct);
-  PJProduct.initBadges = function(params) {
-    _origInitBadges(params);
-    setTimeout(function() {
-      initCarouselDots(
-        document.getElementById('product-badges'),
-        document.getElementById('badge-hint'),
-        '.badge-item'
-      );
-    }, 100);
-  };
-
-  var _origLoadSimilar = PJProduct.loadSimilar.bind(PJProduct);
-  PJProduct.loadSimilar = function(data, product, slug) {
-    _origLoadSimilar(data, product, slug);
-    setTimeout(function() {
-      initCarouselDots(
-        document.getElementById('similar-products'),
-        document.getElementById('similar-hint'),
-        '.similar-card'
-      );
-    }, 100);
-  };
-
-  /* ── BARTENDER LINES — two-beat conversion hook ── */
-  (function() {
-    var LINES_PATH = '../data/PJ_Bartender_Lines.json';
-    var shown = [];
-    var dismissTimer = null;
-
-    function getRandom(pool) {
-      var available = pool.filter(function(l){ return shown.indexOf(l) === -1; });
-      if (!available.length) { shown = []; available = pool; }
-      var line = available[Math.floor(Math.random() * available.length)];
-      shown.push(line);
-      return line;
-    }
-
-    function hideLine() {
-      var el = document.getElementById('bartender-line');
-      if (el) el.classList.remove('visible');
-      if (dismissTimer) { clearTimeout(dismissTimer); dismissTimer = null; }
-    }
-
-    function showLine(text, duration) {
-      var el   = document.getElementById('bartender-line');
-      var txt  = document.getElementById('bartender-line-text');
-      if (!el || !txt) return;
-      txt.textContent = text;
-      el.classList.add('visible');
-      dismissTimer = setTimeout(hideLine, duration);
-    }
-
-    fetch(LINES_PATH, { cache: 'no-store' })
-      .then(function(r){ return r.json(); })
-      .then(function(data) {
-        var beat1 = data.beat1 || [];
-        var beat2 = data.beat2 || [];
-
-        /* Attach swipe/click dismiss after DOM and data ready */
-        var bartenderEl = document.getElementById('bartender-line');
-        if (bartenderEl) {
-          var touchStartX = 0;
-          bartenderEl.addEventListener('touchstart', function(e) {
-            touchStartX = e.touches[0].clientX;
-          }, { passive: true });
-          bartenderEl.addEventListener('touchend', function(e) {
-            var diff = e.changedTouches[0].clientX - touchStartX;
-            if (diff > 40) hideLine();
-          }, { passive: true });
-          bartenderEl.addEventListener('click', hideLine);
-        }
-
-        /* Beat 1 — 15 seconds in */
-        setTimeout(function() {
-          if (beat1.length) showLine(getRandom(beat1), 15000);
-        }, 15000);
-
-        /* Beat 2 — 60 seconds in */
-        setTimeout(function() {
-          if (beat2.length) showLine(getRandom(beat2), 15000);
-        }, 60000);
-      })
-      .catch(function(e){ console.warn('Bartender lines unavailable:', e); });
   })();
-
-  /* ── CUSTOMER LINE — 30-second hardwired trigger ── */
-  setTimeout(function () {
-    if (window.PJProductReview && typeof PJProductReview.showCustomerLine === 'function') {
-      PJProductReview.showCustomerLine();
-    }
-  }, 30000);
-
-  /* ── SHARE BUTTON ── */
-  var shareBtn = document.getElementById('share-btn');
-  var sharePanel = document.getElementById('share-panel');
-
-  if (shareBtn) {
-    shareBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      /* Mobile — use native share sheet */
-      if (navigator.share && window.innerWidth <= 640) {
-        navigator.share({
-          title: document.title,
-          text: 'Check this out from Pepper Junction:',
-          url: window.location.href
-        }).catch(function(){});
-        return;
-      }
-      /* Desktop — toggle custom share panel */
-      if (sharePanel) {
-        sharePanel.classList.toggle('open');
-      }
-    });
-  }
-
-  document.addEventListener('click', function(e) {
-    if (sharePanel && !sharePanel.contains(e.target) && e.target !== shareBtn) {
-      sharePanel.classList.remove('open');
-    }
-  });
-
-  /* Share panel actions */
-  var copyLinkBtn = document.getElementById('share-copy');
-  var twitterBtn  = document.getElementById('share-twitter');
-  var emailBtn    = document.getElementById('share-email');
-
-  if (copyLinkBtn) {
-    copyLinkBtn.addEventListener('click', function() {
-      navigator.clipboard.writeText(window.location.href).then(function() {
-        copyLinkBtn.textContent = '✓ Copied!';
-        setTimeout(function() { copyLinkBtn.textContent = '🔗 Copy Link'; }, 2000);
-      });
-    });
-  }
-
-  if (twitterBtn) {
-    twitterBtn.addEventListener('click', function() {
-      window.open('https://twitter.com/intent/tweet?text=' +
-        encodeURIComponent('Check this out from Pepper Junction: ' + document.title) +
-        '&url=' + encodeURIComponent(window.location.href), '_blank');
-    });
-  }
-
-  if (emailBtn) {
-    emailBtn.addEventListener('click', function() {
-      window.location.href = 'mailto:?subject=' +
-        encodeURIComponent(document.title) +
-        '&body=' + encodeURIComponent('Check this out from Pepper Junction:\n\n' + window.location.href);
-    });
-  }
-
-  /* ── DELIVERY MODAL ── */
-  var callout  = document.getElementById('delivery-callout');
-  var modal    = document.getElementById('delivery-modal');
-  var closeBtn = document.getElementById('modal-close');
-
-  function openModal()  { modal.classList.add('open'); }
-  function closeModal() { modal.classList.remove('open'); }
-
-  if (callout)  { callout.addEventListener('click', openModal); }
-  if (closeBtn) { closeBtn.addEventListener('click', closeModal); }
-  if (modal)    { modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); }); }
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
-
-  /* ── SCROLL REVEAL ── */
-  var revEls = document.querySelectorAll('.reveal');
-  var obs = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.06 });
-  revEls.forEach(function(el){ obs.observe(el); });
-
-})();
-</script>
-
-<!-- Hidden rating container for future app integration -->
-<div class="pj-rating-container"
-     data-product-id=""
-     data-expected-heat-category=""
-     data-expected-how-it-hits=""
-     data-expected-heat-finish=""
-     data-square-id=""
-     style="display:none;">
-</div>
-
-<!-- ═══ BARTENDER LINE ══════════════════════════════════════ -->
-<div class="bartender-line" id="bartender-line" aria-live="polite">
-  <span class="bartender-line-text" id="bartender-line-text"></span>
-  <span class="bartender-line-attr">— Head Pepper, Pepper Junction</span>
-</div>
-
-<!-- ═══ CUSTOMER LINE — left-side scroll, approved customer review excerpt ══════════ -->
-<div class="customer-line" id="customer-line" aria-live="polite">
-  <span class="customer-line-text" id="customer-line-text"></span>
-  <span class="customer-line-attr" id="customer-line-attr"></span>
-</div>
+  </script>
 
 </body>
 </html>
