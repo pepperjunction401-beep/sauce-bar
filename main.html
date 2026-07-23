@@ -45,21 +45,6 @@
       overflow-x: hidden;
     }
 
-    /* Art Deco burgundy lines — fixed left overlay */
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 160px;
-      height: 100%;
-      background-image: url('assets/textures/Art_Deco_Burgundy_Lines.png');
-      background-size: 160px 100vh;
-      background-repeat: no-repeat;
-      background-position: top left;
-      pointer-events: none;
-      z-index: 999;
-    }
 
     /* Grain overlay */
     body::before {
@@ -2225,6 +2210,25 @@
       gap: 8px;
     }
 
+
+    /* Art Deco burgundy lines — ivory sections only */
+    .ivory-section {
+      position: relative;
+    }
+    .ivory-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 177px;
+      height: 100%;
+      background-image: url('assets/textures/Art_Deco_Burgundy_Lines.png');
+      background-size: 177px 100%;
+      background-repeat: no-repeat;
+      background-position: top left;
+      pointer-events: none;
+      z-index: 2;
+    }
   </style>
 </head>
 <body>
@@ -2269,7 +2273,7 @@
   </section>
 
   <!-- ═══ BARTENDER ════════════════════════════════════════════ -->
-  <section class="bartender-section">
+  <section class="bartender-section ivory-section">
     <div class="container">
       <div class="bartender-inner">
 
@@ -2306,7 +2310,7 @@
   </section>
 
   <!-- ═══ CATEGORIES ═══════════════════════════════════════════ -->
-  <section class="categories-section" id="categories">
+  <section class="categories-section ivory-section" id="categories">
     <div class="container">
       <div class="pic-light">
         <div class="pic-light__plate"></div>
@@ -2364,7 +2368,7 @@
   </section>
 
   <!-- ═══ DISPATCH BOARD ═══════════════════════════════════════ -->
-  <section class="dispatch-section" id="dispatch">
+  <section class="dispatch-section ivory-section" id="dispatch">
     <div class="container">
       <div class="pic-light">
         <div class="pic-light__plate"></div>
@@ -2426,7 +2430,7 @@
   </section>
 
   <!-- ═══ BRAND STORY ══════════════════════════════════════════ -->
-  <section class="story-section" id="story">
+  <section class="story-section ivory-section" id="story">
     <div class="container">
       <div class="pic-light">
         <div class="pic-light__plate"></div>
@@ -2465,7 +2469,7 @@
   </section>
 
   <!-- ═══ LOCATION & HOURS ══════════════════════════════════════ -->
-  <section class="location-section" id="location">
+  <section class="location-section ivory-section" id="location">
     <div class="container">
       <div class="pic-light">
         <div class="pic-light__plate"></div>
