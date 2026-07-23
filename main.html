@@ -986,428 +986,6 @@
     }
 
 
-    /* ═══════════════════════════════════
-       PICTURE RAIL LIGHT — Section Headers
-       ═══════════════════════════════════ */
-    .pic-light {
-      position: relative;
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .pic-light__plate {
-      width: 200px;
-      height: 48px;
-      background: linear-gradient(180deg,
-        #e8d070 0%, #c8a84b 15%, #d4a93a 35%,
-        #b8891e 55%, #9a7010 75%, #c8a84b 90%, #a07818 100%);
-      border-radius: 4px 4px 0 0;
-      position: relative;
-      box-shadow:
-        inset 0 1px 3px rgba(255,240,150,0.5),
-        inset 0 -2px 4px rgba(0,0,0,0.5),
-        0 4px 12px rgba(0,0,0,0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .pic-light__plate::before {
-      content: '';
-      position: absolute;
-      inset: 5px 8px;
-      border: 1.5px solid rgba(0,0,0,0.25);
-      border-radius: 2px;
-      box-shadow: inset 0 0 0 1px rgba(255,240,130,0.18);
-    }
-
-    .pic-light__plate::after {
-      content: '';
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%,
-        #e8c96e 0%, #b8891e 50%, #7a5c0a 100%);
-      left: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.6), 24px 0 0 0 #b8891e, 164px 0 0 0 #b8891e;
-    }
-
-    .pic-light__arms {
-      width: 160px;
-      height: 38px;
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 30px;
-      margin-top: -1px;
-    }
-
-    .pic-light__arm {
-      width: 16px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .pic-light__arm::before {
-      content: '';
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%,
-        #e8c96e 0%, #c8a84b 35%, #8a6010 70%, #5a3c08 100%);
-      box-shadow: inset -2px -2px 4px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.5);
-      flex-shrink: 0;
-    }
-
-    .arm-shaft {
-      width: 8px;
-      flex: 1;
-      background: linear-gradient(90deg,
-        #7a5c0a 0%, #c8a84b 25%, #e8c96e 50%, #c8a84b 75%, #7a5c0a 100%);
-      position: relative;
-    }
-
-    .arm-shaft::before, .arm-shaft::after {
-      content: '';
-      position: absolute;
-      left: -3px;
-      width: 14px;
-      height: 5px;
-      background: linear-gradient(90deg,
-        #5a3c08 0%, #c8a84b 30%, #e8c96e 50%, #c8a84b 70%, #5a3c08 100%);
-      border-radius: 2px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-    }
-    .arm-shaft::before { top: 4px; }
-    .arm-shaft::after  { bottom: 4px; }
-
-    .arm-bottom-ball {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%,
-        #d4a93a 0%, #a07010 50%, #5a3c08 100%);
-      box-shadow: inset -1px -1px 3px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.4);
-      flex-shrink: 0;
-    }
-
-    .pic-light__bar-wrap {
-      width: 100%;
-      position: relative;
-      display: flex;
-      align-items: center;
-      margin-top: -2px;
-    }
-
-    .pic-light__finial {
-      width: 22px;
-      height: 44px;
-      flex-shrink: 0;
-      background: linear-gradient(180deg,
-        #c8a84b 0%, #e8c96e 20%, #b8891e 50%, #8a6010 80%, #5a3c08 100%);
-      border-radius: 50% 0 0 50% / 50% 0 0 50%;
-      box-shadow:
-        inset 2px 0 4px rgba(255,240,150,0.3),
-        inset -2px 0 4px rgba(0,0,0,0.4),
-        -4px 0 8px rgba(0,0,0,0.5);
-      position: relative;
-    }
-    .pic-light__finial:last-child {
-      border-radius: 0 50% 50% 0 / 0 50% 50% 0;
-      box-shadow:
-        inset -2px 0 4px rgba(255,240,150,0.3),
-        inset 2px 0 4px rgba(0,0,0,0.4),
-        4px 0 8px rgba(0,0,0,0.5);
-    }
-
-    .pic-light__finial::after {
-      content: '';
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #e8c96e, #9a7010 60%, #5a3c08 100%);
-      top: 50%;
-      transform: translateY(-50%);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
-    }
-    .pic-light__finial::after      { left: -6px; }
-    .pic-light__finial:last-child::after { right: -6px; left: auto; }
-
-    .pic-light__collar {
-      width: 18px;
-      height: 44px;
-      flex-shrink: 0;
-      background: linear-gradient(90deg,
-        #5a3c08 0%, #c8a84b 25%, #e8d070 50%, #c8a84b 75%, #5a3c08 100%);
-      position: relative;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(0,0,0,0.3);
-    }
-
-    .pic-light__collar::before, .pic-light__collar::after {
-      content: '';
-      position: absolute;
-      left: 0; right: 0;
-      height: 2px;
-      background: rgba(0,0,0,0.35);
-    }
-    .pic-light__collar::before { top: 10px; }
-    .pic-light__collar::after  { bottom: 10px; }
-
-    .pic-light__tube {
-      flex: 1;
-      height: 44px;
-      position: relative;
-      overflow: hidden;
-      background:
-        linear-gradient(180deg,
-          rgba(180,255,200,0.55) 0%,
-          rgba(100,220,140,0.20) 12%,
-          transparent 25%,
-          transparent 70%,
-          rgba(0,60,20,0.3) 100%
-        ),
-        linear-gradient(180deg,
-          #1a7a38 0%, #22a050 20%, #1a8040 50%, #145c2c 80%, #0e3c1c 100%);
-      box-shadow:
-        inset 0 4px 8px rgba(0,0,0,0.3),
-        inset 0 -4px 6px rgba(0,0,0,0.4),
-        0 0 30px rgba(34,197,94,0.25),
-        0 0 60px rgba(34,197,94,0.12),
-        0 4px 20px rgba(0,0,0,0.5);
-    }
-
-    .pic-light__tube::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 50%,
-        rgba(120,255,160,0.30) 0%, rgba(34,197,94,0.15) 50%, transparent 100%);
-      animation: tubeFlicker 8s ease-in-out infinite;
-    }
-
-    .pic-light__tube::after {
-      content: '';
-      position: absolute;
-      top: 3px;
-      left: 5%;
-      right: 5%;
-      height: 8px;
-      background: linear-gradient(180deg,
-        rgba(200,255,220,0.5) 0%, rgba(150,255,190,0.15) 100%);
-      border-radius: 4px;
-      filter: blur(1px);
-    }
-
-    @keyframes tubeFlicker {
-      0%,100% { opacity: 1; }
-      25%      { opacity: 0.88; }
-      50%      { opacity: 0.95; }
-      75%      { opacity: 0.91; }
-    }
-
-    .pic-light__label {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .pic-light__label span {
-      font-family: 'Josefin Sans', sans-serif;
-      font-weight: 700;
-      font-size: 24px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: #d4ffde;
-      text-shadow:
-        0 0 8px rgba(120,255,160,0.9),
-        0 0 20px rgba(34,197,94,0.7),
-        0 0 40px rgba(34,197,94,0.4),
-        0 1px 2px rgba(0,0,0,0.8);
-      white-space: nowrap;
-    }
-
-    .pic-light__glow {
-      width: 90%;
-      height: 60px;
-      background: radial-gradient(ellipse 70% 100% at 50% 0%,
-        rgba(34,197,94,0.18) 0%, rgba(34,197,94,0.07) 50%, transparent 100%);
-      pointer-events: none;
-      animation: tubeFlicker 8s ease-in-out infinite;
-    }
-
-    @media (max-width: 640px) {
-      .pic-light__label span { font-size: 16px; letter-spacing: 0.18em; }
-      .pic-light__plate { width: 140px; }
-    }
-
-
-    /* ═══════════════════════════════════
-       CHALKBOARD — Bartender Info Panel
-       ═══════════════════════════════════ */
-    .chalkboard-wrap {
-      position: relative;
-      padding: 14px;
-      background: linear-gradient(145deg,
-        #8B6914 0%, #A07820 15%, #6B4F0E 30%,
-        #C49A2A 45%, #8B6914 60%, #7A5C10 75%,
-        #B08020 90%, #6B4F0E 100%);
-      border-radius: 4px;
-      box-shadow:
-        inset 0 2px 6px rgba(255,220,100,0.3),
-        inset 0 -3px 8px rgba(0,0,0,0.5),
-        0 8px 32px rgba(0,0,0,0.5),
-        0 2px 6px rgba(0,0,0,0.4);
-    }
-
-    /* Decorative frame corner details */
-    .chalkboard-wrap::before {
-      content: '';
-      position: absolute;
-      inset: 6px;
-      border: 2px solid rgba(212,168,50,0.5);
-      border-radius: 2px;
-      pointer-events: none;
-      z-index: 3;
-    }
-
-    /* Brass corner accents */
-    .chalkboard-wrap::after {
-      content: '';
-      position: absolute;
-      inset: 4px;
-      border: 1px solid rgba(255,220,100,0.2);
-      border-radius: 3px;
-      pointer-events: none;
-      z-index: 3;
-    }
-
-    .chalkboard-corner {
-      position: absolute;
-      width: 24px;
-      height: 24px;
-      z-index: 4;
-      background: radial-gradient(circle at 40% 40%,
-        #e8c96e 0%, #c8a84b 40%, #8a6010 80%, #5a3c08 100%);
-      border-radius: 50%;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.6), inset -1px -1px 3px rgba(0,0,0,0.4);
-    }
-    .chalkboard-corner.tl { top: 4px; left: 4px; }
-    .chalkboard-corner.tr { top: 4px; right: 4px; }
-    .chalkboard-corner.bl { bottom: 4px; left: 4px; }
-    .chalkboard-corner.br { bottom: 4px; right: 4px; }
-
-    .chalkboard-surface {
-      background:
-        /* chalk dust texture */
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
-        linear-gradient(160deg,
-          #2A3828 0%, #1E2E1E 25%,
-          #243222 50%, #1A2818 75%,
-          #223020 100%);
-      border-radius: 2px;
-      padding: 36px 32px 40px;
-      position: relative;
-      overflow: hidden;
-      min-height: 320px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    /* Chalk smudge/erase marks */
-    .chalkboard-surface::before {
-      content: '';
-      position: absolute;
-      top: 20%;
-      left: 10%;
-      width: 40%;
-      height: 30%;
-      background: radial-gradient(ellipse,
-        rgba(255,255,255,0.03) 0%, transparent 70%);
-      transform: rotate(-8deg);
-      pointer-events: none;
-    }
-
-    .chalkboard-surface::after {
-      content: '';
-      position: absolute;
-      bottom: 15%;
-      right: 8%;
-      width: 35%;
-      height: 25%;
-      background: radial-gradient(ellipse,
-        rgba(255,255,255,0.02) 0%, transparent 70%);
-      transform: rotate(5deg);
-      pointer-events: none;
-    }
-
-    .chalkboard-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(28px, 3.2vw, 42px);
-      font-weight: 900;
-      font-style: italic;
-      color: #F0EDE0;
-      letter-spacing: 0.03em;
-      line-height: 1.1;
-      text-shadow:
-        0 0 12px rgba(255,255,255,0.15),
-        0 1px 3px rgba(0,0,0,0.8);
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Decorative chalk underline */
-    .chalkboard-title::after {
-      content: '';
-      display: block;
-      margin-top: 10px;
-      height: 2px;
-      width: 80%;
-      background: linear-gradient(90deg,
-        transparent, rgba(240,237,224,0.5) 20%,
-        rgba(240,237,224,0.5) 80%, transparent);
-      border-radius: 1px;
-    }
-
-    .chalkboard-subtitle {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(16px, 1.8vw, 22px);
-      font-style: italic;
-      color: #D8D4C0;
-      letter-spacing: 0.02em;
-      line-height: 1.4;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.7);
-      position: relative;
-      z-index: 1;
-    }
-
-    .chalkboard-desc {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: clamp(12px, 1.2vw, 14px);
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      color: #B8B4A0;
-      line-height: 1.75;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-      position: relative;
-      z-index: 1;
-    }
-
     /* CHALKBOARD — Bartender Info Panel */
     .chalkboard-wrap {
       position: relative;
@@ -2237,6 +1815,50 @@
     @media (max-width: 640px) {
       .ivory-section::before { width: 180px; background-size: 180px 100%; }
     }
+
+    /* ── MENU RIBBON — section headers ───────────────────────── */
+    .menu-ribbon {
+      display: block;
+      width: fit-content;
+      max-width: 92%;
+      margin: 0 auto 34px;
+      background: #750E0D;
+      padding: 15px 70px;
+      clip-path: polygon(
+        0 0,
+        100% 0,
+        calc(100% - 20px) 50%,
+        100% 100%,
+        0 100%,
+        20px 50%
+      );
+    }
+    .menu-ribbon span {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #FFD700;
+      text-shadow:
+        0 0 12px rgba(255,215,0,0.55),
+        0 1px 3px rgba(0,0,0,0.6);
+      white-space: nowrap;
+      display: block;
+      text-align: center;
+    }
+    @media (max-width: 640px) {
+      .menu-ribbon {
+        padding: 11px 44px;
+        margin-bottom: 24px;
+        clip-path: polygon(
+          0 0, 100% 0, calc(100% - 14px) 50%,
+          100% 100%, 0 100%, 14px 50%
+        );
+      }
+      .menu-ribbon span { font-size: 14px; letter-spacing: 0.18em; }
+    }
+
   </style>
 </head>
 <body>
@@ -2283,6 +1905,7 @@
   <!-- ═══ BARTENDER ════════════════════════════════════════════ -->
   <section class="bartender-section ivory-section">
     <div class="container">
+      <div class="menu-ribbon reveal"><span>Your Host</span></div>
       <div class="bartender-inner">
 
         <div class="bartender-chat reveal">
@@ -2320,23 +1943,7 @@
   <!-- ═══ CATEGORIES ═══════════════════════════════════════════ -->
   <section class="categories-section ivory-section" id="categories">
     <div class="container">
-      <div class="pic-light">
-        <div class="pic-light__plate"></div>
-        <div class="pic-light__arms">
-          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
-          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
-        </div>
-        <div class="pic-light__bar-wrap">
-          <div class="pic-light__finial"></div>
-          <div class="pic-light__collar"></div>
-          <div class="pic-light__tube">
-            <div class="pic-light__label"><span>Browse the Selection</span></div>
-          </div>
-          <div class="pic-light__collar"></div>
-          <div class="pic-light__finial"></div>
-        </div>
-        <div class="pic-light__glow"></div>
-      </div>
+      <div class="menu-ribbon reveal"><span>Browse the Selection</span></div>
       <div class="panels-grid">
         <a class="panel-card reveal" href="hot-sauces.html#mild-medium">
           <img src="assets/category-panels/Hot-Sauces-Mild-Medium.png" alt="Hot Sauces Mild Medium" loading="lazy" />
@@ -2378,23 +1985,7 @@
   <!-- ═══ DISPATCH BOARD ═══════════════════════════════════════ -->
   <section class="dispatch-section ivory-section" id="dispatch">
     <div class="container">
-      <div class="pic-light">
-        <div class="pic-light__plate"></div>
-        <div class="pic-light__arms">
-          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
-          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
-        </div>
-        <div class="pic-light__bar-wrap">
-          <div class="pic-light__finial"></div>
-          <div class="pic-light__collar"></div>
-          <div class="pic-light__tube">
-            <div class="pic-light__label"><span>Stay on Schedule</span></div>
-          </div>
-          <div class="pic-light__collar"></div>
-          <div class="pic-light__finial"></div>
-        </div>
-        <div class="pic-light__glow"></div>
-      </div>
+      <div class="menu-ribbon reveal"><span>Stay on Schedule</span></div>
 <div class="dispatch-board-wrap reveal">
           <img
             src="assets/Dispatch_Board.png"
@@ -2440,23 +2031,7 @@
   <!-- ═══ BRAND STORY ══════════════════════════════════════════ -->
   <section class="story-section ivory-section" id="story">
     <div class="container">
-      <div class="pic-light">
-        <div class="pic-light__plate"></div>
-        <div class="pic-light__arms">
-          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
-          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
-        </div>
-        <div class="pic-light__bar-wrap">
-          <div class="pic-light__finial"></div>
-          <div class="pic-light__collar"></div>
-          <div class="pic-light__tube">
-            <div class="pic-light__label"><span>All You Need to Know</span></div>
-          </div>
-          <div class="pic-light__collar"></div>
-          <div class="pic-light__finial"></div>
-        </div>
-        <div class="pic-light__glow"></div>
-      </div>
+      <div class="menu-ribbon reveal"><span>All You Need to Know</span></div>
       <div class="story-inner">
         <div class="story-left reveal">
           <img
@@ -2479,23 +2054,7 @@
   <!-- ═══ LOCATION & HOURS ══════════════════════════════════════ -->
   <section class="location-section ivory-section" id="location">
     <div class="container">
-      <div class="pic-light">
-        <div class="pic-light__plate"></div>
-        <div class="pic-light__arms">
-          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
-          <div class="pic-light__arm"><div class="arm-shaft"></div><div class="arm-bottom-ball"></div></div>
-        </div>
-        <div class="pic-light__bar-wrap">
-          <div class="pic-light__finial"></div>
-          <div class="pic-light__collar"></div>
-          <div class="pic-light__tube">
-            <div class="pic-light__label"><span>Find Us</span></div>
-          </div>
-          <div class="pic-light__collar"></div>
-          <div class="pic-light__finial"></div>
-        </div>
-        <div class="pic-light__glow"></div>
-      </div>
+      <div class="menu-ribbon reveal"><span>Find Us</span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
         <img
           src="assets/Jules_Antiques_Board.png"
