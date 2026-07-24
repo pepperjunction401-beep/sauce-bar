@@ -119,8 +119,8 @@ a { color: inherit; }
 h1, h2, h3 { margin: 0; }
 
 /* ── PRODUCT HERO ── */
-/* Pullman Burgundy — the same hero-banner texture used on
-   product pages (assets/textures/Hero-Banner-Pullman-Burgandy.png). */
+/* Hero-Banner-Mobile — frameless variant of the Pullman Burgundy
+   banner, so the item title never sits over the wooden frames. */
 .pjr-hero {
   padding: clamp(28px, 5vw, 48px);
   text-align: center;
