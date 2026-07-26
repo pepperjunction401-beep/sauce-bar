@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wing Sauces, Condiments — Pepper Junction</title>
-  <meta name="description" content="Shop Pepper Junction's Wing Sauces and Condiments With a Kick — Defcon, Melinda's, Colon Cleaner, and Spicy Shark. Rhode Island's specialty sauce destination since 2014." />
+  <title>Buffalo &amp; Wing Sauces, Condiments — Pepper Junction</title>
+  <meta name="description" content="Shop Pepper Junction's Buffalo &amp; Wing Sauces and Condiments With a Kick — Defcon, Melinda's, Colon Cleaner, and Spicy Shark. Rhode Island's specialty sauce destination since 2014." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -213,7 +214,8 @@
       background: rgba(30,48,32,0.85);
       border-bottom: 1px solid rgba(184,137,57,0.25);
       padding: 14px 48px;
-      position: relative;
+      position: sticky;
+      top: 92px;
       z-index: 90;
       backdrop-filter: blur(4px);
     }
@@ -317,11 +319,6 @@
       line-height: 1.2;
     }
 
-    /* ── SLIM WOOD DIVIDER (inter-section, no label) ─────────── */
-    .wood-divider--slim {
-      height: 72px;
-    }
-
     /* ── CATALOG SECTION ──────────────────────────────────────── */
     .catalog-section {
       padding: 64px 0 48px;
@@ -365,14 +362,14 @@
 
     .cat-divider-badge {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
+      align-items: center;
+      gap: 10px;
       padding: 8px 20px;
       border: 1px solid rgba(184,137,57,0.45);
       border-radius: 2px;
       background: rgba(30,48,32,0.7);
       backdrop-filter: blur(4px);
+      white-space: nowrap;
     }
 
     .cat-divider-emoji { font-size: 14px; line-height: 1; }
@@ -598,25 +595,50 @@
     .product-card:hover .product-card-btn-arrow { transform: translateX(3px); }
 
     /* ── FOOTER ───────────────────────────────────────────────── */
-    .site-footer { background: var(--green-dark); border-top: 2px solid var(--brass); position: relative; z-index: 1; }
-    .footer-top { max-width: 1100px; margin: 0 auto; padding: 48px 48px 40px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
-    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
-    .footer-contact-item { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; }
-    .footer-contact-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
-    .footer-contact-item a:hover { opacity: 1; }
-    .footer-col-title { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass); opacity: 0.8; display: block; margin-bottom: 14px; }
-    .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .footer-col-links li a { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; text-decoration: none; transition: opacity 0.2s; }
-    .footer-col-links li a:hover { opacity: 1; }
-    .footer-bottom { border-top: 1px solid rgba(184,137,57,0.2); padding: 18px 48px; display: flex; align-items: center; justify-content: space-between; max-width: 100%; }
-    .footer-copy { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.35; }
-    .footer-standard { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); opacity: 0.45; }
-    .footer-sep { display: none; }
-    @media (max-width: 768px) {
-      .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; padding: 32px 20px 28px; }
-      .footer-bottom { padding: 14px 20px; flex-direction: column; gap: 6px; text-align: center; }
+    .site-footer {
+      background: var(--green-dark);
+      border-top: 2px solid var(--brass);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
     }
-    @media (max-width: 480px) { .footer-top { grid-template-columns: 1fr; } }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-item {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.4;
+    }
+
+    .footer-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
+    .footer-item a:hover { opacity: 1; }
+
+    .footer-sep { width: 1px; height: 12px; background: rgba(184,137,57,0.3); }
+
+    .footer-right {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brass);
+      opacity: 0.45;
+    }
 
     /* ── SCROLL REVEAL ────────────────────────────────────────── */
     .reveal {
@@ -654,35 +676,6 @@
     }
     .back-top-link:hover { opacity: 0.9; border-color: rgba(184,137,57,0.5); }
 
-    /* ── OUT OF STOCK RIBBON ─────────────────────────────────── */
-    .ribbon-oos {
-      position: absolute;
-      top: 28px;
-      right: -32px;
-      width: 140px;
-      background: var(--crimson);
-      color: var(--cream-warm);
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      text-align: center;
-      padding: 6px 0;
-      transform: rotate(45deg);
-      transform-origin: center;
-      border-top: 1px solid rgba(255,255,255,0.2);
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    /* Dim the card image when out of stock */
-    .product-card.oos .product-card-image img {
-      filter: grayscale(40%) brightness(0.8);
-    }
-
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -692,58 +685,11 @@
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
       .page-hero { padding: 36px 20px 40px; }
-      .section-jump { padding: 12px 20px; }
-      .section-jump-inner { justify-content: center; }
+      .section-jump { padding: 12px 20px; top: 84px; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .wood-divider { height: 120px; }
       .header-nav { display: none; }
-      .maker-badge { top: 18px; left: 14px; }
-      .award-badge { top: 44px; left: 8px; padding: 3px 6px; }
-      .award-badge-text { white-space: nowrap; }
-      body { overflow-x: hidden; }
-      .catalog-section { overflow: hidden; }
-    }
-
-    /* ── OUT OF STOCK TREATMENT ───────────────────────────────── */
-    .product-card.out-of-stock .product-card-image img {
-      filter: grayscale(100%) opacity(0.5);
-      transition: filter 0.3s ease;
-    }
-
-    .out-of-stock-banner {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      transform: translateY(-50%);
-      background: rgba(43,29,21,0.88);
-      border-top: 1px solid rgba(184,137,57,0.4);
-      border-bottom: 1px solid rgba(184,137,57,0.4);
-      padding: 10px 0;
-      text-align: center;
-      z-index: 3;
-      display: none;
-    }
-
-    .product-card.out-of-stock .out-of-stock-banner {
-      display: block;
-    }
-
-    .out-of-stock-banner span {
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: var(--brass-bright);
-    }
-
-    .product-card.out-of-stock .product-card-name {
-      opacity: 0.55;
-    }
-
-    .product-card.out-of-stock .product-card-teaser {
-      opacity: 0.45;
+      .site-footer { padding: 20px; }
     }
 
   </style>
@@ -760,6 +706,7 @@
       </div>
     </a>
     <nav class="header-nav">
+      <a href="wholesale-dry-rubs.html">Wholesale</a>
       <a href="main.html#categories">Shop</a>
       <a href="index.html">Pairing Bar</a>
       <a href="main.html#location">Visit</a>
@@ -784,7 +731,7 @@
   <nav class="section-jump" aria-label="Jump to category section">
     <div class="section-jump-inner">
       <span class="jump-label">Jump to:</span>
-      <a class="jump-link" href="#buffalo-wing">🐃 Wing Sauces</a>
+      <a class="jump-link" href="#buffalo-wing">🐃 Buffalo &amp; Wing Sauces</a>
       <a class="jump-link" href="#condiments">🍯 Condiments With a Kick</a>
     </div>
   </nav>
@@ -804,9 +751,11 @@
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
-          <span class="cat-divider-text">Wing Sauces</span>
+          <span class="cat-divider-emoji">🐃</span>
+          <span class="cat-divider-text">Buffalo &amp; Wing Sauces</span>
           <span class="cat-divider-count">4 Sauces</span>
         </div>
+        <div class="cat-divider-line right"></div>
       </div>
 
       <div class="product-grid">
@@ -815,7 +764,7 @@
         <a class="product-card reveal" href="products/defcon-defense-condition-3-mild.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Screaming MiMi Award '16 &amp; '17</span></div>
+            <div class="award-badge"><span class="award-badge-text">🏆 NYC Expo Wing Sauce '16 &amp; '17</span></div>
             <img src="assets/pullman-product-display/cat-defcon-defense-condition-3-mild.png" alt="Defcon Defense Condition #3 Mild Wing Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🐃</span>
@@ -836,7 +785,7 @@
         <a class="product-card reveal" href="products/defcon-defense-condition-2-medium.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Screaming MiMi Award '15 &amp; '23</span></div>
+            <div class="award-badge"><span class="award-badge-text">🏆 NYC Expo Wing Sauce '15 &amp; '23</span></div>
             <img src="assets/pullman-product-display/cat-defcon-defense-condition-2-medium.png" alt="Defcon Defense Condition #2 Medium Wing Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🐃</span>
@@ -857,7 +806,7 @@
         <a class="product-card reveal" href="products/defcon-cluckwing-orange.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Screaming MiMi Award</span></div>
+            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
             <img src="assets/pullman-product-display/cat-defcon-cluckwing-orange.png" alt="Defcon Cluckwing Orange Wing Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🐃</span>
@@ -878,7 +827,7 @@
         <a class="product-card reveal" href="products/defcon-curbstomp.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
-            <div class="award-badge"><span class="award-badge-text">🏆 Screaming MiMi Award</span></div>
+            <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
             <img src="assets/pullman-product-display/cat-defcon-curbstomp.png" alt="Defcon Curbstomp Wing Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🐃</span>
@@ -900,7 +849,8 @@
   </section>
 
   <!-- ═══ WOOD DIVIDER — CONDIMENTS ════════════════════════════ -->
-  <div class="wood-divider wood-divider--slim" id="condiments"></div>
+  <div class="wood-divider" id="condiments">
+  </div>
 
   <!-- ═══ CONDIMENTS CATALOG ════════════════════════════════════ -->
   <section class="catalog-section">
@@ -909,9 +859,11 @@
       <div class="cat-divider">
         <div class="cat-divider-line left"></div>
         <div class="cat-divider-badge">
+          <span class="cat-divider-emoji">🍯</span>
           <span class="cat-divider-text">Condiments With a Kick</span>
           <span class="cat-divider-count">4 Products</span>
         </div>
+        <div class="cat-divider-line right"></div>
       </div>
 
       <div class="product-grid">
@@ -937,10 +889,9 @@
         </a>
 
         <!-- ── Melinda's Chipotle Ketchup ── -->
-        <a class="product-card oos reveal" href="products/melindas-chipotle-ketchup.html">
+        <a class="product-card reveal" href="products/melindas-chipotle-ketchup.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
-            <div class="ribbon-oos">Out of Stock</div>
             <img src="assets/pullman-product-display/cat-melindas-chipotle-ketchup.png" alt="Melinda's Chipotle Ketchup" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🍅</span>
@@ -958,10 +909,9 @@
         </a>
 
         <!-- ── Melinda's Ghost Pepper Ketchup ── -->
-        <a class="product-card oos reveal" href="products/melindas-ghost-pepper-ketchup.html">
+        <a class="product-card reveal" href="products/melindas-ghost-pepper-ketchup.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
-            <div class="ribbon-oos">Out of Stock</div>
             <img src="assets/pullman-product-display/cat-melindas-ghost-pepper-ketchup.png" alt="Melinda's Ghost Pepper Ketchup" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
             <div class="type-badge">
               <span class="type-badge-emoji">🍅</span>
@@ -1009,46 +959,14 @@
 
   <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
   <footer class="site-footer">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
-        <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
-        <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
-      </div>
-      <div>
-        <span class="footer-col-title">Shop</span>
-        <ul class="footer-col-links">
-          <li><a href="hot-sauces.html">Hot Sauces</a></li>
-          <li><a href="buffalo-condiments.html">Wing &amp; Buffalo</a></li>
-          <li><a href="seasonings-bbq.html">BBQ &amp; Seasonings</a></li>
-          <li><a href="buffalo-condiments.html">Condiments</a></li>
-          <li><a href="snacks.html">Snacks</a></li>
-          <li><a href="olive-oils-vinegar.html">Olive Oils &amp; Vinegars</a></li>
-        </ul>
-      </div>
-      <div>
-        <span class="footer-col-title">Pepper Junction</span>
-        <ul class="footer-col-links">
-          <li><a href="main.html">Home</a></li>
-          <li><a href="index.html">Pairing Bar</a></li>
-          <li><a href="main.html#about">Our Story</a></li>
-          <li><a href="main.html#location">Visit Us</a></li>
-        </ul>
-      </div>
-      <div>
-        <span class="footer-col-title">Help</span>
-        <ul class="footer-col-links">
-          <li><a href="policies.html#damaged">Damaged Products</a></li>
-          <li><a href="policies.html#shipping">Shipping Info</a></li>
-          <li><a href="policies.html#returns">Returns</a></li>
-          <li><a href="policies.html#contact">Contact Us</a></li>
-        </ul>
-      </div>
+    <div class="footer-left">
+      <span class="footer-item"><a href="https://www.pepperjunction401.com">pepperjunction401.com</a></span>
+      <span class="footer-sep"></span>
+      <span class="footer-item">320 Kingstown Rd · Richmond, RI</span>
+      <span class="footer-sep"></span>
+      <span class="footer-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
     </div>
-    <div class="footer-bottom">
-      <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
-      <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
-    </div>
+    <div class="footer-right">© Pepper Junction · Est. 2014</div>
   </footer>
 
   <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
@@ -1088,126 +1006,6 @@
     }, { threshold: 0.3, rootMargin: '-100px 0px -60% 0px' });
 
     sections.forEach(function (s) { if (s) sectionObserver.observe(s); });
-  })();
-  </script>
-
-  <script>
-  /* ================================================================
-     PJ CATEGORY PAGE — JSON-DRIVEN RENDERING
-     Dormant until data/Database_Pepper_Junction.json is live.
-     Static cards remain as fallback if fetch fails or JSON not ready.
-     Out-of-stock treatment activates when in_stock: false appears.
-  ================================================================ */
-  (function() {
-
-    var JSON_PATH = 'data/Database_Pepper_Junction.json';
-
-    // Categories for this page
-    var CATEGORIES = {
-      'buffalo-wing':  'WING SAUCE',
-      'condiments':    'CONDIMENTS'
-    };
-
-    // Award badges keyed by slug
-    var AWARD_BADGES = {
-      'defcon-defense-condition-2': "\uD83C\uDFC6 NYC Hot Sauce Expo 1st Place '15 & '23",
-      'defcon-defense-condition-3': "\uD83C\uDFC6 NYC Hot Sauce Expo 1st Place '16 & '17"
-    };
-
-    // slug → image filename stem
-    var IMAGE_MAP = {
-      'defcon-defense-condition-3':              'defcon-defense-condition-3-mild',
-      'defcon-defense-condition-2':              'defcon-defense-condition-2-medium',
-      'defcon-cluckwing':                        'defcon-cluckwing-orange',
-      'defcon-curbstomp':                        'defcon-curbstomp',
-      'sauce-crafters-colon-cleaner-mustard':    'colon-cleaner-mustard-hot-sauce',
-      'melindas-chipotle-ketchup':               'melindas-chipotle-ketchup',
-      'melindas-naga-jolokia-ketchup':           'melindas-ghost-pepper-ketchup',
-      'the-spicy-shark-habanero-maple-syrup':    'spicy-shark-hot-maple-syrup'
-    };
-
-    function getImageStem(slug) {
-      return IMAGE_MAP[slug] || slug;
-    }
-
-    function buildCard(product) {
-      var slug      = product.slug;
-      var name      = product['Product Name'] || '';
-      var brand     = product['Brand'] || '';
-      var price     = product['Price'] ? '$' + parseFloat(product['Price']).toFixed(2) : '';
-      var inStock   = product['in_stock'] !== false;
-      var imgStem   = getImageStem(slug);
-      var imgSrc    = 'assets/pullman-product-display/cat-' + imgStem + '.png';
-      var pageLink  = 'products/' + slug + '.html';
-      var award     = AWARD_BADGES[slug] || null;
-      var oos       = inStock ? '' : ' out-of-stock';
-      var oosBanner = '<div class="out-of-stock-banner"><span>Out of Stock</span></div>';
-      var awardHtml = award ? '<div class="award-badge"><span class="award-badge-text">' + award + '</span></div>' : '';
-
-      return '<a class="product-card reveal' + oos + '" href="' + pageLink + '">' +
-        '<div class="product-card-image">' +
-          '<div class="maker-badge"><span class="maker-badge-text">' + brand + '</span></div>' +
-          awardHtml +
-          '<img src="' + imgSrc + '" alt="' + name + '" loading="lazy" onerror="this.src=\'assets/pullman-product-display/cat-placeholder.png\'" />' +
-          oosBanner +
-        '</div>' +
-        '<div class="product-card-body">' +
-          '<div class="product-card-name">' + name + '</div>' +
-          '<p class="product-card-teaser"></p>' +
-        '</div>' +
-        '<div class="product-card-footer">' +
-          '<span class="product-card-price">' + (price ? price : '') + '</span>' +
-          '<span class="product-card-btn">View <span class="product-card-btn-arrow">\u2192</span></span>' +
-        '</div>' +
-      '</a>';
-    }
-
-    function fetchAndRender() {
-      fetch(JSON_PATH)
-        .then(function(res) {
-          if (!res.ok) throw new Error('JSON not ready');
-          return res.json();
-        })
-        .then(function(data) {
-          var sectionIds = Object.keys(CATEGORIES);
-          var revEls = [];
-
-          document.querySelectorAll('.product-grid').forEach(function(grid, i) {
-            var sid      = sectionIds[i];
-            var category = CATEGORIES[sid];
-            var products = data.filter(function(p) { return p['Category'] === category; });
-            if (!products.length) return;
-            grid.innerHTML = products.map(buildCard).join('');
-            grid.querySelectorAll('.reveal').forEach(function(el) { revEls.push(el); });
-          });
-
-          var obs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) {
-              if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-            });
-          }, { threshold: 0.08 });
-          revEls.forEach(function(el) { obs.observe(el); });
-
-          // Update section counts
-          var counts = document.querySelectorAll('.cat-divider-count');
-          counts.forEach(function(el, i) {
-            var sid      = sectionIds[i];
-            var category = CATEGORIES[sid];
-            var count    = data.filter(function(p) { return p['Category'] === category; }).length;
-            if (count) el.textContent = count + ' Products';
-          });
-        })
-        .catch(function() {
-          console.log('PJ: JSON not available yet, using static catalog.');
-        });
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', fetchAndRender);
-    } else {
-      fetchAndRender();
-    }
-
   })();
   </script>
 

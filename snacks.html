@@ -631,47 +631,51 @@
       .site-footer { padding: 20px; }
     }
 
-    /* ── OUT OF STOCK TREATMENT ───────────────────────────────── */
+        /* ── OUT OF STOCK — hover reveal ─────────────────────────── */
+
+    /* Full color — no gray, no dim */
     .product-card.out-of-stock .product-card-image img {
-      filter: grayscale(100%) opacity(0.5);
-      transition: filter 0.3s ease;
+      filter: none;
+      transition: transform 0.35s ease;
     }
 
+    /* Crimson panel — sits at bottom, hidden off-screen by default */
     .out-of-stock-banner {
       position: absolute;
-      top: 50%;
+      bottom: 0;
       left: 0;
       right: 0;
-      transform: translateY(-50%);
-      background: rgba(43,29,21,0.88);
-      border-top: 1px solid rgba(184,137,57,0.4);
-      border-bottom: 1px solid rgba(184,137,57,0.4);
-      padding: 10px 0;
-      text-align: center;
-      z-index: 3;
-      display: none;
-    }
-
-    .product-card.out-of-stock .out-of-stock-banner {
-      display: block;
+      height: 12.5%;
+      background: var(--crimson);
+      border-top: 3px solid var(--brass-bright);
+      border-bottom: 3px solid var(--brass-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      transform: translateY(100%);
+      transition: transform 0.28s ease;
+      pointer-events: none;
     }
 
     .out-of-stock-banner span {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
+      font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.38em;
       text-transform: uppercase;
-      color: var(--brass-bright);
+      color: #FFD700;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
     }
 
-    .product-card.out-of-stock .product-card-name {
-      opacity: 0.55;
+    /* Slide up on hover */
+    .product-card.out-of-stock:hover .out-of-stock-banner {
+      transform: translateY(0);
     }
 
-    .product-card.out-of-stock .product-card-teaser {
-      opacity: 0.45;
-    }
+    /* Card body — full opacity always */
+    .product-card.out-of-stock .product-card-name,
+    .product-card.out-of-stock .product-card-teaser { opacity: 1; }
 
   </style>
 </head>
@@ -735,7 +739,7 @@
       <div class="product-grid">
 
         <!-- ── Fried Garlic Dill Pickle ── -->
-        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-dill-pickle.html">
+        <a class="product-card reveal" href="products/mikey-vs-gator-toes-dill-pickle.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-dill-pickle.png" alt="Mikey V's Fried Garlic Dill Pickle" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
@@ -755,7 +759,7 @@
         </a>
 
         <!-- ── Fried Garlic BBQ ── -->
-        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-bbq.html">
+        <a class="product-card reveal" href="products/mikey-vs-gator-toes-bbq.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-bbq.png" alt="Mikey V's Fried Garlic BBQ" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
@@ -775,7 +779,7 @@
         </a>
 
         <!-- ── Fried Garlic Buffalo ── -->
-        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-buffalo.html">
+        <a class="product-card reveal" href="products/mikey-vs-gator-toes-buffalo.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-buffalo.png" alt="Mikey V's Fried Garlic Buffalo" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
@@ -795,7 +799,7 @@
         </a>
 
         <!-- ── Fried Garlic Spicy ── -->
-        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-spicy.html">
+        <a class="product-card reveal" href="products/mikey-vs-gator-toes-spicy.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-spicy.png" alt="Mikey V's Fried Garlic Spicy" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
@@ -815,7 +819,7 @@
         </a>
 
         <!-- ── Fried Garlic Loco ── -->
-        <a class="product-card reveal" href="products/mikey-vs-fried-garlic-loco.html">
+        <a class="product-card reveal" href="products/mikey-vs-gator-toes-loco-spice.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Mikey V's</span></div>
             <img src="assets/pullman-product-display/cat-mikey-vs-fried-garlic-loco.png" alt="Mikey V's Fried Garlic Loco" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
@@ -874,13 +878,13 @@
   <script>
   /* ================================================================
      PJ CATEGORY PAGE — JSON-DRIVEN RENDERING
-     Dormant until data/Database_Pepper_Junction.json.json is live.
+     Dormant until data/Database_Pepper_Junction.json is live.
      Static cards remain as fallback if fetch fails or JSON not ready.
      Out-of-stock treatment activates when in_stock: false appears.
   ================================================================ */
   (function() {
 
-    var JSON_PATH = 'data/Database_Pepper_Junction.json.json';
+    var JSON_PATH = 'data/Database_Pepper_Junction.json';
     var CATEGORY  = 'SNACKS';
 
     var IMAGE_MAP = {

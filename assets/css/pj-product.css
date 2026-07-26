@@ -1677,3 +1677,85 @@ body {
     font-size: 14px;
   }
 }
+
+/* ══════════════════════════════════════════════════════════
+   PASSENGER REVIEWS DISPLAY — PHASE 1 EXPANSION
+   Styles for the compact / preview / all review states
+   rendered by pj-product-review.js. Additive block only —
+   nothing above this line was modified.
+   ══════════════════════════════════════════════════════════ */
+
+.pj-review-display {
+  margin-top: 14px;
+}
+
+.pj-review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pj-review-item {
+  margin: 0;
+  padding: 14px 16px 12px;
+  background: rgba(212,168,50,0.05);
+  border: 1px solid rgba(212,168,50,0.28);
+  border-left: 3px solid var(--brass-bright);
+}
+
+.pj-review-quote {
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--chalk);
+  overflow-wrap: break-word;
+}
+
+.pj-review-attr {
+  margin-top: 8px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brass-bright);
+  opacity: 0.85;
+}
+
+.pj-review-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.pj-review-control {
+  border: 1px solid rgba(212,168,50,0.45);
+  background: rgba(0,0,0,0.16);
+  color: var(--brass-bright);
+  padding: 10px 14px 8px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.pj-review-control:hover {
+  transform: translateY(-2px);
+  border-color: var(--brass-bright);
+}
+
+.pj-review-control:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212,168,50,0.85);
+}
+
+@media (max-width: 640px) {
+  .pj-review-quote { font-size: 14px; }
+  .pj-review-control { flex: 1 1 auto; text-align: center; }
+}

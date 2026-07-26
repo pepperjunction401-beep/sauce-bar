@@ -1,0 +1,139 @@
+/* ═══════════════════════════════════════════════════════════════
+   PEPPER JUNCTION — WHOLESALE STYLESHEET
+   Loaded ONLY by wholesale item pages. Never link this file from
+   retail product item pages or category pages. Wholesale pages are
+   not connected for public view and maintain separate architecture.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── HOVER BANNER PATTERN ──────────────────────────────────────
+   Frame:  add class "hover-frame" alongside "img-frame"
+   Banner: a div with class "hover-banner" placed inside the frame,
+           after the img-frame-inner block. Banner copy goes inside.
+   Resting state: banner parked below the frame's bottom edge,
+   clipped by overflow:hidden. Slides up into view on hover.
+   ────────────────────────────────────────────────────────────── */
+
+.hover-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-banner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--crimson, #6B0F1A);
+  color: var(--brass-bright, #D4A832);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 16px 18px;
+  transform: translateY(100%);
+  transition: transform 0.35s ease;
+  z-index: 5;
+}
+
+.hover-frame:hover .hover-banner {
+  transform: translateY(0);
+}
+
+/* ── APPLICATION NOTICE ────────────────────────────────────────
+   Disclaimer block placed below the 14 oz Add To Cart button on
+   every wholesale item page. Markup: a div with class
+   "application-notice" containing the notice copy.
+   ────────────────────────────────────────────────────────────── */
+
+.application-notice {
+  margin-top: 18px;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.04);
+  border-left: 2px solid var(--brass, #C9A84C);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--cream-warm, #F5EDD6);
+  opacity: 0.8;
+}
+
+/* ── WHOLESALE CATALOG GRID ────────────────────────────────────
+   Used by wholesale-dry-rubs.html (category page). Each tile is
+   an <a class="catalog-tile"> wrapping an img-frame, name, meta
+   row, and price — linking to that product's wholesale page.
+   ────────────────────────────────────────────────────────────── */
+
+.wholesale-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+@media (max-width: 900px) {
+  .wholesale-catalog-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .wholesale-catalog-grid { grid-template-columns: 1fr; }
+}
+
+.catalog-tile {
+  display: block;
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+
+.catalog-tile:hover {
+  transform: translateY(-4px);
+}
+
+.catalog-tile .catalog-tile-img {
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.catalog-tile .catalog-tile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.catalog-tile-name {
+  margin-top: 12px;
+  font-family: 'BlackRiver', 'Playfair Display', serif;
+  font-size: 22px;
+  letter-spacing: 0.05em;
+  color: var(--brass-bright, #D4A832);
+}
+
+.catalog-tile-meta {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.catalog-tile-brand {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cream-warm, #F5EDD6);
+  opacity: 0.7;
+}
+
+.catalog-tile-price {
+  margin-top: 8px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--cream-warm, #F5EDD6);
+}
+
+.catalog-tile-unit {
+  font-weight: 300;
+  font-size: 12px;
+  opacity: 0.7;
+}

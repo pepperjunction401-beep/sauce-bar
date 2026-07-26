@@ -1,6 +1,6 @@
 /**
  * cart-drawer.js
- * Pepper Junction — Mini Cart Drawer v1
+ * Pepper Junction — Mini Cart Drawer v1.1
  *
  * Requires:
  * - assets/js/cart-engine.js loaded first
@@ -33,6 +33,36 @@
   var CART_BUTTON_ID = 'pj-cart-toggle';
   var CART_COUNT_ID = 'pj-cart-count';
 
+  function getCartBasePath() {
+    var path = window.location.pathname || '';
+
+    if (path.indexOf('/products/') !== -1) {
+      return '../';
+    }
+
+    return './';
+  }
+
+  function cartPath(value) {
+    var raw = String(value || '');
+
+    if (!raw) return '';
+
+    if (
+      raw.indexOf('http://') === 0 ||
+      raw.indexOf('https://') === 0 ||
+      raw.indexOf('//') === 0 ||
+      raw.indexOf('data:') === 0 ||
+      raw.indexOf('blob:') === 0
+    ) {
+      return raw;
+    }
+
+    raw = raw.replace(/^(\.\.\/|\.\/)+/, '');
+
+    return getCartBasePath() + raw;
+  }
+
   function esc(value) {
     return String(value || '')
       .replace(/&/g, '&amp;')
@@ -56,18 +86,21 @@
     if (document.getElementById(CART_BUTTON_ID)) return;
 
     var headerNav = document.querySelector('.header-nav');
+
     if (!headerNav) {
       console.warn('PJCartDrawer: .header-nav not found.');
       return;
     }
 
     var btn = document.createElement('button');
+
     btn.id = CART_BUTTON_ID;
     btn.className = 'pj-cart-toggle';
     btn.type = 'button';
     btn.setAttribute('aria-label', 'Open cart');
     btn.setAttribute('aria-controls', DRAWER_ID);
     btn.setAttribute('aria-expanded', 'false');
+
     btn.innerHTML =
       '<span class="pj-cart-icon" aria-hidden="true">🛒</span>' +
       '<span class="pj-cart-label">Cart</span>' +
@@ -80,11 +113,13 @@
     if (document.getElementById(DRAWER_ID)) return;
 
     var overlay = document.createElement('div');
+
     overlay.id = OVERLAY_ID;
     overlay.className = 'pj-cart-overlay';
     overlay.setAttribute('hidden', '');
 
     var drawer = document.createElement('aside');
+
     drawer.id = DRAWER_ID;
     drawer.className = 'pj-cart-drawer';
     drawer.setAttribute('aria-hidden', 'true');
@@ -105,12 +140,13 @@
 
         '<div class="pj-cart-teaser" aria-label="Badge progress preview">' +
           '<div class="pj-cart-teaser-row">' +
-            '<img class="pj-cart-teaser-img" id="pj-cart-bottle-img" src="../assets/badges/bottle-purchase-coins/badge-coin-penny-obverse.png" alt="" loading="lazy">' +
-            '<span class="pj-cart-teaser-val" id="pj-cart-bottle-teaser">Add 3 items to unlock your first Bottle-Purchase Coin.</span>' +
+            '<img class="pj-cart-teaser-img" id="pj-cart-bottle-img" src="' + cartPath('assets/badges/bottle-purchase-coins/badge-coin-penny-obverse.png') + '" alt="" loading="lazy">' +
+            '<span class="pj-cart-teaser-val" id="pj-cart-bottle-teaser">Add 3 items to unlock your first Item-Purchase Coin.</span>' +
           '</div>' +
+
           '<div class="pj-cart-teaser-row">' +
-            '<img class="pj-cart-teaser-img" id="pj-cart-total-img" src="../assets/badges/check-total/badge-check-total-pickup-sticks.png" alt="" loading="lazy">' +
-            '<span class="pj-cart-teaser-val" id="pj-cart-total-teaser">Start your lineup to begin Check-Total progress.</span>' +
+            '<img class="pj-cart-teaser-img" id="pj-cart-total-img" src="' + cartPath('assets/badges/purchase-progress/badge-purchase-progress-fuel.png') + '" alt="" loading="lazy">' +
+            '<span class="pj-cart-teaser-val" id="pj-cart-total-teaser">Start your lineup to begin Purchase Progress.</span>' +
           '</div>' +
         '</div>' +
       '</div>' +
@@ -120,9 +156,11 @@
           '<span>Subtotal</span>' +
           '<strong id="pj-cart-subtotal">$0.00</strong>' +
         '</div>' +
+
         '<button class="pj-cart-action pj-cart-continue" type="button">Continue Shopping</button>' +
-        '<a class="pj-cart-action pj-cart-view" href="../cart-page.html">View Full Cart</a>' +
+        '<a class="pj-cart-action pj-cart-view" href="' + cartPath('cart-page.html') + '">View Full Cart</a>' +
         '<button class="pj-cart-action pj-cart-checkout" type="button">Checkout Now</button>' +
+
         '<div class="pj-cart-note">Checkout bridge coming soon. Square remains the register.</div>' +
       '</div>';
 
@@ -165,18 +203,23 @@
         }
 
         if (removeBtn) {
-          window.PJCart.removeItem(removeBtn.getAttribute('data-cart-remove'));
+          window.PJCart.removeItem(
+            removeBtn.getAttribute('data-cart-remove')
+          );
           return;
         }
 
         if (incBtn) {
-          window.PJCart.increment(incBtn.getAttribute('data-cart-inc'));
+          window.PJCart.increment(
+            incBtn.getAttribute('data-cart-inc')
+          );
           return;
         }
 
         if (decBtn) {
-          window.PJCart.decrement(decBtn.getAttribute('data-cart-dec'));
-          return;
+          window.PJCart.decrement(
+            decBtn.getAttribute('data-cart-dec')
+          );
         }
       });
     }
@@ -184,7 +227,9 @@
     window.addEventListener(window.PJCart.event, render);
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeDrawer();
+      if (e.key === 'Escape') {
+        closeDrawer();
+      }
     });
   }
 
@@ -193,12 +238,18 @@
     var drawer = document.getElementById(DRAWER_ID);
     var toggle = document.getElementById(CART_BUTTON_ID);
 
-    if (overlay) overlay.removeAttribute('hidden');
+    if (overlay) {
+      overlay.removeAttribute('hidden');
+    }
+
     if (drawer) {
       drawer.classList.add('open');
       drawer.setAttribute('aria-hidden', 'false');
     }
-    if (toggle) toggle.setAttribute('aria-expanded', 'true');
+
+    if (toggle) {
+      toggle.setAttribute('aria-expanded', 'true');
+    }
 
     document.body.classList.add('pj-cart-open');
   }
@@ -212,8 +263,14 @@
       drawer.classList.remove('open');
       drawer.setAttribute('aria-hidden', 'true');
     }
-    if (toggle) toggle.setAttribute('aria-expanded', 'false');
-    if (overlay) overlay.setAttribute('hidden', '');
+
+    if (toggle) {
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    if (overlay) {
+      overlay.setAttribute('hidden', '');
+    }
 
     document.body.classList.remove('pj-cart-open');
   }
@@ -229,14 +286,19 @@
 
   function renderCount(summary) {
     var countEl = document.getElementById(CART_COUNT_ID);
+
     if (!countEl) return;
 
     countEl.textContent = summary.item_count;
-    countEl.classList.toggle('has-items', summary.item_count > 0);
+    countEl.classList.toggle(
+      'has-items',
+      summary.item_count > 0
+    );
   }
 
   function renderItems(summary) {
     var drawer = document.getElementById(DRAWER_ID);
+
     if (!drawer) return;
 
     var emptyEl = drawer.querySelector('.pj-cart-empty');
@@ -253,30 +315,65 @@
     emptyEl.style.display = 'none';
 
     itemsEl.innerHTML = summary.items.map(function (item) {
-      var lineTotal = Number(item.price || 0) * Number(item.quantity || 1);
-      var image = item.image || '../assets/PJ-logo.png';
+      var lineTotal =
+        Number(item.price || 0) *
+        Number(item.quantity || 1);
+
+      var image = cartPath(item.image || 'assets/PJ-logo.png');
 
       return (
-        '<div class="pj-cart-item" data-product-id="' + esc(item.product_id) + '">' +
+        '<div class="pj-cart-item" data-product-id="' +
+          esc(item.product_id) +
+        '">' +
+
           '<div class="pj-cart-item-img-wrap">' +
-            '<img class="pj-cart-item-img" src="' + esc(image) + '" alt="' + esc(item.product_name) + '" ' +
-              'loading="lazy" onerror="this.src=\'../assets/PJ-logo.png\'">' +
+            '<img class="pj-cart-item-img" src="' +
+              esc(image) +
+            '" alt="' +
+              esc(item.product_name) +
+            '" loading="lazy" onerror="this.src=\'' + cartPath('assets/PJ-logo.png') + '\'">' +
           '</div>' +
 
           '<div class="pj-cart-item-main">' +
-            '<div class="pj-cart-item-name">' + esc(item.product_name) + '</div>' +
-            (item.brand ? '<div class="pj-cart-item-brand">' + esc(item.brand) + '</div>' : '') +
-            '<div class="pj-cart-item-meta">' + formatMoney(item.price) + ' each</div>' +
+            '<div class="pj-cart-item-name">' +
+              esc(item.product_name) +
+            '</div>' +
+
+            (
+              item.brand
+                ? '<div class="pj-cart-item-brand">' +
+                    esc(item.brand) +
+                  '</div>'
+                : ''
+            ) +
+
+            '<div class="pj-cart-item-meta">' +
+              formatMoney(item.price) +
+              ' each' +
+            '</div>' +
 
             '<div class="pj-cart-qty-row">' +
-              '<button class="pj-cart-qty-btn" type="button" data-cart-dec="' + esc(item.product_id) + '" aria-label="Decrease quantity">−</button>' +
-              '<span class="pj-cart-qty">' + esc(item.quantity) + '</span>' +
-              '<button class="pj-cart-qty-btn" type="button" data-cart-inc="' + esc(item.product_id) + '" aria-label="Increase quantity">+</button>' +
-              '<button class="pj-cart-remove" type="button" data-cart-remove="' + esc(item.product_id) + '">🗑 Remove</button>' +
+              '<button class="pj-cart-qty-btn" type="button" data-cart-dec="' +
+                esc(item.product_id) +
+              '" aria-label="Decrease quantity">−</button>' +
+
+              '<span class="pj-cart-qty">' +
+                esc(item.quantity) +
+              '</span>' +
+
+              '<button class="pj-cart-qty-btn" type="button" data-cart-inc="' +
+                esc(item.product_id) +
+              '" aria-label="Increase quantity">+</button>' +
+
+              '<button class="pj-cart-remove" type="button" data-cart-remove="' +
+                esc(item.product_id) +
+              '">🗑 Remove</button>' +
             '</div>' +
           '</div>' +
 
-          '<div class="pj-cart-line-total">' + formatMoney(lineTotal) + '</div>' +
+          '<div class="pj-cart-line-total">' +
+            formatMoney(lineTotal) +
+          '</div>' +
         '</div>'
       );
     }).join('');
@@ -284,38 +381,85 @@
 
   function renderSubtotal(summary) {
     var subtotalEl = document.getElementById('pj-cart-subtotal');
-    if (subtotalEl) subtotalEl.textContent = summary.subtotal_display;
+
+    if (subtotalEl) {
+      subtotalEl.textContent = summary.subtotal_display;
+    }
   }
 
   function renderBadgeTeasers(summary) {
-    var bottleEl  = document.getElementById('pj-cart-bottle-teaser');
-    var totalEl   = document.getElementById('pj-cart-total-teaser');
-    var bottleImg = document.getElementById('pj-cart-bottle-img');
-    var totalImg  = document.getElementById('pj-cart-total-img');
+    var itemCoinEl =
+      document.getElementById('pj-cart-bottle-teaser');
 
-    var badgeBase = '../assets/badges/';
+    var purchaseProgressEl =
+      document.getElementById('pj-cart-total-teaser');
 
-    if (bottleEl && summary.bottle_coin_progress) {
-      var bottleProgress = summary.bottle_coin_progress;
-      var bottleBadge    = bottleProgress.next || bottleProgress.earned;
+    var itemCoinImg =
+      document.getElementById('pj-cart-bottle-img');
 
-      bottleEl.textContent = bottleProgress.message || '';
+    var purchaseProgressImg =
+      document.getElementById('pj-cart-total-img');
 
-      if (bottleImg && bottleBadge && bottleBadge.image) {
-        bottleImg.src = badgeBase + bottleBadge.image;
-        bottleImg.alt = bottleBadge.name || 'Bottle Coin';
+    var badgeBase = cartPath('assets/badges/');
+
+    /*
+     * Preferred current names:
+     * - item_purchase_coin_progress
+     * - purchase_progress
+     *
+     * Temporary legacy fallbacks remain so this drawer continues
+     * working with the existing cart-engine.js until that file is
+     * normalized separately.
+     */
+    var itemCoinProgress =
+      summary.item_purchase_coin_progress ||
+      summary.bottle_coin_progress;
+
+    var purchaseProgress =
+      summary.purchase_progress ||
+      summary.check_total_progress;
+
+    if (itemCoinEl && itemCoinProgress) {
+      var itemCoinBadge =
+        itemCoinProgress.next ||
+        itemCoinProgress.earned;
+
+      itemCoinEl.textContent =
+        itemCoinProgress.message || '';
+
+      if (
+        itemCoinImg &&
+        itemCoinBadge &&
+        itemCoinBadge.image
+      ) {
+        itemCoinImg.src =
+          badgeBase + itemCoinBadge.image;
+
+        itemCoinImg.alt =
+          itemCoinBadge.name ||
+          'Item-Purchase Coin';
       }
     }
 
-    if (totalEl && summary.check_total_progress) {
-      var totalProgress = summary.check_total_progress;
-      var totalBadge    = totalProgress.next || totalProgress.earned;
+    if (purchaseProgressEl && purchaseProgress) {
+      var purchaseProgressBadge =
+        purchaseProgress.next ||
+        purchaseProgress.earned;
 
-      totalEl.textContent = totalProgress.message || '';
+      purchaseProgressEl.textContent =
+        purchaseProgress.message || '';
 
-      if (totalImg && totalBadge && totalBadge.image) {
-        totalImg.src = badgeBase + totalBadge.image;
-        totalImg.alt = totalBadge.name || 'Check Total Badge';
+      if (
+        purchaseProgressImg &&
+        purchaseProgressBadge &&
+        purchaseProgressBadge.image
+      ) {
+        purchaseProgressImg.src =
+          badgeBase + purchaseProgressBadge.image;
+
+        purchaseProgressImg.alt =
+          purchaseProgressBadge.name ||
+          'Purchase Progress Badge';
       }
     }
   }
@@ -328,11 +472,17 @@
       return;
     }
 
-    console.info('PJCartDrawer: Checkout bridge not connected yet.', summary);
+    console.info(
+      'PJCartDrawer: Checkout bridge not connected yet.',
+      summary
+    );
 
     var note = document.querySelector('.pj-cart-note');
+
     if (note) {
-      note.textContent = 'Checkout bridge coming soon — cart session is ready for Square handoff.';
+      note.textContent =
+        'Checkout bridge coming soon — cart session is ready for Square handoff.';
+
       note.classList.add('active');
     }
   }
@@ -345,5 +495,4 @@
     close: closeDrawer,
     render: render
   };
-
 })();

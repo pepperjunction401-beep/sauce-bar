@@ -816,7 +816,7 @@
 
     /* ══════════════════════════════════════════════════════════════
        COIN FLIP CARD SYSTEM
-       Bottle-Purchase Coins — item count per visit trigger.
+       Item-Purchase Coins — item count per visit trigger.
        Obverse = front face (coin face shown on earn).
        Reverse = back face (real reverse coin image + narrative).
        Level Up Rule: each qualifying visit increments level indefinitely.
@@ -1451,7 +1451,7 @@
   <div class="stat-divider"></div>
   <div class="stat">
     <div class="stat-val">12</div>
-    <div class="stat-label">Bottle-Purchase Coins</div>
+    <div class="stat-label">Item-Purchase Coins</div>
   </div>
   <div class="stat-divider"></div>
   <div class="stat">
@@ -2459,7 +2459,7 @@
     <div class="category-header">
       <div class="category-icon">🪙</div>
       <div class="category-titles">
-        <div class="category-name">Bottle-Purchase Coins</div>
+        <div class="category-name">Item-Purchase Coins</div>
         <div class="category-desc">6 Coins · Item Count Per Visit · 3–9 Items · Level Up Rule · 1930s Era Currency · All Art Complete</div>
       </div>
       <div class="category-count">6</div>
@@ -2633,15 +2633,15 @@
       <div class="category-icon">🎲</div>
       <div class="category-titles">
         <div class="category-name">Game Piece Badges</div>
-        <div class="category-desc">9 Badges · Single Transaction Dollar Amount · $10–$100 · 1920s–1940s Board Game Era · Level Up Rule · All Art Complete</div>
+        <div class="category-desc">9 Badges · ON HOLD — Reserved for Future App Use · No Active Trigger · 1920s–1940s Board Game Era · All Art Complete</div>
       </div>
       <div class="category-count">9</div>
     </div>
-    <div class="pending-note">Triggered by DOLLAR AMOUNT of single transaction — highest threshold reached only. Thresholds passed through are never awarded. Level Up Rule applies. Dynamic nudge math lives in the Junction Progress Station cart — NOT on the badge. Path: assets/badges/check-total/</div>
+    <div class="pending-note">⚠ ON HOLD — reserved for future app use only. No active trigger mechanism at this time. Do NOT build Supabase counters or award logic for this category. Previously used a dollar-amount transaction trigger ($10–$100) during early development — that mechanic is retired and does not reflect current status. Possible future use: profile picture selection or app-based trivia/game mechanic. Path: assets/badges/check-total/</div>
 
     <div class="coin-grid">
 
-      <!-- PICKUP STICKS — $10 -->
+      <!-- PICKUP STICKS — ON HOLD, no active threshold -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
           <div class="coin-face coin-front" style="background:#8F1F0D;">
@@ -2661,7 +2661,7 @@
         </div>
       </div>
 
-      <!-- CHINESE CHECKERS — $25 -->
+      <!-- CHINESE CHECKERS — ON HOLD -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
           <div class="coin-face coin-front" style="background:#8F1F0D;">
@@ -2681,7 +2681,7 @@
         </div>
       </div>
 
-      <!-- DOMINOES — $40 -->
+      <!-- DOMINOES — ON HOLD -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
           <div class="coin-face coin-front" style="background:#8F1F0D;">
@@ -2701,7 +2701,7 @@
         </div>
       </div>
 
-      <!-- BINGO — $50 -->
+      <!-- BINGO — ON HOLD -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
           <div class="coin-face coin-front" style="background:#8F1F0D;">
@@ -2721,7 +2721,7 @@
         </div>
       </div>
 
-      <!-- CHECKERS — $60 -->
+      <!-- CHECKERS — ON HOLD -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
           <div class="coin-face coin-front" style="background:#8F1F0D;">
@@ -2741,7 +2741,7 @@
         </div>
       </div>
 
-      <!-- PARCHEESI — $70 -->
+      <!-- PARCHEESI — ON HOLD -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
           <div class="coin-face coin-front" style="background:#8F1F0D;">
@@ -2761,7 +2761,7 @@
         </div>
       </div>
 
-      <!-- MONOPOLY — $80 -->
+      <!-- MONOPOLY — ON HOLD -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
           <div class="coin-face coin-front" style="background:#8F1F0D;">
@@ -2781,7 +2781,7 @@
         </div>
       </div>
 
-      <!-- SCRABBLE — $90 -->
+      <!-- SCRABBLE — ON HOLD -->
       <div class="coin-flip-card" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
           <div class="coin-face coin-front" style="background:#8F1F0D;">
@@ -2801,7 +2801,7 @@
         </div>
       </div>
 
-      <!-- SORRY! — $100 -->
+      <!-- SORRY! — ON HOLD -->
       <div class="coin-flip-card" style="border-color:rgba(212,168,50,0.4);" onclick="if(!this.classList.contains('unearned'))this.classList.toggle('flipped')">
         <div class="coin-flip-inner">
           <div class="coin-face coin-front" style="background:#8F1F0D;border-color:rgba(212,168,50,0.4);">

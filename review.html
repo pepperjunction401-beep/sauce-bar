@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pepper Junction — Passenger Review</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/pj-review.css" />
+</head>
+
+<body>
+  <header class="pjr-header">
+    <a class="pjr-brand" href="index.html" aria-label="Pepper Junction Home">
+      <img class="pjr-brand-logo" src="assets/PJ-logo.png" alt="Pepper Junction" />
+      <span>
+        <strong>Pepper Junction</strong>
+        <small>Passenger Review · Scovl</small>
+      </span>
+    </a>
+  </header>
+
+  <main class="pjr-shell" id="pjr-shell">
+    <!--
+      DATA NOTE:
+      All customer, eligibility, submission, and personal-rating data
+      comes from assets/js/pj-review-data.js (mock layer, shaped to
+      the future Supabase contract). This page is an interface only:
+      it never decides eligibility, verified purchases, moderation,
+      People's Choice aggregates, or badge progress.
+    -->
+
+    <!-- Product hero -->
+    <section class="pjr-card pjr-hero" id="pjr-hero" hidden>
+      <p class="pjr-eyebrow">Scovl Passenger Review</p>
+      <h1 id="pjr-product-name"></h1>
+      <p class="pjr-hero-brand" id="pjr-product-brand"></p>
+      <div class="pjr-hero-meta" id="pjr-product-meta"></div>
+    </section>
+
+    <!-- Unknown product -->
+    <section class="pjr-card pjr-status" id="pjr-no-product" hidden>
+      <div>
+        <p class="pjr-eyebrow">Wrong Platform</p>
+        <h2>We Can't Find That Item</h2>
+        <p>This review link doesn't match anything on the manifest. Head back to the shop and try the review button from the product's own page.</p>
+      </div>
+      <a class="pjr-btn pjr-btn-primary" href="index.html">Back to the Shop</a>
+    </section>
+
+    <!-- Personal rating slider — any signed-in customer, any product -->
+    <section class="pjr-card pjr-slider-card" id="pjr-slider-card" hidden>
+      <div class="pjr-slider-head">
+        <div>
+          <p class="pjr-eyebrow">Your Logbook</p>
+          <h2>Your Personal Rating</h2>
+          <p class="pjr-slider-note">This one's just for you — it never touches the public rating, and you can come back and change it any time.</p>
+        </div>
+        <div class="pjr-slider-readout">
+          <span class="value" id="pjr-slider-value">—</span>
+          <span class="label">Out of 5</span>
+        </div>
+      </div>
+      <div class="pjr-slider-track-wrap">
+        <input type="range" class="pjr-slider" id="pjr-slider" min="1" max="5" step="0.25" value="3" aria-label="Your personal rating from 1 to 5 in quarter steps" />
+        <div class="pjr-tick-rail" id="pjr-tick-rail" aria-hidden="true"></div>
+      </div>
+      <p class="pjr-slider-saved" id="pjr-slider-saved">Saved to your logbook</p>
+    </section>
+
+    <!-- State: NOT_SIGNED_IN -->
+    <section class="pjr-card pjr-status" id="pjr-state-signin" hidden>
+      <div>
+        <p class="pjr-eyebrow">Ticket, Please</p>
+        <h2>Sign In to Board</h2>
+        <p>Passenger reviews come from verified Pepper Junction customers. Sign in — or create your account — and we'll check your ticket against the manifest.</p>
+      </div>
+      <a class="pjr-btn pjr-btn-primary" href="account.html?return=review" id="pjr-signin-link">Sign In / Create Account</a>
+    </section>
+
+    <!-- State: NOT_PURCHASED -->
+    <section class="pjr-card pjr-status" id="pjr-state-notpurchased" hidden>
+      <div>
+        <p class="pjr-eyebrow">Not on the Manifest</p>
+        <h2>No Qualifying Trip Found</h2>
+        <p>Passenger reviews are reserved for verified purchases of this item, and we couldn't find one on your account. If you bought it through Pepper Junction, make sure your account uses the same phone number from your purchase. Your personal rating above still works — that one's all yours.</p>
+      </div>
+      <a class="pjr-btn pjr-btn-ghost" href="index.html">Back to the Shop</a>
+    </section>
+
+    <!-- State: ALREADY_REVIEWED -->
+    <section class="pjr-card pjr-status" id="pjr-state-reviewed" hidden>
+      <div>
+        <p class="pjr-eyebrow">Already Aboard</p>
+        <h2>You've Told the Passengers</h2>
+        <p>Your review of this item is already on the books — one review per passenger per item, and yours is in. Your personal rating above stays open whenever you want to adjust it.</p>
+      </div>
+      <a class="pjr-btn pjr-btn-ghost" href="index.html">Back to the Shop</a>
+    </section>
+
+    <!-- State: ERROR (submission trouble) -->
+    <section class="pjr-card pjr-status is-error" id="pjr-state-error" hidden>
+      <div>
+        <p class="pjr-eyebrow">Signal Trouble</p>
+        <h2>Your Review Didn't Go Through</h2>
+        <p>Something went wrong on the line. Your answers are still right here on the page — nothing was lost. Give it another try below.</p>
+      </div>
+    </section>
+
+    <!-- Questionnaire -->
+    <div id="pjr-quiz" hidden>
+      <section class="pjr-card pjr-quiz-head">
+        <div>
+          <p class="pjr-eyebrow">All Aboard</p>
+          <h2 class="pjr-section-title">Tell Other Passengers</h2>
+          <p>Every stop below needs an answer before your review rolls out. Two quick written notes at the end — the rest is a tap.</p>
+        </div>
+        <span class="pjr-count-pill" id="pjr-progress">0 of 17 Answered</span>
+      </section>
+
+      <div id="pjr-questions"></div>
+
+      <div class="pjr-submit-wrap">
+        <p class="pjr-credit-note">Pepper Junction gives credit where credit is due, we will most definitely use <em>only</em> your first name and passenger class with your review.</p>
+        <button type="button" class="pjr-btn pjr-btn-primary" id="pjr-submit">Send It Down the Line</button>
+        <p class="pjr-submit-missing" id="pjr-submit-missing"></p>
+      </div>
+    </div>
+
+    <!-- Confirmation -->
+    <section class="pjr-card pjr-confirm" id="pjr-state-submitted" hidden>
+      <p class="pjr-eyebrow">Review Received</p>
+      <h2>Ticket Punched</h2>
+      <p>Your review is aboard and headed to the conductor for a quick look — that's how every passenger review travels before it reaches the product page. Once it's approved, it joins the People's Choice Rating and counts toward your Review Badge.</p>
+      <div class="pjr-actions">
+        <a class="pjr-btn pjr-btn-primary" href="index.html">Back to the Shop</a>
+        <a class="pjr-btn pjr-btn-ghost" href="badge-depot.html">Badge Depot</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/pj-review-data.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var D = window.PJReviewData;
+    if (!D) return;
+
+    function getParam(name) {
+      var m = new RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+      return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : null;
+    }
+
+    var slug = getParam('product') || '';
+    var product = D.getProduct(slug);
+    var state = D.getState();
+    var session = D.getSession();
+
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function show(id) { var el = document.getElementById(id); if (el) el.hidden = false; }
+    function hide(id) { var el = document.getElementById(id); if (el) el.hidden = true; }
+
+    /* ── PRODUCT HERO ── */
+    if (!product) {
+      show('pjr-no-product');
+      D.mountStateSwitcher();
+      return;
+    }
+
+    document.title = 'Pepper Junction — Review ' + product.name;
+    document.getElementById('pjr-product-name').textContent = product.name;
+    document.getElementById('pjr-product-brand').textContent =
+      product.brand + (product.size ? ' · ' + product.size : '');
+    var meta = document.getElementById('pjr-product-meta');
+    [product.heatCategory, product.foodStyle, product.category].forEach(function (v) {
+      if (!v) return;
+      var c = document.createElement('span');
+      c.className = 'pjr-chip';
+      c.textContent = v;
+      meta.appendChild(c);
+    });
+    show('pjr-hero');
+
+    /* ── PERSONAL RATING SLIDER — any signed-in customer ── */
+    if (session.signedIn) {
+      show('pjr-slider-card');
+      var slider = document.getElementById('pjr-slider');
+      var readout = document.getElementById('pjr-slider-value');
+      var savedMsg = document.getElementById('pjr-slider-saved');
+      var savedTimer = null;
+
+      /* Tick rail: whole + half labeled; quarters as longer lines */
+      var rail = document.getElementById('pjr-tick-rail');
+      for (var v = 1; v <= 5.001; v += 0.25) {
+        var val = Math.round(v * 100) / 100;
+        var pct = ((val - 1) / 4) * 100;
+        var tick = document.createElement('span');
+        var isQuarter = (val * 4) % 2 === 1;
+        tick.className = 'pjr-tick ' + (isQuarter ? 'quarter' : 'labeled');
+        tick.style.left = pct + '%';
+        rail.appendChild(tick);
+        if (!isQuarter) {
+          var lab = document.createElement('span');
+          lab.className = 'pjr-tick-label';
+          lab.style.left = pct + '%';
+          lab.textContent = (val % 1 === 0) ? String(val) : val.toFixed(1);
+          rail.appendChild(lab);
+        }
+      }
+
+      function fmt(n) { return (Math.round(n * 100) / 100).toFixed(2); }
+
+      var existing = D.getPersonalRating(slug);
+      if (existing !== null && !isNaN(existing)) {
+        slider.value = existing;
+        readout.textContent = fmt(existing);
+      }
+
+      slider.addEventListener('input', function () {
+        readout.textContent = fmt(parseFloat(slider.value));
+      });
+
+      slider.addEventListener('change', function () {
+        var ok = D.savePersonalRating(slug, parseFloat(slider.value));
+        if (ok) {
+          savedMsg.classList.add('show');
+          if (savedTimer) clearTimeout(savedTimer);
+          savedTimer = setTimeout(function () { savedMsg.classList.remove('show'); }, 1800);
+        }
+      });
+    }
+
+    /* ── QUESTION DEFINITIONS — wording locked by the Review Architecture,
+       vocabularies sourced from the CNS (the Database is the Bible) ── */
+    var heatOpts = D.getHeatOptions(product.heatCategory);
+    var flavorOpts = D.getFlavorOptions(product);
+
+    var QUESTIONS = [
+      { id: 'q1', type: 'single', stacked: true,
+        prompt: "How does the sauce's flavor and heat on food stand up in comparison to straight out of the bottle?",
+        options: [
+          'Flavor/heat duo favors out of the bottle, hands down.',
+          'Flavor/heat duo favors out of the bottle by an edge.',
+          'Flavor/heat duo is balanced.'
+        ] },
+      { id: 'q2', type: 'single', stacked: true,
+        prompt: 'How does the balance between flavor and heat feel?',
+        options: [
+          'Flavor beats the heat.',
+          'Heat beats the flavor.',
+          'Thelma and Louise — they end together.'
+        ] },
+      { id: 'q3', type: 'single', stacked: true,
+        prompt: 'Is the heat as advertised?',
+        options: [
+          "They didn't lie.",
+          "Like my girlfriend's expectation of me, it fell way short.",
+          'It brought the heat like Tony Soprano.'
+        ] },
+      { id: 'q4', type: 'single', stacked: true,
+        prompt: 'How bright are the advertised flavors straight out of the bottle?',
+        options: [
+          'Bright, like staring at the sun.',
+          'Like my dad used to say: not too bright, good kid though.',
+          "Like a great living-room lamp, it's just right."
+        ] },
+      { id: 'q5', type: 'single', stacked: true,
+        prompt: "How did the sauce's flavor perform on food?",
+        options: [
+          'Did I put hot sauce on this?',
+          'They played well together.',
+          'Like Mike Tyson, the sauce was overpowering.'
+        ] },
+      { id: 'q6', type: 'single', stacked: true,
+        prompt: "How did the sauce's heat perform on food?",
+        options: [
+          'Did I put hot sauce on this?',
+          'They played well together.',
+          'Like Mike Tyson, the heat was overpowering.'
+        ] },
+      { id: 'q7', type: 'single',
+        prompt: 'How would you rate the heat?',
+        options: heatOpts },
+      { id: 'q8', type: 'single',
+        prompt: 'Would you purchase it again?',
+        options: ['Yes', 'No'] },
+      { id: 'q9', type: 'single',
+        prompt: 'Would you purchase it for someone else?',
+        options: ['Yes', 'No'] },
+      { id: 'q10', type: 'select',
+        prompt: 'What food style best matches how you used it?',
+        options: D.getFoodStyles() },
+      { id: 'q11', type: 'multi', max: 3,
+        prompt: 'Which flavors stood out to you the most?',
+        hint: 'Select up to three.',
+        options: flavorOpts },
+      { id: 'q12', type: 'single',
+        prompt: 'How did the heat hit?',
+        options: D.getHowItHits() },
+      { id: 'q13', type: 'single',
+        prompt: 'How did the heat finish?',
+        options: D.getHeatFinish() },
+      { id: 'q16', type: 'single', stacked: true,
+        prompt: "Was this sauce's heat level in your lane?",
+        options: [
+          'Yes — this was right where I like it.',
+          'A little hotter than my usual lane, but manageable.',
+          'No — this was hotter than I normally enjoy.',
+          'No — this was milder than I normally enjoy.'
+        ] },
+      { id: 'q17', type: 'scale5',
+        prompt: "How accurate was Pepper Junction's description of this item?",
+        hint: "1 — Pepper Junction shouldn't quit its day job · 5 — Pepper Junction is a sauce sommelier.",
+        labels: ['Way off', 'A little off', 'Mostly accurate', 'Very accurate', 'Nailed it'] },
+      { id: 'q14', type: 'text', limit: 200,
+        prompt: 'What food do you love it on?' },
+      { id: 'q15', type: 'text', limit: 200,
+        prompt: 'What do you love about this sauce?' }
+    ];
+
+    /* Answers — field-level by design: each answer is its own field so
+       non-scoring answers can be made editable later without migration. */
+    var answers = {};
+    var submitted = false;
+
+    var required = QUESTIONS.filter(function (q) {
+      return !(q.type === 'multi' && q.options.length === 0);
+    });
+
+    function answeredCount() {
+      return required.filter(function (q) { return isAnswered(q); }).length;
+    }
+
+    function isAnswered(q) {
+      var a = answers[q.id];
+      if (q.type === 'multi') return Array.isArray(a) && a.length > 0;
+      if (q.type === 'text') return typeof a === 'string' && a.trim().length > 0;
+      return a !== undefined && a !== null && a !== '';
+    }
+
+    function updateProgress() {
+      document.getElementById('pjr-progress').textContent =
+        answeredCount() + ' of ' + required.length + ' Answered';
+    }
+
+    function clearMissed(card) {
+      card.classList.remove('pjr-missed');
+      updateMissingCount();
+    }
+
+    function updateMissingCount() {
+      var missing = document.querySelectorAll('.pjr-q.pjr-missed').length;
+      var el = document.getElementById('pjr-submit-missing');
+      if (missing === 0) { el.textContent = ''; return; }
+      el.textContent = missing === 1
+        ? '1 stop still needs an answer'
+        : missing + ' stops still need answers';
+    }
+
+    /* ── RENDER QUESTIONS ── */
+    var qWrap = document.getElementById('pjr-questions');
+
+    QUESTIONS.forEach(function (q, idx) {
+      var card = document.createElement('section');
+      card.className = 'pjr-card pjr-q';
+      card.id = 'card-' + q.id;
+      card.dataset.qid = q.id;
+
+      var stop = document.createElement('p');
+      stop.className = 'pjr-q-stop';
+      stop.textContent = 'Train Stop ' + (idx + 1) + ' of ' + QUESTIONS.length;
+      card.appendChild(stop);
+
+      var h = document.createElement('h3');
+      h.textContent = q.prompt;
+      card.appendChild(h);
+
+      if (q.hint) {
+        var hint = document.createElement('p');
+        hint.className = 'pjr-q-hint';
+        hint.textContent = q.hint;
+        card.appendChild(hint);
+      }
+
+      if (q.type === 'single' || q.type === 'multi') {
+        if (q.options.length === 0) {
+          var none = document.createElement('p');
+          none.className = 'pjr-q-hint';
+          none.textContent = 'No options listed for this item — this stop rides free.';
+          card.appendChild(none);
+        } else {
+          var opts = document.createElement('div');
+          opts.className = 'pjr-options' + (q.stacked ? ' stacked' : '');
+          opts.setAttribute('role', 'group');
+          opts.setAttribute('aria-label', q.prompt);
+          q.options.forEach(function (opt) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'pjr-bubble';
+            b.textContent = opt;
+            b.setAttribute('aria-pressed', 'false');
+            b.addEventListener('click', function () {
+              if (q.type === 'single') {
+                opts.querySelectorAll('.pjr-bubble').forEach(function (x) {
+                  x.classList.remove('selected');
+                  x.setAttribute('aria-pressed', 'false');
+                });
+                b.classList.add('selected');
+                b.setAttribute('aria-pressed', 'true');
+                answers[q.id] = opt;
+              } else {
+                var arr = answers[q.id] || [];
+                var i = arr.indexOf(opt);
+                if (i !== -1) {
+                  arr.splice(i, 1);
+                  b.classList.remove('selected');
+                  b.setAttribute('aria-pressed', 'false');
+                } else if (arr.length < q.max) {
+                  arr.push(opt);
+                  b.classList.add('selected');
+                  b.setAttribute('aria-pressed', 'true');
+                }
+                answers[q.id] = arr;
+                var mc = card.querySelector('.pjr-multi-count');
+                if (mc) mc.textContent = arr.length + ' of ' + q.max + ' selected';
+              }
+              if (isAnswered(q)) clearMissed(card);
+              updateProgress();
+            });
+            opts.appendChild(b);
+          });
+          card.appendChild(opts);
+          if (q.type === 'multi') {
+            var mc = document.createElement('p');
+            mc.className = 'pjr-multi-count';
+            mc.textContent = '0 of ' + q.max + ' selected';
+            card.appendChild(mc);
+          }
+        }
+      }
+
+      if (q.type === 'select') {
+        var sel = document.createElement('select');
+        sel.className = 'pjr-select';
+        sel.setAttribute('aria-label', q.prompt);
+        var ph = document.createElement('option');
+        ph.value = '';
+        ph.textContent = 'Choose a food style…';
+        sel.appendChild(ph);
+        q.options.forEach(function (opt) {
+          var o = document.createElement('option');
+          o.value = opt;
+          o.textContent = opt;
+          sel.appendChild(o);
+        });
+        sel.addEventListener('change', function () {
+          answers[q.id] = sel.value || undefined;
+          if (isAnswered(q)) clearMissed(card);
+          updateProgress();
+        });
+        card.appendChild(sel);
+      }
+
+      if (q.type === 'scale5') {
+        var opts5 = document.createElement('div');
+        opts5.className = 'pjr-options scale5';
+        opts5.setAttribute('role', 'group');
+        opts5.setAttribute('aria-label', q.prompt);
+        var caption = document.createElement('p');
+        caption.className = 'pjr-scale-caption';
+        caption.textContent = '';
+        for (var n = 1; n <= 5; n++) {
+          (function (n) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'pjr-bubble';
+            b.textContent = String(n);
+            b.setAttribute('aria-label', n + ' — ' + q.labels[n - 1]);
+            b.setAttribute('aria-pressed', 'false');
+            b.addEventListener('click', function () {
+              opts5.querySelectorAll('.pjr-bubble').forEach(function (x) {
+                x.classList.remove('selected');
+                x.setAttribute('aria-pressed', 'false');
+              });
+              b.classList.add('selected');
+              b.setAttribute('aria-pressed', 'true');
+              answers[q.id] = n;
+              caption.textContent = n + ' · ' + q.labels[n - 1];
+              clearMissed(card);
+              updateProgress();
+            });
+            opts5.appendChild(b);
+          })(n);
+        }
+        card.appendChild(opts5);
+        card.appendChild(caption);
+      }
+
+      if (q.type === 'text') {
+        var ta = document.createElement('textarea');
+        ta.className = 'pjr-textarea';
+        ta.maxLength = q.limit;
+        ta.setAttribute('aria-label', q.prompt);
+        var count = document.createElement('p');
+        count.className = 'pjr-char-count';
+        count.textContent = '0 / ' + q.limit;
+        ta.addEventListener('input', function () {
+          answers[q.id] = ta.value;
+          count.textContent = ta.value.length + ' / ' + q.limit;
+          count.classList.toggle('limit', ta.value.length >= q.limit);
+          if (isAnswered(q)) clearMissed(card);
+          updateProgress();
+        });
+        card.appendChild(ta);
+        card.appendChild(count);
+      }
+
+      var miss = document.createElement('p');
+      miss.className = 'pjr-missed-msg';
+      miss.textContent = 'Looks like you skipped a stop';
+      card.appendChild(miss);
+
+      qWrap.appendChild(card);
+    });
+
+    /* ── VALIDATION + SUBMIT ── */
+    var submitBtn = document.getElementById('pjr-submit');
+
+    submitBtn.addEventListener('click', function () {
+      if (submitted) return;
+
+      var missedCards = [];
+      required.forEach(function (q) {
+        var card = document.getElementById('card-' + q.id);
+        if (!isAnswered(q)) { card.classList.add('pjr-missed'); missedCards.push(card); }
+        else { card.classList.remove('pjr-missed'); }
+      });
+
+      updateMissingCount();
+
+      if (missedCards.length > 0) {
+        missedCards[0].scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Rolling Out…';
+      hide('pjr-state-error');
+
+      /* Field-level payload — the backend owns scoring, moderation,
+         aggregates, and badge progress. The UI only submits answers. */
+      var payload = {
+        productSlug: slug,
+        answers: Object.assign({}, answers),
+        submittedAt: new Date().toISOString()
+      };
+
+      D.submitReview(payload).then(function () {
+        submitted = true;
+        hide('pjr-quiz');
+        hide('pjr-state-error');
+        show('pjr-state-submitted');
+        document.getElementById('pjr-state-submitted')
+          .scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+      }).catch(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send It Down the Line';
+        show('pjr-state-error');
+        document.getElementById('pjr-state-error')
+          .scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+      });
+    });
+
+    /* ── STATE ROUTING ── */
+    D.getEligibility(slug).then(function (e) {
+      if (!e.signedIn) {
+        show('pjr-state-signin');
+        var link = document.getElementById('pjr-signin-link');
+        link.href = 'account.html?return=review&product=' + encodeURIComponent(slug);
+      } else if (e.alreadyReviewed) {
+        show('pjr-state-reviewed');
+      } else if (!e.eligible) {
+        show('pjr-state-notpurchased');
+      } else if (state === 'SUBMITTED') {
+        show('pjr-state-submitted');
+      } else {
+        show('pjr-quiz');
+        updateProgress();
+      }
+    });
+
+    /* Dev switcher — build phase only, removed before launch */
+    D.mountStateSwitcher();
+  })();
+  </script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/cart.css">
   <style>
     :root {
       --cream:        #F5ECD6;
@@ -174,47 +176,51 @@
       .catalog-section { overflow: hidden; }
     }
 
-    /* ── OUT OF STOCK TREATMENT ───────────────────────────────── */
+    /* ── OUT OF STOCK — hover reveal ─────────────────────────── */
+
+    /* Full color — no gray, no dim */
     .product-card.out-of-stock .product-card-image img {
-      filter: grayscale(100%) opacity(0.5);
-      transition: filter 0.3s ease;
+      filter: none;
+      transition: transform 0.35s ease;
     }
 
+    /* Crimson panel — sits at bottom, hidden off-screen by default */
     .out-of-stock-banner {
       position: absolute;
-      top: 50%;
+      bottom: 0;
       left: 0;
       right: 0;
-      transform: translateY(-50%);
-      background: rgba(43,29,21,0.88);
-      border-top: 1px solid rgba(184,137,57,0.4);
-      border-bottom: 1px solid rgba(184,137,57,0.4);
-      padding: 10px 0;
-      text-align: center;
-      z-index: 3;
-      display: none;
-    }
-
-    .product-card.out-of-stock .out-of-stock-banner {
-      display: block;
+      height: 12.5%;
+      background: var(--crimson);
+      border-top: 3px solid var(--brass-bright);
+      border-bottom: 3px solid var(--brass-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      transform: translateY(100%);
+      transition: transform 0.28s ease;
+      pointer-events: none;
     }
 
     .out-of-stock-banner span {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 10px;
+      font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.38em;
       text-transform: uppercase;
-      color: var(--brass-bright);
+      color: #FFD700;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
     }
 
-    .product-card.out-of-stock .product-card-name {
-      opacity: 0.55;
+    /* Slide up on hover */
+    .product-card.out-of-stock:hover .out-of-stock-banner {
+      transform: translateY(0);
     }
 
-    .product-card.out-of-stock .product-card-teaser {
-      opacity: 0.45;
-    }
+    /* Card body — full opacity always */
+    .product-card.out-of-stock .product-card-name,
+    .product-card.out-of-stock .product-card-teaser { opacity: 1; }
   </style>
 </head>
 <body>
@@ -230,7 +236,6 @@
       <a href="main.html#categories">Shop</a>
       <a href="index.html">Pairing Bar</a>
       <a href="main.html#location">Visit</a>
-      <a href="https://www.pepperjunction401.com" class="nav-cta" target="_blank">Order Online</a>
     </nav>
   </header>
 
@@ -288,7 +293,7 @@
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
-        <a class="product-card reveal" href="products/rheds-rhode-island-farm-hot-sauce.html">
+        <a class="product-card reveal" href="products/rheds-original.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Rhed's</span></div>
             <img src="assets/pullman-product-display/cat-rheds-original-hot-sauce.png" alt="Rhed's Rhode Island Farm Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
@@ -595,7 +600,7 @@
             <span class="product-card-btn">View <span class="product-card-btn-arrow">→</span></span>
           </div>
         </a>
-        <a class="product-card reveal" href="products/ghost-scream-hot-sauce.html">
+        <a class="product-card reveal" href="products/ghost-scream.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Ghost Scream</span></div>
             <img src="assets/pullman-product-display/cat-ghost-scream-hot-sauce.png" alt="Ghost Scream Hot Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
@@ -889,7 +894,7 @@
     };
 
     var AWARD_BADGES = {
-      'ghost-scream-ghost-scream':           "\uD83C\uDFC6 Hot Sauce of the Year '16",
+      'ghost-scream':           "\uD83C\uDFC6 Hot Sauce of the Year '16",
       'hells-kitchen-cinnamon-ghost':        "\uD83C\uDFC6 Hot Sauce of the Year '24",
       'dirty-dicks-hot-tropical-hot-sauce':  "\uD83C\uDFC6 Hot Sauce of the Year '17 & '18",
       'rheds-deja-vu':                       "\uD83C\uDFC6 Screaming Mimi Award",
@@ -901,7 +906,7 @@
       '13-stars-dragons-breath':                           '13-stars-dragons-breath-hot-sauce',
       'cajohns-la-segadora-carolina-reaper':               'cajohns-segadora-reaper-hot-sauce',
       'dirty-dicks-hot-tropical-hot-sauce':                'dirty-dicks-hot-tropical-hot-sauce',
-      'ghost-scream-ghost-scream':                         'ghost-scream-hot-sauce',
+      'ghost-scream':                         'ghost-scream-hot-sauce',
       'heartbreaking-dawns-the-green':                     'heartbreaking-dawns-the-green-hot-sauce',
       'high-river-sauces-hellacious':                      'high-river-hellacious-hot-sauce',
       'high-river-sauces-psych-sauce':                     'high-river-psych-hot-sauce',
@@ -927,7 +932,7 @@
       'puckerbutt-puckerbutt-gator-sauce':                 'puckerbutt-gator-hot-sauce',
       'rheds-deja-vu':                                     'rheds-deja-vu-hot-sauce',
       'rheds-lemon-drop':                                  'rheds-lemon-drop-hot-sauce',
-      'rheds-rheds-original':                              'rheds-original-hot-sauce',
+      'rheds-original':                              'rheds-original-hot-sauce',
       'walker-son-slap-ya-mama-hot-sauce':                 'slap-ya-mama-cajun-hot-sauce'
     };
 
@@ -1042,5 +1047,7 @@
 
   })();
   </script>
+  <script src="assets/js/cart-engine.js"></script>
+  <script src="assets/js/cart-drawer.js"></script>
 </body>
 </html>
