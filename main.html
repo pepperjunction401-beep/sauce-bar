@@ -334,10 +334,11 @@
     }
 
     .bartender-chat {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      align-items: start;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      max-width: 620px;
+      margin: 0 auto;
     }
 
     .bartender-chat-info {
@@ -945,7 +946,7 @@
 
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 900px) {
-      .bartender-chat { grid-template-columns: 1fr; gap: 24px; }
+      .bartender-chat { gap: 24px; }
       .story-inner { grid-template-columns: 1fr; gap: 40px; }
       .location-inner { grid-template-columns: 1fr; gap: 36px; }
       .location-right { padding-top: 0; }
@@ -2171,17 +2172,11 @@
       <div class="bartender-inner">
 
         <div class="bartender-chat reveal">
-          <img
-            src="assets/bartender-sign.png"
-            alt="The Bartender — Ask me anything about Pepper Junction"
-            style="width:100%;height:auto;display:block;"
-          />
-
           <div class="chat-window">
             <div class="chat-messages" id="chat-messages">
               <div class="chat-msg bartender">
                 <div class="chat-avatar">PJ</div>
-                <div class="chat-bubble">Come on in. Welcome to Pepper Junction. You can shop the usual way below, or head to the Pairing Bar where I'll match you with sauces based on heat, flavor, or what you're cooking. What can I help you with?</div>
+                <div class="chat-bubble">Welcome to Pepper Junction. Ask me any general questions about Pepper Junction: Hours, location, history...etc.</div>
               </div>
             </div>
             <div class="chat-thinking" id="chat-thinking">The bartender is thinking...</div>
@@ -2196,6 +2191,12 @@
               <button class="chat-send" id="chat-send">Send</button>
             </div>
           </div>
+
+          <img
+            src="assets/bartender-sign.png"
+            alt="The Bartender — Ask me anything about Pepper Junction"
+            style="width:100%;height:auto;display:block;"
+          />
         </div>
 
       </div>
