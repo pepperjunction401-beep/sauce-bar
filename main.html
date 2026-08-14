@@ -1835,6 +1835,133 @@
       .menu-ribbon span { font-size: 14px; letter-spacing: 0.18em; }
     }
 
+
+    /* ── BELOW-BAR ACTIONS ────────────────────────────────────── */
+    .below-bar-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      padding: 32px 20px 40px;
+      background: var(--green-dark);
+    }
+    .pairing-bar-btn {
+      display: inline-block;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #1a1008;
+      background: #c49a3c;
+      border: 1px solid #d4a832;
+      padding: 14px 48px;
+      border-radius: 2px;
+      transition: background 0.22s ease, transform 0.22s ease;
+    }
+    .pairing-bar-btn:hover { background: #d4a832; transform: translateY(-2px); }
+    .play-welcome-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.7;
+      background: transparent;
+      border: 1px solid rgba(184,137,57,0.4);
+      padding: 10px 26px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: opacity 0.22s ease, border-color 0.22s ease;
+    }
+    .play-welcome-btn:hover { opacity: 1; border-color: rgba(184,137,57,0.8); }
+    .play-welcome-btn .play-icon {
+      width: 0; height: 0;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-left: 9px solid currentColor;
+    }
+
+    /* ── VIDEO GATE ───────────────────────────────────────────── */
+    #video-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      background: #000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    #video-gate.active { display: flex; }
+    #video-gate video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #video-gate-mute {
+      position: absolute;
+      bottom: 32px;
+      left: 32px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #1a1008;
+      background: linear-gradient(135deg, #d4a832, #c49a3c);
+      border: 2px solid #f0d878;
+      padding: 13px 26px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 0 0 rgba(212,168,50,0.6);
+      animation: mutePulse 1.8s ease-in-out infinite;
+    }
+    #video-gate-mute.unmuted {
+      animation: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+    #video-gate-mute .mute-icon { font-size: 16px; line-height: 1; }
+    @keyframes mutePulse {
+      0%   { box-shadow: 0 0 0 0 rgba(212,168,50,0.65); }
+      70%  { box-shadow: 0 0 0 18px rgba(212,168,50,0); }
+      100% { box-shadow: 0 0 0 0 rgba(212,168,50,0); }
+    }
+    #video-gate-skip {
+      position: absolute;
+      bottom: 32px;
+      right: 32px;
+      z-index: 3;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #F5ECD6;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(212,168,50,0.5);
+      padding: 11px 22px;
+      border-radius: 2px;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    #video-gate-skip.visible { opacity: 1; pointer-events: auto; }
+    @media (max-width: 640px) {
+      #video-gate-mute { bottom: 20px; left: 20px; font-size: 10px; padding: 10px 18px; }
+      #video-gate-skip { bottom: 20px; right: 20px; font-size: 9px; padding: 9px 16px; }
+    }
+
   </style>
 </head>
 <body>
@@ -1870,7 +1997,20 @@
     <div class="bartender-panorama-wrap">
       <img class="bartender-panorama" src="assets/textures/Welcome-Panoramic-Pairing-Bar.png" alt="Pepper Junction Pairing Bar" />
     </div>
+    <div class="below-bar-actions">
+      <a href="index.html" class="pairing-bar-btn">Pairing Bar</a>
+      <button type="button" id="play-welcome-btn" class="play-welcome-btn">
+        <span class="play-icon"></span> Watch Welcome Video
+      </button>
+    </div>
   </section>
+
+  <!-- ═══ VIDEO GATE ═══════════════════════════════════════════ -->
+  <div id="video-gate">
+    <video id="video-gate-player" src="assets/video/pepper-junction-welcome.mp4" playsinline muted></video>
+    <button type="button" id="video-gate-mute"><span class="mute-icon">&#128264;</span> Tap for Sound</button>
+    <button type="button" id="video-gate-skip">Skip &rsaquo;</button>
+  </div>
 
   <!-- ═══ BARTENDER ════════════════════════════════════════════ -->
   <section class="bartender-section ivory-section">
@@ -2143,6 +2283,83 @@ Hard rules:
       if (e.key === 'Enter') sendMessage();
     });
 
+  })();
+  </script>
+
+
+  <script>
+  (function () {
+    var COOKIE = 'pj_welcome_seen';
+    var MAX_AGE = 60 * 60 * 24 * 365;
+
+    function getCookie(name) {
+      var m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return m ? decodeURIComponent(m[2]) : null;
+    }
+    function setCookie(name, val) {
+      document.cookie = name + '=' + encodeURIComponent(val) +
+        '; max-age=' + MAX_AGE + '; path=/; SameSite=Lax';
+    }
+
+    var gate    = document.getElementById('video-gate');
+    var video   = document.getElementById('video-gate-player');
+    var muteBtn = document.getElementById('video-gate-mute');
+    var skipBtn = document.getElementById('video-gate-skip');
+    var playBtn = document.getElementById('play-welcome-btn');
+
+    var skipTimer = null;
+
+    function updateMuteBtn() {
+      if (video.muted) {
+        muteBtn.innerHTML = '<span class="mute-icon">&#128264;</span> Tap for Sound';
+        muteBtn.classList.remove('unmuted');
+      } else {
+        muteBtn.innerHTML = '<span class="mute-icon">&#128266;</span> Mute';
+        muteBtn.classList.add('unmuted');
+      }
+    }
+
+    function showSkipAfterDelay() {
+      clearTimeout(skipTimer);
+      skipBtn.classList.remove('visible');
+      skipTimer = setTimeout(function () {
+        skipBtn.classList.add('visible');
+      }, 5000);
+    }
+
+    function closeGate() {
+      video.pause();
+      gate.classList.remove('active');
+      skipBtn.classList.remove('visible');
+      clearTimeout(skipTimer);
+    }
+
+    function openGate(startMuted) {
+      gate.classList.add('active');
+      video.currentTime = 0;
+      video.muted = startMuted;
+      updateMuteBtn();
+      video.play().catch(function () {
+        video.muted = true;
+        updateMuteBtn();
+      });
+      showSkipAfterDelay();
+      setCookie(COOKIE, '1');
+    }
+
+    muteBtn.addEventListener('click', function () {
+      video.muted = !video.muted;
+      updateMuteBtn();
+    });
+
+    skipBtn.addEventListener('click', closeGate);
+    video.addEventListener('ended', closeGate);
+
+    playBtn.addEventListener('click', function () { openGate(false); });
+
+    if (!getCookie(COOKIE)) {
+      openGate(true);
+    }
   })();
   </script>
 
