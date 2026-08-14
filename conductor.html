@@ -314,21 +314,29 @@
 
     .board-skip {
       position: absolute;
-      bottom: -28px;
+      bottom: -52px;
       right: 0;
-      background: none;
-      border: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #d4a832, #c49a3c);
+      border: 2px solid #f0d878;
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.28em;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
-      color: rgba(240,236,228,0.22);
+      color: #1a1008;
       cursor: pointer;
-      padding: 6px 0;
-      transition: color 0.2s;
+      padding: 11px 24px;
+      border-radius: 30px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .board-skip:hover { color: rgba(240,236,228,0.6); }
+    .board-skip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
 
     @media (max-width: 640px) {
       .board-wrap { width: 92vw; padding: 16px 12px 28px; }
@@ -441,7 +449,7 @@
         <span class="board-col-label">Trk</span>
       </div>
       <div id="board-rows" style="display:flex;flex-direction:column;gap:3px;"></div>
-      <button class="board-skip" id="board-skip">Skip ›</button>
+      <button class="board-skip" id="board-skip"><span style="font-size:15px;line-height:1;">&#9193;</span> Skip</button>
     </div>
   </div>
 
