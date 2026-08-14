@@ -2541,16 +2541,31 @@ Hard rules:
     var playBartenderBtn = document.getElementById('play-bartender-btn');
     playBartenderBtn.addEventListener('click', function () { bartender.open(false); });
 
-    var welcomeSeen = !!getCookie(WELCOME_COOKIE);
+    // Same-tab session guard — once either gate has auto-played
+    // once in this browser tab, neither auto-plays again, no matter
+    // how the visitor arrives back at main.html (logo, nav link,
+    // item page, back button, etc). Manual "Watch again" buttons
+    // above always work regardless of this flag.
+    var SESSION_KEY = 'pj_gate_shown_this_session';
+    var alreadyShownThisSession = false;
+    try {
+      alreadyShownThisSession = sessionStorage.getItem(SESSION_KEY) === '1';
+    } catch (e) { /* privacy mode or storage disabled — treat as not shown */ }
 
-    if (!welcomeSeen) {
-      // First visit, or the 60-day welcome cookie has expired —
-      // welcome plays; bartender sits out this load entirely.
-      welcome.open(true);
-    } else {
-      // Welcome already seen and still within its 60-day window —
-      // greet with the short bartender clip instead.
-      bartender.open(true);
+    if (!alreadyShownThisSession) {
+      var welcomeSeen = !!getCookie(WELCOME_COOKIE);
+
+      if (!welcomeSeen) {
+        // First visit, or the 60-day welcome cookie has expired —
+        // welcome plays; bartender sits out this load entirely.
+        welcome.open(true);
+      } else {
+        // Welcome already seen and still within its 60-day window —
+        // greet with the short bartender clip instead.
+        bartender.open(true);
+      }
+
+      try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
     }
   })();
   </script>
