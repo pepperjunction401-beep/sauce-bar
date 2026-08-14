@@ -2142,6 +2142,9 @@
       <button type="button" id="play-welcome-btn" class="play-welcome-btn">
         <span class="play-icon"></span> Watch Welcome Video
       </button>
+      <button type="button" id="play-bartender-btn" class="play-welcome-btn">
+        <span class="play-icon"></span> Watch Bartender Greeting
+      </button>
     </div>
   </section>
 
@@ -2533,6 +2536,9 @@ Hard rules:
       gate: 'bartender-gate', video: 'bartender-gate-player',
       mute: 'bartender-gate-mute', skip: 'bartender-gate-skip', restart: 'bartender-gate-restart'
     });
+
+    var playBartenderBtn = document.getElementById('play-bartender-btn');
+    playBartenderBtn.addEventListener('click', function () { bartender.open(false); });
 
     var welcomeSeen = !!getCookie(WELCOME_COOKIE);
 
