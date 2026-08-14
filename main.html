@@ -1997,6 +1997,111 @@
       #video-gate-restart { bottom: 70px; font-size: 9px; padding: 9px 16px; }
     }
 
+    /* ── BARTENDER GREETING GATE ───────────────────────────────────────────── */
+    #bartender-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      background: #000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    #bartender-gate.active { display: flex; }
+    #bartender-gate video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #bartender-gate-mute {
+      position: absolute;
+      bottom: 32px;
+      left: 32px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #1a1008;
+      background: linear-gradient(135deg, #d4a832, #c49a3c);
+      border: 2px solid #f0d878;
+      padding: 13px 26px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 0 0 rgba(212,168,50,0.6);
+      animation: mutePulse 1.8s ease-in-out infinite;
+    }
+    #bartender-gate-mute.unmuted {
+      animation: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+    #bartender-gate-mute .mute-icon { font-size: 16px; line-height: 1; }
+    #bartender-gate-skip {
+      position: absolute;
+      bottom: 32px;
+      right: 32px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #1a1008;
+      background: linear-gradient(135deg, #d4a832, #c49a3c);
+      border: 2px solid #f0d878;
+      padding: 13px 26px;
+      border-radius: 30px;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+    #bartender-gate-skip.visible {
+      opacity: 1;
+      pointer-events: auto;
+      animation: mutePulse 1.8s ease-in-out infinite;
+    }
+    #bartender-gate-restart {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #F5ECD6;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(212,168,50,0.5);
+      padding: 11px 24px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    #bartender-gate-restart:hover {
+      border-color: rgba(212,168,50,0.9);
+      background: rgba(0,0,0,0.75);
+    }
+    @media (max-width: 640px) {
+      #bartender-gate-mute { bottom: 20px; left: 20px; font-size: 10px; padding: 10px 18px; }
+      #bartender-gate-skip { bottom: 20px; right: 20px; font-size: 9px; padding: 9px 16px; }
+      #bartender-gate-restart { bottom: 70px; font-size: 9px; padding: 9px 16px; }
+    }
+
   </style>
 </head>
 <body>
@@ -2046,6 +2151,14 @@
     <button type="button" id="video-gate-mute"><span class="mute-icon">&#128264;</span> Tap for Sound</button>
     <button type="button" id="video-gate-restart"><span style="font-size:14px;line-height:1;">&#8635;</span> Start Over</button>
     <button type="button" id="video-gate-skip"><span style="font-size:16px;line-height:1;">&#9193;</span> Skip</button>
+  </div>
+
+  <!-- ═══ BARTENDER GREETING GATE ═════════════════════════════ -->
+  <div id="bartender-gate">
+    <video id="bartender-gate-player" src="assets/video/bartender-welcome-video.mp4" playsinline muted></video>
+    <button type="button" id="bartender-gate-mute"><span class="mute-icon">&#128264;</span> Tap for Sound</button>
+    <button type="button" id="bartender-gate-restart"><span style="font-size:14px;line-height:1;">&#8635;</span> Start Over</button>
+    <button type="button" id="bartender-gate-skip"><span style="font-size:16px;line-height:1;">&#9193;</span> Skip</button>
   </div>
 
   <!-- ═══ BARTENDER ════════════════════════════════════════════ -->
@@ -2325,83 +2438,112 @@ Hard rules:
 
   <script>
   (function () {
-    var COOKIE = 'pj_welcome_seen';
-    var MAX_AGE = 60 * 60 * 24 * 60; // 60 days
+    var WELCOME_COOKIE = 'pj_welcome_seen';
+    var WELCOME_MAX_AGE = 60 * 60 * 24 * 60; // 60 days
 
     function getCookie(name) {
       var m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
       return m ? decodeURIComponent(m[2]) : null;
     }
-    function setCookie(name, val) {
+    function setCookie(name, val, maxAge) {
       document.cookie = name + '=' + encodeURIComponent(val) +
-        '; max-age=' + MAX_AGE + '; path=/; SameSite=Lax';
+        '; max-age=' + maxAge + '; path=/; SameSite=Lax';
     }
 
-    var gate    = document.getElementById('video-gate');
-    var video   = document.getElementById('video-gate-player');
-    var muteBtn = document.getElementById('video-gate-mute');
-    var skipBtn = document.getElementById('video-gate-skip');
-    var restartBtn = document.getElementById('video-gate-restart');
-    var playBtn = document.getElementById('play-welcome-btn');
+    // ── Reusable gate wiring: one function builds mute/skip/restart
+    //    behavior for any {gate, video, mute, skip, restart} id set ──
+    function wireGate(ids) {
+      var gate       = document.getElementById(ids.gate);
+      var video      = document.getElementById(ids.video);
+      var muteBtn    = document.getElementById(ids.mute);
+      var skipBtn    = document.getElementById(ids.skip);
+      var restartBtn = document.getElementById(ids.restart);
 
-    var skipTimer = null;
+      var skipTimer = null;
 
-    function updateMuteBtn() {
-      if (video.muted) {
-        muteBtn.innerHTML = '<span class="mute-icon">&#128264;</span> Tap for Sound';
-        muteBtn.classList.remove('unmuted');
-      } else {
-        muteBtn.innerHTML = '<span class="mute-icon">&#128266;</span> Mute';
-        muteBtn.classList.add('unmuted');
+      function updateMuteBtn() {
+        if (video.muted) {
+          muteBtn.innerHTML = '<span class="mute-icon">&#128264;</span> Tap for Sound';
+          muteBtn.classList.remove('unmuted');
+        } else {
+          muteBtn.innerHTML = '<span class="mute-icon">&#128266;</span> Mute';
+          muteBtn.classList.add('unmuted');
+        }
       }
-    }
 
-    function showSkipAfterDelay() {
-      clearTimeout(skipTimer);
-      skipBtn.classList.remove('visible');
-      skipTimer = setTimeout(function () {
-        skipBtn.classList.add('visible');
-      }, 5000);
-    }
+      function showSkipAfterDelay() {
+        clearTimeout(skipTimer);
+        skipBtn.classList.remove('visible');
+        skipTimer = setTimeout(function () {
+          skipBtn.classList.add('visible');
+        }, 5000);
+      }
 
-    function closeGate() {
-      video.pause();
-      gate.classList.remove('active');
-      skipBtn.classList.remove('visible');
-      clearTimeout(skipTimer);
-    }
+      function closeGate() {
+        video.pause();
+        gate.classList.remove('active');
+        skipBtn.classList.remove('visible');
+        clearTimeout(skipTimer);
+        if (ids.onClose) ids.onClose();
+      }
 
-    function openGate(startMuted) {
-      gate.classList.add('active');
-      video.currentTime = 0;
-      video.muted = startMuted;
-      updateMuteBtn();
-      video.play().catch(function () {
-        video.muted = true;
+      function openGate(startMuted) {
+        gate.classList.add('active');
+        video.currentTime = 0;
+        video.muted = startMuted;
+        updateMuteBtn();
+        video.play().catch(function () {
+          video.muted = true;
+          updateMuteBtn();
+        });
+        showSkipAfterDelay();
+        if (ids.onOpen) ids.onOpen();
+      }
+
+      muteBtn.addEventListener('click', function () {
+        video.muted = !video.muted;
         updateMuteBtn();
       });
-      showSkipAfterDelay();
-      setCookie(COOKIE, '1');
+
+      restartBtn.addEventListener('click', function () {
+        video.currentTime = 0;
+        video.play().catch(function () {});
+        showSkipAfterDelay();
+      });
+
+      skipBtn.addEventListener('click', closeGate);
+      video.addEventListener('ended', closeGate);
+
+      return { open: openGate, close: closeGate };
     }
 
-    muteBtn.addEventListener('click', function () {
-      video.muted = !video.muted;
-      updateMuteBtn();
+    // ── Welcome gate (21s, full tour) — once every 60 days ─────────
+    var welcome = wireGate({
+      gate: 'video-gate', video: 'video-gate-player',
+      mute: 'video-gate-mute', skip: 'video-gate-skip', restart: 'video-gate-restart',
+      onOpen: function () { setCookie(WELCOME_COOKIE, '1', WELCOME_MAX_AGE); }
     });
 
-    restartBtn.addEventListener('click', function () {
-      video.currentTime = 0;
-      video.play().catch(function () {});
-      showSkipAfterDelay();
+    var playBtn = document.getElementById('play-welcome-btn');
+    playBtn.addEventListener('click', function () { welcome.open(false); });
+
+    // ── Bartender greeting gate (12s) — every visit, but never
+    //    alongside the welcome gate on the same page load ─────────
+    var bartender = wireGate({
+      gate: 'bartender-gate', video: 'bartender-gate-player',
+      mute: 'bartender-gate-mute', skip: 'bartender-gate-skip', restart: 'bartender-gate-restart'
     });
 
-    skipBtn.addEventListener('click', closeGate);
-    video.addEventListener('ended', closeGate);
+    var welcomeSeen = !!getCookie(WELCOME_COOKIE);
 
-    playBtn.addEventListener('click', function () { openGate(false); });
-
-    if (!getCookie(COOKIE)) {
-      openGate(true);
+    if (!welcomeSeen) {
+      // First visit, or the 60-day welcome cookie has expired —
+      // welcome plays; bartender sits out this load entirely.
+      welcome.open(true);
+    } else {
+      // Welcome already seen and still within its 60-day window —
+      // greet with the short bartender clip instead.
+      bartender.open(true);
     }
   })();
   </script>
