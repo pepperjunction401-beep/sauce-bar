@@ -1941,22 +1941,30 @@
       bottom: 32px;
       right: 32px;
       z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.24em;
       text-transform: uppercase;
-      color: #F5ECD6;
-      background: rgba(0,0,0,0.55);
-      border: 1px solid rgba(212,168,50,0.5);
-      padding: 11px 22px;
-      border-radius: 2px;
+      color: #1a1008;
+      background: linear-gradient(135deg, #d4a832, #c49a3c);
+      border: 2px solid #f0d878;
+      padding: 13px 26px;
+      border-radius: 30px;
       cursor: pointer;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.3s ease;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
     }
-    #video-gate-skip.visible { opacity: 1; pointer-events: auto; }
+    #video-gate-skip.visible {
+      opacity: 1;
+      pointer-events: auto;
+      animation: mutePulse 1.8s ease-in-out infinite;
+    }
     @media (max-width: 640px) {
       #video-gate-mute { bottom: 20px; left: 20px; font-size: 10px; padding: 10px 18px; }
       #video-gate-skip { bottom: 20px; right: 20px; font-size: 9px; padding: 9px 16px; }
@@ -2009,7 +2017,7 @@
   <div id="video-gate">
     <video id="video-gate-player" src="assets/video/pepper-junction-welcome.mp4" playsinline muted></video>
     <button type="button" id="video-gate-mute"><span class="mute-icon">&#128264;</span> Tap for Sound</button>
-    <button type="button" id="video-gate-skip">Skip &rsaquo;</button>
+    <button type="button" id="video-gate-skip"><span style="font-size:16px;line-height:1;">&#9193;</span> Skip</button>
   </div>
 
   <!-- ═══ BARTENDER ════════════════════════════════════════════ -->
