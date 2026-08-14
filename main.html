@@ -1965,9 +1965,36 @@
       pointer-events: auto;
       animation: mutePulse 1.8s ease-in-out infinite;
     }
+    #video-gate-restart {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #F5ECD6;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(212,168,50,0.5);
+      padding: 11px 24px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    #video-gate-restart:hover {
+      border-color: rgba(212,168,50,0.9);
+      background: rgba(0,0,0,0.75);
+    }
     @media (max-width: 640px) {
       #video-gate-mute { bottom: 20px; left: 20px; font-size: 10px; padding: 10px 18px; }
       #video-gate-skip { bottom: 20px; right: 20px; font-size: 9px; padding: 9px 16px; }
+      #video-gate-restart { bottom: 70px; font-size: 9px; padding: 9px 16px; }
     }
 
   </style>
@@ -2017,6 +2044,7 @@
   <div id="video-gate">
     <video id="video-gate-player" src="assets/video/pepper-junction-welcome.mp4" playsinline muted></video>
     <button type="button" id="video-gate-mute"><span class="mute-icon">&#128264;</span> Tap for Sound</button>
+    <button type="button" id="video-gate-restart"><span style="font-size:14px;line-height:1;">&#8635;</span> Start Over</button>
     <button type="button" id="video-gate-skip"><span style="font-size:16px;line-height:1;">&#9193;</span> Skip</button>
   </div>
 
@@ -2298,7 +2326,7 @@ Hard rules:
   <script>
   (function () {
     var COOKIE = 'pj_welcome_seen';
-    var MAX_AGE = 60 * 60 * 24 * 365;
+    var MAX_AGE = 60 * 60 * 24 * 60; // 60 days
 
     function getCookie(name) {
       var m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -2313,6 +2341,7 @@ Hard rules:
     var video   = document.getElementById('video-gate-player');
     var muteBtn = document.getElementById('video-gate-mute');
     var skipBtn = document.getElementById('video-gate-skip');
+    var restartBtn = document.getElementById('video-gate-restart');
     var playBtn = document.getElementById('play-welcome-btn');
 
     var skipTimer = null;
@@ -2358,6 +2387,12 @@ Hard rules:
     muteBtn.addEventListener('click', function () {
       video.muted = !video.muted;
       updateMuteBtn();
+    });
+
+    restartBtn.addEventListener('click', function () {
+      video.currentTime = 0;
+      video.play().catch(function () {});
+      showSkipAfterDelay();
     });
 
     skipBtn.addEventListener('click', closeGate);
