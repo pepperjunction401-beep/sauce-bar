@@ -2109,7 +2109,7 @@
 
   <!-- ═══ HEADER ══════════════════════════════════════════════ -->
   <header class="site-header">
-    <a class="header-logo" href="conductor.html">
+    <a class="header-logo" href="main.html">
       <img src="assets/PJ-logo.png" alt="Pepper Junction" />
       <div class="header-wordmark">
         <span class="header-name">Pepper Junction</span>
@@ -2541,31 +2541,26 @@ Hard rules:
     var playBartenderBtn = document.getElementById('play-bartender-btn');
     playBartenderBtn.addEventListener('click', function () { bartender.open(false); });
 
-    // Same-tab session guard — once either gate has auto-played
-    // once in this browser tab, neither auto-plays again, no matter
-    // how the visitor arrives back at main.html (logo, nav link,
-    // item page, back button, etc). Manual "Watch again" buttons
-    // above always work regardless of this flag.
-    var SESSION_KEY = 'pj_gate_shown_this_session';
-    var alreadyShownThisSession = false;
-    try {
-      alreadyShownThisSession = sessionStorage.getItem(SESSION_KEY) === '1';
-    } catch (e) { /* privacy mode or storage disabled — treat as not shown */ }
+    // Front-door check — only a real arrival FROM conductor.html
+    // (the site's front door) counts as "entering." Anything else
+    // that lands on main.html — the logo, Shop, Visit, an item page,
+    // a category page, a reload — is someone already inside the
+    // site moving around, and never auto-plays a gate.
+    var cameFromConductor = /\/conductor\.html(?:[?#]|$)/.test(document.referrer);
 
-    if (!alreadyShownThisSession) {
+    if (cameFromConductor) {
       var welcomeSeen = !!getCookie(WELCOME_COOKIE);
 
       if (!welcomeSeen) {
-        // First visit, or the 60-day welcome cookie has expired —
-        // welcome plays; bartender sits out this load entirely.
+        // First time through the front door, or the 60-day welcome
+        // cookie has expired — full welcome plays.
         welcome.open(true);
       } else {
-        // Welcome already seen and still within its 60-day window —
-        // greet with the short bartender clip instead.
+        // They've had the full welcome within the last 60 days —
+        // every time they leave and come back through the front
+        // door, greet them with the short bartender clip instead.
         bartender.open(true);
       }
-
-      try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
     }
   })();
   </script>
