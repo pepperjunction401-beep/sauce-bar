@@ -792,7 +792,7 @@ body {
        'Heat Curve':          p['How it Hits']         || '',
        'Heat Finish':         p['Heat Finish']         || '',
        'Primary Flavor Notes':p['Primary Flavor Notes']|| '',
-       'Product URL':         p['Product URL']         || '',
+       'Product URL':         (p['slug'] ? ('products/' + p['slug'] + '.html') : (p['Product URL'] || '')),
        'Product Image':       'assets/sauces/' + (p['slug'] || '') + '.png',
        'Best Food Pairings':  p['Best Food Pairings']  || '',
        'in_stock':            p['in_stock'] !== false,
