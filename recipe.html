@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Pepper Junction Kitchen&#8482;</title>
+
+  <!-- ── SITE HEADER/FOOTER FONTS — matches product page branding ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+ <style>
+:root {
+  --bg: #355E3B;
+  --bg-deep: #2d5233;
+  --panel: rgba(255, 248, 236, 0.94);
+  --panel-strong: rgba(250, 241, 226, 0.98);
+  --ticket: #f5e6c8;
+  --ticket-deep: #ead4ad;
+  --ticket-edge: #b48958;
+  --ticket-ink: #2b1d15;
+  --ticket-muted: #6d5440;
+  --border: #ccb089;
+  --accent: #972f1f;
+  --accent-hover: #7f2619;
+  --gold: #b88939;
+  --shadow: 0 10px 26px rgba(44, 27, 18, 0.16);
+  --shadow-soft: 0 6px 18px rgba(44, 27, 18, 0.1);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--ticket-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,0.06), transparent 35%),
+    linear-gradient(180deg, #355E3B, #2d5233);
+  min-height: 100vh;
+}
+
+.pj-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 22px;
+}
+
+.pj-header {
+  margin-bottom: 14px;
+  padding: 22px 24px;
+  border: 1px solid rgba(163, 119, 72, 0.45);
+  border-radius: 18px;
+  background: #f5e6c8;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.pj-header::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(180, 137, 88, 0.28);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.pj-title {
+  margin: 0 0 8px;
+  font-size: 32px;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  color: #6B0F1A;
+}
+
+.pj-sub {
+  margin: 0;
+  color: var(--ticket-muted);
+  font-size: 15px;
+  line-height: 1.55;
+  max-width: 760px;
+}
+
+.pj-results-head {
+  background: #f5e6c8;
+  border: 1px solid rgba(163, 119, 72, 0.45);
+  border-radius: 18px;
+  padding: 14px 20px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.pj-results-head::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(180, 137, 88, 0.2);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.pj-results-head h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #6B0F1A;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.pj-results-slogan {
+  margin: 2px 0 4px;
+  font-size: 14px;
+  font-style: italic;
+  color: #6B0F1A;
+  letter-spacing: 0.04em;
+}
+.pj-count {
+  font-size: 13px;
+  color: var(--ticket-muted);
+  letter-spacing: 0.03em;
+}
+
+.pj-field {
+  margin-bottom: 12px;
+}
+
+.pj-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffde52;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.pj-field select {
+  width: 100%;
+  border: 1px solid rgba(174, 132, 84, 0.45);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.82);
+  color: var(--ticket-ink);
+  padding: 11px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
+}
+
+.pj-field select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(151, 47, 31, 0.12);
+}
+
+.pj-btn {
+  border: 1px solid rgba(174, 132, 84, 0.45);
+  background: rgba(255,255,255,0.86);
+  color: #2b1d15;
+  padding: 10px 13px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.pj-btn:hover {
+  transform: translateY(-1px);
+  background: #fffdfa;
+}
+
+.pj-btn.sauce {
+  background: #355E3B;
+  color: #ffde52;
+  border-color: #355E3B;
+}
+
+.pj-btn.sauce:hover {
+  background: #2d5233;
+  border-color: #2d5233;
+  transform: translateY(-1px);
+}
+
+.pj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 16px;
+  counter-reset: ticket;
+}
+
+.pj-card {
+  counter-increment: ticket;
+  border: 1px solid rgba(160, 116, 70, 0.52);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,0.28), transparent 28%),
+    linear-gradient(180deg, rgba(245,230,200,0.98), rgba(234,212,173,0.98));
+  padding: 16px 16px 18px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  cursor: pointer;
+}
+
+.pj-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(78, 49, 24, 0.18);
+}
+
+.pj-card::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px dashed rgba(132, 94, 58, 0.42);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.pj-card::after {
+  content: "Route 401  •  Ticket No. " counter(ticket, decimal-leading-zero);
+  position: absolute;
+  right: 16px;
+  bottom: 10px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(85, 57, 35, 0.56);
+  pointer-events: none;
+}
+
+.pj-brand {
+  color: #2b1d15;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+  position: relative;
+  z-index: 1;
+}
+
+.pj-name {
+  margin: 0 0 10px;
+  font-size: 20px;
+  line-height: 1.25;
+  color: #2b1d15;
+  position: relative;
+  padding-right: 92px;
+  transition: color 0.18s ease;
+}
+
+.pj-name::before {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 2px;
+  background: rgba(163, 119, 72, 0.45);
+  margin: 6px 0 8px;
+}
+
+.pj-name::after {
+  content: "";
+  position: absolute;
+  width: 92px;
+  height: 92px;
+  top: -40px;
+  right: -12px;
+  background: url("assets/PJ-logo.png") no-repeat center;
+  background-size: contain;
+  pointer-events: none;
+}
+
+.pj-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.pj-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #2b1d15;
+  background: rgba(255, 248, 236, 0.72);
+  border: 1px solid rgba(174, 132, 84, 0.42);
+  border-radius: 999px;
+  padding: 5px 9px;
+  margin: 0 6px 6px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.pj-section {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(143, 108, 74, 0.38);
+  position: relative;
+  z-index: 1;
+}
+
+.pj-k {
+  display: block;
+  font-size: 11px;
+  color: #2b1d15;
+  margin-bottom: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.pj-v {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #2b1d15;
+}
+
+.pj-card-actions {
+  margin-top: 14px;
+  position: relative;
+  z-index: 1;
+  padding-bottom: 12px;
+}
+
+.pj-card-actions .pj-btn {
+  width: 100%;
+  text-align: center;
+}
+
+.pj-card-actions.dual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.pj-card-actions.dual .pj-btn {
+  width: 100%;
+}
+
+.pj-card-media {
+  margin-top: 4px;
+  margin-left: -14px;
+  margin-right: -14px;
+  position: relative;
+  z-index: 1;
+}
+
+.pj-card-image-panel {
+  position: relative;
+}
+
+.pj-card-image-shell {
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.pj-card-image-shell img {
+  width: 100%;
+  max-width: none;
+  max-height: 380px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.pj-card-image-panel.is-fallback .pj-card-image-shell img {
+  max-height: 190px;
+}
+
+.pj-card-image-caption {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ticket-muted);
+}
+
+.pj-card-image-back {
+  margin-top: 0;
+}
+
+.pj-card-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(163, 119, 72, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 250, 242, 0.92);
+  color: var(--ticket-ink);
+  font-size: 24px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  z-index: 3;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.pj-card-close-btn:hover {
+  transform: translateY(-1px);
+}
+
+.pj-recipe-widget {
+  margin-bottom: 18px;
+  padding: 18px 20px;
+  border: 1px solid rgba(163, 119, 72, 0.45);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(107, 15, 26, 0.98), rgba(82, 11, 19, 0.98));
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.pj-recipe-widget::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(255, 222, 82, 0.18);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.pj-recipe-widget > h3 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  color: #ffde52;
+  position: relative;
+  z-index: 1;
+}
+
+.pj-recipe-widget > p {
+  margin: 0 0 14px;
+  color: rgba(255, 249, 241, 0.96);
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+}
+
+.pj-recipe-widget .pj-field {
+  position: relative;
+  z-index: 1;
+  max-width: 420px;
+}
+
+.pj-recipe-actions {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+  justify-content: flex-start;
+  position: relative;
+  z-index: 1;
+}
+
+.pj-recipe-actions .pj-btn,
+.pj-recipe-actions .pj-link-btn {
+  width: auto;
+  min-height: 42px;
+}
+
+.pj-link-btn {
+  border: 1px solid #ffde52;
+  background: #ffde52;
+  color: #6B0F1A;
+  padding: 10px 13px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.pj-link-btn:hover {
+  transform: translateY(-1px);
+  background: #f0cf3f;
+}
+
+.pj-link-btn[aria-disabled="true"] {
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.pj-card-note {
+  margin: 10px 0 0;
+  color: var(--ticket-muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.pj-fineprint {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--ticket-ink) !important;
+  opacity: 1;
+}
+
+.pj-system-card .pj-card-note {
+  font-size: 15px;
+}
+
+.pj-mode-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(160, 116, 70, 0.4);
+  background: rgba(255,255,255,0.68);
+  color: var(--ticket-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.pj-empty {
+  border: 1px dashed rgba(160, 116, 70, 0.52);
+  border-radius: 16px;
+  background: var(--panel-strong);
+  padding: 24px;
+  text-align: center;
+  color: var(--ticket-muted);
+  box-shadow: var(--shadow-soft);
+}
+
+@media (max-width: 720px) {
+  .pj-recipe-actions {
+    flex-wrap: wrap;
+  }
+
+  .pj-card-image-shell {
+    min-height: 320px;
+  }
+
+  .pj-card-image-shell img {
+    max-height: 320px;
+  }
+}
+
+@media (max-width: 560px) {
+  .pj-wrap {
+    padding: 14px;
+  }
+
+  .pj-header,
+  .pj-results-head,
+  .pj-card,
+  .pj-recipe-widget {
+    border-radius: 14px;
+  }
+
+  .pj-title {
+    font-size: 27px;
+  }
+
+  .pj-name {
+    font-size: 19px;
+  }
+
+  .pj-meta {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── SITE HEADER — matches product page branding ─────────────── */
+@font-face {
+  font-family: 'BlackRiver';
+  src: url('assets/fonts/Blackriver-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-display: swap;
+}
+
+.site-header {
+  background: #1E3020;
+  border-bottom: 2px solid #B88939;
+  padding: 20px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.4);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+}
+
+.header-logo img { height: 52px; width: auto; }
+
+.header-wordmark { display: flex; flex-direction: column; gap: 2px; }
+
+.header-name {
+  font-family: 'BlackRiver', 'Playfair Display', serif;
+  font-size: 22px;
+  color: #FDF6E8;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.header-tagline {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #B88939;
+  opacity: 0.8;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.header-nav a {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: #F5ECD6;
+  opacity: 0.90;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.header-nav a:hover { opacity: 1; color: #D4A832; }
+
+@media (max-width: 860px) {
+  .site-header { padding: 16px 20px; }
+  .header-nav { display: none; }
+}
+
+/* ── SITE FOOTER — matches product page branding ─────────────── */
+.site-footer {
+  background: #1E3020;
+  border-top: 2px solid #B88939;
+  padding: 40px 48px 24px;
+  position: relative;
+  z-index: 1;
+  margin-top: 22px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid rgba(184,137,57,0.2);
+}
+
+.footer-brand img {
+  height: 48px;
+  width: auto;
+  margin-bottom: 14px;
+  opacity: 0.85;
+}
+
+.footer-contact-item {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: #F5ECD6;
+  opacity: 0.55;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.footer-contact-item a { color: inherit; text-decoration: none; }
+.footer-contact-item a:hover { opacity: 1; color: #D4A832; }
+
+.footer-col-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #D4A832;
+  opacity: 0.8;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.footer-col-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-col-links li a {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #F5ECD6;
+  opacity: 0.5;
+  text-decoration: none;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.footer-col-links li a:hover { opacity: 1; color: #D4A832; }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-copy {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #B88939;
+  opacity: 0.45;
+}
+
+.footer-standard {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #F5ECD6;
+  opacity: 0.25;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .footer-top { grid-template-columns: 1fr; }
+  .site-footer { padding: 28px 20px 20px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ══════════════════════════════════════════════════ -->
+<header class="site-header">
+  <a class="header-logo" href="conductor.html">
+    <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+    <div class="header-wordmark">
+      <span class="header-name">Pepper Junction</span>
+      <span class="header-tagline">Est. 2014 · Rhode Island</span>
+    </div>
+  </a>
+  <nav class="header-nav">
+    <a href="hot-sauces.html">Hot Sauces</a>
+    <a href="main.html">Home</a>
+    <a href="index.html">Pairing Bar</a>
+    <a href="recipe.html">Recipes</a>
+    <a href="main.html#location">Visit</a>
+  </nav>
+</header>
+
+<div class="pj-wrap">
+  <div class="pj-header">
+    <h1 class="pj-title">The Pepper Junction Kitchen&#8482;</h1>
+    <p class="pj-sub">Recipes crafted by John, matched to the exact Pepper Junction products they were built with.</p>
+  </div>
+
+  <section class="pj-recipe-widget" id="pj-recipe-widget">
+    <h3>Pick a Recipe</h3>
+    <p>These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.</p>
+    <p>And depending on how bad you cook, we can’t guarantee the results either.</p>
+
+    <div class="pj-field">
+      <label for="pj-recipe-select">Recipe</label>
+      <select id="pj-recipe-select">
+        <option value="">Select a recipe</option>
+      </select>
+    </div>
+
+    <div class="pj-recipe-actions">
+      <a class="pj-link-btn" id="pj-recipe-open" href="#" target="_blank" rel="noopener" aria-disabled="true">Open Recipe</a>
+      <button class="pj-btn" id="pj-clear-recipe" type="button">Clear Recipe</button>
+    </div>
+  </section>
+
+  <div class="pj-results-head">
+    <div>
+      <h2>Recipe Ingredients</h2>
+      <p class="pj-results-slogan">Everything this recipe calls for.</p>
+      <div class="pj-count" id="pj-count"></div>
+    </div>
+  </div>
+
+  <div id="pj-results" class="pj-grid"></div>
+</div>
+
+<!-- ═══ FOOTER ═══════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-top">
+
+    <div class="footer-brand">
+      <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+      <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
+      <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
+      <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+    </div>
+
+    <div>
+      <span class="footer-col-title">Shop</span>
+      <ul class="footer-col-links">
+        <li><a href="hot-sauces.html">Hot Sauces</a></li>
+        <li><a href="buffalo-condiments.html">Wing & Buffalo</a></li>
+        <li><a href="seasonings-bbq.html">BBQ & Seasonings</a></li>
+        <li><a href="buffalo-condiments.html">Condiments</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="olive-oils-vinegar.html">Olive Oils & Vinegars</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <span class="footer-col-title">Pepper Junction</span>
+      <ul class="footer-col-links">
+        <li><a href="main.html">Home</a></li>
+        <li><a href="index.html">Pairing Bar</a></li>
+        <li><a href="recipe.html">Recipes</a></li>
+        <li><a href="main.html#about">Our Story</a></li>
+        <li><a href="main.html#location">Visit Us</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <span class="footer-col-title">Help</span>
+      <ul class="footer-col-links">
+        <li><a href="policies.html#damaged">Damaged Products</a></li>
+        <li><a href="policies.html#shipping">Shipping Info</a></li>
+        <li><a href="policies.html#returns">Returns</a></li>
+        <li><a href="policies.html#contact">Contact Us</a></li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
+    <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
+  </div>
+</footer>
+
+<script>
+  const PRODUCT_URL_COL = "Product URL";
+  const RECIPE_JSON_PATH = './data/PJ_Master_Recipe_Map_cleaned.json';
+
+  let PJ_DATA = [];
+  let recipeMap = [];
+  let activeRecipe = null;
+  let recipeLockedProducts = [];
+
+  const els = {
+    results: document.getElementById('pj-results'),
+    count: document.getElementById('pj-count'),
+    recipeSelect: document.getElementById('pj-recipe-select'),
+    recipeOpen: document.getElementById('pj-recipe-open'),
+    recipeClear: document.getElementById('pj-clear-recipe')
+  };
+
+  /* Remap JSON fields to match card renderer's existing field references */
+  function remapProduct(p) {
+    return {
+      'Category':            p['Category']            || '',
+      'Food Style':          p['Food Style']          || '',
+      'Brand':               p['Brand']               || '',
+      'Product Name':        p['Product Name']        || '',
+      'Pepper Type':         p['Pepper Type']         || '',
+      'Heat Tier':           p['Heat Category']       || '',
+      'Heat Level':          p['Heat Level']          || 0,
+      'Heat Curve':          p['How it Hits']         || '',
+      'Heat Finish':         p['Heat Finish']         || '',
+      'Primary Flavor Notes':p['Primary Flavor Notes']|| '',
+      'Product URL':         (p['slug'] ? ('products/' + p['slug'] + '.html') : (p['Product URL'] || '')),
+      'Product Image':       'assets/sauces/' + (p['slug'] || '') + '.png',
+      'Best Food Pairings':  p['Best Food Pairings']  || '',
+      'in_stock':            p['in_stock'] !== false,
+      'slug':                p['slug']                || ''
+    };
+  }
+
+  function normalizeKey(value) {
+    return String(value || '').replace(/\s+/g, ' ').trim().toLowerCase();
+  }
+
+  function pill(text) {
+    if (!text) return '';
+    return `<span class="pj-pill">${escapeHtml(text)}</span>`;
+  }
+
+  function escapeHtml(s) {
+    return String(s || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function card(record, options = {}) {
+    const productUrl = PRODUCT_URL_COL ? String(record[PRODUCT_URL_COL] || '').trim() : '';
+    const productImage = String(record["Product Image"] || '').trim();
+    const fallbackImage = 'assets/PJ-logo.png';
+    const cardId = `pj-card-${Math.random().toString(36).slice(2, 10)}`;
+
+    const modePill = options.modeLabel
+      ? `<div class="pj-mode-pill">${escapeHtml(options.modeLabel)}</div>`
+      : '';
+
+    const note = options.note
+      ? `<p class="pj-card-note">${escapeHtml(options.note)}</p>`
+      : '';
+
+    const purchaseAction = productUrl
+      ? `<a class="pj-btn sauce" href="${escapeHtml(productUrl)}" target="_blank" rel="noopener noreferrer">Purchase Sauce</a>`
+      : '';
+
+    const showViewButton = !options.system;
+    const viewAction = showViewButton
+      ? `<button class="pj-btn sauce pj-view-sauce-btn" type="button" data-card-toggle="${cardId}" aria-expanded="false">View Sauce</button>`
+      : '';
+
+    const actions = (viewAction || purchaseAction)
+      ? `<div class="pj-card-actions dual">${viewAction}${purchaseAction}</div>`
+      : '';
+
+    const hasImage = !!productImage;
+    const imageSrc = hasImage ? productImage : fallbackImage;
+    const imageAlt = hasImage
+      ? `${String(record["Brand"] || 'Pepper Junction')} ${String(record["Product Name"] || options.title || '')}`
+      : 'Pepper Junction logo';
+
+    const imageCaption = hasImage ? '' : 'Image coming soon';
+
+    const imagePanel = showViewButton
+      ? `
+        <div class="pj-card-media" hidden data-card-panel="${cardId}">
+          <div class="pj-card-image-panel${hasImage ? '' : ' is-fallback'}">
+            <div class="pj-card-image-shell">
+              <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" loading="lazy" data-fallback-logo="${fallbackImage}" data-has-image="${hasImage ? 'true' : 'false'}">
+            </div>
+            ${imageCaption ? `<div class="pj-card-image-caption">${imageCaption}</div>` : ''}
+            <div class="pj-card-image-back">
+             <button class="pj-card-close-btn" type="button" data-card-toggle="${cardId}" aria-label="Back to details" aria-expanded="true">×</button>
+            </div>
+          </div>
+        </div>
+      `
+      : '';
+
+    return `
+      <article class="pj-card${options.system ? ' pj-system-card' : ''}" data-card-id="${cardId}">
+        ${modePill}
+
+        <div data-card-front="${cardId}">
+          <div class="pj-brand">${escapeHtml(record["Brand"] || 'Pepper Junction')}</div>
+          <h3 class="pj-name">${escapeHtml(record["Product Name"] || options.title || '')}</h3>
+
+          <div>
+            ${pill(record["Category"])}
+            ${pill(record["Food Style"])}
+            ${pill(record["Pepper Type"])}
+            ${pill(record["Heat Tier"])}
+          </div>
+
+          <div class="pj-meta">
+            <div class="pj-section">
+              <span class="pj-k">Heat Level</span>
+              <div class="pj-v">${escapeHtml(record["Heat Level"])}</div>
+            </div>
+            <div class="pj-section">
+              <span class="pj-k">How it Hits&#8482;</span>
+              <div class="pj-v">${escapeHtml(record["Heat Curve"])}</div>
+            </div>
+          </div>
+
+          <div class="pj-section">
+            <span class="pj-k">Heat Finish&#8482;</span>
+            <div class="pj-v">${escapeHtml(record["Heat Finish"])}</div>
+          </div>
+
+          <div class="pj-section">
+            <span class="pj-k">Flavor Notes</span>
+            <div class="pj-v">${escapeHtml(record["Primary Flavor Notes"])}</div>
+          </div>
+
+          <div class="pj-section">
+            <span class="pj-k">Best Food Pairings</span>
+            <div class="pj-v">${escapeHtml(record["Best Food Pairings"])}</div>
+          </div>
+
+          ${note}
+          ${actions}
+        </div>
+
+        ${imagePanel}
+      </article>
+    `;
+  }
+
+  function bindCardImageToggles() {
+    document.querySelectorAll('[data-card-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const cardId = btn.getAttribute('data-card-toggle');
+        const front = document.querySelector(`[data-card-front="${cardId}"]`);
+        const panel = document.querySelector(`[data-card-panel="${cardId}"]`);
+
+        if (!front || !panel) return;
+
+        const isOpening = panel.hasAttribute('hidden');
+
+        if (isOpening) {
+          front.hidden = true;
+          panel.hidden = false;
+        } else {
+          panel.hidden = true;
+          front.hidden = false;
+        }
+
+        document.querySelectorAll(`[data-card-toggle="${cardId}"]`).forEach((toggleBtn) => {
+          toggleBtn.setAttribute('aria-expanded', isOpening ? 'true' : 'false');
+        });
+      });
+    });
+
+    /* Tap anywhere on the back of the card to flip back to front */
+    document.querySelectorAll('[data-card-panel]').forEach((panel) => {
+      panel.addEventListener('click', (e) => {
+        if (e.target.closest('[data-card-toggle]')) return;
+
+        const cardId = panel.getAttribute('data-card-panel');
+        const front = document.querySelector(`[data-card-front="${cardId}"]`);
+        if (!front || panel.hasAttribute('hidden')) return;
+
+        panel.hidden = true;
+        front.hidden = false;
+
+        document.querySelectorAll(`[data-card-toggle="${cardId}"]`).forEach((toggleBtn) => {
+          toggleBtn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    });
+  }
+
+  function bindCardImageFallbacks() {
+    document.querySelectorAll('.pj-card-image-shell img[data-fallback-logo]').forEach((img) => {
+      if (img.dataset.fallbackBound === 'true') return;
+      img.dataset.fallbackBound = 'true';
+
+      img.addEventListener('error', () => {
+        const fallbackLogo = img.getAttribute('data-fallback-logo') || 'assets/PJ-logo.png';
+        if (img.getAttribute('src') === fallbackLogo) return;
+
+        img.setAttribute('src', fallbackLogo);
+
+        const panel = img.closest('.pj-card-image-panel');
+        if (panel) {
+          panel.classList.add('is-fallback');
+          let caption = panel.querySelector('.pj-card-image-caption');
+          if (!caption) {
+            caption = document.createElement('div');
+            caption.className = 'pj-card-image-caption';
+            panel.insertBefore(caption, panel.querySelector('.pj-card-image-back'));
+          }
+          caption.textContent = 'Image coming soon';
+        }
+      });
+    });
+  }
+
+  function getRecipeProductEntries(recipe) {
+    return [
+      { role: 'Required Product', name: recipe["Required Product 1"] },
+      { role: 'Required Product', name: recipe["Required Product 2"] },
+      { role: 'Alternative Product', name: recipe["Alternative Product 1"] },
+      { role: 'Alternative Product', name: recipe["Alternative Product 2"] },
+      { role: 'Suggested Product', name: recipe["Suggested Product"] }
+    ].filter(entry => String(entry.name || '').trim());
+  }
+
+  function getLockedRecipeProducts(recipe) {
+    const byName = new Map(PJ_DATA.map(product => [normalizeKey(product["Product Name"]), product]));
+    return getRecipeProductEntries(recipe)
+      .map(entry => {
+        const product = byName.get(normalizeKey(entry.name));
+        return product ? { product, role: entry.role } : null;
+      })
+      .filter(Boolean);
+  }
+
+  function updateRecipeOpenLink(recipe) {
+    if (!els.recipeOpen) return;
+    const url = recipe && recipe["Recipe URL"] ? String(recipe["Recipe URL"]).trim() : '';
+    els.recipeOpen.href = url || '#';
+    els.recipeOpen.setAttribute('aria-disabled', url ? 'false' : 'true');
+  }
+
+  function populateRecipeDropdown() {
+    if (!els.recipeSelect) return;
+    els.recipeSelect.innerHTML = '<option value="">Select a recipe</option>';
+
+    recipeMap.forEach(recipe => {
+      const opt = document.createElement('option');
+      opt.value = recipe["Recipe ID"];
+      opt.textContent = recipe["Dropdown Label"] || recipe["Recipe Name"];
+      els.recipeSelect.appendChild(opt);
+    });
+  }
+
+  function renderEmptyState() {
+    els.count.textContent = '';
+    els.results.innerHTML = `
+      <div class="pj-empty">
+        <strong>No recipe selected.</strong><br><br>
+        Pick a recipe above to see everything it calls for.
+      </div>
+    `;
+  }
+
+  function render() {
+    if (!activeRecipe) {
+      renderEmptyState();
+      return;
+    }
+
+    const recipeLabel = activeRecipe["Dropdown Label"] || activeRecipe["Recipe Name"] || "Selected Recipe";
+    const recipeUrl = activeRecipe["Recipe URL"] ? String(activeRecipe["Recipe URL"]).trim() : "";
+
+    const descriptorParts = [
+      activeRecipe["Course"] ? String(activeRecipe["Course"]).trim() : "",
+      activeRecipe["Food Type"] ? String(activeRecipe["Food Type"]).trim() : ""
+    ].filter(Boolean);
+
+    const descriptor = descriptorParts.join(" • ");
+
+    els.count.textContent = `${recipeLockedProducts.length} recipe product${recipeLockedProducts.length === 1 ? '' : 's'} loaded`;
+
+    const introCard = `
+      <article class="pj-card pj-system-card">
+        <div class="pj-mode-pill">Recipe</div>
+        <div class="pj-brand">Pepper Junction</div>
+        <h3 class="pj-name">${escapeHtml(recipeLabel)}</h3>
+
+        ${descriptor ? `<div><span class="pj-pill">${escapeHtml(descriptor)}</span></div>` : ""}
+
+        <div class="pj-section">
+          <div class="pj-v">
+            These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
+          </div>
+          <div class="pj-fineprint" style="color: #2b1d15;">
+            And depending on how bad you cook, we can't guarantee the results either.
+          </div>
+        </div>
+
+        ${recipeUrl ? `
+          <div class="pj-card-actions">
+            <a class="pj-btn sauce" href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">View Recipe</a>
+          </div>
+        ` : ""}
+      </article>
+    `;
+
+    if (!recipeLockedProducts.length) {
+      els.results.innerHTML = introCard;
+      bindCardImageToggles();
+      bindCardImageFallbacks();
+      return;
+    }
+
+    const productCards = recipeLockedProducts.map(({ product, role }) =>
+      card(product, {
+        modeLabel: role,
+        note: role === 'Suggested Product'
+          ? 'Suggested supporting item for this recipe.'
+          : role === 'Alternative Product'
+            ? 'Approved backup option for this recipe.'
+            : 'Core product locked to this recipe.'
+      })
+    ).join('');
+
+    els.results.innerHTML = introCard + productCards;
+    bindCardImageToggles();
+    bindCardImageFallbacks();
+  }
+
+  function loadRecipeById(recipeId) {
+    const recipe = recipeMap.find(r => r["Recipe ID"] === recipeId);
+    if (!recipe) return;
+
+    activeRecipe = recipe;
+    recipeLockedProducts = getLockedRecipeProducts(recipe);
+    updateRecipeOpenLink(recipe);
+    render();
+  }
+
+  function clearRecipe() {
+    activeRecipe = null;
+    recipeLockedProducts = [];
+    if (els.recipeSelect) els.recipeSelect.value = '';
+    updateRecipeOpenLink(null);
+    render();
+  }
+
+  async function loadRecipeMap() {
+    try {
+      const res = await fetch(RECIPE_JSON_PATH, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`Failed to load recipe map: ${res.status}`);
+
+      const data = await res.json();
+      recipeMap = data.filter(r =>
+        String(r["Active?"] || '').trim().toUpperCase() === 'TRUE' &&
+        String(r["Recipe ID"] || '').trim() &&
+        String(r["Required Product 1"] || '').trim()
+      );
+
+      populateRecipeDropdown();
+      console.log('Recipe map loaded:', recipeMap.length);
+    } catch (err) {
+      console.error('Recipe map load error:', err);
+      recipeMap = [];
+      if (els.recipeSelect) {
+        els.recipeSelect.innerHTML = '<option value="">Recipe list unavailable</option>';
+      }
+    }
+  }
+
+  /* Fetch product JSON, remap, then load recipe map and render */
+  fetch('./data/Database_Pepper_Junction.json', { cache: 'no-store' })
+    .then(function(r) {
+      if (!r.ok) throw new Error('JSON fetch failed: ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      PJ_DATA = data.map(remapProduct);
+      loadRecipeMap();
+      render();
+    })
+    .catch(function(err) {
+      console.error('PJ_DATA load error:', err);
+      loadRecipeMap();
+      render();
+    });
+
+  if (els.recipeSelect) {
+    els.recipeSelect.addEventListener('change', (e) => {
+      const recipeId = e.target.value;
+      if (!recipeId) {
+        clearRecipe();
+        return;
+      }
+      loadRecipeById(recipeId);
+    });
+  }
+
+  if (els.recipeClear) {
+    els.recipeClear.addEventListener('click', () => {
+      clearRecipe();
+    });
+  }
+
+  updateRecipeOpenLink(null);
+</script>
+
+</body>
+</html>
