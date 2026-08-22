@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Head Pepper's Pairing Bar&#8482;</title>
+
+  <!-- ── SITE HEADER/FOOTER FONTS — matches product page branding ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
  <style>
 :root {
   --bg: #355E3B;
@@ -659,9 +665,215 @@ body {
       flex-direction: column;
     }
   }
+
+/* ── SITE HEADER — matches product page branding ─────────────── */
+@font-face {
+  font-family: 'BlackRiver';
+  src: url('assets/fonts/Blackriver-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-display: swap;
+}
+
+.site-header {
+  background: #1E3020;
+  border-bottom: 2px solid #B88939;
+  padding: 20px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.4);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+}
+
+.header-logo img { height: 52px; width: auto; }
+
+.header-wordmark { display: flex; flex-direction: column; gap: 2px; }
+
+.header-name {
+  font-family: 'BlackRiver', 'Playfair Display', serif;
+  font-size: 22px;
+  color: #FDF6E8;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.header-tagline {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #B88939;
+  opacity: 0.8;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.header-nav a {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: #F5ECD6;
+  opacity: 0.90;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.header-nav a:hover { opacity: 1; color: #D4A832; }
+
+@media (max-width: 860px) {
+  .site-header { padding: 16px 20px; }
+  .header-nav { display: none; }
+}
+
+/* ── SITE FOOTER — matches product page branding ─────────────── */
+.site-footer {
+  background: #1E3020;
+  border-top: 2px solid #B88939;
+  padding: 40px 48px 24px;
+  position: relative;
+  z-index: 1;
+  margin-top: 22px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid rgba(184,137,57,0.2);
+}
+
+.footer-brand img {
+  height: 48px;
+  width: auto;
+  margin-bottom: 14px;
+  opacity: 0.85;
+}
+
+.footer-contact-item {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: #F5ECD6;
+  opacity: 0.55;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.footer-contact-item a { color: inherit; text-decoration: none; }
+.footer-contact-item a:hover { opacity: 1; color: #D4A832; }
+
+.footer-col-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #D4A832;
+  opacity: 0.8;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.footer-col-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-col-links li a {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #F5ECD6;
+  opacity: 0.5;
+  text-decoration: none;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.footer-col-links li a:hover { opacity: 1; color: #D4A832; }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-copy {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #B88939;
+  opacity: 0.45;
+}
+
+.footer-standard {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #F5ECD6;
+  opacity: 0.25;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .footer-top { grid-template-columns: 1fr; }
+  .site-footer { padding: 28px 20px 20px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
 </style>
 </head>
 <body>
+
+<!-- ═══ HEADER ══════════════════════════════════════════════════ -->
+<header class="site-header">
+  <a class="header-logo" href="conductor.html">
+    <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+    <div class="header-wordmark">
+      <span class="header-name">Pepper Junction</span>
+      <span class="header-tagline">Est. 2014 · Rhode Island</span>
+    </div>
+  </a>
+  <nav class="header-nav">
+    <a href="hot-sauces.html">Hot Sauces</a>
+    <a href="main.html">Home</a>
+    <a href="index.html">Pairing Bar</a>
+    <a href="main.html#location">Visit</a>
+  </nav>
+</header>
+
   <div class="pj-wrap">
     <div class="pj-header">
      <h1 class="pj-title">The Head Pepper's Pairing Bar&#8482;</h1>
@@ -768,6 +980,56 @@ body {
       </main>
     </div>
   </div>
+
+  <!-- ═══ FOOTER ═══════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+        <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
+        <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
+        <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+      </div>
+
+      <div>
+        <span class="footer-col-title">Shop</span>
+        <ul class="footer-col-links">
+          <li><a href="hot-sauces.html">Hot Sauces</a></li>
+          <li><a href="buffalo-condiments.html">Wing & Buffalo</a></li>
+          <li><a href="seasonings-bbq.html">BBQ & Seasonings</a></li>
+          <li><a href="buffalo-condiments.html">Condiments</a></li>
+          <li><a href="snacks.html">Snacks</a></li>
+          <li><a href="olive-oils-vinegar.html">Olive Oils & Vinegars</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <span class="footer-col-title">Pepper Junction</span>
+        <ul class="footer-col-links">
+          <li><a href="main.html">Home</a></li>
+          <li><a href="index.html">Pairing Bar</a></li>
+          <li><a href="main.html#about">Our Story</a></li>
+          <li><a href="main.html#location">Visit Us</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <span class="footer-col-title">Help</span>
+        <ul class="footer-col-links">
+          <li><a href="policies.html#damaged">Damaged Products</a></li>
+          <li><a href="policies.html#shipping">Shipping Info</a></li>
+          <li><a href="policies.html#returns">Returns</a></li>
+          <li><a href="policies.html#contact">Contact Us</a></li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
+      <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
+    </div>
+  </footer>
 
   <script>
    /* ── PJ_DATA — fetched from JSON CNS ──────────────────────────
