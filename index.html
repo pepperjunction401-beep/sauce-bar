@@ -870,6 +870,7 @@ body {
     <a href="hot-sauces.html">Hot Sauces</a>
     <a href="main.html">Home</a>
     <a href="index.html">Pairing Bar</a>
+    <a href="recipe.html">Recipes</a>
     <a href="main.html#location">Visit</a>
   </nav>
 </header>
@@ -953,19 +954,9 @@ body {
       <main>
         <section class="pj-recipe-widget" id="pj-recipe-widget">
           <h3>From the Pepper Junction Kitchen</h3>
-          <p>These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.</p>
-          <p>And depending on how bad you cook, we can’t guarantee the results either.</p>
-
-          <div class="pj-field">
-            <label for="pj-recipe-select">Recipe</label>
-            <select id="pj-recipe-select">
-              <option value="">Select a recipe</option>
-            </select>
-          </div>
-
+          <p>Recipes crafted by John, matched to the exact products they were built with, now live over in The Pepper Junction Kitchen&#8482;.</p>
           <div class="pj-recipe-actions">
-            <a class="pj-link-btn" id="pj-recipe-open" href="#" target="_blank" rel="noopener" aria-disabled="true">Open Recipe</a>
-            <button class="pj-btn" id="pj-clear-recipe" type="button">Clear Recipe</button>
+            <a class="pj-link-btn" href="recipe.html">Open the Recipe Box</a>
           </div>
         </section>
        <div class="pj-results-head">
@@ -1009,6 +1000,7 @@ body {
         <ul class="footer-col-links">
           <li><a href="main.html">Home</a></li>
           <li><a href="index.html">Pairing Bar</a></li>
+          <li><a href="recipe.html">Recipes</a></li>
           <li><a href="main.html#about">Our Story</a></li>
           <li><a href="main.html#location">Visit Us</a></li>
         </ul>
@@ -1092,23 +1084,15 @@ body {
      .then(function(data) {
        PJ_DATA = data.map(remapProduct);
        PJ_DATA_LOADED = true;
-       loadRecipeMap();
        render();
      })
      .catch(function(err) {
        console.error('PJ_DATA load error:', err);
        /* Render empty state so widget UI still appears */
        PJ_DATA_LOADED = true;
-       loadRecipeMap();
        render();
      });
     const PRODUCT_URL_COL = "Product URL";
-    const RECIPE_JSON_PATH = './data/PJ_Master_Recipe_Map_cleaned.json';
-    let recipeMap = [];
-    let activeMode = 'discovery';
-    let activeRecipe = null;
-    let recipeLockedProducts = [];
-
 
     const LOCKED_PHRASES = [
   "mac and cheese",
@@ -1155,46 +1139,8 @@ const PROTECTED_WORDS = [
       apply: document.getElementById('pj-apply'),
       reset: document.getElementById('pj-reset'),
       results: document.getElementById('pj-results'),
-      count: document.getElementById('pj-count'),
-      recipeSelect: document.getElementById('pj-recipe-select'),
-      recipeOpen: document.getElementById('pj-recipe-open'),
-      recipeClear: document.getElementById('pj-clear-recipe')
+      count: document.getElementById('pj-count')
     };
-
-    async function loadRecipeMap() {
-      try {
-        const res = await fetch(RECIPE_JSON_PATH, { cache: 'no-store' });
-        if (!res.ok) throw new Error(`Failed to load recipe map: ${res.status}`);
-
-        const data = await res.json();
-        recipeMap = data.filter(r =>
-          String(r["Active?"] || '').trim().toUpperCase() === 'TRUE' &&
-          String(r["Recipe ID"] || '').trim() &&
-          String(r["Required Product 1"] || '').trim()
-        );
-
-        populateRecipeDropdown();
-        console.log('Recipe map loaded:', recipeMap.length);
-      } catch (err) {
-        console.error('Recipe map load error:', err);
-        recipeMap = [];
-        if (els.recipeSelect) {
-          els.recipeSelect.innerHTML = '<option value=>Recipe list unavailable</option>';
-        }
-      }
-    }
-
-    function populateRecipeDropdown() {
-      if (!els.recipeSelect) return;
-      els.recipeSelect.innerHTML = '<option value="">Select a recipe</option>';
-
-      recipeMap.forEach(recipe => {
-        const opt = document.createElement('option');
-        opt.value = recipe["Recipe ID"];
-        opt.textContent = recipe["Dropdown Label"] || recipe["Recipe Name"];
-        els.recipeSelect.appendChild(opt);
-      });
-    }
 
     function clearDiscoveryInputs() {
       els.search.value = '';
@@ -1206,74 +1152,11 @@ const PROTECTED_WORDS = [
       els.heatFinish.value = '';
     }
 
-    function updateRecipeOpenLink(recipe) {
-      if (!els.recipeOpen) return;
-      const url = recipe && recipe["Recipe URL"] ? String(recipe["Recipe URL"]).trim() : '';
-      els.recipeOpen.href = url || '#';
-      els.recipeOpen.setAttribute('aria-disabled', url ? 'false' : 'true');
-    }
-
-    function clearRecipeMode(shouldRender = true) {
-      activeRecipe = null;
-      recipeLockedProducts = [];
-      activeMode = 'discovery';
-      if (els.recipeSelect) els.recipeSelect.value = '';
-      updateRecipeOpenLink(null);
-      if (shouldRender) render();
-    }
-
-    function activateDiscoveryMode() {
-      if (activeMode === 'recipe') {
-        activeRecipe = null;
-        recipeLockedProducts = [];
-        if (els.recipeSelect) els.recipeSelect.value = '';
-        updateRecipeOpenLink(null);
-      }
-      activeMode = 'discovery';
-    }
-
     function containsRecipeIntent(query) {
       return /\brecipes?\b/i.test(String(query || '').trim());
     }
 
-    function normalizeKey(value) {
-      return String(value || '').replace(/\s+/g, ' ').trim().toLowerCase();
-    }
-
-    function getRecipeProductEntries(recipe) {
-      return [
-        { role: 'Required Product', name: recipe["Required Product 1"] },
-        { role: 'Required Product', name: recipe["Required Product 2"] },
-        { role: 'Alternative Product', name: recipe["Alternative Product 1"] },
-        { role: 'Alternative Product', name: recipe["Alternative Product 2"] },
-        { role: 'Suggested Product', name: recipe["Suggested Product"] }
-      ].filter(entry => String(entry.name || '').trim());
-    }
-
-    function getLockedRecipeProducts(recipe) {
-      const byName = new Map(PJ_DATA.map(product => [normalizeKey(product["Product Name"]), product]));
-      return getRecipeProductEntries(recipe)
-        .map(entry => {
-          const product = byName.get(normalizeKey(entry.name));
-          return product ? { product, role: entry.role } : null;
-        })
-        .filter(Boolean);
-    }
-
-    function loadRecipeById(recipeId) {
-      const recipe = recipeMap.find(r => r["Recipe ID"] === recipeId);
-      if (!recipe) return;
-
-      clearDiscoveryInputs();
-      activeMode = 'recipe';
-      activeRecipe = recipe;
-      recipeLockedProducts = getLockedRecipeProducts(recipe);
-      updateRecipeOpenLink(recipe);
-      render();
-    }
-
     function onDiscoveryInteraction() {
-      activateDiscoveryMode();
       render();
     }
 
@@ -1664,82 +1547,16 @@ function renderRecipeRedirectCard() {
         "Heat Curve": '',
         "Heat Finish": '',
         "Primary Flavor Notes": 'Recipe search detected',
-        "Best Food Pairings": 'Use the Pepper Junction recipe selector below the Discovery Engine controls.'
+        "Best Food Pairings": 'Visit The Pepper Junction Kitchen to browse recipes.'
       }, {
         modeLabel: 'Recipe Redirect',
-        note: 'Recipes live in the Pepper Junction recipe widget. The Discovery Engine is reserved for product, flavor, heat, and pairing searches.',
+        note: 'Recipes live on their own page now. The Discovery Engine is reserved for product, flavor, heat, and pairing searches.',
         system: true
       });
 
       bindCardImageToggles();
       bindCardImageFallbacks();
     }
-
-function renderRecipeResults() {
-  const recipeLabel = activeRecipe
-    ? (activeRecipe["Dropdown Label"] || activeRecipe["Recipe Name"] || "Selected Recipe")
-    : "Selected Recipe";
-
-  const recipeUrl = activeRecipe && activeRecipe["Recipe URL"]
-    ? String(activeRecipe["Recipe URL"]).trim()
-    : "";
-
-  const descriptorParts = [
-    activeRecipe && activeRecipe["Course"] ? String(activeRecipe["Course"]).trim() : "",
-    activeRecipe && activeRecipe["Food Type"] ? String(activeRecipe["Food Type"]).trim() : ""
-  ].filter(Boolean);
-
-  const descriptor = descriptorParts.join(" • ");
-
-  els.count.textContent = `${recipeLockedProducts.length} recipe product${recipeLockedProducts.length === 1 ? '' : 's'} loaded`;
-
-  const introCard = `
-    <article class="pj-card pj-system-card">
-      <div class="pj-mode-pill">Recipe</div>
-      <div class="pj-brand">Pepper Junction</div>
-      <h3 class="pj-name">${escapeHtml(recipeLabel)}</h3>
-
-      ${descriptor ? `<div><span class="pj-pill">${escapeHtml(descriptor)}</span></div>` : ""}
-
-      <div class="pj-section">
-        <div class="pj-v">
-          These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
-        </div>
-       <div class="pj-fineprint" style="color: #2b1d15;">
-  And depending on how bad you cook, we can't guarantee the results either.
-</div>
-      </div>
-
-      ${recipeUrl ? `
-        <div class="pj-card-actions">
-          <a class="pj-btn sauce" href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">View Recipe</a>
-        </div>
-      ` : ""}
-    </article>
-  `;
-
-  if (!recipeLockedProducts.length) {
-    els.results.innerHTML = introCard;
-    bindCardImageToggles();
-    bindCardImageFallbacks();
-    return;
-  }
-
-  const productCards = recipeLockedProducts.map(({ product, role }) =>
-    card(product, {
-      modeLabel: role,
-      note: role === 'Suggested Product'
-        ? 'Suggested supporting item for this recipe.'
-        : role === 'Alternative Product'
-          ? 'Approved backup option for this recipe.'
-          : 'Core product locked to this recipe.'
-    })
-  ).join('');
-
-  els.results.innerHTML = introCard + productCards;
-  bindCardImageToggles();
-  bindCardImageFallbacks();
-}
 
     function renderDiscoveryResults() {
       const filtered = PJ_DATA.filter(matches);
@@ -1779,11 +1596,6 @@ function renderRecipeResults() {
     function render() {
       const query = els.search.value.trim();
 
-      if (activeMode === 'recipe') {
-        renderRecipeResults();
-        return;
-      }
-
       if (containsRecipeIntent(query)) {
         renderRecipeRedirectCard();
         return;
@@ -1811,29 +1623,10 @@ els.search.addEventListener('keydown', (e) => {
 
 els.reset.addEventListener('click', () => {
   clearDiscoveryInputs();
-  activateDiscoveryMode();
   render();
 });
 
-    if (els.recipeSelect) {
-      els.recipeSelect.addEventListener('change', (e) => {
-        const recipeId = e.target.value;
-        if (!recipeId) {
-          clearRecipeMode();
-          return;
-        }
-        loadRecipeById(recipeId);
-      });
-    }
-
-    if (els.recipeClear) {
-      els.recipeClear.addEventListener('click', () => {
-        clearRecipeMode();
-      });
-    }
-
-    updateRecipeOpenLink(null);
-    /* loadRecipeMap() and render() called after JSON fetch resolves above */
+    /* render() called after JSON fetch resolves above */
     /* Add session writer to all product card link clicks */
     document.addEventListener('click', function(e) {
       var card = e.target.closest('a[href*="products/"]');
