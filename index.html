@@ -83,6 +83,109 @@ body {
   max-width: 760px;
 }
 
+/* ── KITCHEN / SAUCE PROF SCENE ───────────────────────────────
+   Full-width layered composition, sits above the filter/results
+   grid rather than inside it. Aspect-ratio locked to the source
+   video (1440x1080 = 4:3) so all three layers share one coordinate
+   system and stay in registration at any viewport width.
+   ────────────────────────────────────────────────────────────── */
+.pj-kitchen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin-bottom: 18px;
+  border: 1px solid rgba(163, 119, 72, 0.45);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #1a1410;
+  box-shadow: var(--shadow);
+}
+
+/* Back layer — kitchen/Ralph video. This is the master coordinate
+   plane every other layer is positioned against. */
+.pj-kitchen-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* Middle layer — Sauce Prof LiveAvatar slot. Placeholder box until
+   the real HeyGen <video> element is dropped in here. Positioned
+   left-of-center in the open cutting-board area per the scene
+   architecture; percentages keep it locked to the background's
+   coordinate system as the container resizes. */
+.pj-kitchen-avatar-slot {
+  position: absolute;
+  left: 20%;
+  top: 12%;
+  width: 30%;
+  height: 82%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed rgba(255, 222, 82, 0.55);
+  border-radius: 12px;
+  background: rgba(30, 48, 32, 0.28);
+}
+
+.pj-kitchen-avatar-placeholder-label {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  color: #ffde52;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 10px;
+}
+
+/* Front layer — fixed foreground pieces. Each is an independent,
+   cropped-tight transparent PNG positioned by its own coordinates;
+   they do not overlap and do not affect one another. */
+.pj-kitchen-prep-counter {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  z-index: 3;
+  pointer-events: none;
+  user-select: none;
+}
+
+.pj-kitchen-sauce-shelf {
+  position: absolute;
+  right: 2%;
+  top: 6%;
+  width: 30%;
+  height: auto;
+  z-index: 3;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (max-width: 640px) {
+  .pj-kitchen {
+    border-radius: 14px;
+    aspect-ratio: 4 / 3.4;
+  }
+
+  .pj-kitchen-avatar-slot {
+    left: 14%;
+    width: 40%;
+  }
+
+  .pj-kitchen-sauce-shelf {
+    width: 38%;
+  }
+}
+
 .pj-layout {
   display: grid;
   grid-template-columns: 320px 1fr;
@@ -881,6 +984,44 @@ body {
       <p class="pj-sub">All aboard the Sauce Discovery Engine&#8482;. Find your next bottle by heat, flavor, pepper, or food pairing.</p>
     </div>
 
+    <!-- ═══ KITCHEN / SAUCE PROF SCENE — full width, spans both grid columns below ═══ -->
+    <section class="pj-kitchen" id="pj-kitchen" aria-label="Meet Sauce Prof in the Pepper Junction kitchen">
+
+      <!-- Back layer: moving kitchen background, Ralph at the stove -->
+      <video
+        class="pj-kitchen-bg"
+        id="pj-kitchen-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        poster=""
+      >
+        <source src="assets/avatar/Background-Ralph-Motion.mp4" type="video/mp4">
+      </video>
+
+      <!-- Middle layer: Sauce Prof LiveAvatar slot (placeholder until avatar exists) -->
+      <div class="pj-kitchen-avatar-slot" id="pj-kitchen-avatar-slot">
+        <span class="pj-kitchen-avatar-placeholder-label">Sauce Prof<br>LiveAvatar</span>
+      </div>
+
+      <!-- Front layer: fixed transparent foreground pieces -->
+      <img
+        class="pj-kitchen-prep-counter"
+        src="assets/avatar/Prep-Counter.png"
+        alt=""
+        aria-hidden="true"
+      >
+      <img
+        class="pj-kitchen-sauce-shelf"
+        src="assets/avatar/Sauce-Shelf.png"
+        alt=""
+        aria-hidden="true"
+      >
+
+    </section>
+
     <div class="pj-layout">
       <aside class="pj-panel">
         <h2>Sauce Finder</h2>
@@ -952,13 +1093,6 @@ body {
       </aside>
 
       <main>
-        <section class="pj-recipe-widget" id="pj-recipe-widget">
-          <h3>From the Pepper Junction Kitchen</h3>
-          <p>Recipes crafted by John, matched to the exact products they were built with, now live over in The Pepper Junction Kitchen&#8482;.</p>
-          <div class="pj-recipe-actions">
-            <a class="pj-link-btn" href="recipe.html">Open the Recipe Box</a>
-          </div>
-        </section>
        <div class="pj-results-head">
   <div>
     <h2>Matching Sauces</h2>
