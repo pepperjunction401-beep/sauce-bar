@@ -145,25 +145,13 @@ body {
   padding: 10px;
 }
 
-/* Front layer — fixed foreground pieces. Each is an independent,
-   cropped-tight transparent PNG positioned by its own coordinates;
-   they do not overlap and do not affect one another. */
+/* Front layer — fixed foreground piece. Prep counter and sauce
+   shelf are composited into one cropped-tight transparent PNG. */
 .pj-kitchen-prep-counter {
   position: absolute;
   left: 0;
   bottom: 0;
   width: 100%;
-  height: auto;
-  z-index: 3;
-  pointer-events: none;
-  user-select: none;
-}
-
-.pj-kitchen-sauce-shelf {
-  position: absolute;
-  right: 4%;
-  bottom: 22%;
-  width: 26%;
   height: auto;
   z-index: 3;
   pointer-events: none;
@@ -179,10 +167,6 @@ body {
   .pj-kitchen-avatar-slot {
     left: 14%;
     width: 40%;
-  }
-
-  .pj-kitchen-sauce-shelf {
-    width: 38%;
   }
 }
 
@@ -1006,16 +990,10 @@ body {
         <span class="pj-kitchen-avatar-placeholder-label">Sauce Prof<br>LiveAvatar</span>
       </div>
 
-      <!-- Front layer: fixed transparent foreground pieces -->
+      <!-- Front layer: fixed transparent foreground piece (counter + shelf composited into one image) -->
       <img
         class="pj-kitchen-prep-counter"
         src="assets/avatar/Prep-Counter.png"
-        alt=""
-        aria-hidden="true"
-      >
-      <img
-        class="pj-kitchen-sauce-shelf"
-        src="assets/avatar/Sauce-Shelf.png"
         alt=""
         aria-hidden="true"
       >
