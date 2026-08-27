@@ -158,11 +158,47 @@ body {
   user-select: none;
 }
 
+/* Pause/play control — sits above every layer, subtle until hovered. */
+.pj-kitchen-pause-btn {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 4;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(184, 137, 57, 0.5);
+  border-radius: 999px;
+  background: rgba(26, 20, 16, 0.45);
+  color: rgba(253, 246, 232, 0.75);
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+  opacity: 0.6;
+}
+
+.pj-kitchen-pause-btn:hover,
+.pj-kitchen-pause-btn:focus-visible {
+  opacity: 1;
+  background: rgba(26, 20, 16, 0.72);
+  border-color: #D4A832;
+  color: #FDF6E8;
+}
+
+.pj-kitchen-pause-btn:focus-visible {
+  outline: 2px solid #D4A832;
+  outline-offset: 2px;
+}
+
 @media (max-width: 640px) {
   .pj-kitchen {
     border-radius: 14px;
     aspect-ratio: 4 / 3.4;
   }
+
 
   .pj-kitchen-avatar-slot {
     left: 14%;
@@ -998,6 +1034,22 @@ body {
         aria-hidden="true"
       >
 
+      <button
+        class="pj-kitchen-pause-btn"
+        id="pj-kitchen-pause-btn"
+        type="button"
+        aria-label="Pause kitchen background motion"
+        aria-pressed="false"
+      >
+        <svg class="pj-kitchen-pause-icon-pause" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+          <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+        </svg>
+        <svg class="pj-kitchen-pause-icon-play" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" hidden>
+          <path d="M7 4.5v15l13-7.5-13-7.5z"></path>
+        </svg>
+      </button>
+
     </section>
 
     <div class="pj-layout">
@@ -1737,6 +1789,33 @@ els.reset.addEventListener('click', () => {
   clearDiscoveryInputs();
   render();
 });
+
+/* Kitchen scene pause/play control */
+(function initKitchenPauseButton() {
+  const video = document.getElementById('pj-kitchen-video');
+  const btn = document.getElementById('pj-kitchen-pause-btn');
+  if (!video || !btn) return;
+
+  const pauseIcon = btn.querySelector('.pj-kitchen-pause-icon-pause');
+  const playIcon = btn.querySelector('.pj-kitchen-pause-icon-play');
+
+  function setState(isPaused) {
+    pauseIcon.hidden = isPaused;
+    playIcon.hidden = !isPaused;
+    btn.setAttribute('aria-pressed', isPaused ? 'true' : 'false');
+    btn.setAttribute('aria-label', isPaused ? 'Play kitchen background motion' : 'Pause kitchen background motion');
+  }
+
+  btn.addEventListener('click', () => {
+    if (video.paused) {
+      video.play();
+      setState(false);
+    } else {
+      video.pause();
+      setState(true);
+    }
+  });
+})();
 
     /* render() called after JSON fetch resolves above */
     /* Add session writer to all product card link clicks */
