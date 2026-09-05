@@ -51,6 +51,12 @@
       <a class="pjr-btn pjr-btn-primary" href="index.html">Back to the Shop</a>
     </section>
 
+    <!-- Review context introduction — shown on every review page -->
+    <section class="pjr-card pjr-intro" id="pjr-intro" hidden>
+      <p class="pjr-eyebrow">How Reviews Work</p>
+      <p class="pjr-intro-copy">Pepper Junction built its review system to separate personal taste from product truth. Your private rating is your own logbook &mdash; a place to remember what you liked, what you didn&rsquo;t, what worked for your food, and what you may want to buy again. The public review works differently. When you review a product for other passengers, we ask you to judge whether it delivered what it promised: did the advertised flavors show up, was the heat level honest, did the flavor hold up on food, and did the sauce behave the way its description said it would? You may personally dislike garlic, smoke, vinegar, fruit, or extreme heat &mdash; and that is completely fair. But a sauce should not be punished publicly for being exactly what it claimed to be. Pepper Junction reviews are designed to make product feedback more honest, more useful, and more fair.</p>
+    </section>
+
     <!-- Personal rating slider — any signed-in customer, any product -->
     <section class="pjr-card pjr-slider-card" id="pjr-slider-card" hidden>
       <div class="pjr-slider-head">
@@ -185,6 +191,7 @@
       meta.appendChild(c);
     });
     show('pjr-hero');
+    show('pjr-intro');
 
     /* ── PERSONAL RATING SLIDER — any signed-in customer ── */
     if (session.signedIn) {
