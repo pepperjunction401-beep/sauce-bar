@@ -211,15 +211,14 @@
     </section>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@heygen/liveavatar-web-sdk@0.0.19/dist/index.umd.js"></script>
-  <script>
+  <script type="module">
+    import { LiveAvatarSession, SessionEvent } from "https://esm.sh/@heygen/liveavatar-web-sdk@0.0.19";
     (() => {
       const PEDRO_ID = "7001c332-8101-4e5a-b695-eac2a72d9568";
       const API_URL = "https://api.liveavatar.com";
       const qs = new URLSearchParams(location.search);
       const TOKEN_ENDPOINT = qs.get("tokenEndpoint") || "/api/liveavatar-token";
 
-      const sdk = window.LiveAvatarSDK;
       const startBtn = document.getElementById("startBtn");
       const stopBtn = document.getElementById("stopBtn");
       const statusPill = document.getElementById("statusPill");
@@ -352,12 +351,6 @@
       }
 
       async function startSession() {
-        if (!sdk || !sdk.LiveAvatarSession) {
-          setStatus("SDK error");
-          setMessage("LiveAvatar SDK did not load.");
-          return;
-        }
-
         startBtn.disabled = true;
         setStatus("Token…");
         setMessage("Requesting a short-lived Pedro session token…");
@@ -377,17 +370,17 @@
           setStatus("Connecting…");
           setMessage("Session token received. Connecting Pedro…");
 
-          session = new sdk.LiveAvatarSession(tokenData.session_token, {
+          session = new LiveAvatarSession(tokenData.session_token, {
             apiUrl: API_URL,
             autoKeepAlive: true,
             voiceChat: { defaultMuted: true }
           });
 
-          session.on(sdk.SessionEvent.SESSION_STATE_CHANGED, (state) => {
+          session.on(SessionEvent.SESSION_STATE_CHANGED, (state) => {
             setStatus(state);
           });
 
-          session.on(sdk.SessionEvent.SESSION_STREAM_READY, () => {
+          session.on(SessionEvent.SESSION_STREAM_READY, () => {
             session.attach(avatarVideo);
 
             const begin = () => {
@@ -400,7 +393,7 @@
             else avatarVideo.addEventListener("loadeddata", begin, { once: true });
           });
 
-          session.on(sdk.SessionEvent.SESSION_DISCONNECTED, () => {
+          session.on(SessionEvent.SESSION_DISCONNECTED, () => {
             if (stopChromaKey) stopChromaKey();
             startBtn.disabled = false;
             stopBtn.disabled = true;
