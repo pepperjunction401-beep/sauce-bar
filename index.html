@@ -112,37 +112,124 @@ body {
   z-index: 1;
 }
 
-/* Middle layer — Sauce Prof LiveAvatar slot. Placeholder box until
-   the real HeyGen <video> element is dropped in here. Positioned
-   left-of-center in the open cutting-board area per the scene
-   architecture; percentages keep it locked to the background's
-   coordinate system as the container resizes. */
-.pj-kitchen-avatar-slot {
+/* Middle layer — Pedro / LiveAvatar render plane.
+   The rig is intentionally independent from the 4:3 kitchen so the
+   16:9 avatar stream can be scaled and pushed well left without
+   changing the kitchen geometry. The live stream will eventually
+   feed this same canvas; for now the Dev branch can load a local
+   green-screen Pedro test clip into it. */
+.pj-kitchen-avatar-stage {
   position: absolute;
-  left: 20%;
-  top: 12%;
-  width: 30%;
-  height: 82%;
+  left: var(--pj-avatar-left, -20%);
+  top: var(--pj-avatar-top, 6%);
+  width: var(--pj-avatar-width, 70%);
+  aspect-ratio: 16 / 9;
   z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px dashed rgba(255, 222, 82, 0.55);
-  border-radius: 12px;
-  background: rgba(30, 48, 32, 0.28);
+  pointer-events: none;
 }
 
-.pj-kitchen-avatar-placeholder-label {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 14px;
+.pj-kitchen-avatar-stage[hidden] {
+  display: none;
+}
+
+.pj-kitchen-avatar-source,
+.pj-kitchen-avatar-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.pj-kitchen-avatar-source {
+  visibility: hidden;
+}
+
+.pj-kitchen-avatar-canvas {
+  background: transparent;
+}
+
+/* Temporary Dev-branch placement controls. These do not affect the
+   Sauce Finder or product cards; they only tune the avatar layer. */
+.pj-avatar-dev-controls {
+  margin: -6px 0 18px;
+  padding: 10px 12px;
+  border: 1px solid rgba(184, 137, 57, 0.42);
+  border-radius: 12px;
+  background: rgba(30, 48, 32, 0.92);
+  color: #FDF6E8;
+  box-shadow: var(--shadow-soft);
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.pj-avatar-dev-controls summary {
+  cursor: pointer;
+  color: #D4A832;
+  font-size: 11px;
   font-weight: 700;
-  line-height: 1.4;
-  text-align: center;
-  color: #ffde52;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 10px;
+}
+
+.pj-avatar-dev-grid {
+  display: grid;
+  grid-template-columns: minmax(190px, 1.2fr) repeat(3, minmax(120px, 1fr));
+  gap: 10px 14px;
+  align-items: end;
+  margin-top: 12px;
+}
+
+.pj-avatar-dev-grid label {
+  display: grid;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.pj-avatar-dev-grid input[type="range"] {
+  width: 100%;
+}
+
+.pj-avatar-file-label {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #D4A832;
+  border-radius: 9px;
+  background: #D4A832;
+  color: #2b1d15;
+  cursor: pointer;
+  text-align: center;
+}
+
+.pj-avatar-file-label input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pj-avatar-dev-value {
+  color: #D4A832;
+  font-variant-numeric: tabular-nums;
+}
+
+.pj-avatar-dev-status {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: rgba(253, 246, 232, 0.8);
+}
+
+@media (max-width: 760px) {
+  .pj-avatar-dev-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Front layer — fixed foreground piece. Prep counter and sauce
@@ -199,11 +286,6 @@ body {
     aspect-ratio: 4 / 3.4;
   }
 
-
-  .pj-kitchen-avatar-slot {
-    left: 14%;
-    width: 40%;
-  }
 }
 
 .pj-layout {
@@ -1021,9 +1103,23 @@ body {
         <source src="assets/avatar/Background-Shakey-Stirring.mp4" type="video/mp4">
       </video>
 
-      <!-- Middle layer: Sauce Prof LiveAvatar slot (placeholder until avatar exists) -->
-      <div class="pj-kitchen-avatar-slot" id="pj-kitchen-avatar-slot">
-        <span class="pj-kitchen-avatar-placeholder-label">Sauce Prof<br>LiveAvatar</span>
+      <!-- Middle layer: Pedro test/live-avatar plane. The source video stays hidden;
+           the chroma-keyed transparent canvas is what the customer sees. -->
+      <div class="pj-kitchen-avatar-stage" id="pj-kitchen-avatar-stage" hidden>
+        <video
+          class="pj-kitchen-avatar-source"
+          id="pj-kitchen-avatar-source"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        ></video>
+        <canvas
+          class="pj-kitchen-avatar-canvas"
+          id="pj-kitchen-avatar-canvas"
+          aria-hidden="true"
+        ></canvas>
       </div>
 
       <!-- Front layer: fixed transparent foreground piece (counter + shelf composited into one image) -->
@@ -1051,6 +1147,38 @@ body {
       </button>
 
     </section>
+
+    <!-- DEV ONLY: local Pedro clip loader + placement controls.
+         This lets us prove the final kitchen geometry on GitHub Pages
+         without an API key or committing a 31 MB test recording. -->
+    <details class="pj-avatar-dev-controls" id="pj-avatar-dev-controls" open>
+      <summary>Pedro placement test</summary>
+      <div class="pj-avatar-dev-grid">
+        <label class="pj-avatar-file-label">
+          Load Pedro green-screen clip
+          <input id="pj-avatar-file" type="file" accept="video/webm,video/mp4,video/*">
+        </label>
+
+        <label>
+          Left <span class="pj-avatar-dev-value" id="pj-avatar-left-value">-20%</span>
+          <input id="pj-avatar-left" type="range" min="-55" max="35" step="1" value="-20">
+        </label>
+
+        <label>
+          Top <span class="pj-avatar-dev-value" id="pj-avatar-top-value">6%</span>
+          <input id="pj-avatar-top" type="range" min="-25" max="45" step="1" value="6">
+        </label>
+
+        <label>
+          Width <span class="pj-avatar-dev-value" id="pj-avatar-width-value">70%</span>
+          <input id="pj-avatar-width" type="range" min="35" max="115" step="1" value="70">
+        </label>
+
+        <p class="pj-avatar-dev-status" id="pj-avatar-dev-status">
+          Select the Pedro green-screen recording from your computer. It stays local to your browser and is not uploaded anywhere.
+        </p>
+      </div>
+    </details>
 
     <div class="pj-layout">
       <aside class="pj-panel">
@@ -1789,6 +1917,185 @@ els.reset.addEventListener('click', () => {
   clearDiscoveryInputs();
   render();
 });
+
+/* DEV: local Pedro green-screen compositing test.
+   Uses the same client-side chroma-key approach HeyGen documents for
+   LiveAvatar. The eventual live stream can replace this local <video>
+   source without changing the kitchen/prep-counter layer architecture. */
+(function initPedroKitchenTest() {
+  const stage = document.getElementById('pj-kitchen-avatar-stage');
+  const source = document.getElementById('pj-kitchen-avatar-source');
+  const canvas = document.getElementById('pj-kitchen-avatar-canvas');
+  const fileInput = document.getElementById('pj-avatar-file');
+  const status = document.getElementById('pj-avatar-dev-status');
+  const left = document.getElementById('pj-avatar-left');
+  const top = document.getElementById('pj-avatar-top');
+  const width = document.getElementById('pj-avatar-width');
+  const leftValue = document.getElementById('pj-avatar-left-value');
+  const topValue = document.getElementById('pj-avatar-top-value');
+  const widthValue = document.getElementById('pj-avatar-width-value');
+
+  if (!stage || !source || !canvas || !fileInput) return;
+
+  let rafId = 0;
+  let objectUrl = '';
+
+  const defaults = { left: -20, top: 6, width: 70 };
+
+  function setStatus(message) {
+    if (status) status.textContent = message;
+  }
+
+  function readSavedNumber(key, fallback) {
+    try {
+      const value = Number(localStorage.getItem(key));
+      return Number.isFinite(value) ? value : fallback;
+    } catch (_) {
+      return fallback;
+    }
+  }
+
+  function applyPlacement() {
+    const l = Number(left.value);
+    const t = Number(top.value);
+    const w = Number(width.value);
+
+    stage.style.setProperty('--pj-avatar-left', l + '%');
+    stage.style.setProperty('--pj-avatar-top', t + '%');
+    stage.style.setProperty('--pj-avatar-width', w + '%');
+
+    if (leftValue) leftValue.textContent = l + '%';
+    if (topValue) topValue.textContent = t + '%';
+    if (widthValue) widthValue.textContent = w + '%';
+
+    try {
+      localStorage.setItem('pj_pedro_left', String(l));
+      localStorage.setItem('pj_pedro_top', String(t));
+      localStorage.setItem('pj_pedro_width', String(w));
+    } catch (_) {}
+  }
+
+  left.value = String(readSavedNumber('pj_pedro_left', defaults.left));
+  top.value = String(readSavedNumber('pj_pedro_top', defaults.top));
+  width.value = String(readSavedNumber('pj_pedro_width', defaults.width));
+  applyPlacement();
+
+  [left, top, width].forEach((input) => {
+    input.addEventListener('input', applyPlacement);
+  });
+
+  function stopChromaLoop() {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+  }
+
+  function renderFrame() {
+    if (source.readyState < 2 || !source.videoWidth || !source.videoHeight) {
+      rafId = requestAnimationFrame(renderFrame);
+      return;
+    }
+
+    const ctx = canvas.getContext('2d', {
+      willReadFrequently: true,
+      alpha: true
+    });
+
+    if (!ctx) {
+      setStatus('Canvas is unavailable in this browser.');
+      return;
+    }
+
+    if (canvas.width !== source.videoWidth || canvas.height !== source.videoHeight) {
+      canvas.width = source.videoWidth;
+      canvas.height = source.videoHeight;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
+
+    const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = frame.data;
+
+    /* HeyGen-style HSV green detection. Values intentionally stay
+       conservative so blue clothing/skin survives while the green
+       screen becomes transparent. */
+    const minHue = 60;
+    const maxHue = 180;
+    const minSaturation = 0.10;
+    const threshold = 1.0;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      const delta = max - min;
+
+      let h = 0;
+      if (delta !== 0) {
+        if (max === r) h = ((g - b) / delta) % 6;
+        else if (max === g) h = (b - r) / delta + 2;
+        else h = (r - g) / delta + 4;
+
+        h = Math.round(h * 60);
+        if (h < 0) h += 360;
+      }
+
+      const s = max === 0 ? 0 : delta / max;
+      const v = max / 255;
+
+      const isGreen =
+        h >= minHue &&
+        h <= maxHue &&
+        s > minSaturation &&
+        v > 0.15 &&
+        g > r * threshold &&
+        g > b * threshold;
+
+      if (isGreen) {
+        const greenness = (g - Math.max(r, b)) / (g || 1);
+        const alphaValue = Math.max(0, 1 - greenness * 4);
+        data[i + 3] = alphaValue < 0.2 ? 0 : Math.round(alphaValue * 255);
+      }
+    }
+
+    ctx.putImageData(frame, 0, 0);
+    rafId = requestAnimationFrame(renderFrame);
+  }
+
+  function startChromaLoop() {
+    stopChromaLoop();
+    rafId = requestAnimationFrame(renderFrame);
+  }
+
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = URL.createObjectURL(file);
+
+    stopChromaLoop();
+    source.src = objectUrl;
+    stage.hidden = false;
+    setStatus('Loading ' + file.name + '…');
+
+    source.addEventListener('loadeddata', () => {
+      source.play().catch(() => {});
+      startChromaLoop();
+      setStatus('Pedro test clip loaded. Move Left / Top / Width until he sits naturally behind the foreground shelf.');
+    }, { once: true });
+  });
+
+  window.addEventListener('beforeunload', () => {
+    stopChromaLoop();
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+  });
+})();
 
 /* Kitchen scene pause/play control */
 (function initKitchenPauseButton() {
