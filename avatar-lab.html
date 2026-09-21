@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedro Kitchen Lab — Pepper Junction</title>
+  <style>
+    :root {
+      --brass: #d4a832;
+      --cream: #f0ede0;
+      --green: #1e3020;
+      --burgundy: #910c00;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #101510;
+      color: var(--cream);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    .lab {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 26px;
+      color: var(--brass);
+    }
+    .lab-note {
+      margin: 0 0 16px;
+      opacity: 0.8;
+      line-height: 1.45;
+    }
+    .stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #1a1410;
+      border: 1px solid rgba(212, 168, 50, 0.45);
+      border-radius: 18px;
+    }
+    .kitchen-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+    .avatar-rig {
+      position: absolute;
+      left: -20%;
+      top: 7%;
+      width: 70%;
+      aspect-ratio: 16 / 9;
+      z-index: 2;
+      pointer-events: none;
+    }
+    #avatarVideo,
+    #avatarCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    #avatarVideo {
+      visibility: hidden;
+    }
+    #avatarCanvas {
+      background: transparent;
+    }
+    .prep-counter {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: auto;
+      z-index: 3;
+      pointer-events: none;
+      user-select: none;
+    }
+    .status-pill {
+      position: absolute;
+      z-index: 5;
+      top: 12px;
+      right: 12px;
+      border: 1px solid rgba(212, 168, 50, 0.55);
+      border-radius: 999px;
+      padding: 7px 11px;
+      background: rgba(17, 22, 17, 0.75);
+      color: var(--cream);
+      font: 600 12px/1.1 Arial, sans-serif;
+      letter-spacing: .04em;
+      backdrop-filter: blur(4px);
+    }
+    .controls {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid rgba(212, 168, 50, 0.35);
+      border-radius: 14px;
+      background: rgba(30, 48, 32, 0.86);
+      display: grid;
+      gap: 14px;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    button {
+      border: 1px solid var(--brass);
+      border-radius: 9px;
+      padding: 10px 14px;
+      background: var(--brass);
+      color: #2c1f13;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: transparent;
+      color: var(--cream);
+    }
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .sliders {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    label {
+      display: grid;
+      gap: 6px;
+      font: 600 12px/1.2 Arial, sans-serif;
+    }
+    input[type="range"] { width: 100%; }
+    .value {
+      color: var(--brass);
+      font-variant-numeric: tabular-nums;
+    }
+    .debug {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font: 600 12px/1.2 Arial, sans-serif;
+    }
+    .message {
+      min-height: 1.4em;
+      margin: 0;
+      color: #f2d98a;
+      font: 13px/1.4 Arial, sans-serif;
+    }
+    @media (max-width: 720px) {
+      body { padding: 12px; }
+      .sliders { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="lab">
+    <h1>Pedro Kitchen Lab</h1>
+    <p class="lab-note">Isolated test harness. This does not modify the Pairing Bar page. It uses the current kitchen motion and Prep-Counter layers from the repo, with Pedro inserted between them.</p>
+
+    <section class="stage" aria-label="Pepper Junction kitchen LiveAvatar test">
+      <video class="kitchen-bg" autoplay muted loop playsinline preload="auto">
+        <source src="assets/avatar/Background-Shakey-Stirring.mp4" type="video/mp4">
+      </video>
+
+      <div class="avatar-rig" id="avatarRig">
+        <video id="avatarVideo" autoplay playsinline></video>
+        <canvas id="avatarCanvas"></canvas>
+      </div>
+
+      <img class="prep-counter" src="assets/avatar/Prep-Counter.png" alt="" aria-hidden="true">
+
+      <div class="status-pill" id="statusPill">Idle</div>
+    </section>
+
+    <section class="controls" aria-label="Pedro test controls">
+      <div class="buttons">
+        <button id="startBtn" type="button">Start Pedro</button>
+        <button id="stopBtn" class="secondary" type="button" disabled>Stop Pedro</button>
+      </div>
+
+      <div class="sliders">
+        <label>
+          Left position <span class="value" id="leftValue">-20%</span>
+          <input id="leftSlider" type="range" min="-45" max="35" step="1" value="-20">
+        </label>
+        <label>
+          Top position <span class="value" id="topValue">7%</span>
+          <input id="topSlider" type="range" min="-20" max="50" step="1" value="7">
+        </label>
+        <label>
+          Avatar width <span class="value" id="widthValue">70%</span>
+          <input id="widthSlider" type="range" min="30" max="110" step="1" value="70">
+        </label>
+      </div>
+
+      <label class="debug">
+        <input id="rawToggle" type="checkbox">
+        Show raw green-screen stream instead of the keyed canvas
+      </label>
+
+      <p class="message" id="message">Ready. Pedro ID: 7001c332-8101-4e5a-b695-eac2a72d9568</p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@heygen/liveavatar-web-sdk@0.0.19/dist/index.umd.js"></script>
+  <script>
+    (() => {
+      const PEDRO_ID = "7001c332-8101-4e5a-b695-eac2a72d9568";
+      const API_URL = "https://api.liveavatar.com";
+      const qs = new URLSearchParams(location.search);
+      const TOKEN_ENDPOINT = qs.get("tokenEndpoint") || "/api/liveavatar-token";
+
+      const sdk = window.LiveAvatarSDK;
+      const startBtn = document.getElementById("startBtn");
+      const stopBtn = document.getElementById("stopBtn");
+      const statusPill = document.getElementById("statusPill");
+      const message = document.getElementById("message");
+      const avatarVideo = document.getElementById("avatarVideo");
+      const avatarCanvas = document.getElementById("avatarCanvas");
+      const avatarRig = document.getElementById("avatarRig");
+      const rawToggle = document.getElementById("rawToggle");
+
+      let session = null;
+      let stopChromaKey = null;
+
+      function setStatus(text) {
+        statusPill.textContent = text;
+      }
+
+      function setMessage(text) {
+        message.textContent = text;
+      }
+
+      function syncRawVisibility() {
+        const showRaw = rawToggle.checked;
+        avatarVideo.style.visibility = showRaw ? "visible" : "hidden";
+        avatarCanvas.style.visibility = showRaw ? "hidden" : "visible";
+      }
+
+      function rgbToHue(r, g, b) {
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const delta = max - min;
+        let h = 0;
+        if (delta === 0) h = 0;
+        else if (max === r) h = ((g - b) / delta) % 6;
+        else if (max === g) h = (b - r) / delta + 2;
+        else h = (r - g) / delta + 4;
+        h = Math.round(h * 60);
+        if (h < 0) h += 360;
+        return { h, max, delta };
+      }
+
+      function applyChromaKey() {
+        const ctx = avatarCanvas.getContext("2d", {
+          willReadFrequently: true,
+          alpha: true
+        });
+        if (!ctx || avatarVideo.readyState < 2 || !avatarVideo.videoWidth) return;
+
+        if (
+          avatarCanvas.width !== avatarVideo.videoWidth ||
+          avatarCanvas.height !== avatarVideo.videoHeight
+        ) {
+          avatarCanvas.width = avatarVideo.videoWidth;
+          avatarCanvas.height = avatarVideo.videoHeight;
+        }
+
+        ctx.clearRect(0, 0, avatarCanvas.width, avatarCanvas.height);
+        ctx.drawImage(avatarVideo, 0, 0, avatarCanvas.width, avatarCanvas.height);
+
+        const frame = ctx.getImageData(0, 0, avatarCanvas.width, avatarCanvas.height);
+        const data = frame.data;
+
+        // HeyGen's documented starting values for green-screen LiveAvatars.
+        const minHue = 60;
+        const maxHue = 180;
+        const minSaturation = 0.10;
+        const threshold = 1.0;
+
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+          const { h, max, delta } = rgbToHue(r, g, b);
+          const s = max === 0 ? 0 : delta / max;
+          const v = max / 255;
+
+          const isGreen =
+            h >= minHue &&
+            h <= maxHue &&
+            s > minSaturation &&
+            v > 0.15 &&
+            g > r * threshold &&
+            g > b * threshold;
+
+          if (isGreen) {
+            const greenness = (g - Math.max(r, b)) / (g || 1);
+            const alphaValue = Math.max(0, 1 - greenness * 4);
+            data[i + 3] = alphaValue < 0.2 ? 0 : Math.round(alphaValue * 255);
+          }
+        }
+
+        ctx.putImageData(frame, 0, 0);
+      }
+
+      function startChromaLoop() {
+        if (stopChromaKey) stopChromaKey();
+        let raf = 0;
+
+        const draw = () => {
+          applyChromaKey();
+          raf = requestAnimationFrame(draw);
+        };
+
+        draw();
+        stopChromaKey = () => {
+          cancelAnimationFrame(raf);
+          stopChromaKey = null;
+        };
+      }
+
+      async function stopSession() {
+        if (stopChromaKey) stopChromaKey();
+
+        if (session) {
+          try {
+            await session.stop();
+          } catch (err) {
+            console.warn("Pedro stop error", err);
+          }
+        }
+
+        session = null;
+        avatarVideo.srcObject = null;
+        const ctx = avatarCanvas.getContext("2d");
+        if (ctx) ctx.clearRect(0, 0, avatarCanvas.width, avatarCanvas.height);
+
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        setStatus("Idle");
+        setMessage("Pedro stopped.");
+      }
+
+      async function startSession() {
+        if (!sdk || !sdk.LiveAvatarSession) {
+          setStatus("SDK error");
+          setMessage("LiveAvatar SDK did not load.");
+          return;
+        }
+
+        startBtn.disabled = true;
+        setStatus("Token…");
+        setMessage("Requesting a short-lived Pedro session token…");
+
+        try {
+          const tokenResponse = await fetch(TOKEN_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ avatar_id: PEDRO_ID })
+          });
+
+          const tokenData = await tokenResponse.json().catch(() => ({}));
+          if (!tokenResponse.ok || !tokenData.session_token) {
+            throw new Error(tokenData.error || "Token endpoint did not return a session token.");
+          }
+
+          setStatus("Connecting…");
+          setMessage("Session token received. Connecting Pedro…");
+
+          session = new sdk.LiveAvatarSession(tokenData.session_token, {
+            apiUrl: API_URL,
+            autoKeepAlive: true,
+            voiceChat: { defaultMuted: true }
+          });
+
+          session.on(sdk.SessionEvent.SESSION_STATE_CHANGED, (state) => {
+            setStatus(state);
+          });
+
+          session.on(sdk.SessionEvent.SESSION_STREAM_READY, () => {
+            session.attach(avatarVideo);
+
+            const begin = () => {
+              startChromaLoop();
+              syncRawVisibility();
+              setMessage("Pedro stream is live. Use the sliders to fit him into the new kitchen.");
+            };
+
+            if (avatarVideo.readyState >= 2) begin();
+            else avatarVideo.addEventListener("loadeddata", begin, { once: true });
+          });
+
+          session.on(sdk.SessionEvent.SESSION_DISCONNECTED, () => {
+            if (stopChromaKey) stopChromaKey();
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            setStatus("Disconnected");
+          });
+
+          await session.start();
+          stopBtn.disabled = false;
+        } catch (err) {
+          console.error(err);
+          setStatus("Error");
+          setMessage(err && err.message ? err.message : String(err));
+          startBtn.disabled = false;
+          stopBtn.disabled = true;
+        }
+      }
+
+      function bindSlider(sliderId, valueId, prop) {
+        const slider = document.getElementById(sliderId);
+        const value = document.getElementById(valueId);
+
+        const update = () => {
+          const pct = slider.value + "%";
+          value.textContent = pct;
+          avatarRig.style[prop] = pct;
+        };
+
+        slider.addEventListener("input", update);
+        update();
+      }
+
+      bindSlider("leftSlider", "leftValue", "left");
+      bindSlider("topSlider", "topValue", "top");
+      bindSlider("widthSlider", "widthValue", "width");
+
+      rawToggle.addEventListener("change", syncRawVisibility);
+      startBtn.addEventListener("click", startSession);
+      stopBtn.addEventListener("click", stopSession);
+      window.addEventListener("beforeunload", () => {
+        if (stopChromaKey) stopChromaKey();
+      });
+
+      syncRawVisibility();
+    })();
+  </script>
+</body>
+</html>
