@@ -130,7 +130,7 @@
     }
     .sliders {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
     }
     label {
@@ -200,6 +200,14 @@
           Avatar width <span class="value" id="widthValue">70%</span>
           <input id="widthSlider" type="range" min="30" max="110" step="1" value="70">
         </label>
+        <label>
+          Green removal <span class="value" id="keyValue">50%</span>
+          <input id="keySlider" type="range" min="0" max="100" step="1" value="50">
+        </label>
+        <label>
+          Spill cleanup <span class="value" id="spillValue">35%</span>
+          <input id="spillSlider" type="range" min="0" max="100" step="1" value="35">
+        </label>
       </div>
 
       <label class="debug">
@@ -214,7 +222,7 @@
   <script type="module">
     import { LiveAvatarSession, SessionEvent } from "https://esm.sh/@heygen/liveavatar-web-sdk@0.0.19";
     (() => {
-      const PEDRO_ID = "b6378b3e-614a-47e0-9ea3-c129c7851ba4";
+      const HEAD_PEPPER_ID = "b6378b3e-614a-47e0-9ea3-c129c7851ba4";
       const API_URL = "https://api.liveavatar.com";
       const qs = new URLSearchParams(location.search);
       const TOKEN_ENDPOINT = qs.get("tokenEndpoint") || "/api/liveavatar-token";
@@ -227,6 +235,10 @@
       const avatarCanvas = document.getElementById("avatarCanvas");
       const avatarRig = document.getElementById("avatarRig");
       const rawToggle = document.getElementById("rawToggle");
+      const keySlider = document.getElementById("keySlider");
+      const keyValue = document.getElementById("keyValue");
+      const spillSlider = document.getElementById("spillSlider");
+      const spillValue = document.getElementById("spillValue");
 
       let session = null;
       let stopChromaKey = null;
@@ -280,11 +292,19 @@
         const frame = ctx.getImageData(0, 0, avatarCanvas.width, avatarCanvas.height);
         const data = frame.data;
 
-        // HeyGen's documented starting values for green-screen LiveAvatars.
+        // Keep the green hue family fixed so stronger removal does not
+        // progressively widen into unrelated foreground colors. The removal
+        // control instead changes how strongly green-dominant pixels qualify
+        // for transparency. Spill cleanup is separate and never changes alpha.
+        const keyStrength = Number(keySlider.value) / 100;
+        const spillStrength = Number(spillSlider.value) / 100;
+
         const minHue = 60;
         const maxHue = 180;
-        const minSaturation = 0.10;
-        const threshold = 1.0;
+        const minSaturation = 0.16 - (keyStrength * 0.12);
+        const minValue = 0.20 - (keyStrength * 0.12);
+        const threshold = 1.06 - (keyStrength * 0.12);
+        const edgeFactor = 2 + (keyStrength * 6);
 
         for (let i = 0; i < data.length; i += 4) {
           const r = data[i];
@@ -294,18 +314,33 @@
           const s = max === 0 ? 0 : delta / max;
           const v = max / 255;
 
+          const dominantNeighbor = Math.max(r, b);
           const isGreen =
             h >= minHue &&
             h <= maxHue &&
             s > minSaturation &&
-            v > 0.15 &&
+            v > minValue &&
             g > r * threshold &&
             g > b * threshold;
 
           if (isGreen) {
-            const greenness = (g - Math.max(r, b)) / (g || 1);
-            const alphaValue = Math.max(0, 1 - greenness * 4);
+            const greenness = (g - dominantNeighbor) / (g || 1);
+            const alphaValue = Math.max(0, 1 - greenness * edgeFactor);
             data[i + 3] = alphaValue < 0.2 ? 0 : Math.round(alphaValue * 255);
+          }
+
+          // De-spill surviving pixels without making them transparent.
+          // This is deliberately separate from the key so green detail such
+          // as the hat logo can lose its halo without being punched out.
+          if (
+            data[i + 3] > 0 &&
+            h >= 50 &&
+            h <= 190 &&
+            g > dominantNeighbor
+          ) {
+            const greenness = (g - dominantNeighbor) / (g || 1);
+            const cleanup = Math.min(1, spillStrength * Math.max(0.15, greenness * 3));
+            data[i + 1] = Math.round(g - (g - dominantNeighbor) * cleanup);
           }
         }
 
@@ -359,7 +394,7 @@
           const tokenResponse = await fetch(TOKEN_ENDPOINT, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ avatar_id: PEDRO_ID })
+            body: JSON.stringify({ avatar_id: HEAD_PEPPER_ID })
           });
 
           const tokenData = await tokenResponse.json().catch(() => ({}));
@@ -386,7 +421,7 @@
             const begin = () => {
               startChromaLoop();
               syncRawVisibility();
-              setMessage("Head Pepper stream is live. Use the sliders to fit him into the new kitchen.");
+              setMessage("Head Pepper stream is live. Fit his position first, then tune Green removal and Spill cleanup. Use Raw view as the reference image.");
             };
 
             if (avatarVideo.readyState >= 2) begin();
@@ -428,6 +463,15 @@
       bindSlider("leftSlider", "leftValue", "left");
       bindSlider("topSlider", "topValue", "top");
       bindSlider("widthSlider", "widthValue", "width");
+
+      function syncChromaControls() {
+        keyValue.textContent = keySlider.value + "%";
+        spillValue.textContent = spillSlider.value + "%";
+      }
+
+      keySlider.addEventListener("input", syncChromaControls);
+      spillSlider.addEventListener("input", syncChromaControls);
+      syncChromaControls();
 
       rawToggle.addEventListener("change", syncRawVisibility);
       startBtn.addEventListener("click", startSession);
