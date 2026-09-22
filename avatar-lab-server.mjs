@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const API_KEY = process.env.LIVEAVATAR_API_KEY;
 const API_URL = process.env.LIVEAVATAR_API_URL || "https://api.liveavatar.com";
-const PEDRO_ID = "7001c332-8101-4e5a-b695-eac2a72d9568";
+const HEAD_PEPPER_ID = "b6378b3e-614a-47e0-9ea3-c129c7851ba4";
 const PORT = Number(process.env.PORT || 4173);
 
 const __filename = fileURLToPath(import.meta.url);
@@ -125,7 +125,7 @@ const server = http.createServer(async (req, res) => {
         },
         body: JSON.stringify({
           mode: "LITE",
-          avatar_id: PEDRO_ID,
+          avatar_id: HEAD_PEPPER_ID,
           is_sandbox: false
         })
       });
@@ -174,12 +174,12 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, "127.0.0.1", () => {
   console.log("");
-  console.log("Pepper Junction Pedro Kitchen Lab");
+  console.log("Pepper Junction Head Pepper Kitchen Lab");
   console.log("--------------------------------");
   console.log(`Open: http://127.0.0.1:${PORT}/avatar-lab.html`);
-  console.log(`Pedro: ${PEDRO_ID}`);
+  console.log(`Head Pepper: ${HEAD_PEPPER_ID}`);
   console.log("");
   if (!API_KEY) {
-    console.log("LIVEAVATAR_API_KEY is not set. The page will load, but Pedro cannot start.");
+    console.log("LIVEAVATAR_API_KEY is not set. The page will load, but Head Pepper cannot start.");
   }
 });
