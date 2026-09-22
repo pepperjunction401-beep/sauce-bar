@@ -51,6 +51,8 @@
       z-index: 1;
     }
     .avatar-rig {
+      --right-crop: 0%;
+      --right-fade: 0%;
       position: absolute;
       left: -20%;
       top: 7%;
@@ -58,6 +60,25 @@
       aspect-ratio: 16 / 9;
       z-index: 2;
       pointer-events: none;
+      clip-path: inset(0 var(--right-crop) 0 0);
+      -webkit-mask-image: linear-gradient(
+        to right,
+        #000 0%,
+        #000 calc(100% - var(--right-crop) - var(--right-fade)),
+        transparent calc(100% - var(--right-crop)),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to right,
+        #000 0%,
+        #000 calc(100% - var(--right-crop) - var(--right-fade)),
+        transparent calc(100% - var(--right-crop)),
+        transparent 100%
+      );
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
     }
     #avatarVideo,
     #avatarCanvas {
@@ -133,6 +154,13 @@
       grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
     }
+    .edge-sliders {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding-top: 4px;
+      border-top: 1px solid rgba(212, 168, 50, 0.18);
+    }
     label {
       display: grid;
       gap: 6px;
@@ -157,7 +185,8 @@
     }
     @media (max-width: 720px) {
       body { padding: 12px; }
-      .sliders { grid-template-columns: 1fr; }
+      .sliders,
+      .edge-sliders { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -210,6 +239,17 @@
         </label>
       </div>
 
+      <div class="edge-sliders">
+        <label>
+          Right crop <span class="value" id="rightCropValue">0%</span>
+          <input id="rightCropSlider" type="range" min="0" max="45" step="1" value="0">
+        </label>
+        <label>
+          Right fade <span class="value" id="rightFadeValue">0%</span>
+          <input id="rightFadeSlider" type="range" min="0" max="30" step="1" value="0">
+        </label>
+      </div>
+
       <label class="debug">
         <input id="rawToggle" type="checkbox">
         Show raw green-screen stream instead of the keyed canvas
@@ -239,6 +279,10 @@
       const keyValue = document.getElementById("keyValue");
       const spillSlider = document.getElementById("spillSlider");
       const spillValue = document.getElementById("spillValue");
+      const rightCropSlider = document.getElementById("rightCropSlider");
+      const rightCropValue = document.getElementById("rightCropValue");
+      const rightFadeSlider = document.getElementById("rightFadeSlider");
+      const rightFadeValue = document.getElementById("rightFadeValue");
 
       let session = null;
       let stopChromaKey = null;
@@ -421,7 +465,7 @@
             const begin = () => {
               startChromaLoop();
               syncRawVisibility();
-              setMessage("Head Pepper stream is live. Fit his position first, then tune Green removal and Spill cleanup. Use Raw view as the reference image.");
+              setMessage("Head Pepper stream is live. Fit his position, then tune the key—or keep Raw view and use Right crop / Right fade to trim the green panel away from Cetriolo.");
             };
 
             if (avatarVideo.readyState >= 2) begin();
@@ -469,9 +513,21 @@
         spillValue.textContent = spillSlider.value + "%";
       }
 
+      function syncRightEdgeControls() {
+        const crop = rightCropSlider.value + "%";
+        const fade = rightFadeSlider.value + "%";
+        rightCropValue.textContent = crop;
+        rightFadeValue.textContent = fade;
+        avatarRig.style.setProperty("--right-crop", crop);
+        avatarRig.style.setProperty("--right-fade", fade);
+      }
+
       keySlider.addEventListener("input", syncChromaControls);
       spillSlider.addEventListener("input", syncChromaControls);
+      rightCropSlider.addEventListener("input", syncRightEdgeControls);
+      rightFadeSlider.addEventListener("input", syncRightEdgeControls);
       syncChromaControls();
+      syncRightEdgeControls();
 
       rawToggle.addEventListener("change", syncRawVisibility);
       startBtn.addEventListener("click", startSession);
