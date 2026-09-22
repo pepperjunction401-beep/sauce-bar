@@ -37,6 +37,10 @@ function safeAssetPath(urlPath) {
     return path.join(ROOT, "avatar-lab.html");
   }
 
+  if (urlPath === "/index.html") {
+    return path.join(ROOT, "index.html");
+  }
+
   if (!urlPath.startsWith("/assets/")) return null;
 
   const decoded = decodeURIComponent(urlPath);
@@ -176,7 +180,8 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log("");
   console.log("Pepper Junction Head Pepper Kitchen Lab");
   console.log("--------------------------------");
-  console.log(`Open: http://127.0.0.1:${PORT}/avatar-lab.html`);
+  console.log(`Lab:        http://127.0.0.1:${PORT}/avatar-lab.html`);
+  console.log(`Pairing Bar: http://127.0.0.1:${PORT}/index.html`);
   console.log(`Head Pepper: ${HEAD_PEPPER_ID}`);
   console.log("");
   if (!API_KEY) {
