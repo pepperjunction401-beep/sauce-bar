@@ -13,16 +13,45 @@ if (!API_KEY) {
 
 const __filename = fileURLToPath(import.meta.url);
 const ROOT = path.dirname(__filename);
-const promptPath = path.join(
-  ROOT,
-  "assets",
-  "avatar",
-  "Head_Pepper_Conversation_Context_v0.1.txt"
-);
-const prompt = readFileSync(promptPath, "utf8").trim();
+const AVATAR_DIR = path.join(ROOT, "assets", "avatar");
+
+const RULES_FILE = "Pepper_Junction_Avatar_Chef_Rules_Guidelines.json";
+const DIALOGUE_FILE = "Pepper_Junction_Avatar_Chef_Dialogue_Reaction_Library.json";
+
+function readValidatedJson(filename) {
+  const filePath = path.join(AVATAR_DIR, filename);
+  const raw = readFileSync(filePath, "utf8").trim();
+
+  try {
+    JSON.parse(raw);
+  } catch (error) {
+    console.error(`Invalid JSON in ${filename}.`);
+    console.error(error instanceof Error ? error.message : String(error));
+    process.exit(1);
+  }
+
+  return raw;
+}
+
+const rules = readValidatedJson(RULES_FILE);
+const dialogue = readValidatedJson(DIALOGUE_FILE);
+
+// The Rules & Guidelines remain the governing authority. The Dialogue / Reaction
+// Library follows as the approved conversational source governed by those rules.
+// The source JSON is passed through unchanged; these markers only preserve the
+// document boundary inside the LiveAvatar context.
+const prompt = [
+  `===== BEGIN ${RULES_FILE} =====`,
+  rules,
+  `===== END ${RULES_FILE} =====`,
+  "",
+  `===== BEGIN ${DIALOGUE_FILE} =====`,
+  dialogue,
+  `===== END ${DIALOGUE_FILE} =====`
+].join("\n");
 
 const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 13);
-const name = `Head Pepper v0.1 ${stamp}`;
+const name = `Head Pepper governed ${stamp}`;
 
 const response = await fetch(`${API_URL}/v1/contexts`, {
   method: "POST",
@@ -57,7 +86,10 @@ if (!contextId) {
 }
 
 console.log("");
-console.log("Head Pepper conversation context created.");
+console.log("Head Pepper governed context created.");
+console.log(`Rules:    ${RULES_FILE}`);
+console.log(`Dialogue: ${DIALOGUE_FILE}`);
+console.log(`Prompt:   ${prompt.length.toLocaleString()} characters`);
 console.log(`Context ID: ${contextId}`);
 console.log("");
 console.log("Run this in the same shell before restarting the server:");
