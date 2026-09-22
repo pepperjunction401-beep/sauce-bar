@@ -6,6 +6,8 @@ import { fileURLToPath } from "node:url";
 const API_KEY = process.env.LIVEAVATAR_API_KEY;
 const API_URL = process.env.LIVEAVATAR_API_URL || "https://api.liveavatar.com";
 const HEAD_PEPPER_ID = "b6378b3e-614a-47e0-9ea3-c129c7851ba4";
+const HEAD_PEPPER_VOICE_ID = process.env.LIVEAVATAR_VOICE_ID || "bb5e52ca-1775-442d-a70b-0152a7e518f2";
+const HEAD_PEPPER_CONTEXT_ID = process.env.LIVEAVATAR_CONTEXT_ID || "";
 const PORT = Number(process.env.PORT || 4173);
 
 const __filename = fileURLToPath(import.meta.url);
@@ -127,11 +129,24 @@ const server = http.createServer(async (req, res) => {
           "X-API-KEY": API_KEY,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          mode: "LITE",
-          avatar_id: HEAD_PEPPER_ID,
-          is_sandbox: false
-        })
+        body: JSON.stringify(
+          HEAD_PEPPER_CONTEXT_ID
+            ? {
+                mode: "FULL",
+                avatar_id: HEAD_PEPPER_ID,
+                avatar_persona: {
+                  voice_id: HEAD_PEPPER_VOICE_ID,
+                  context_id: HEAD_PEPPER_CONTEXT_ID,
+                  language: "en"
+                },
+                is_sandbox: false
+              }
+            : {
+                mode: "LITE",
+                avatar_id: HEAD_PEPPER_ID,
+                is_sandbox: false
+              }
+        )
       });
 
       const payload = await upstream.json().catch(() => ({}));
@@ -149,7 +164,8 @@ const server = http.createServer(async (req, res) => {
 
       sendJson(res, 200, {
         session_token: payload?.data?.session_token,
-        session_id: payload?.data?.session_id
+        session_id: payload?.data?.session_id,
+        mode: HEAD_PEPPER_CONTEXT_ID ? "FULL" : "LITE"
       });
     } catch (err) {
       sendJson(res, 500, {
@@ -183,8 +199,12 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log(`Lab:        http://127.0.0.1:${PORT}/avatar-lab.html`);
   console.log(`Pairing Bar: http://127.0.0.1:${PORT}/index.html`);
   console.log(`Head Pepper: ${HEAD_PEPPER_ID}`);
+  console.log(`Mode:        ${HEAD_PEPPER_CONTEXT_ID ? "FULL conversation" : "LITE visual-only"}`);
   console.log("");
   if (!API_KEY) {
     console.log("LIVEAVATAR_API_KEY is not set. The page will load, but Head Pepper cannot start.");
+  } else if (!HEAD_PEPPER_CONTEXT_ID) {
+    console.log("LIVEAVATAR_CONTEXT_ID is not set. Head Pepper will start in LITE visual-only mode.");
+    console.log("Run: node head-pepper-context-setup.mjs");
   }
 });
