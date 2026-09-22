@@ -21,8 +21,8 @@ const promptPath = path.join(
 );
 const prompt = readFileSync(promptPath, "utf8").trim();
 
-const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-const name = `Pepper Junction Head Pepper Conversation v0.1 ${stamp}`;
+const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 13);
+const name = `Head Pepper v0.1 ${stamp}`;
 
 const response = await fetch(`${API_URL}/v1/contexts`, {
   method: "POST",
