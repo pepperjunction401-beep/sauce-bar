@@ -173,7 +173,7 @@ body {
 
 .pj-avatar-dev-grid {
   display: grid;
-  grid-template-columns: minmax(190px, 1.2fr) repeat(3, minmax(120px, 1fr));
+  grid-template-columns: minmax(190px, 1.2fr) repeat(4, minmax(120px, 1fr));
   gap: 10px 14px;
   align-items: end;
   margin-top: 12px;
@@ -1174,6 +1174,11 @@ body {
           <input id="pj-avatar-width" type="range" min="35" max="115" step="1" value="70">
         </label>
 
+        <label>
+          Green removal <span class="pj-avatar-dev-value" id="pj-avatar-chroma-value">50%</span>
+          <input id="pj-avatar-chroma" type="range" min="0" max="100" step="1" value="50">
+        </label>
+
         <p class="pj-avatar-dev-status" id="pj-avatar-dev-status">
           Select the Pedro green-screen recording from your computer. It stays local to your browser and is not uploaded anywhere.
         </p>
@@ -1931,16 +1936,18 @@ els.reset.addEventListener('click', () => {
   const left = document.getElementById('pj-avatar-left');
   const top = document.getElementById('pj-avatar-top');
   const width = document.getElementById('pj-avatar-width');
+  const chroma = document.getElementById('pj-avatar-chroma');
   const leftValue = document.getElementById('pj-avatar-left-value');
   const topValue = document.getElementById('pj-avatar-top-value');
   const widthValue = document.getElementById('pj-avatar-width-value');
+  const chromaValue = document.getElementById('pj-avatar-chroma-value');
 
-  if (!stage || !source || !canvas || !fileInput) return;
+  if (!stage || !source || !canvas || !fileInput || !chroma) return;
 
   let rafId = 0;
   let objectUrl = '';
 
-  const defaults = { left: -20, top: 6, width: 70 };
+  const defaults = { left: -20, top: 6, width: 70, chroma: 50 };
 
   function setStatus(message) {
     if (status) status.textContent = message;
@@ -1975,14 +1982,27 @@ els.reset.addEventListener('click', () => {
     } catch (_) {}
   }
 
+  function applyChromaStrength() {
+    const strength = Number(chroma.value);
+    if (chromaValue) chromaValue.textContent = strength + '%';
+
+    try {
+      localStorage.setItem('pj_pedro_chroma', String(strength));
+    } catch (_) {}
+  }
+
   left.value = String(readSavedNumber('pj_pedro_left', defaults.left));
   top.value = String(readSavedNumber('pj_pedro_top', defaults.top));
   width.value = String(readSavedNumber('pj_pedro_width', defaults.width));
+  chroma.value = String(readSavedNumber('pj_pedro_chroma', defaults.chroma));
   applyPlacement();
+  applyChromaStrength();
 
   [left, top, width].forEach((input) => {
     input.addEventListener('input', applyPlacement);
   });
+
+  chroma.addEventListener('input', applyChromaStrength);
 
   function stopChromaLoop() {
     if (rafId) {
@@ -2018,13 +2038,18 @@ els.reset.addEventListener('click', () => {
     const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = frame.data;
 
-    /* HeyGen-style HSV green detection. Values intentionally stay
-       conservative so blue clothing/skin survives while the green
-       screen becomes transparent. */
-    const minHue = 60;
-    const maxHue = 180;
-    const minSaturation = 0.10;
-    const threshold = 1.0;
+    /* Live chroma-strength tuning. 50% reproduces the original
+       conservative key. Higher values widen the green range, accept
+       darker/less-saturated green, strengthen edge transparency, and
+       suppress residual green spill without targeting red/blue tones. */
+    const strength = Number(chroma.value);
+    const minHue = 65 - (strength * 0.10);
+    const maxHue = 175 + (strength * 0.10);
+    const minSaturation = Math.max(0.03, 0.16 - (strength * 0.0012));
+    const minValue = Math.max(0.08, 0.20 - (strength * 0.0010));
+    const threshold = Math.max(0.92, 1.06 - (strength * 0.0012));
+    const edgeFactor = 2 + (strength * 0.04);
+    const despillAmount = strength / 125;
 
     for (let i = 0; i < data.length; i += 4) {
       const r = data[i];
@@ -2052,14 +2077,24 @@ els.reset.addEventListener('click', () => {
         h >= minHue &&
         h <= maxHue &&
         s > minSaturation &&
-        v > 0.15 &&
+        v > minValue &&
         g > r * threshold &&
         g > b * threshold;
 
       if (isGreen) {
-        const greenness = (g - Math.max(r, b)) / (g || 1);
-        const alphaValue = Math.max(0, 1 - greenness * 4);
+        const dominantNeighbor = Math.max(r, b);
+        const greenness = (g - dominantNeighbor) / (g || 1);
+        const alphaValue = Math.max(0, 1 - greenness * edgeFactor);
+
         data[i + 3] = alphaValue < 0.2 ? 0 : Math.round(alphaValue * 255);
+
+        /* De-spill surviving edge pixels: pull only green-dominant
+           pixels toward the stronger red/blue channel. */
+        if (data[i + 3] > 0 && g > dominantNeighbor) {
+          data[i + 1] = Math.round(
+            dominantNeighbor + (g - dominantNeighbor) * (1 - despillAmount)
+          );
+        }
       }
     }
 
@@ -2087,7 +2122,7 @@ els.reset.addEventListener('click', () => {
     source.addEventListener('loadeddata', () => {
       source.play().catch(() => {});
       startChromaLoop();
-      setStatus('Pedro test clip loaded. Move Left / Top / Width until he sits naturally behind the foreground shelf.');
+      setStatus('Test clip loaded. Tune Left / Top / Width, then raise Green removal until the haze disappears without chewing into the avatar.');
     }, { once: true });
   });
 
