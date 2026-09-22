@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pedro Kitchen Lab — Pepper Junction</title>
+  <title>Head Pepper Kitchen Lab — Pepper Junction</title>
   <style>
     :root {
       --brass: #d4a832;
@@ -163,8 +163,8 @@
 </head>
 <body>
   <main class="lab">
-    <h1>Pedro Kitchen Lab</h1>
-    <p class="lab-note">Isolated test harness. This does not modify the Pairing Bar page. It uses the current kitchen motion and Prep-Counter layers from the repo, with Pedro inserted between them.</p>
+    <h1>Head Pepper Kitchen Lab</h1>
+    <p class="lab-note">Isolated test harness. This does not modify the Pairing Bar page. It uses the current kitchen motion and Prep-Counter layers from the repo, with Head Pepper inserted between them.</p>
 
     <section class="stage" aria-label="Pepper Junction kitchen LiveAvatar test">
       <video class="kitchen-bg" autoplay muted loop playsinline preload="auto">
@@ -181,10 +181,10 @@
       <div class="status-pill" id="statusPill">Idle</div>
     </section>
 
-    <section class="controls" aria-label="Pedro test controls">
+    <section class="controls" aria-label="Head Pepper test controls">
       <div class="buttons">
-        <button id="startBtn" type="button">Start Pedro</button>
-        <button id="stopBtn" class="secondary" type="button" disabled>Stop Pedro</button>
+        <button id="startBtn" type="button">Start Head Pepper</button>
+        <button id="stopBtn" class="secondary" type="button" disabled>Stop Head Pepper</button>
       </div>
 
       <div class="sliders">
@@ -207,14 +207,14 @@
         Show raw green-screen stream instead of the keyed canvas
       </label>
 
-      <p class="message" id="message">Ready. Pedro ID: 7001c332-8101-4e5a-b695-eac2a72d9568</p>
+      <p class="message" id="message">Ready. Head Pepper ID: b6378b3e-614a-47e0-9ea3-c129c7851ba4</p>
     </section>
   </main>
 
   <script type="module">
     import { LiveAvatarSession, SessionEvent } from "https://esm.sh/@heygen/liveavatar-web-sdk@0.0.19";
     (() => {
-      const PEDRO_ID = "7001c332-8101-4e5a-b695-eac2a72d9568";
+      const PEDRO_ID = "b6378b3e-614a-47e0-9ea3-c129c7851ba4";
       const API_URL = "https://api.liveavatar.com";
       const qs = new URLSearchParams(location.search);
       const TOKEN_ENDPOINT = qs.get("tokenEndpoint") || "/api/liveavatar-token";
@@ -335,7 +335,7 @@
           try {
             await session.stop();
           } catch (err) {
-            console.warn("Pedro stop error", err);
+            console.warn("Head Pepper stop error", err);
           }
         }
 
@@ -347,13 +347,13 @@
         startBtn.disabled = false;
         stopBtn.disabled = true;
         setStatus("Idle");
-        setMessage("Pedro stopped.");
+        setMessage("Head Pepper stopped.");
       }
 
       async function startSession() {
         startBtn.disabled = true;
         setStatus("Token…");
-        setMessage("Requesting a short-lived Pedro session token…");
+        setMessage("Requesting a short-lived Head Pepper session token…");
 
         try {
           const tokenResponse = await fetch(TOKEN_ENDPOINT, {
@@ -368,7 +368,7 @@
           }
 
           setStatus("Connecting…");
-          setMessage("Session token received. Connecting Pedro…");
+          setMessage("Session token received. Connecting Head Pepper…");
 
           session = new LiveAvatarSession(tokenData.session_token, {
             apiUrl: API_URL,
@@ -386,7 +386,7 @@
             const begin = () => {
               startChromaLoop();
               syncRawVisibility();
-              setMessage("Pedro stream is live. Use the sliders to fit him into the new kitchen.");
+              setMessage("Head Pepper stream is live. Use the sliders to fit him into the new kitchen.");
             };
 
             if (avatarVideo.readyState >= 2) begin();
