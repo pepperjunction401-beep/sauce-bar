@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "identity": "Chef Pepper",
+  "identity_root_version": "1.0.0",
+  "runtime_scope": "global_session_independent_identity",
+  "model": {
+    "provider": "openai",
+    "id": "gpt-5.6-terra"
+  },
+  "authoritative_sources": [
+    {
+      "role": "governing_rules",
+      "path": "Pepper_Junction_Avatar_Chef_Rules_Guidelines.json"
+    },
+    {
+      "role": "dialogue_reaction_library",
+      "path": "Pepper_Junction_Avatar_Chef_Dialogue_Reaction_Library.json"
+    }
+  ],
+  "assembly": {
+    "source_order": [
+      "governing_rules",
+      "dialogue_reaction_library"
+    ],
+    "preserve_source_text": true,
+    "rewrite_or_summarize_sources": false
+  }
+}
