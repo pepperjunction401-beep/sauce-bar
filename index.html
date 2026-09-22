@@ -202,6 +202,33 @@ body {
   color: rgba(253, 246, 232, 0.82);
 }
 
+.pj-liveavatar-chat {
+  flex: 1 1 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.pj-liveavatar-chat input {
+  min-width: 0;
+  border: 1px solid rgba(184, 137, 57, 0.45);
+  border-radius: 9px;
+  padding: 10px 11px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #2b1d15;
+  font: 14px/1.2 Georgia, "Times New Roman", serif;
+}
+
+.pj-liveavatar-chat input:disabled {
+  opacity: 0.55;
+}
+
+@media (max-width: 640px) {
+  .pj-liveavatar-chat {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Front layer — fixed foreground piece. Prep counter and sauce
    shelf are composited into one cropped-tight transparent PNG. */
 .pj-kitchen-prep-counter {
@@ -1115,7 +1142,19 @@ body {
     <div class="pj-liveavatar-controls" id="pj-liveavatar-controls">
       <button class="pj-liveavatar-btn" id="pj-liveavatar-start" type="button">Start Head Pepper</button>
       <button class="pj-liveavatar-btn secondary" id="pj-liveavatar-stop" type="button" disabled>Stop Head Pepper</button>
+      <button class="pj-liveavatar-btn secondary" id="pj-liveavatar-mic" type="button" disabled>Enable microphone</button>
       <span class="pj-liveavatar-status" id="pj-liveavatar-status">Head Pepper offline.</span>
+
+      <form class="pj-liveavatar-chat" id="pj-liveavatar-chat">
+        <input
+          id="pj-liveavatar-message"
+          type="text"
+          autocomplete="off"
+          placeholder="Talk to Head Pepper…"
+          disabled
+        >
+        <button class="pj-liveavatar-btn" id="pj-liveavatar-send" type="submit" disabled>Send</button>
+      </form>
     </div>
 
     <div class="pj-layout">
@@ -1903,14 +1942,28 @@ els.reset.addEventListener('click', () => {
       const avatarVideo = document.getElementById("pj-kitchen-avatar-source");
       const startBtn = document.getElementById("pj-liveavatar-start");
       const stopBtn = document.getElementById("pj-liveavatar-stop");
+      const micBtn = document.getElementById("pj-liveavatar-mic");
       const status = document.getElementById("pj-liveavatar-status");
+      const chatForm = document.getElementById("pj-liveavatar-chat");
+      const messageInput = document.getElementById("pj-liveavatar-message");
+      const sendBtn = document.getElementById("pj-liveavatar-send");
 
-      if (!stage || !avatarVideo || !startBtn || !stopBtn || !status) return;
+      if (!stage || !avatarVideo || !startBtn || !stopBtn || !micBtn || !status || !chatForm || !messageInput || !sendBtn) return;
 
       let session = null;
+      let sessionMode = "LITE";
+      let micActive = false;
 
       function setStatus(message) {
         status.textContent = message;
+      }
+
+      function syncConversationControls() {
+        const full = Boolean(session) && sessionMode === "FULL";
+        messageInput.disabled = !full;
+        sendBtn.disabled = !full;
+        micBtn.disabled = !full;
+        micBtn.textContent = micActive ? "Mute microphone" : "Enable microphone";
       }
 
       async function stopHeadPepper() {
@@ -1923,10 +1976,13 @@ els.reset.addEventListener('click', () => {
         }
 
         session = null;
+        sessionMode = "LITE";
+        micActive = false;
         avatarVideo.srcObject = null;
         stage.hidden = true;
         startBtn.disabled = false;
         stopBtn.disabled = true;
+        syncConversationControls();
         setStatus("Head Pepper offline.");
       }
 
@@ -1949,7 +2005,12 @@ els.reset.addEventListener('click', () => {
             throw new Error(tokenData.error || "LiveAvatar token endpoint did not return a session token.");
           }
 
-          setStatus("Connecting Head Pepper…");
+          sessionMode = tokenData.mode || "LITE";
+          setStatus(
+            sessionMode === "FULL"
+              ? "Connecting Head Pepper conversation…"
+              : "Connecting Head Pepper visual-only…"
+          );
 
           session = new LiveAvatarSession(tokenData.session_token, {
             apiUrl: API_URL,
@@ -1964,32 +2025,78 @@ els.reset.addEventListener('click', () => {
           session.on(SessionEvent.SESSION_STREAM_READY, () => {
             session.attach(avatarVideo);
             stage.hidden = false;
-            setStatus("Head Pepper is live.");
+            setStatus(
+              sessionMode === "FULL"
+                ? "Head Pepper is live. Type below or enable the microphone."
+                : "Head Pepper is live in visual-only mode. Conversation context is not configured."
+            );
           });
 
           session.on(SessionEvent.SESSION_DISCONNECTED, () => {
             session = null;
+            sessionMode = "LITE";
+            micActive = false;
             avatarVideo.srcObject = null;
             stage.hidden = true;
             startBtn.disabled = false;
             stopBtn.disabled = true;
+            syncConversationControls();
             setStatus("Head Pepper disconnected.");
           });
 
           await session.start();
           stopBtn.disabled = false;
+          syncConversationControls();
         } catch (err) {
           console.error(err);
           session = null;
+          sessionMode = "LITE";
+          micActive = false;
           stage.hidden = true;
           startBtn.disabled = false;
           stopBtn.disabled = true;
+          syncConversationControls();
           setStatus(err && err.message ? err.message : String(err));
         }
       }
 
+      chatForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const text = messageInput.value.trim();
+        if (!text || !session || sessionMode !== "FULL") return;
+
+        try {
+          session.message(text);
+          messageInput.value = "";
+          setStatus("Message sent. Head Pepper is thinking…");
+        } catch (err) {
+          setStatus(err && err.message ? err.message : String(err));
+        }
+      });
+
+      micBtn.addEventListener("click", async () => {
+        if (!session || sessionMode !== "FULL") return;
+
+        try {
+          if (!micActive) {
+            await session.voiceChat.start();
+            await session.voiceChat.unmute();
+            micActive = true;
+            setStatus("Microphone live. Talk to Head Pepper.");
+          } else {
+            await session.voiceChat.mute();
+            micActive = false;
+            setStatus("Microphone muted. Text chat is still available.");
+          }
+          syncConversationControls();
+        } catch (err) {
+          setStatus(err && err.message ? err.message : String(err));
+        }
+      });
+
       startBtn.addEventListener("click", startHeadPepper);
       stopBtn.addEventListener("click", stopHeadPepper);
+      syncConversationControls();
 
       window.addEventListener("beforeunload", () => {
         if (session) {
