@@ -257,11 +257,12 @@
       </label>
 
       <p class="message" id="message">Ready. Head Pepper ID: b6378b3e-614a-47e0-9ea3-c129c7851ba4</p>
+      <p class="message" id="audioDiagnostics">Audio diagnostics: waiting for a JG3 LITE test.</p>
     </section>
   </main>
 
   <script type="module">
-    import { LiveAvatarSession, SessionEvent } from "https://esm.sh/@heygen/liveavatar-web-sdk@0.0.19";
+    import { LiveAvatarSession, SessionEvent, AgentEventsEnum } from "https://esm.sh/@heygen/liveavatar-web-sdk@0.0.19";
     (() => {
       const HEAD_PEPPER_ID = "b6378b3e-614a-47e0-9ea3-c129c7851ba4";
       const API_URL = "https://api.liveavatar.com";
@@ -274,6 +275,7 @@
       const stopBtn = document.getElementById("stopBtn");
       const statusPill = document.getElementById("statusPill");
       const message = document.getElementById("message");
+      const audioDiagnostics = document.getElementById("audioDiagnostics");
       const avatarVideo = document.getElementById("avatarVideo");
       const avatarCanvas = document.getElementById("avatarCanvas");
       const avatarRig = document.getElementById("avatarRig");
@@ -291,6 +293,13 @@
       let stopChromaKey = null;
       let streamReady = false;
       let speaking = false;
+      let diagnosticTimer = 0;
+      let audioDiagnostic = {
+        pcmBytes: 0,
+        repeatEventId: "not sent",
+        speakStarted: 0,
+        speakEnded: 0
+      };
 
       function setStatus(text) {
         statusPill.textContent = text;
@@ -298,6 +307,25 @@
 
       function setMessage(text) {
         message.textContent = text;
+      }
+
+      function renderAudioDiagnostic(prefix = "Audio diagnostics") {
+        audioDiagnostics.textContent =
+          `${prefix}: ${audioDiagnostic.pcmBytes.toLocaleString()} PCM bytes; ` +
+          `repeatAudio ID ${audioDiagnostic.repeatEventId}; ` +
+          `speak-start ${audioDiagnostic.speakStarted}; speak-end ${audioDiagnostic.speakEnded}.`;
+      }
+
+      function resetAudioDiagnostic() {
+        if (diagnosticTimer) window.clearTimeout(diagnosticTimer);
+        diagnosticTimer = 0;
+        audioDiagnostic = {
+          pcmBytes: 0,
+          repeatEventId: "not sent",
+          speakStarted: 0,
+          speakEnded: 0
+        };
+        renderAudioDiagnostic();
       }
 
       function syncRawVisibility() {
@@ -426,6 +454,8 @@
         session = null;
         streamReady = false;
         speaking = false;
+        if (diagnosticTimer) window.clearTimeout(diagnosticTimer);
+        diagnosticTimer = 0;
         avatarVideo.srcObject = null;
         const ctx = avatarCanvas.getContext("2d");
         if (ctx) ctx.clearRect(0, 0, avatarCanvas.width, avatarCanvas.height);
@@ -470,6 +500,18 @@
             setStatus(state);
           });
 
+          session.on(AgentEventsEnum.AVATAR_SPEAK_STARTED, (event) => {
+            audioDiagnostic.speakStarted += 1;
+            renderAudioDiagnostic("HeyGen acknowledged speak-start");
+            console.info("Chef Pepper diagnostic: avatar.speak_started", event);
+          });
+
+          session.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, (event) => {
+            audioDiagnostic.speakEnded += 1;
+            renderAudioDiagnostic("HeyGen acknowledged speak-end");
+            console.info("Chef Pepper diagnostic: avatar.speak_ended", event);
+          });
+
           session.on(SessionEvent.SESSION_STREAM_READY, () => {
             session.attach(avatarVideo);
             streamReady = true;
@@ -490,6 +532,8 @@
             session = null;
             streamReady = false;
             speaking = false;
+            if (diagnosticTimer) window.clearTimeout(diagnosticTimer);
+            diagnosticTimer = 0;
             startBtn.disabled = false;
             speakBtn.disabled = true;
             stopBtn.disabled = true;
@@ -551,6 +595,7 @@
         if (!session || !streamReady || speaking) return;
 
         const activeSession = session;
+        resetAudioDiagnostic();
         speaking = true;
         speakBtn.disabled = true;
         setStatus("JG3…");
@@ -569,9 +614,24 @@
             throw new Error("Head Pepper disconnected before the JG3 audio was ready.");
           }
 
-          activeSession.repeatAudio(pcmAudio);
+          audioDiagnostic.pcmBytes = pcmAudio.length;
+          audioDiagnostic.repeatEventId = activeSession.repeatAudio(pcmAudio);
+          renderAudioDiagnostic("Audio sent; awaiting HeyGen acknowledgement");
+          console.info("Chef Pepper diagnostic: repeatAudio sent", {
+            pcm_bytes: audioDiagnostic.pcmBytes,
+            repeat_event_id: audioDiagnostic.repeatEventId
+          });
           setStatus("Speaking");
           setMessage("JG3 Starfish audio was sent to Head Pepper through LiveAvatar LITE.");
+
+          diagnosticTimer = window.setTimeout(() => {
+            diagnosticTimer = 0;
+            const prefix = audioDiagnostic.speakStarted === 0
+              ? "No HeyGen speak acknowledgement received"
+              : "HeyGen acknowledgement window complete";
+            renderAudioDiagnostic(prefix);
+            console.info("Chef Pepper diagnostic: acknowledgement window complete", audioDiagnostic);
+          }, Math.max(5000, Math.ceil(durationSeconds * 1000) + 2000));
 
           window.setTimeout(() => {
             if (session === activeSession && streamReady) {
