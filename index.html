@@ -159,9 +159,42 @@ body {
   object-fit: contain;
 }
 
-/* Dev-branch live session controls. These are temporary until the
-   final Pairing Bar interaction flow owns avatar startup/shutdown. */
-.pj-liveavatar-controls {
+/* Chef Pepper Pass 1: written replies on the silver kitchen panel,
+   with the typed consultation control directly below the scene. */
+.pj-chef-pepper-display {
+  position: absolute;
+  left: 18%;
+  right: 9%;
+  bottom: 2.4%;
+  height: 13.2%;
+  z-index: 4;
+  padding: 9px 48px 8px 18px;
+  overflow-y: auto;
+  color: #241d18;
+  font: 600 clamp(11px, 1.45vw, 18px)/1.35 Georgia, "Times New Roman", serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(61, 51, 43, 0.45) transparent;
+}
+
+.pj-chef-pepper-display p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.pj-chef-pepper-display-label {
+  display: block;
+  margin-bottom: 3px;
+  color: #6B0F1A;
+  font: 700 clamp(8px, 0.9vw, 11px)/1 "Josefin Sans", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pj-chef-pepper-display.is-waiting {
+  opacity: 0.62;
+}
+
+.pj-chef-pepper-controls {
   margin: -6px 0 18px;
   padding: 10px 12px;
   border: 1px solid rgba(184, 137, 57, 0.42);
@@ -170,13 +203,11 @@ body {
   color: #FDF6E8;
   box-shadow: var(--shadow-soft);
   font-family: "Josefin Sans", sans-serif;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
+  display: grid;
+  gap: 7px;
 }
 
-.pj-liveavatar-btn {
+.pj-chef-pepper-btn {
   border: 1px solid #D4A832;
   border-radius: 9px;
   padding: 9px 12px;
@@ -186,30 +217,24 @@ body {
   cursor: pointer;
 }
 
-.pj-liveavatar-btn.secondary {
-  background: transparent;
-  color: #FDF6E8;
-}
-
-.pj-liveavatar-btn:disabled {
+.pj-chef-pepper-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
 
-.pj-liveavatar-status {
+.pj-chef-pepper-status {
   font-size: 11px;
   line-height: 1.3;
   color: rgba(253, 246, 232, 0.82);
 }
 
-.pj-liveavatar-chat {
-  flex: 1 1 100%;
+.pj-chef-pepper-chat {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 8px;
 }
 
-.pj-liveavatar-chat input {
+.pj-chef-pepper-chat input {
   min-width: 0;
   border: 1px solid rgba(184, 137, 57, 0.45);
   border-radius: 9px;
@@ -219,12 +244,20 @@ body {
   font: 14px/1.2 Georgia, "Times New Roman", serif;
 }
 
-.pj-liveavatar-chat input:disabled {
+.pj-chef-pepper-chat input:disabled {
   opacity: 0.55;
 }
 
 @media (max-width: 640px) {
-  .pj-liveavatar-chat {
+  .pj-chef-pepper-display {
+    left: 12%;
+    right: 7%;
+    bottom: 2.1%;
+    height: 13.8%;
+    padding: 5px 38px 4px 10px;
+  }
+
+  .pj-chef-pepper-chat {
     grid-template-columns: 1fr;
   }
 }
@@ -247,7 +280,7 @@ body {
   position: absolute;
   right: 12px;
   bottom: 12px;
-  z-index: 4;
+  z-index: 5;
   width: 32px;
   height: 32px;
   padding: 0;
@@ -1120,6 +1153,17 @@ body {
         aria-hidden="true"
       >
 
+      <div
+        class="pj-chef-pepper-display"
+        id="pj-chef-pepper-display"
+        role="log"
+        aria-live="polite"
+        aria-label="Chef Pepper's written replies"
+      >
+        <span class="pj-chef-pepper-display-label">Chef Pepper</span>
+        <p id="pj-chef-pepper-reply">His written replies will appear here.</p>
+      </div>
+
       <button
         class="pj-kitchen-pause-btn"
         id="pj-kitchen-pause-btn"
@@ -1138,23 +1182,19 @@ body {
 
     </section>
 
-    <!-- DEV ONLY: live-session controls. -->
-    <div class="pj-liveavatar-controls" id="pj-liveavatar-controls">
-      <button class="pj-liveavatar-btn" id="pj-liveavatar-start" type="button">Start Head Pepper</button>
-      <button class="pj-liveavatar-btn secondary" id="pj-liveavatar-stop" type="button" disabled>Stop Head Pepper</button>
-      <button class="pj-liveavatar-btn secondary" id="pj-liveavatar-mic" type="button" disabled>Enable microphone</button>
-      <span class="pj-liveavatar-status" id="pj-liveavatar-status">Head Pepper offline.</span>
-
-      <form class="pj-liveavatar-chat" id="pj-liveavatar-chat">
+    <!-- DEV ONLY: Pass 1 typed Chef Pepper consultation. No LiveAvatar session is started. -->
+    <div class="pj-chef-pepper-controls" id="pj-chef-pepper-controls">
+      <form class="pj-chef-pepper-chat" id="pj-chef-pepper-chat">
         <input
-          id="pj-liveavatar-message"
+          id="pj-chef-pepper-message"
           type="text"
           autocomplete="off"
-          placeholder="Talk to Head Pepper…"
-          disabled
+          maxlength="4000"
+          placeholder="Talk to Chef Pepper…"
         >
-        <button class="pj-liveavatar-btn" id="pj-liveavatar-send" type="submit" disabled>Send</button>
+        <button class="pj-chef-pepper-btn" id="pj-chef-pepper-send" type="submit">Send</button>
       </form>
+      <span class="pj-chef-pepper-status" id="pj-chef-pepper-status">Checking Chef Pepper's text brain…</span>
     </div>
 
     <div class="pj-layout">
@@ -1930,179 +1970,107 @@ els.reset.addEventListener('click', () => {
     });
   </script>
 
-  <script type="module">
-    import { LiveAvatarSession, SessionEvent } from "https://esm.sh/@heygen/liveavatar-web-sdk@0.0.19";
-
+  <script>
     (() => {
-      const HEAD_PEPPER_ID = "b6378b3e-614a-47e0-9ea3-c129c7851ba4";
-      const API_URL = "https://api.liveavatar.com";
-      const TOKEN_ENDPOINT = "/api/liveavatar-token";
+      const CHAT_ENDPOINT = "/api/chef-pepper-chat";
+      const STATUS_ENDPOINT = "/api/chef-pepper-status";
+      const SESSION_STORAGE_KEY = "pjChefPepperConversationId";
 
-      const stage = document.getElementById("pj-kitchen-avatar-stage");
-      const avatarVideo = document.getElementById("pj-kitchen-avatar-source");
-      const startBtn = document.getElementById("pj-liveavatar-start");
-      const stopBtn = document.getElementById("pj-liveavatar-stop");
-      const micBtn = document.getElementById("pj-liveavatar-mic");
-      const status = document.getElementById("pj-liveavatar-status");
-      const chatForm = document.getElementById("pj-liveavatar-chat");
-      const messageInput = document.getElementById("pj-liveavatar-message");
-      const sendBtn = document.getElementById("pj-liveavatar-send");
+      const display = document.getElementById("pj-chef-pepper-display");
+      const reply = document.getElementById("pj-chef-pepper-reply");
+      const status = document.getElementById("pj-chef-pepper-status");
+      const chatForm = document.getElementById("pj-chef-pepper-chat");
+      const messageInput = document.getElementById("pj-chef-pepper-message");
+      const sendBtn = document.getElementById("pj-chef-pepper-send");
 
-      if (!stage || !avatarVideo || !startBtn || !stopBtn || !micBtn || !status || !chatForm || !messageInput || !sendBtn) return;
+      if (!display || !reply || !status || !chatForm || !messageInput || !sendBtn) return;
 
-      let session = null;
-      let sessionMode = "LITE";
-      let micActive = false;
+      let submitting = false;
+
+      function createConversationId() {
+        if (window.crypto && typeof window.crypto.randomUUID === "function") {
+          return window.crypto.randomUUID();
+        }
+        return "chef_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2);
+      }
+
+      function getConversationId() {
+        let conversationId = sessionStorage.getItem(SESSION_STORAGE_KEY);
+        if (!conversationId) {
+          conversationId = createConversationId();
+          sessionStorage.setItem(SESSION_STORAGE_KEY, conversationId);
+        }
+        return conversationId;
+      }
 
       function setStatus(message) {
         status.textContent = message;
       }
 
-      function syncConversationControls() {
-        const full = Boolean(session) && sessionMode === "FULL";
-        messageInput.disabled = !full;
-        sendBtn.disabled = !full;
-        micBtn.disabled = !full;
-        micBtn.textContent = micActive ? "Mute microphone" : "Enable microphone";
+      function setSubmitting(nextSubmitting) {
+        submitting = nextSubmitting;
+        messageInput.disabled = nextSubmitting;
+        sendBtn.disabled = nextSubmitting;
+        display.classList.toggle("is-waiting", nextSubmitting);
       }
 
-      async function stopHeadPepper() {
-        if (session) {
-          try {
-            await session.stop();
-          } catch (err) {
-            console.warn("Head Pepper stop error", err);
-          }
-        }
-
-        session = null;
-        sessionMode = "LITE";
-        micActive = false;
-        avatarVideo.srcObject = null;
-        stage.hidden = true;
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        syncConversationControls();
-        setStatus("Head Pepper offline.");
+      function showReply(text) {
+        reply.textContent = text;
+        display.scrollTop = 0;
       }
 
-      async function startHeadPepper() {
-        if (session) return;
-
-        startBtn.disabled = true;
-        stopBtn.disabled = true;
-        setStatus("Requesting Head Pepper session…");
-
+      async function checkChefPepper() {
         try {
-          const tokenResponse = await fetch(TOKEN_ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ avatar_id: HEAD_PEPPER_ID })
-          });
-
-          const tokenData = await tokenResponse.json().catch(() => ({}));
-          if (!tokenResponse.ok || !tokenData.session_token) {
-            throw new Error(tokenData.error || "LiveAvatar token endpoint did not return a session token.");
-          }
-
-          sessionMode = tokenData.mode || "LITE";
+          const response = await fetch(STATUS_ENDPOINT, { cache: "no-store" });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(data.error || "Chef Pepper status check failed.");
           setStatus(
-            sessionMode === "FULL"
-              ? "Connecting Head Pepper conversation…"
-              : "Connecting Head Pepper visual-only…"
+            data.ready
+              ? `Chef Pepper text consultation ready · Identity Root v${data.identity_version}`
+              : "Chef Pepper's server is running, but OPENAI_API_KEY is not set."
           );
-
-          session = new LiveAvatarSession(tokenData.session_token, {
-            apiUrl: API_URL,
-            autoKeepAlive: true,
-            voiceChat: { defaultMuted: true }
-          });
-
-          session.on(SessionEvent.SESSION_STATE_CHANGED, (state) => {
-            setStatus("Head Pepper: " + state);
-          });
-
-          session.on(SessionEvent.SESSION_STREAM_READY, () => {
-            session.attach(avatarVideo);
-            stage.hidden = false;
-            setStatus(
-              sessionMode === "FULL"
-                ? "Head Pepper is live. Type below or enable the microphone."
-                : "Head Pepper is live in visual-only mode. Conversation context is not configured."
-            );
-          });
-
-          session.on(SessionEvent.SESSION_DISCONNECTED, () => {
-            session = null;
-            sessionMode = "LITE";
-            micActive = false;
-            avatarVideo.srcObject = null;
-            stage.hidden = true;
-            startBtn.disabled = false;
-            stopBtn.disabled = true;
-            syncConversationControls();
-            setStatus("Head Pepper disconnected.");
-          });
-
-          await session.start();
-          stopBtn.disabled = false;
-          syncConversationControls();
-        } catch (err) {
-          console.error(err);
-          session = null;
-          sessionMode = "LITE";
-          micActive = false;
-          stage.hidden = true;
-          startBtn.disabled = false;
-          stopBtn.disabled = true;
-          syncConversationControls();
-          setStatus(err && err.message ? err.message : String(err));
+        } catch {
+          setStatus("Chef Pepper's local text server is not available.");
         }
       }
 
-      chatForm.addEventListener("submit", (event) => {
+      chatForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const text = messageInput.value.trim();
-        if (!text || !session || sessionMode !== "FULL") return;
+        if (!text || submitting) return;
+
+        setSubmitting(true);
+        setStatus("Chef Pepper is thinking…");
 
         try {
-          session.message(text);
-          messageInput.value = "";
-          setStatus("Message sent. Head Pepper is thinking…");
-        } catch (err) {
-          setStatus(err && err.message ? err.message : String(err));
-        }
-      });
-
-      micBtn.addEventListener("click", async () => {
-        if (!session || sessionMode !== "FULL") return;
-
-        try {
-          if (!micActive) {
-            await session.voiceChat.start();
-            await session.voiceChat.unmute();
-            micActive = true;
-            setStatus("Microphone live. Talk to Head Pepper.");
-          } else {
-            await session.voiceChat.mute();
-            micActive = false;
-            setStatus("Microphone muted. Text chat is still available.");
+          const response = await fetch(CHAT_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              conversation_id: getConversationId(),
+              message: text
+            })
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok || !data.reply) {
+            throw new Error(data.error || "Chef Pepper did not return a written reply.");
           }
-          syncConversationControls();
+
+          showReply(data.reply);
+          messageInput.value = "";
+          setStatus(`Chef Pepper replied · Identity Root v${data.identity_version}`);
+          console.log("Chef Pepper:", data.reply);
         } catch (err) {
           setStatus(err && err.message ? err.message : String(err));
+          console.error("Chef Pepper chat error", err);
+        } finally {
+          setSubmitting(false);
+          messageInput.focus();
         }
       });
 
-      startBtn.addEventListener("click", startHeadPepper);
-      stopBtn.addEventListener("click", stopHeadPepper);
-      syncConversationControls();
-
-      window.addEventListener("beforeunload", () => {
-        if (session) {
-          try { session.stop(); } catch (_) {}
-        }
-      });
+      getConversationId();
+      checkChefPepper();
     })();
   </script>
 </body>
