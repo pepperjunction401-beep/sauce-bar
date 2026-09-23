@@ -213,6 +213,7 @@
     <section class="controls" aria-label="Head Pepper test controls">
       <div class="buttons">
         <button id="startBtn" type="button">Start Head Pepper</button>
+        <button id="speakBtn" type="button" disabled>Speak JG3 Test</button>
         <button id="stopBtn" class="secondary" type="button" disabled>Stop Head Pepper</button>
       </div>
 
@@ -265,9 +266,11 @@
       const HEAD_PEPPER_ID = "b6378b3e-614a-47e0-9ea3-c129c7851ba4";
       const API_URL = "https://api.liveavatar.com";
       const qs = new URLSearchParams(location.search);
-      const TOKEN_ENDPOINT = qs.get("tokenEndpoint") || "/api/liveavatar-token";
+      const TOKEN_ENDPOINT = qs.get("tokenEndpoint") || "/api/liveavatar-lite-token";
+      const JG3_TEST_ENDPOINT = "/api/starfish-jg3-test-audio";
 
       const startBtn = document.getElementById("startBtn");
+      const speakBtn = document.getElementById("speakBtn");
       const stopBtn = document.getElementById("stopBtn");
       const statusPill = document.getElementById("statusPill");
       const message = document.getElementById("message");
@@ -286,6 +289,8 @@
 
       let session = null;
       let stopChromaKey = null;
+      let streamReady = false;
+      let speaking = false;
 
       function setStatus(text) {
         statusPill.textContent = text;
@@ -419,11 +424,14 @@
         }
 
         session = null;
+        streamReady = false;
+        speaking = false;
         avatarVideo.srcObject = null;
         const ctx = avatarCanvas.getContext("2d");
         if (ctx) ctx.clearRect(0, 0, avatarCanvas.width, avatarCanvas.height);
 
         startBtn.disabled = false;
+        speakBtn.disabled = true;
         stopBtn.disabled = true;
         setStatus("Idle");
         setMessage("Head Pepper stopped.");
@@ -445,6 +453,9 @@
           if (!tokenResponse.ok || !tokenData.session_token) {
             throw new Error(tokenData.error || "Token endpoint did not return a session token.");
           }
+          if (tokenData.mode !== "LITE") {
+            throw new Error("The JG3 test requires a LITE LiveAvatar session.");
+          }
 
           setStatus("Connecting…");
           setMessage("Session token received. Connecting Head Pepper…");
@@ -461,11 +472,13 @@
 
           session.on(SessionEvent.SESSION_STREAM_READY, () => {
             session.attach(avatarVideo);
+            streamReady = true;
+            speakBtn.disabled = false;
 
             const begin = () => {
               startChromaLoop();
               syncRawVisibility();
-              setMessage("Head Pepper stream is live. Fit his position, then tune the key—or keep Raw view and use Right crop / Right fade to trim the green panel away from Cetriolo.");
+              setMessage("Head Pepper is live in LITE mode. Select Speak JG3 Test to send Starfish audio through the avatar.");
             };
 
             if (avatarVideo.readyState >= 2) begin();
@@ -474,7 +487,11 @@
 
           session.on(SessionEvent.SESSION_DISCONNECTED, () => {
             if (stopChromaKey) stopChromaKey();
+            session = null;
+            streamReady = false;
+            speaking = false;
             startBtn.disabled = false;
+            speakBtn.disabled = true;
             stopBtn.disabled = true;
             setStatus("Disconnected");
           });
@@ -486,7 +503,89 @@
           setStatus("Error");
           setMessage(err && err.message ? err.message : String(err));
           startBtn.disabled = false;
+          speakBtn.disabled = true;
           stopBtn.disabled = true;
+        }
+      }
+
+      async function decodeToPcm24k(audioBytes) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass || !window.OfflineAudioContext) {
+          throw new Error("This browser does not support the audio conversion required by LiveAvatar.");
+        }
+
+        const audioContext = new AudioContextClass();
+        try {
+          const decoded = await audioContext.decodeAudioData(audioBytes.slice(0));
+          const sampleRate = 24000;
+          const frameCount = Math.max(1, Math.ceil(decoded.duration * sampleRate));
+          const offline = new OfflineAudioContext(1, frameCount, sampleRate);
+          const source = offline.createBufferSource();
+          source.buffer = decoded;
+          source.connect(offline.destination);
+          source.start(0);
+
+          const rendered = await offline.startRendering();
+          const samples = rendered.getChannelData(0);
+          const bytes = new Uint8Array(samples.length * 2);
+          const view = new DataView(bytes.buffer);
+
+          for (let i = 0; i < samples.length; i += 1) {
+            const sample = Math.max(-1, Math.min(1, samples[i]));
+            const pcm = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
+            view.setInt16(i * 2, Math.round(pcm), true);
+          }
+
+          let binary = "";
+          const chunkSize = 0x8000;
+          for (let offset = 0; offset < bytes.length; offset += chunkSize) {
+            binary += String.fromCharCode(...bytes.subarray(offset, offset + chunkSize));
+          }
+          return binary;
+        } finally {
+          await audioContext.close().catch(() => {});
+        }
+      }
+
+      async function speakJg3Test() {
+        if (!session || !streamReady || speaking) return;
+
+        const activeSession = session;
+        speaking = true;
+        speakBtn.disabled = true;
+        setStatus("JG3…");
+        setMessage("Generating the approved JG3 Starfish voice test…");
+
+        try {
+          const response = await fetch(JG3_TEST_ENDPOINT, { method: "POST" });
+          if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            throw new Error(data.error || "The JG3 Starfish test request failed.");
+          }
+
+          const durationSeconds = Number(response.headers.get("X-Chef-Pepper-Audio-Duration")) || 0;
+          const pcmAudio = await decodeToPcm24k(await response.arrayBuffer());
+          if (!session || session !== activeSession || !streamReady) {
+            throw new Error("Head Pepper disconnected before the JG3 audio was ready.");
+          }
+
+          activeSession.repeatAudio(pcmAudio);
+          setStatus("Speaking");
+          setMessage("JG3 Starfish audio was sent to Head Pepper through LiveAvatar LITE.");
+
+          window.setTimeout(() => {
+            if (session === activeSession && streamReady) {
+              speaking = false;
+              speakBtn.disabled = false;
+              setStatus("Connected");
+            }
+          }, Math.max(1500, Math.ceil(durationSeconds * 1000) + 750));
+        } catch (err) {
+          speaking = false;
+          speakBtn.disabled = !session || !streamReady;
+          setStatus("Error");
+          setMessage(err && err.message ? err.message : String(err));
+          console.error("JG3 LITE voice test error", err);
         }
       }
 
@@ -531,9 +630,13 @@
 
       rawToggle.addEventListener("change", syncRawVisibility);
       startBtn.addEventListener("click", startSession);
+      speakBtn.addEventListener("click", speakJg3Test);
       stopBtn.addEventListener("click", stopSession);
       window.addEventListener("beforeunload", () => {
         if (stopChromaKey) stopChromaKey();
+        if (session) {
+          try { session.stop(); } catch (_) {}
+        }
       });
 
       syncRawVisibility();

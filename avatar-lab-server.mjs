@@ -6,11 +6,15 @@ import { loadChefPepperIdentityRoot } from "./chef-pepper-identity.mjs";
 
 const LIVEAVATAR_API_KEY = process.env.LIVEAVATAR_API_KEY;
 const LIVEAVATAR_API_URL = process.env.LIVEAVATAR_API_URL || "https://api.liveavatar.com";
+const HEYGEN_API_KEY = process.env.HEYGEN_API_KEY;
+const HEYGEN_API_URL = process.env.HEYGEN_API_URL || "https://api.heygen.com";
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_API_URL = process.env.OPENAI_API_URL || "https://api.openai.com/v1";
 const HEAD_PEPPER_ID = "b6378b3e-614a-47e0-9ea3-c129c7851ba4";
 const HEAD_PEPPER_VOICE_ID = process.env.LIVEAVATAR_VOICE_ID || "bb5e52ca-1775-442d-a70b-0152a7e518f2";
 const HEAD_PEPPER_CONTEXT_ID = process.env.LIVEAVATAR_CONTEXT_ID || "";
+const JG3_STARFISH_VOICE_ID = "bb7b684ec33a4d1fa032f5683d41abec";
+const JG3_TEST_TEXT = "Welcome to Pepper Junction. Tell me what's on the plate, and we'll find something worth pouring.";
 const PORT = Number(process.env.PORT || 4173);
 
 const __filename = fileURLToPath(import.meta.url);
@@ -222,6 +226,79 @@ function serveFile(req, res, filePath) {
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
 
+  if (req.method === "POST" && url.pathname === "/api/starfish-jg3-test-audio") {
+    if (!HEYGEN_API_KEY) {
+      sendJson(res, 500, {
+        error: "HEYGEN_API_KEY is not set in the shell running this test server."
+      });
+      return;
+    }
+
+    try {
+      const speechResponse = await fetch(`${HEYGEN_API_URL}/v3/voices/speech`, {
+        method: "POST",
+        headers: {
+          "x-api-key": HEYGEN_API_KEY,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          text: JG3_TEST_TEXT,
+          voice_id: JG3_STARFISH_VOICE_ID,
+          input_type: "text",
+          speed: 0.9,
+          locale: "en-US"
+        })
+      });
+
+      const speechPayload = await speechResponse.json().catch(() => ({}));
+      if (!speechResponse.ok) {
+        const message =
+          speechPayload?.error?.message ||
+          speechPayload?.message ||
+          "HeyGen rejected the JG3 Starfish speech request.";
+        sendJson(res, speechResponse.status, { error: message });
+        return;
+      }
+
+      const audioUrl = speechPayload?.data?.audio_url;
+      if (typeof audioUrl !== "string") {
+        sendJson(res, 502, { error: "HeyGen returned no Starfish audio URL." });
+        return;
+      }
+
+      const parsedAudioUrl = new URL(audioUrl);
+      if (
+        parsedAudioUrl.protocol !== "https:" ||
+        !(parsedAudioUrl.hostname === "heygen.ai" || parsedAudioUrl.hostname.endsWith(".heygen.ai"))
+      ) {
+        sendJson(res, 502, { error: "HeyGen returned an unexpected Starfish audio host." });
+        return;
+      }
+
+      const audioResponse = await fetch(parsedAudioUrl);
+      if (!audioResponse.ok) {
+        sendJson(res, 502, { error: "HeyGen created JG3 speech, but its audio file could not be downloaded." });
+        return;
+      }
+
+      const audio = Buffer.from(await audioResponse.arrayBuffer());
+      res.writeHead(200, {
+        "Content-Type": audioResponse.headers.get("content-type") || "audio/mpeg",
+        "Content-Length": audio.length,
+        "Cache-Control": "no-store",
+        "X-Chef-Pepper-Audio-Duration": String(speechPayload?.data?.duration || "")
+      });
+      res.end(audio);
+    } catch (err) {
+      console.error("JG3 Starfish test error", err);
+      sendJson(res, 500, {
+        error: err instanceof Error ? err.message : String(err)
+      });
+    }
+
+    return;
+  }
+
   if (req.method === "GET" && url.pathname === "/api/chef-pepper-status") {
     sendJson(res, 200, {
       ready: Boolean(OPENAI_API_KEY),
@@ -281,7 +358,10 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (req.method === "POST" && url.pathname === "/api/liveavatar-token") {
+  if (
+    req.method === "POST" &&
+    (url.pathname === "/api/liveavatar-token" || url.pathname === "/api/liveavatar-lite-token")
+  ) {
     if (!LIVEAVATAR_API_KEY) {
       sendJson(res, 500, {
         error: "LIVEAVATAR_API_KEY is not set in the shell running this test server."
@@ -290,6 +370,8 @@ const server = http.createServer(async (req, res) => {
     }
 
     try {
+      const forceLite = url.pathname === "/api/liveavatar-lite-token";
+      const fullMode = Boolean(HEAD_PEPPER_CONTEXT_ID) && !forceLite;
       const upstream = await fetch(`${LIVEAVATAR_API_URL}/v1/sessions/token`, {
         method: "POST",
         headers: {
@@ -297,7 +379,7 @@ const server = http.createServer(async (req, res) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(
-          HEAD_PEPPER_CONTEXT_ID
+          fullMode
             ? {
                 mode: "FULL",
                 avatar_id: HEAD_PEPPER_ID,
@@ -332,7 +414,7 @@ const server = http.createServer(async (req, res) => {
       sendJson(res, 200, {
         session_token: payload?.data?.session_token,
         session_id: payload?.data?.session_id,
-        mode: HEAD_PEPPER_CONTEXT_ID ? "FULL" : "LITE"
+        mode: fullMode ? "FULL" : "LITE"
       });
     } catch (err) {
       sendJson(res, 500, {
@@ -375,5 +457,8 @@ server.listen(PORT, "127.0.0.1", () => {
   }
   if (!LIVEAVATAR_API_KEY) {
     console.log("LIVEAVATAR_API_KEY is not set. The separate avatar lab cannot start Head Pepper.");
+  }
+  if (!HEYGEN_API_KEY) {
+    console.log("HEYGEN_API_KEY is not set. The avatar lab can start Head Pepper, but cannot generate the JG3 voice test.");
   }
 });
