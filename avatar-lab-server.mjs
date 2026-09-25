@@ -258,7 +258,7 @@ const server = http.createServer(async (req, res) => {
           text: speechText,
           voice_id: JG3_STARFISH_VOICE_ID,
           input_type: "text",
-          speed: 0.9,
+          speed: 1.0,
           locale: "en-US"
         })
       });
