@@ -182,13 +182,37 @@ body {
   white-space: pre-wrap;
 }
 
-.pj-chef-pepper-display-label {
+.pj-chef-pepper-transcript {
+  display: grid;
+  gap: 8px;
+}
+
+.pj-chef-pepper-transcript-entry {
+  margin: 0;
+}
+
+.pj-chef-pepper-transcript-speaker {
   display: block;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
   color: #6B0F1A;
   font: 700 clamp(8px, 0.9vw, 11px)/1 "Josefin Sans", sans-serif;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.pj-chef-pepper-transcript-entry.is-customer .pj-chef-pepper-transcript-speaker {
+  color: #1E3020;
+}
+
+.pj-chef-pepper-transcript-recommendations ul {
+  margin: 3px 0 0;
+  padding-left: 18px;
+}
+
+.pj-chef-pepper-transcript-recommendations a {
+  color: #6B0F1A;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .pj-chef-pepper-display.is-waiting {
@@ -1161,8 +1185,9 @@ body {
         aria-live="polite"
         aria-label="Chef Pepper's written replies"
       >
-        <span class="pj-chef-pepper-display-label">Chef Pepper</span>
-        <p id="pj-chef-pepper-reply">His written replies will appear here.</p>
+        <div class="pj-chef-pepper-transcript" id="pj-chef-pepper-transcript">
+          <p>Chef Pepper's consultation will appear here.</p>
+        </div>
       </div>
 
       <button
@@ -1342,6 +1367,7 @@ body {
    ── ────────────────────────────────────────────────────────── */
    let PJ_DATA = [];
    let PJ_DATA_LOADED = false;
+   let PJ_LAST_RENDERED_PRODUCTS = [];
 
    /* Remap JSON fields to match widget's existing field references */
    function remapProduct(p) {
@@ -1873,13 +1899,14 @@ function renderRecipeRedirectCard() {
       els.count.textContent = `${filtered.length} product${filtered.length === 1 ? '' : 's'} found`;
 
       if (!filtered.length) {
+        PJ_LAST_RENDERED_PRODUCTS = [];
         els.results.innerHTML = `
           <div class="pj-empty">
             <strong>No matches found.</strong><br><br>
             Try widening the filters or searching by food, flavor, or pepper type.
           </div>
         `;
-        return;
+        return [];
       }
 
       filtered.sort((a, b) => {
@@ -1901,18 +1928,38 @@ function renderRecipeRedirectCard() {
       els.results.innerHTML = filtered.map(record => card(record)).join('');
       bindCardImageToggles();
       bindCardImageFallbacks();
+      PJ_LAST_RENDERED_PRODUCTS = filtered.map(record => ({
+        name: String(record["Product Name"] || '').trim(),
+        url: String(record[PRODUCT_URL_COL] || '').trim()
+      })).filter(product => product.name && product.url);
+      return PJ_LAST_RENDERED_PRODUCTS.slice();
     }
 
-    function render() {
+    function render(finalizeChefPepperRecommendations = false) {
       const query = els.search.value.trim();
 
       if (containsRecipeIntent(query)) {
+        PJ_LAST_RENDERED_PRODUCTS = [];
         renderRecipeRedirectCard();
-        return;
+        return [];
       }
 
-      renderDiscoveryResults();
+      const products = renderDiscoveryResults();
+      if (finalizeChefPepperRecommendations) {
+        window.dispatchEvent(new CustomEvent('pj:chef-pepper-recommendations-finalized', {
+          detail: { products: products.map(product => ({ ...product })) }
+        }));
+      }
+      return products;
     }
+
+    /* Final-RI integration seam: this is the only Pairing Bar action that
+       both presents the completed CNS-backed cards and records that exact
+       recommendation set in Chef Pepper's visit transcript. */
+    window.pjFinalizeChefPepperRecommendations = function() {
+      if (!PJ_DATA_LOADED) return [];
+      return render(true);
+    };
 
 els.apply.addEventListener('click', onDiscoveryInteraction);
 
@@ -1976,17 +2023,20 @@ els.reset.addEventListener('click', () => {
       const CHAT_ENDPOINT = "/api/chef-pepper-chat";
       const STATUS_ENDPOINT = "/api/chef-pepper-status";
       const SESSION_STORAGE_KEY = "pjChefPepperConversationId";
+      const TRANSCRIPT_STORAGE_KEY = "pjChefPepperTranscriptV1";
+      const MAX_TRANSCRIPT_ENTRIES = 80;
 
       const display = document.getElementById("pj-chef-pepper-display");
-      const reply = document.getElementById("pj-chef-pepper-reply");
+      const transcriptElement = document.getElementById("pj-chef-pepper-transcript");
       const status = document.getElementById("pj-chef-pepper-status");
       const chatForm = document.getElementById("pj-chef-pepper-chat");
       const messageInput = document.getElementById("pj-chef-pepper-message");
       const sendBtn = document.getElementById("pj-chef-pepper-send");
 
-      if (!display || !reply || !status || !chatForm || !messageInput || !sendBtn) return;
+      if (!display || !transcriptElement || !status || !chatForm || !messageInput || !sendBtn) return;
 
       let submitting = false;
+      let transcript = loadTranscript();
 
       function createConversationId() {
         if (window.crypto && typeof window.crypto.randomUUID === "function") {
@@ -2021,9 +2071,79 @@ els.reset.addEventListener('click', () => {
           .replace(/\*\*([\s\S]*?)\*\*/g, "$1");
       }
 
-      function showReply(text) {
-        reply.textContent = cleanReplyText(text);
-        display.scrollTop = 0;
+      function loadTranscript() {
+        try {
+          const stored = JSON.parse(sessionStorage.getItem(TRANSCRIPT_STORAGE_KEY) || "[]");
+          if (!Array.isArray(stored)) return [];
+          return stored.filter(entry => (
+            entry &&
+            (entry.type === "message" || entry.type === "recommendations")
+          )).slice(-MAX_TRANSCRIPT_ENTRIES);
+        } catch {
+          return [];
+        }
+      }
+
+      function saveTranscript() {
+        try {
+          sessionStorage.setItem(TRANSCRIPT_STORAGE_KEY, JSON.stringify(transcript));
+        } catch (err) {
+          console.warn("Chef Pepper transcript could not be saved", err);
+        }
+      }
+
+      function renderTranscript() {
+        transcriptElement.replaceChildren();
+
+        if (!transcript.length) {
+          const empty = document.createElement("p");
+          empty.textContent = "Chef Pepper's consultation will appear here.";
+          transcriptElement.append(empty);
+          return;
+        }
+
+        transcript.forEach(entry => {
+          const section = document.createElement("section");
+          section.className = "pj-chef-pepper-transcript-entry";
+
+          const label = document.createElement("span");
+          label.className = "pj-chef-pepper-transcript-speaker";
+
+          if (entry.type === "message") {
+            section.classList.add(entry.speaker === "customer" ? "is-customer" : "is-chef-pepper");
+            label.textContent = entry.speaker === "customer" ? "You" : "Chef Pepper";
+            const text = document.createElement("p");
+            text.textContent = cleanReplyText(entry.text);
+            section.append(label, text);
+          } else {
+            section.classList.add("pj-chef-pepper-transcript-recommendations");
+            label.textContent = "Recommendations shown";
+            const list = document.createElement("ul");
+            (entry.products || []).forEach(product => {
+              if (!product || !product.name || !product.url) return;
+              const item = document.createElement("li");
+              const link = document.createElement("a");
+              link.href = product.url;
+              link.textContent = product.name;
+              link.target = "_blank";
+              link.rel = "noopener noreferrer";
+              item.append(link);
+              list.append(item);
+            });
+            section.append(label, list);
+          }
+
+          transcriptElement.append(section);
+        });
+
+        display.scrollTop = display.scrollHeight;
+      }
+
+      function appendTranscriptEntry(entry) {
+        transcript.push(entry);
+        transcript = transcript.slice(-MAX_TRANSCRIPT_ENTRIES);
+        saveTranscript();
+        renderTranscript();
       }
 
       async function checkChefPepper() {
@@ -2048,6 +2168,7 @@ els.reset.addEventListener('click', () => {
 
         setSubmitting(true);
         setStatus("Chef Pepper is thinking…");
+        appendTranscriptEntry({ type: "message", speaker: "customer", text });
 
         try {
           const response = await fetch(CHAT_ENDPOINT, {
@@ -2063,7 +2184,11 @@ els.reset.addEventListener('click', () => {
             throw new Error(data.error || "Chef Pepper did not return a written reply.");
           }
 
-          showReply(data.reply);
+          appendTranscriptEntry({
+            type: "message",
+            speaker: "chef-pepper",
+            text: cleanReplyText(data.reply)
+          });
           messageInput.value = "";
           setStatus(`Chef Pepper replied · Identity Root v${data.identity_version}`);
           console.log("Chef Pepper:", data.reply);
@@ -2076,7 +2201,22 @@ els.reset.addEventListener('click', () => {
         }
       });
 
+      window.addEventListener("pj:chef-pepper-recommendations-finalized", event => {
+        const products = Array.isArray(event.detail?.products)
+          ? event.detail.products.filter(product => product?.name && product?.url)
+          : [];
+        if (!products.length) return;
+        appendTranscriptEntry({
+          type: "recommendations",
+          products: products.map(product => ({
+            name: String(product.name),
+            url: String(product.url)
+          }))
+        });
+      });
+
       getConversationId();
+      renderTranscript();
       checkChefPepper();
     })();
   </script>
