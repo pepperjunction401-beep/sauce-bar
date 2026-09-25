@@ -263,6 +263,28 @@
 
   <script type="module">
     import { LiveAvatarSession, SessionEvent, AgentEventsEnum } from "https://esm.sh/@heygen/liveavatar-web-sdk@0.0.19";
+
+    // Compatibility patch for @heygen/liveavatar-web-sdk 0.0.19.
+    // The released SDK sends raw PCM binary strings in agent.speak messages,
+    // while the LiveAvatar server requires each PCM chunk to be Base64 encoded.
+    // See https://github.com/heygen-com/liveavatar-web-sdk/issues/92 and
+    // https://github.com/heygen-com/liveavatar-web-sdk/pull/103.
+    const nativeWebSocketSend = WebSocket.prototype.send;
+    WebSocket.prototype.send = function patchedLiveAvatarSend(data) {
+      if (typeof data === "string") {
+        try {
+          const payload = JSON.parse(data);
+          if (payload?.type === "agent.speak" && typeof payload.audio === "string") {
+            payload.audio = btoa(payload.audio);
+            data = JSON.stringify(payload);
+          }
+        } catch {
+          // Preserve non-JSON and unrelated WebSocket traffic without modification.
+        }
+      }
+      return nativeWebSocketSend.call(this, data);
+    };
+
     (() => {
       const HEAD_PEPPER_ID = "b6378b3e-614a-47e0-9ea3-c129c7851ba4";
       const API_URL = "https://api.liveavatar.com";
