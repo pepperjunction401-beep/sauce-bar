@@ -2015,8 +2015,14 @@ els.reset.addEventListener('click', () => {
         display.classList.toggle("is-waiting", nextSubmitting);
       }
 
+      function cleanReplyText(text) {
+        return String(text || "")
+          .replace(/&#x20;|&#32;|&nbsp;/gi, " ")
+          .replace(/\*\*([\s\S]*?)\*\*/g, "$1");
+      }
+
       function showReply(text) {
-        reply.textContent = text;
+        reply.textContent = cleanReplyText(text);
         display.scrollTop = 0;
       }
 
