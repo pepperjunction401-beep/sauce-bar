@@ -226,7 +226,10 @@ function serveFile(req, res, filePath) {
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
 
-  if (req.method === "POST" && url.pathname === "/api/starfish-jg3-test-audio") {
+  if (
+    req.method === "POST" &&
+    (url.pathname === "/api/starfish-jg3-test-audio" || url.pathname === "/api/starfish-jg3-speech")
+  ) {
     if (!HEYGEN_API_KEY) {
       sendJson(res, 500, {
         error: "HEYGEN_API_KEY is not set in the shell running this test server."
@@ -235,6 +238,16 @@ const server = http.createServer(async (req, res) => {
     }
 
     try {
+      let speechText = JG3_TEST_TEXT;
+      if (url.pathname === "/api/starfish-jg3-speech") {
+        const body = await readJsonBody(req);
+        speechText = typeof body.text === "string" ? body.text.trim() : "";
+        if (!speechText || speechText.length > 1600) {
+          sendJson(res, 400, { error: "JG3 speech must contain 1 to 1,600 characters." });
+          return;
+        }
+      }
+
       const speechResponse = await fetch(`${HEYGEN_API_URL}/v3/voices/speech`, {
         method: "POST",
         headers: {
@@ -242,7 +255,7 @@ const server = http.createServer(async (req, res) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          text: JG3_TEST_TEXT,
+          text: speechText,
           voice_id: JG3_STARFISH_VOICE_ID,
           input_type: "text",
           speed: 0.9,
@@ -290,8 +303,8 @@ const server = http.createServer(async (req, res) => {
       });
       res.end(audio);
     } catch (err) {
-      console.error("JG3 Starfish test error", err);
-      sendJson(res, 500, {
+      console.error("JG3 Starfish speech error", err);
+      sendJson(res, Number(err?.statusCode) || 500, {
         error: err instanceof Error ? err.message : String(err)
       });
     }
@@ -450,7 +463,7 @@ server.listen(PORT, "127.0.0.1", () => {
   console.log(`Chef Pepper: Identity Root v${CHEF_PEPPER_IDENTITY.version}`);
   console.log(`Fingerprint: ${CHEF_PEPPER_IDENTITY.fingerprint}`);
   console.log(`Model:       ${CHEF_PEPPER_MODEL}`);
-  console.log("Pass 1:      typed text only; no LiveAvatar session starts from the Pairing Bar");
+  console.log("Pairing Bar: typed replies only; the separate lab can speak replies in LITE mode");
   console.log("");
   if (!OPENAI_API_KEY) {
     console.log("OPENAI_API_KEY is not set. The Pairing Bar will load, but typed Chef Pepper replies cannot run.");

@@ -183,6 +183,30 @@
       color: #f2d98a;
       font: 13px/1.4 Arial, sans-serif;
     }
+    .conversation {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #fff;
+      color: #1e3020;
+      font: 15px/1.5 Arial, sans-serif;
+    }
+    .conversation-log {
+      min-height: 90px;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .conversation-log p { margin: 0 0 10px; white-space: pre-wrap; }
+    .conversation-form { display: flex; gap: 8px; }
+    .conversation-form input {
+      flex: 1;
+      min-width: 0;
+      padding: 10px;
+      border: 1px solid #9ba99e;
+      border-radius: 8px;
+      font: inherit;
+    }
     @media (max-width: 720px) {
       body { padding: 12px; }
       .sliders,
@@ -216,6 +240,16 @@
         <button id="speakBtn" type="button" disabled>Speak JG3 Test</button>
         <button id="stopBtn" class="secondary" type="button" disabled>Stop Head Pepper</button>
       </div>
+
+      <section class="conversation" aria-label="Typed Chef Pepper conversation">
+        <div class="conversation-log" id="conversationLog" role="log" aria-live="polite">
+          <p>Start Head Pepper, then type a message to hear Chef Pepper reply.</p>
+        </div>
+        <form class="conversation-form" id="conversationForm">
+          <input id="conversationInput" aria-label="Message to Chef Pepper" placeholder="Ask Chef Pepper…" maxlength="4000" disabled>
+          <button id="conversationSend" type="submit" disabled>Send</button>
+        </form>
+      </section>
 
       <div class="sliders">
         <label>
@@ -291,6 +325,11 @@
       const qs = new URLSearchParams(location.search);
       const TOKEN_ENDPOINT = qs.get("tokenEndpoint") || "/api/liveavatar-lite-token";
       const JG3_TEST_ENDPOINT = "/api/starfish-jg3-test-audio";
+      const JG3_SPEECH_ENDPOINT = "/api/starfish-jg3-speech";
+      const CHAT_ENDPOINT = "/api/chef-pepper-chat";
+      const IDLE_LIMIT_MS = 75 * 1000;
+      const MAX_SESSION_MS = 5 * 60 * 1000;
+      const HIDDEN_LIMIT_MS = 15 * 1000;
 
       const startBtn = document.getElementById("startBtn");
       const speakBtn = document.getElementById("speakBtn");
@@ -298,6 +337,10 @@
       const statusPill = document.getElementById("statusPill");
       const message = document.getElementById("message");
       const audioDiagnostics = document.getElementById("audioDiagnostics");
+      const conversationLog = document.getElementById("conversationLog");
+      const conversationForm = document.getElementById("conversationForm");
+      const conversationInput = document.getElementById("conversationInput");
+      const conversationSend = document.getElementById("conversationSend");
       const avatarVideo = document.getElementById("avatarVideo");
       const avatarCanvas = document.getElementById("avatarCanvas");
       const avatarRig = document.getElementById("avatarRig");
@@ -316,6 +359,13 @@
       let streamReady = false;
       let speaking = false;
       let diagnosticTimer = 0;
+      let idleTimer = 0;
+      let maxSessionTimer = 0;
+      let hiddenTimer = 0;
+      let hiddenSince = 0;
+      let voiceTimer = 0;
+      let chatBusy = false;
+      let conversationId = crypto.randomUUID();
       let audioDiagnostic = {
         pcmBytes: 0,
         repeatEventId: "not sent",
@@ -329,6 +379,41 @@
 
       function setMessage(text) {
         message.textContent = text;
+      }
+
+      function addConversationLine(speaker, text) {
+        const line = document.createElement("p");
+        const label = document.createElement("strong");
+        label.textContent = speaker + ": ";
+        line.append(label, document.createTextNode(text));
+        conversationLog.append(line);
+        conversationLog.scrollTop = conversationLog.scrollHeight;
+      }
+
+      function syncConversationControls() {
+        const ready = Boolean(session && streamReady);
+        conversationInput.disabled = !ready || chatBusy;
+        conversationSend.disabled = !ready || chatBusy || speaking;
+        speakBtn.disabled = !ready || chatBusy || speaking;
+      }
+
+      function clearSessionTimers() {
+        for (const timer of [idleTimer, maxSessionTimer, hiddenTimer, voiceTimer]) {
+          window.clearTimeout(timer);
+        }
+        idleTimer = maxSessionTimer = hiddenTimer = voiceTimer = 0;
+      }
+
+      function touchSession() {
+        if (!session || !streamReady) return;
+        window.clearTimeout(idleTimer);
+        idleTimer = window.setTimeout(() => {
+          stopSession("Head Pepper stopped after 75 seconds without interaction.");
+        }, IDLE_LIMIT_MS);
+      }
+
+      function cleanSpokenReply(text) {
+        return text.replace(/\*\*/g, "").replace(/&#x20;|&nbsp;/gi, " ").trim();
       }
 
       function renderAudioDiagnostic(prefix = "Audio diagnostics") {
@@ -462,20 +547,22 @@
         };
       }
 
-      async function stopSession() {
+      async function stopSession(reason = "Head Pepper stopped.") {
+        clearSessionTimers();
         if (stopChromaKey) stopChromaKey();
-
-        if (session) {
+        const activeSession = session;
+        session = null;
+        streamReady = false;
+        speaking = false;
+        chatBusy = false;
+        syncConversationControls();
+        if (activeSession) {
           try {
-            await session.stop();
+            await activeSession.stop();
           } catch (err) {
             console.warn("Head Pepper stop error", err);
           }
         }
-
-        session = null;
-        streamReady = false;
-        speaking = false;
         if (diagnosticTimer) window.clearTimeout(diagnosticTimer);
         diagnosticTimer = 0;
         avatarVideo.srcObject = null;
@@ -483,13 +570,17 @@
         if (ctx) ctx.clearRect(0, 0, avatarCanvas.width, avatarCanvas.height);
 
         startBtn.disabled = false;
-        speakBtn.disabled = true;
         stopBtn.disabled = true;
+        syncConversationControls();
         setStatus("Idle");
-        setMessage("Head Pepper stopped.");
+        setMessage(reason);
       }
 
       async function startSession() {
+        clearSessionTimers();
+        conversationId = crypto.randomUUID();
+        conversationLog.replaceChildren();
+        addConversationLine("Lab", "New Chef Pepper conversation. This session stops after 75 seconds idle or five minutes total.");
         startBtn.disabled = true;
         setStatus("Token…");
         setMessage("Requesting a short-lived Head Pepper session token…");
@@ -517,60 +608,75 @@
             autoKeepAlive: true,
             voiceChat: { defaultMuted: true }
           });
+          const liveSession = session;
 
-          session.on(SessionEvent.SESSION_STATE_CHANGED, (state) => {
+          liveSession.on(SessionEvent.SESSION_STATE_CHANGED, (state) => {
+            if (session !== liveSession) return;
             setStatus(state);
           });
 
-          session.on(AgentEventsEnum.AVATAR_SPEAK_STARTED, (event) => {
+          liveSession.on(AgentEventsEnum.AVATAR_SPEAK_STARTED, (event) => {
+            if (session !== liveSession) return;
             audioDiagnostic.speakStarted += 1;
             renderAudioDiagnostic("HeyGen acknowledged speak-start");
             console.info("Chef Pepper diagnostic: avatar.speak_started", event);
           });
 
-          session.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, (event) => {
+          liveSession.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, (event) => {
+            if (session !== liveSession) return;
             audioDiagnostic.speakEnded += 1;
             renderAudioDiagnostic("HeyGen acknowledged speak-end");
             console.info("Chef Pepper diagnostic: avatar.speak_ended", event);
+            touchSession();
           });
 
-          session.on(SessionEvent.SESSION_STREAM_READY, () => {
-            session.attach(avatarVideo);
+          liveSession.on(SessionEvent.SESSION_STREAM_READY, () => {
+            if (session !== liveSession) return;
+            liveSession.attach(avatarVideo);
             streamReady = true;
-            speakBtn.disabled = false;
+            syncConversationControls();
+            touchSession();
+            maxSessionTimer = window.setTimeout(() => {
+              stopSession("Head Pepper stopped at the five-minute session limit.");
+            }, MAX_SESSION_MS);
 
             const begin = () => {
               startChromaLoop();
               syncRawVisibility();
-              setMessage("Head Pepper is live in LITE mode. Select Speak JG3 Test to send Starfish audio through the avatar.");
+              setMessage("Head Pepper is live in LITE mode. Type a message to hear Chef Pepper answer.");
             };
 
             if (avatarVideo.readyState >= 2) begin();
             else avatarVideo.addEventListener("loadeddata", begin, { once: true });
           });
 
-          session.on(SessionEvent.SESSION_DISCONNECTED, () => {
+          liveSession.on(SessionEvent.SESSION_DISCONNECTED, () => {
+            if (session !== liveSession) return;
+            clearSessionTimers();
             if (stopChromaKey) stopChromaKey();
             session = null;
             streamReady = false;
             speaking = false;
+            chatBusy = false;
             if (diagnosticTimer) window.clearTimeout(diagnosticTimer);
             diagnosticTimer = 0;
             startBtn.disabled = false;
-            speakBtn.disabled = true;
             stopBtn.disabled = true;
+            syncConversationControls();
             setStatus("Disconnected");
+            setMessage("Head Pepper disconnected. Start a new session to continue speaking.");
           });
 
-          await session.start();
-          stopBtn.disabled = false;
+          await liveSession.start();
+          stopBtn.disabled = session !== liveSession;
         } catch (err) {
           console.error(err);
           setStatus("Error");
           setMessage(err && err.message ? err.message : String(err));
+          if (session) await stopSession(err && err.message ? err.message : String(err));
           startBtn.disabled = false;
-          speakBtn.disabled = true;
           stopBtn.disabled = true;
+          syncConversationControls();
         }
       }
 
@@ -613,27 +719,32 @@
         }
       }
 
-      async function speakJg3Test() {
-        if (!session || !streamReady || speaking) return;
-
-        const activeSession = session;
+      async function speakJg3(endpoint, text, activeSession = session) {
+        if (!activeSession || !streamReady || speaking) return;
         resetAudioDiagnostic();
         speaking = true;
-        speakBtn.disabled = true;
+        syncConversationControls();
+        touchSession();
         setStatus("JG3…");
-        setMessage("Generating the approved JG3 Starfish voice test…");
+        setMessage("Generating JG3 Starfish speech…");
 
         try {
-          const response = await fetch(JG3_TEST_ENDPOINT, { method: "POST" });
+          const response = await fetch(endpoint, {
+            method: "POST",
+            ...(text ? {
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text })
+            } : {})
+          });
           if (!response.ok) {
             const data = await response.json().catch(() => ({}));
-            throw new Error(data.error || "The JG3 Starfish test request failed.");
+            throw new Error(data.error || "The JG3 Starfish speech request failed.");
           }
 
           const durationSeconds = Number(response.headers.get("X-Chef-Pepper-Audio-Duration")) || 0;
           const pcmAudio = await decodeToPcm24k(await response.arrayBuffer());
           if (!session || session !== activeSession || !streamReady) {
-            throw new Error("Head Pepper disconnected before the JG3 audio was ready.");
+            return;
           }
 
           audioDiagnostic.pcmBytes = pcmAudio.length;
@@ -644,7 +755,7 @@
             repeat_event_id: audioDiagnostic.repeatEventId
           });
           setStatus("Speaking");
-          setMessage("JG3 Starfish audio was sent to Head Pepper through LiveAvatar LITE.");
+          setMessage("JG3 is speaking Chef Pepper's reply through LiveAvatar LITE.");
 
           diagnosticTimer = window.setTimeout(() => {
             diagnosticTimer = 0;
@@ -655,19 +766,70 @@
             console.info("Chef Pepper diagnostic: acknowledgement window complete", audioDiagnostic);
           }, Math.max(5000, Math.ceil(durationSeconds * 1000) + 2000));
 
-          window.setTimeout(() => {
+          voiceTimer = window.setTimeout(() => {
+            voiceTimer = 0;
             if (session === activeSession && streamReady) {
               speaking = false;
-              speakBtn.disabled = false;
+              syncConversationControls();
+              touchSession();
               setStatus("Connected");
             }
           }, Math.max(1500, Math.ceil(durationSeconds * 1000) + 750));
         } catch (err) {
-          speaking = false;
-          speakBtn.disabled = !session || !streamReady;
-          setStatus("Error");
-          setMessage(err && err.message ? err.message : String(err));
-          console.error("JG3 LITE voice test error", err);
+          if (session === activeSession) {
+            speaking = false;
+            syncConversationControls();
+            setStatus("Voice error");
+            setMessage(err && err.message ? err.message : String(err));
+            console.error("JG3 LITE voice error", err);
+          }
+        }
+      }
+
+      function speakJg3Test() {
+        speakJg3(JG3_TEST_ENDPOINT);
+      }
+
+      async function sendChefPepperMessage(event) {
+        event.preventDefault();
+        if (!session || !streamReady || chatBusy || speaking) return;
+        const text = conversationInput.value.trim();
+        if (!text) return;
+
+        const activeSession = session;
+        chatBusy = true;
+        syncConversationControls();
+        touchSession();
+        setMessage("Chef Pepper is thinking…");
+        addConversationLine("You", text);
+        conversationInput.value = "";
+
+        try {
+          const response = await fetch(CHAT_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ conversation_id: conversationId, message: text })
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok || !data.reply) {
+            throw new Error(data.error || "Chef Pepper did not return a reply.");
+          }
+          if (session !== activeSession || !streamReady) return;
+
+          const reply = cleanSpokenReply(data.reply);
+          addConversationLine("Chef Pepper", reply);
+          console.info("Chef Pepper typed reply", reply);
+          await speakJg3(JG3_SPEECH_ENDPOINT, reply, activeSession);
+        } catch (err) {
+          if (session === activeSession) {
+            setMessage(err && err.message ? err.message : String(err));
+            console.error("Chef Pepper typed chat error", err);
+          }
+        } finally {
+          if (session === activeSession) {
+            chatBusy = false;
+            syncConversationControls();
+          }
         }
       }
 
@@ -713,8 +875,24 @@
       rawToggle.addEventListener("change", syncRawVisibility);
       startBtn.addEventListener("click", startSession);
       speakBtn.addEventListener("click", speakJg3Test);
-      stopBtn.addEventListener("click", stopSession);
+      stopBtn.addEventListener("click", () => stopSession());
+      conversationForm.addEventListener("submit", sendChefPepperMessage);
+      conversationInput.addEventListener("input", touchSession);
+      document.addEventListener("visibilitychange", () => {
+        window.clearTimeout(hiddenTimer);
+        hiddenTimer = 0;
+        if (!session) return;
+        if (document.hidden) {
+          hiddenSince = Date.now();
+          hiddenTimer = window.setTimeout(() => {
+            stopSession("Head Pepper stopped because the tab was in the background.");
+          }, HIDDEN_LIMIT_MS);
+        } else if (hiddenSince && Date.now() - hiddenSince >= HIDDEN_LIMIT_MS) {
+          stopSession("Head Pepper stopped because the tab was in the background.");
+        }
+      });
       window.addEventListener("beforeunload", () => {
+        clearSessionTimers();
         if (stopChromaKey) stopChromaKey();
         if (session) {
           try { session.stop(); } catch (_) {}
