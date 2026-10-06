@@ -34,7 +34,7 @@
       'display:flex;align-items:center;justify-content:center;' +
       'min-height:34px;background:#8F1F0D;border-top:2px solid #D4A832;' +
       'color:#FFD700;font-family:Josefin Sans,sans-serif;font-size:11px;' +
-      'font-weight:700;letter-spacing:.22em;text-transform:uppercase;}' +
+      'font-weight:700;letter-spacing:.22em;text-transform:uppercase;transform:none!important;}' +
       '.product-card.out-of-stock .product-card-btn{opacity:.65;}';
     document.head.appendChild(style);
   }
