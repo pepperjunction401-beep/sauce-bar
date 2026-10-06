@@ -344,6 +344,12 @@
     renderItems(summary);
     renderSubtotal(summary);
     renderBadgeTeasers(summary);
+
+    if (summary.items.some(function (item) {
+      return item.price_source !== 'square-commercial';
+    })) {
+      syncCommercialPrices();
+    }
   }
 
   function renderCount(summary) {
