@@ -260,18 +260,22 @@ function renderBadgeMedia(card) {
 
   function handleCheckout() {
     var summary = window.PJCart.getSummary();
-
-    if (!summary.items.length) return;
-
-    console.info('PJCartPage: Checkout bridge not connected yet.', summary);
-
     var btn = document.getElementById('pj-cart-page-checkout');
-    if (btn) {
-      btn.textContent = 'Checkout Bridge Coming Soon';
-      setTimeout(function () {
+
+    if (!summary.items.length || !btn) return;
+
+    btn.disabled = true;
+    btn.classList.add('disabled');
+    btn.textContent = 'Opening Square Checkout…';
+
+    window.PJCart.startCheckout()
+      .catch(function (error) {
+        console.error('PJCartPage: checkout failed.', error);
         btn.textContent = 'Checkout Now';
-      }, 2200);
-    }
+        btn.disabled = false;
+        btn.classList.remove('disabled');
+        window.alert('Checkout could not be opened. Please try again.');
+      });
   }
 
   document.addEventListener('DOMContentLoaded', init);
