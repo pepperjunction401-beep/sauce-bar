@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Head Pepper Kitchen Lab — Pepper Junction</title>
+  <style>
+    :root {
+      --brass: #d4a832;
+      --cream: #f0ede0;
+      --green: #1e3020;
+      --burgundy: #910c00;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #101510;
+      color: var(--cream);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    .lab {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 26px;
+      color: var(--brass);
+    }
+    .lab-note {
+      margin: 0 0 16px;
+      opacity: 0.8;
+      line-height: 1.45;
+    }
+    .stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #1a1410;
+      border: 1px solid rgba(212, 168, 50, 0.45);
+      border-radius: 18px;
+    }
+    .kitchen-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+    .avatar-rig {
+      --right-crop: 0%;
+      --right-fade: 0%;
+      position: absolute;
+      left: -20%;
+      top: 7%;
+      width: 70%;
+      aspect-ratio: 16 / 9;
+      z-index: 2;
+      pointer-events: none;
+      clip-path: inset(0 var(--right-crop) 0 0);
+      -webkit-mask-image: linear-gradient(
+        to right,
+        #000 0%,
+        #000 calc(100% - var(--right-crop) - var(--right-fade)),
+        transparent calc(100% - var(--right-crop)),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to right,
+        #000 0%,
+        #000 calc(100% - var(--right-crop) - var(--right-fade)),
+        transparent calc(100% - var(--right-crop)),
+        transparent 100%
+      );
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+    }
+    #avatarVideo,
+    #avatarCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    #avatarVideo {
+      visibility: hidden;
+    }
+    #avatarCanvas {
+      background: transparent;
+    }
+    .prep-counter {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: auto;
+      z-index: 3;
+      pointer-events: none;
+      user-select: none;
+    }
+    .status-pill {
+      position: absolute;
+      z-index: 5;
+      top: 12px;
+      right: 12px;
+      border: 1px solid rgba(212, 168, 50, 0.55);
+      border-radius: 999px;
+      padding: 7px 11px;
+      background: rgba(17, 22, 17, 0.75);
+      color: var(--cream);
+      font: 600 12px/1.1 Arial, sans-serif;
+      letter-spacing: .04em;
+      backdrop-filter: blur(4px);
+    }
+    .controls {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid rgba(212, 168, 50, 0.35);
+      border-radius: 14px;
+      background: rgba(30, 48, 32, 0.86);
+      display: grid;
+      gap: 14px;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    button {
+      border: 1px solid var(--brass);
+      border-radius: 9px;
+      padding: 10px 14px;
+      background: var(--brass);
+      color: #2c1f13;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: transparent;
+      color: var(--cream);
+    }
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .sliders {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .edge-sliders {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding-top: 4px;
+      border-top: 1px solid rgba(212, 168, 50, 0.18);
+    }
+    label {
+      display: grid;
+      gap: 6px;
+      font: 600 12px/1.2 Arial, sans-serif;
+    }
+    input[type="range"] { width: 100%; }
+    .value {
+      color: var(--brass);
+      font-variant-numeric: tabular-nums;
+    }
+    .debug {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font: 600 12px/1.2 Arial, sans-serif;
+    }
+    .message {
+      min-height: 1.4em;
+      margin: 0;
+      color: #f2d98a;
+      font: 13px/1.4 Arial, sans-serif;
+    }
+    .conversation {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #fff;
+      color: #1e3020;
+      font: 15px/1.5 Arial, sans-serif;
+    }
+    .conversation-log {
+      min-height: 90px;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .conversation-log p { margin: 0 0 10px; white-space: pre-wrap; }
+    .conversation-form { display: flex; gap: 8px; }
+    .conversation-form input {
+      flex: 1;
+      min-width: 0;
+      padding: 10px;
+      border: 1px solid #9ba99e;
+      border-radius: 8px;
+      font: inherit;
+    }
+    @media (max-width: 720px) {
+      body { padding: 12px; }
+      .sliders,
+      .edge-sliders { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="lab">
+    <h1>Head Pepper Kitchen Lab</h1>
+    <p class="lab-note">Isolated test harness. This does not modify the Pairing Bar page. It uses the current kitchen motion and Prep-Counter layers from the repo, with Head Pepper inserted between them.</p>
+
+    <section class="stage" aria-label="Pepper Junction kitchen LiveAvatar test">
+      <video class="kitchen-bg" autoplay muted loop playsinline preload="auto">
+        <source src="assets/avatar/Background-Shakey-Stirring.mp4" type="video/mp4">
+      </video>
+
+      <div class="avatar-rig" id="avatarRig">
+        <video id="avatarVideo" autoplay playsinline></video>
+        <canvas id="avatarCanvas"></canvas>
+      </div>
+
+      <img class="prep-counter" src="assets/avatar/Prep-Counter.png" alt="" aria-hidden="true">
+
+      <div class="status-pill" id="statusPill">Idle</div>
+    </section>
+
+    <section class="controls" aria-label="Head Pepper test controls">
+      <div class="buttons">
+        <button id="startBtn" type="button">Start Head Pepper</button>
+        <button id="speakBtn" type="button" disabled>Speak JG3 Test</button>
+        <button id="stopBtn" class="secondary" type="button" disabled>Stop Head Pepper</button>
+      </div>
+
+      <section class="conversation" aria-label="Typed Chef Pepper conversation">
+        <div class="conversation-log" id="conversationLog" role="log" aria-live="polite">
+          <p>Start Head Pepper, then type a message to hear Chef Pepper reply.</p>
+        </div>
+        <form class="conversation-form" id="conversationForm">
+          <input id="conversationInput" aria-label="Message to Chef Pepper" placeholder="Ask Chef Pepper…" maxlength="4000" disabled>
+          <button id="conversationSend" type="submit" disabled>Send</button>
+        </form>
+      </section>
+
+      <div class="sliders">
+        <label>
+          Left position <span class="value" id="leftValue">-20%</span>
+          <input id="leftSlider" type="range" min="-45" max="35" step="1" value="-20">
+        </label>
+        <label>
+          Top position <span class="value" id="topValue">7%</span>
+          <input id="topSlider" type="range" min="-20" max="50" step="1" value="7">
+        </label>
+        <label>
+          Avatar width <span class="value" id="widthValue">70%</span>
+          <input id="widthSlider" type="range" min="30" max="110" step="1" value="70">
+        </label>
+        <label>
+          Green removal <span class="value" id="keyValue">50%</span>
+          <input id="keySlider" type="range" min="0" max="100" step="1" value="50">
+        </label>
+        <label>
+          Spill cleanup <span class="value" id="spillValue">35%</span>
+          <input id="spillSlider" type="range" min="0" max="100" step="1" value="35">
+        </label>
+      </div>
+
+      <div class="edge-sliders">
+        <label>
+          Right crop <span class="value" id="rightCropValue">0%</span>
+          <input id="rightCropSlider" type="range" min="0" max="45" step="1" value="0">
+        </label>
+        <label>
+          Right fade <span class="value" id="rightFadeValue">0%</span>
+          <input id="rightFadeSlider" type="range" min="0" max="30" step="1" value="0">
+        </label>
+      </div>
+
+      <label class="debug">
+        <input id="rawToggle" type="checkbox">
+        Show raw green-screen stream instead of the keyed canvas
+      </label>
+
+      <p class="message" id="message">Ready. Head Pepper ID: b6378b3e-614a-47e0-9ea3-c129c7851ba4</p>
+      <p class="message" id="audioDiagnostics">Audio diagnostics: waiting for a JG3 LITE test.</p>
+    </section>
+  </main>
+
+  <script type="module">
+    import { LiveAvatarSession, SessionEvent, AgentEventsEnum } from "https://esm.sh/@heygen/liveavatar-web-sdk@0.0.19";
+
+    // Compatibility patch for @heygen/liveavatar-web-sdk 0.0.19.
+    // The released SDK sends raw PCM binary strings in agent.speak messages,
+    // while the LiveAvatar server requires each PCM chunk to be Base64 encoded.
+    // See https://github.com/heygen-com/liveavatar-web-sdk/issues/92 and
+    // https://github.com/heygen-com/liveavatar-web-sdk/pull/103.
+    const nativeWebSocketSend = WebSocket.prototype.send;
+    WebSocket.prototype.send = function patchedLiveAvatarSend(data) {
+      if (typeof data === "string") {
+        try {
+          const payload = JSON.parse(data);
+          if (payload?.type === "agent.speak" && typeof payload.audio === "string") {
+            payload.audio = btoa(payload.audio);
+            data = JSON.stringify(payload);
+          }
+        } catch {
+          // Preserve non-JSON and unrelated WebSocket traffic without modification.
+        }
+      }
+      return nativeWebSocketSend.call(this, data);
+    };
+
+    (() => {
+      const HEAD_PEPPER_ID = "b6378b3e-614a-47e0-9ea3-c129c7851ba4";
+      const API_URL = "https://api.liveavatar.com";
+      const qs = new URLSearchParams(location.search);
+      const TOKEN_ENDPOINT = qs.get("tokenEndpoint") || "/api/liveavatar-lite-token";
+      const JG3_TEST_ENDPOINT = "/api/starfish-jg3-test-audio";
+      const JG3_SPEECH_ENDPOINT = "/api/starfish-jg3-speech";
+      const CHAT_ENDPOINT = "/api/chef-pepper-chat";
+      const IDLE_LIMIT_MS = 75 * 1000;
+      const MAX_SESSION_MS = 5 * 60 * 1000;
+      const HIDDEN_LIMIT_MS = 15 * 1000;
+
+      const startBtn = document.getElementById("startBtn");
+      const speakBtn = document.getElementById("speakBtn");
+      const stopBtn = document.getElementById("stopBtn");
+      const statusPill = document.getElementById("statusPill");
+      const message = document.getElementById("message");
+      const audioDiagnostics = document.getElementById("audioDiagnostics");
+      const conversationLog = document.getElementById("conversationLog");
+      const conversationForm = document.getElementById("conversationForm");
+      const conversationInput = document.getElementById("conversationInput");
+      const conversationSend = document.getElementById("conversationSend");
+      const avatarVideo = document.getElementById("avatarVideo");
+      const avatarCanvas = document.getElementById("avatarCanvas");
+      const avatarRig = document.getElementById("avatarRig");
+      const rawToggle = document.getElementById("rawToggle");
+      const keySlider = document.getElementById("keySlider");
+      const keyValue = document.getElementById("keyValue");
+      const spillSlider = document.getElementById("spillSlider");
+      const spillValue = document.getElementById("spillValue");
+      const rightCropSlider = document.getElementById("rightCropSlider");
+      const rightCropValue = document.getElementById("rightCropValue");
+      const rightFadeSlider = document.getElementById("rightFadeSlider");
+      const rightFadeValue = document.getElementById("rightFadeValue");
+
+      let session = null;
+      let stopChromaKey = null;
+      let streamReady = false;
+      let speaking = false;
+      let diagnosticTimer = 0;
+      let idleTimer = 0;
+      let maxSessionTimer = 0;
+      let hiddenTimer = 0;
+      let hiddenSince = 0;
+      let voiceTimer = 0;
+      let chatBusy = false;
+      let conversationId = crypto.randomUUID();
+      let audioDiagnostic = {
+        pcmBytes: 0,
+        repeatEventId: "not sent",
+        speakStarted: 0,
+        speakEnded: 0
+      };
+
+      function setStatus(text) {
+        statusPill.textContent = text;
+      }
+
+      function setMessage(text) {
+        message.textContent = text;
+      }
+
+      function addConversationLine(speaker, text) {
+        const line = document.createElement("p");
+        const label = document.createElement("strong");
+        label.textContent = speaker + ": ";
+        line.append(label, document.createTextNode(text));
+        conversationLog.append(line);
+        conversationLog.scrollTop = conversationLog.scrollHeight;
+      }
+
+      function syncConversationControls() {
+        const ready = Boolean(session && streamReady);
+        conversationInput.disabled = !ready || chatBusy;
+        conversationSend.disabled = !ready || chatBusy || speaking;
+        speakBtn.disabled = !ready || chatBusy || speaking;
+      }
+
+      function clearSessionTimers() {
+        for (const timer of [idleTimer, maxSessionTimer, hiddenTimer, voiceTimer]) {
+          window.clearTimeout(timer);
+        }
+        idleTimer = maxSessionTimer = hiddenTimer = voiceTimer = 0;
+      }
+
+      function touchSession() {
+        if (!session || !streamReady) return;
+        window.clearTimeout(idleTimer);
+        idleTimer = window.setTimeout(() => {
+          stopSession("Head Pepper stopped after 75 seconds without interaction.");
+        }, IDLE_LIMIT_MS);
+      }
+
+      function cleanSpokenReply(text) {
+        return text.replace(/\*\*/g, "").replace(/&#x20;|&nbsp;/gi, " ").trim();
+      }
+
+      function renderAudioDiagnostic(prefix = "Audio diagnostics") {
+        audioDiagnostics.textContent =
+          `${prefix}: ${audioDiagnostic.pcmBytes.toLocaleString()} PCM bytes; ` +
+          `repeatAudio ID ${audioDiagnostic.repeatEventId}; ` +
+          `speak-start ${audioDiagnostic.speakStarted}; speak-end ${audioDiagnostic.speakEnded}.`;
+      }
+
+      function resetAudioDiagnostic() {
+        if (diagnosticTimer) window.clearTimeout(diagnosticTimer);
+        diagnosticTimer = 0;
+        audioDiagnostic = {
+          pcmBytes: 0,
+          repeatEventId: "not sent",
+          speakStarted: 0,
+          speakEnded: 0
+        };
+        renderAudioDiagnostic();
+      }
+
+      function syncRawVisibility() {
+        const showRaw = rawToggle.checked;
+        avatarVideo.style.visibility = showRaw ? "visible" : "hidden";
+        avatarCanvas.style.visibility = showRaw ? "hidden" : "visible";
+      }
+
+      function rgbToHue(r, g, b) {
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const delta = max - min;
+        let h = 0;
+        if (delta === 0) h = 0;
+        else if (max === r) h = ((g - b) / delta) % 6;
+        else if (max === g) h = (b - r) / delta + 2;
+        else h = (r - g) / delta + 4;
+        h = Math.round(h * 60);
+        if (h < 0) h += 360;
+        return { h, max, delta };
+      }
+
+      function applyChromaKey() {
+        const ctx = avatarCanvas.getContext("2d", {
+          willReadFrequently: true,
+          alpha: true
+        });
+        if (!ctx || avatarVideo.readyState < 2 || !avatarVideo.videoWidth) return;
+
+        if (
+          avatarCanvas.width !== avatarVideo.videoWidth ||
+          avatarCanvas.height !== avatarVideo.videoHeight
+        ) {
+          avatarCanvas.width = avatarVideo.videoWidth;
+          avatarCanvas.height = avatarVideo.videoHeight;
+        }
+
+        ctx.clearRect(0, 0, avatarCanvas.width, avatarCanvas.height);
+        ctx.drawImage(avatarVideo, 0, 0, avatarCanvas.width, avatarCanvas.height);
+
+        const frame = ctx.getImageData(0, 0, avatarCanvas.width, avatarCanvas.height);
+        const data = frame.data;
+
+        // Keep the green hue family fixed so stronger removal does not
+        // progressively widen into unrelated foreground colors. The removal
+        // control instead changes how strongly green-dominant pixels qualify
+        // for transparency. Spill cleanup is separate and never changes alpha.
+        const keyStrength = Number(keySlider.value) / 100;
+        const spillStrength = Number(spillSlider.value) / 100;
+
+        const minHue = 60;
+        const maxHue = 180;
+        const minSaturation = 0.16 - (keyStrength * 0.12);
+        const minValue = 0.20 - (keyStrength * 0.12);
+        const threshold = 1.06 - (keyStrength * 0.12);
+        const edgeFactor = 2 + (keyStrength * 6);
+
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+          const { h, max, delta } = rgbToHue(r, g, b);
+          const s = max === 0 ? 0 : delta / max;
+          const v = max / 255;
+
+          const dominantNeighbor = Math.max(r, b);
+          const isGreen =
+            h >= minHue &&
+            h <= maxHue &&
+            s > minSaturation &&
+            v > minValue &&
+            g > r * threshold &&
+            g > b * threshold;
+
+          if (isGreen) {
+            const greenness = (g - dominantNeighbor) / (g || 1);
+            const alphaValue = Math.max(0, 1 - greenness * edgeFactor);
+            data[i + 3] = alphaValue < 0.2 ? 0 : Math.round(alphaValue * 255);
+          }
+
+          // De-spill surviving pixels without making them transparent.
+          // This is deliberately separate from the key so green detail such
+          // as the hat logo can lose its halo without being punched out.
+          if (
+            data[i + 3] > 0 &&
+            h >= 50 &&
+            h <= 190 &&
+            g > dominantNeighbor
+          ) {
+            const greenness = (g - dominantNeighbor) / (g || 1);
+            const cleanup = Math.min(1, spillStrength * Math.max(0.15, greenness * 3));
+            data[i + 1] = Math.round(g - (g - dominantNeighbor) * cleanup);
+          }
+        }
+
+        ctx.putImageData(frame, 0, 0);
+      }
+
+      function startChromaLoop() {
+        if (stopChromaKey) stopChromaKey();
+        let raf = 0;
+
+        const draw = () => {
+          applyChromaKey();
+          raf = requestAnimationFrame(draw);
+        };
+
+        draw();
+        stopChromaKey = () => {
+          cancelAnimationFrame(raf);
+          stopChromaKey = null;
+        };
+      }
+
+      async function stopSession(reason = "Head Pepper stopped.") {
+        clearSessionTimers();
+        if (stopChromaKey) stopChromaKey();
+        const activeSession = session;
+        session = null;
+        streamReady = false;
+        speaking = false;
+        chatBusy = false;
+        syncConversationControls();
+        if (activeSession) {
+          try {
+            await activeSession.stop();
+          } catch (err) {
+            console.warn("Head Pepper stop error", err);
+          }
+        }
+        if (diagnosticTimer) window.clearTimeout(diagnosticTimer);
+        diagnosticTimer = 0;
+        avatarVideo.srcObject = null;
+        const ctx = avatarCanvas.getContext("2d");
+        if (ctx) ctx.clearRect(0, 0, avatarCanvas.width, avatarCanvas.height);
+
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        syncConversationControls();
+        setStatus("Idle");
+        setMessage(reason);
+      }
+
+      async function startSession() {
+        clearSessionTimers();
+        conversationId = crypto.randomUUID();
+        conversationLog.replaceChildren();
+        addConversationLine("Lab", "New Chef Pepper conversation. This session stops after 75 seconds idle or five minutes total.");
+        startBtn.disabled = true;
+        setStatus("Token…");
+        setMessage("Requesting a short-lived Head Pepper session token…");
+
+        try {
+          const tokenResponse = await fetch(TOKEN_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ avatar_id: HEAD_PEPPER_ID })
+          });
+
+          const tokenData = await tokenResponse.json().catch(() => ({}));
+          if (!tokenResponse.ok || !tokenData.session_token) {
+            throw new Error(tokenData.error || "Token endpoint did not return a session token.");
+          }
+          if (tokenData.mode !== "LITE") {
+            throw new Error("The JG3 test requires a LITE LiveAvatar session.");
+          }
+
+          setStatus("Connecting…");
+          setMessage("Session token received. Connecting Head Pepper…");
+
+          session = new LiveAvatarSession(tokenData.session_token, {
+            apiUrl: API_URL,
+            autoKeepAlive: true,
+            voiceChat: { defaultMuted: true }
+          });
+          const liveSession = session;
+
+          liveSession.on(SessionEvent.SESSION_STATE_CHANGED, (state) => {
+            if (session !== liveSession) return;
+            setStatus(state);
+          });
+
+          liveSession.on(AgentEventsEnum.AVATAR_SPEAK_STARTED, (event) => {
+            if (session !== liveSession) return;
+            audioDiagnostic.speakStarted += 1;
+            renderAudioDiagnostic("HeyGen acknowledged speak-start");
+            console.info("Chef Pepper diagnostic: avatar.speak_started", event);
+          });
+
+          liveSession.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, (event) => {
+            if (session !== liveSession) return;
+            audioDiagnostic.speakEnded += 1;
+            renderAudioDiagnostic("HeyGen acknowledged speak-end");
+            console.info("Chef Pepper diagnostic: avatar.speak_ended", event);
+            touchSession();
+          });
+
+          liveSession.on(SessionEvent.SESSION_STREAM_READY, () => {
+            if (session !== liveSession) return;
+            liveSession.attach(avatarVideo);
+            streamReady = true;
+            syncConversationControls();
+            touchSession();
+            maxSessionTimer = window.setTimeout(() => {
+              stopSession("Head Pepper stopped at the five-minute session limit.");
+            }, MAX_SESSION_MS);
+
+            const begin = () => {
+              startChromaLoop();
+              syncRawVisibility();
+              setMessage("Head Pepper is live in LITE mode. Type a message to hear Chef Pepper answer.");
+            };
+
+            if (avatarVideo.readyState >= 2) begin();
+            else avatarVideo.addEventListener("loadeddata", begin, { once: true });
+          });
+
+          liveSession.on(SessionEvent.SESSION_DISCONNECTED, () => {
+            if (session !== liveSession) return;
+            clearSessionTimers();
+            if (stopChromaKey) stopChromaKey();
+            session = null;
+            streamReady = false;
+            speaking = false;
+            chatBusy = false;
+            if (diagnosticTimer) window.clearTimeout(diagnosticTimer);
+            diagnosticTimer = 0;
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            syncConversationControls();
+            setStatus("Disconnected");
+            setMessage("Head Pepper disconnected. Start a new session to continue speaking.");
+          });
+
+          await liveSession.start();
+          stopBtn.disabled = session !== liveSession;
+        } catch (err) {
+          console.error(err);
+          setStatus("Error");
+          setMessage(err && err.message ? err.message : String(err));
+          if (session) await stopSession(err && err.message ? err.message : String(err));
+          startBtn.disabled = false;
+          stopBtn.disabled = true;
+          syncConversationControls();
+        }
+      }
+
+      async function decodeToPcm24k(audioBytes) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass || !window.OfflineAudioContext) {
+          throw new Error("This browser does not support the audio conversion required by LiveAvatar.");
+        }
+
+        const audioContext = new AudioContextClass();
+        try {
+          const decoded = await audioContext.decodeAudioData(audioBytes.slice(0));
+          const sampleRate = 24000;
+          const frameCount = Math.max(1, Math.ceil(decoded.duration * sampleRate));
+          const offline = new OfflineAudioContext(1, frameCount, sampleRate);
+          const source = offline.createBufferSource();
+          source.buffer = decoded;
+          source.connect(offline.destination);
+          source.start(0);
+
+          const rendered = await offline.startRendering();
+          const samples = rendered.getChannelData(0);
+          const bytes = new Uint8Array(samples.length * 2);
+          const view = new DataView(bytes.buffer);
+
+          for (let i = 0; i < samples.length; i += 1) {
+            const sample = Math.max(-1, Math.min(1, samples[i]));
+            const pcm = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
+            view.setInt16(i * 2, Math.round(pcm), true);
+          }
+
+          let binary = "";
+          const chunkSize = 0x8000;
+          for (let offset = 0; offset < bytes.length; offset += chunkSize) {
+            binary += String.fromCharCode(...bytes.subarray(offset, offset + chunkSize));
+          }
+          return binary;
+        } finally {
+          await audioContext.close().catch(() => {});
+        }
+      }
+
+      async function speakJg3(endpoint, text, activeSession = session) {
+        if (!activeSession || !streamReady || speaking) return;
+        resetAudioDiagnostic();
+        speaking = true;
+        syncConversationControls();
+        touchSession();
+        setStatus("JG3…");
+        setMessage("Generating JG3 Starfish speech…");
+
+        try {
+          const response = await fetch(endpoint, {
+            method: "POST",
+            ...(text ? {
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text })
+            } : {})
+          });
+          if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            throw new Error(data.error || "The JG3 Starfish speech request failed.");
+          }
+
+          const durationSeconds = Number(response.headers.get("X-Chef-Pepper-Audio-Duration")) || 0;
+          const pcmAudio = await decodeToPcm24k(await response.arrayBuffer());
+          if (!session || session !== activeSession || !streamReady) {
+            return;
+          }
+
+          audioDiagnostic.pcmBytes = pcmAudio.length;
+          audioDiagnostic.repeatEventId = activeSession.repeatAudio(pcmAudio);
+          renderAudioDiagnostic("Audio sent; awaiting HeyGen acknowledgement");
+          console.info("Chef Pepper diagnostic: repeatAudio sent", {
+            pcm_bytes: audioDiagnostic.pcmBytes,
+            repeat_event_id: audioDiagnostic.repeatEventId
+          });
+          setStatus("Speaking");
+          setMessage("JG3 is speaking Chef Pepper's reply through LiveAvatar LITE.");
+
+          diagnosticTimer = window.setTimeout(() => {
+            diagnosticTimer = 0;
+            const prefix = audioDiagnostic.speakStarted === 0
+              ? "No HeyGen speak acknowledgement received"
+              : "HeyGen acknowledgement window complete";
+            renderAudioDiagnostic(prefix);
+            console.info("Chef Pepper diagnostic: acknowledgement window complete", audioDiagnostic);
+          }, Math.max(5000, Math.ceil(durationSeconds * 1000) + 2000));
+
+          voiceTimer = window.setTimeout(() => {
+            voiceTimer = 0;
+            if (session === activeSession && streamReady) {
+              speaking = false;
+              syncConversationControls();
+              touchSession();
+              setStatus("Connected");
+            }
+          }, Math.max(1500, Math.ceil(durationSeconds * 1000) + 750));
+        } catch (err) {
+          if (session === activeSession) {
+            speaking = false;
+            syncConversationControls();
+            setStatus("Voice error");
+            setMessage(err && err.message ? err.message : String(err));
+            console.error("JG3 LITE voice error", err);
+          }
+        }
+      }
+
+      function speakJg3Test() {
+        speakJg3(JG3_TEST_ENDPOINT);
+      }
+
+      async function sendChefPepperMessage(event) {
+        event.preventDefault();
+        if (!session || !streamReady || chatBusy || speaking) return;
+        const text = conversationInput.value.trim();
+        if (!text) return;
+
+        const activeSession = session;
+        chatBusy = true;
+        syncConversationControls();
+        touchSession();
+        setMessage("Chef Pepper is thinking…");
+        addConversationLine("You", text);
+        conversationInput.value = "";
+
+        try {
+          const response = await fetch(CHAT_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ conversation_id: conversationId, message: text })
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok || !data.reply) {
+            throw new Error(data.error || "Chef Pepper did not return a reply.");
+          }
+          if (session !== activeSession || !streamReady) return;
+
+          const reply = cleanSpokenReply(data.reply);
+          addConversationLine("Chef Pepper", reply);
+          console.info("Chef Pepper typed reply", reply);
+          await speakJg3(JG3_SPEECH_ENDPOINT, reply, activeSession);
+        } catch (err) {
+          if (session === activeSession) {
+            setMessage(err && err.message ? err.message : String(err));
+            console.error("Chef Pepper typed chat error", err);
+          }
+        } finally {
+          if (session === activeSession) {
+            chatBusy = false;
+            syncConversationControls();
+          }
+        }
+      }
+
+      function bindSlider(sliderId, valueId, prop) {
+        const slider = document.getElementById(sliderId);
+        const value = document.getElementById(valueId);
+
+        const update = () => {
+          const pct = slider.value + "%";
+          value.textContent = pct;
+          avatarRig.style[prop] = pct;
+        };
+
+        slider.addEventListener("input", update);
+        update();
+      }
+
+      bindSlider("leftSlider", "leftValue", "left");
+      bindSlider("topSlider", "topValue", "top");
+      bindSlider("widthSlider", "widthValue", "width");
+
+      function syncChromaControls() {
+        keyValue.textContent = keySlider.value + "%";
+        spillValue.textContent = spillSlider.value + "%";
+      }
+
+      function syncRightEdgeControls() {
+        const crop = rightCropSlider.value + "%";
+        const fade = rightFadeSlider.value + "%";
+        rightCropValue.textContent = crop;
+        rightFadeValue.textContent = fade;
+        avatarRig.style.setProperty("--right-crop", crop);
+        avatarRig.style.setProperty("--right-fade", fade);
+      }
+
+      keySlider.addEventListener("input", syncChromaControls);
+      spillSlider.addEventListener("input", syncChromaControls);
+      rightCropSlider.addEventListener("input", syncRightEdgeControls);
+      rightFadeSlider.addEventListener("input", syncRightEdgeControls);
+      syncChromaControls();
+      syncRightEdgeControls();
+
+      rawToggle.addEventListener("change", syncRawVisibility);
+      startBtn.addEventListener("click", startSession);
+      speakBtn.addEventListener("click", speakJg3Test);
+      stopBtn.addEventListener("click", () => stopSession());
+      conversationForm.addEventListener("submit", sendChefPepperMessage);
+      conversationInput.addEventListener("input", touchSession);
+      document.addEventListener("visibilitychange", () => {
+        window.clearTimeout(hiddenTimer);
+        hiddenTimer = 0;
+        if (!session) return;
+        if (document.hidden) {
+          hiddenSince = Date.now();
+          hiddenTimer = window.setTimeout(() => {
+            stopSession("Head Pepper stopped because the tab was in the background.");
+          }, HIDDEN_LIMIT_MS);
+        } else if (hiddenSince && Date.now() - hiddenSince >= HIDDEN_LIMIT_MS) {
+          stopSession("Head Pepper stopped because the tab was in the background.");
+        }
+      });
+      window.addEventListener("beforeunload", () => {
+        clearSessionTimers();
+        if (stopChromaKey) stopChromaKey();
+        if (session) {
+          try { session.stop(); } catch (_) {}
+        }
+      });
+
+      syncRawVisibility();
+    })();
+  </script>
+</body>
+</html>

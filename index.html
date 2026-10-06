@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Head Pepper's Pairing Bar&#8482;</title>
+
+  <!-- ── SITE HEADER/FOOTER FONTS — matches product page branding ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
  <style>
 :root {
   --bg: #355E3B;
@@ -75,6 +81,266 @@ body {
   font-size: 15px;
   line-height: 1.55;
   max-width: 760px;
+}
+
+/* ── KITCHEN / SAUCE PROF SCENE ───────────────────────────────
+   Full-width layered composition, sits above the filter/results
+   grid rather than inside it. Aspect-ratio locked to the source
+   video (1440x1080 = 4:3) so all three layers share one coordinate
+   system and stay in registration at any viewport width.
+   ────────────────────────────────────────────────────────────── */
+.pj-kitchen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin-bottom: 18px;
+  border: 1px solid rgba(163, 119, 72, 0.45);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #1a1410;
+  box-shadow: var(--shadow);
+}
+
+/* Back layer — kitchen/Ralph video. This is the master coordinate
+   plane every other layer is positioned against. */
+.pj-kitchen-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* Middle layer — live Head Pepper.
+   Locked first-spin geometry from the LiveAvatar lab:
+   left -10%, top -1%, width 70%, raw green-screen stream,
+   right crop 19%, right fade 3%. */
+.pj-kitchen-avatar-stage {
+  --pj-avatar-right-crop: 19%;
+  --pj-avatar-right-fade: 3%;
+  position: absolute;
+  left: -10%;
+  top: -1%;
+  width: 70%;
+  aspect-ratio: 16 / 9;
+  z-index: 2;
+  pointer-events: none;
+  clip-path: inset(0 var(--pj-avatar-right-crop) 0 0);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 calc(100% - var(--pj-avatar-right-crop) - var(--pj-avatar-right-fade)),
+    transparent calc(100% - var(--pj-avatar-right-crop)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 calc(100% - var(--pj-avatar-right-crop) - var(--pj-avatar-right-fade)),
+    transparent calc(100% - var(--pj-avatar-right-crop)),
+    transparent 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+.pj-kitchen-avatar-stage[hidden] {
+  display: none;
+}
+
+.pj-kitchen-avatar-source {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Chef Pepper Pass 1: written replies on the silver kitchen panel,
+   with the typed consultation control directly below the scene. */
+.pj-chef-pepper-display {
+  position: absolute;
+  left: 18%;
+  right: 9%;
+  bottom: 2.4%;
+  height: 13.2%;
+  z-index: 4;
+  padding: 9px 48px 8px 18px;
+  overflow-y: auto;
+  background: #fff;
+  color: #241d18;
+  font: 600 clamp(11px, 1.45vw, 18px)/1.35 Georgia, "Times New Roman", serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(61, 51, 43, 0.45) transparent;
+}
+
+.pj-chef-pepper-display p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.pj-chef-pepper-transcript {
+  display: grid;
+  gap: 8px;
+}
+
+.pj-chef-pepper-transcript-entry {
+  margin: 0;
+}
+
+.pj-chef-pepper-transcript-speaker {
+  display: block;
+  margin-bottom: 2px;
+  color: #6B0F1A;
+  font: 700 clamp(8px, 0.9vw, 11px)/1 "Josefin Sans", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pj-chef-pepper-transcript-entry.is-customer .pj-chef-pepper-transcript-speaker {
+  color: #1E3020;
+}
+
+.pj-chef-pepper-transcript-recommendations ul {
+  margin: 3px 0 0;
+  padding-left: 18px;
+}
+
+.pj-chef-pepper-transcript-recommendations a {
+  color: #6B0F1A;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pj-chef-pepper-display.is-waiting {
+  opacity: 0.62;
+}
+
+.pj-chef-pepper-controls {
+  margin: -6px 0 18px;
+  padding: 10px 12px;
+  border: 1px solid rgba(184, 137, 57, 0.42);
+  border-radius: 12px;
+  background: rgba(30, 48, 32, 0.92);
+  color: #FDF6E8;
+  box-shadow: var(--shadow-soft);
+  font-family: "Josefin Sans", sans-serif;
+  display: grid;
+  gap: 7px;
+}
+
+.pj-chef-pepper-btn {
+  border: 1px solid #D4A832;
+  border-radius: 9px;
+  padding: 9px 12px;
+  background: #D4A832;
+  color: #2b1d15;
+  font: 700 12px/1 "Josefin Sans", sans-serif;
+  cursor: pointer;
+}
+
+.pj-chef-pepper-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pj-chef-pepper-status {
+  font-size: 11px;
+  line-height: 1.3;
+  color: rgba(253, 246, 232, 0.82);
+}
+
+.pj-chef-pepper-chat {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.pj-chef-pepper-chat input {
+  min-width: 0;
+  border: 1px solid rgba(184, 137, 57, 0.45);
+  border-radius: 9px;
+  padding: 10px 11px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #2b1d15;
+  font: 14px/1.2 Georgia, "Times New Roman", serif;
+}
+
+.pj-chef-pepper-chat input:disabled {
+  opacity: 0.55;
+}
+
+@media (max-width: 640px) {
+  .pj-chef-pepper-display {
+    left: 12%;
+    right: 7%;
+    bottom: 2.1%;
+    height: 13.8%;
+    padding: 5px 38px 4px 10px;
+  }
+
+  .pj-chef-pepper-chat {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Front layer — fixed foreground piece. Prep counter and sauce
+   shelf are composited into one cropped-tight transparent PNG. */
+.pj-kitchen-prep-counter {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  z-index: 3;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Pause/play control — sits above every layer, subtle until hovered. */
+.pj-kitchen-pause-btn {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 5;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(184, 137, 57, 0.5);
+  border-radius: 999px;
+  background: rgba(26, 20, 16, 0.45);
+  color: rgba(253, 246, 232, 0.75);
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+  opacity: 0.6;
+}
+
+.pj-kitchen-pause-btn:hover,
+.pj-kitchen-pause-btn:focus-visible {
+  opacity: 1;
+  background: rgba(26, 20, 16, 0.72);
+  border-color: #D4A832;
+  color: #FDF6E8;
+}
+
+.pj-kitchen-pause-btn:focus-visible {
+  outline: 2px solid #D4A832;
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .pj-kitchen {
+    border-radius: 14px;
+    aspect-ratio: 4 / 3.4;
+  }
+
 }
 
 .pj-layout {
@@ -659,13 +925,302 @@ body {
       flex-direction: column;
     }
   }
+
+/* ── SITE HEADER — matches product page branding ─────────────── */
+@font-face {
+  font-family: 'BlackRiver';
+  src: url('assets/fonts/Blackriver-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-display: swap;
+}
+
+.site-header {
+  background: #1E3020;
+  border-bottom: 2px solid #B88939;
+  padding: 20px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.4);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+}
+
+.header-logo img { height: 52px; width: auto; }
+
+.header-wordmark { display: flex; flex-direction: column; gap: 2px; }
+
+.header-name {
+  font-family: 'BlackRiver', 'Playfair Display', serif;
+  font-size: 22px;
+  color: #FDF6E8;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.header-tagline {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #B88939;
+  opacity: 0.8;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.header-nav a {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: #F5ECD6;
+  opacity: 0.90;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.header-nav a:hover { opacity: 1; color: #D4A832; }
+
+@media (max-width: 860px) {
+  .site-header { padding: 16px 20px; }
+  .header-nav { display: none; }
+}
+
+/* ── SITE FOOTER — matches product page branding ─────────────── */
+.site-footer {
+  background: #1E3020;
+  border-top: 2px solid #B88939;
+  padding: 40px 48px 24px;
+  position: relative;
+  z-index: 1;
+  margin-top: 22px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid rgba(184,137,57,0.2);
+}
+
+.footer-brand img {
+  height: 48px;
+  width: auto;
+  margin-bottom: 14px;
+  opacity: 0.85;
+}
+
+.footer-contact-item {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: #F5ECD6;
+  opacity: 0.55;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.footer-contact-item a { color: inherit; text-decoration: none; }
+.footer-contact-item a:hover { opacity: 1; color: #D4A832; }
+
+.footer-col-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #D4A832;
+  opacity: 0.8;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.footer-col-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-col-links li a {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #F5ECD6;
+  opacity: 0.5;
+  text-decoration: none;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.footer-col-links li a:hover { opacity: 1; color: #D4A832; }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-copy {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #B88939;
+  opacity: 0.45;
+}
+
+.footer-standard {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #F5ECD6;
+  opacity: 0.25;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .footer-top { grid-template-columns: 1fr; }
+  .site-footer { padding: 28px 20px 20px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
 </style>
 </head>
 <body>
+
+<!-- ═══ HEADER ══════════════════════════════════════════════════ -->
+<header class="site-header">
+  <a class="header-logo" href="conductor.html">
+    <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+    <div class="header-wordmark">
+      <span class="header-name">Pepper Junction</span>
+      <span class="header-tagline">Est. 2014 · Rhode Island</span>
+    </div>
+  </a>
+  <nav class="header-nav">
+    <a href="hot-sauces.html">Hot Sauces</a>
+    <a href="main.html">Home</a>
+    <a href="index.html">Pairing Bar</a>
+    <a href="recipe.html">Recipes</a>
+    <a href="main.html#location">Visit</a>
+  </nav>
+</header>
+
   <div class="pj-wrap">
     <div class="pj-header">
      <h1 class="pj-title">The Head Pepper's Pairing Bar&#8482;</h1>
       <p class="pj-sub">All aboard the Sauce Discovery Engine&#8482;. Find your next bottle by heat, flavor, pepper, or food pairing.</p>
+    </div>
+
+    <!-- ═══ KITCHEN / SAUCE PROF SCENE — full width, spans both grid columns below ═══ -->
+    <section class="pj-kitchen" id="pj-kitchen" aria-label="Head Pepper in the Pepper Junction kitchen">
+
+      <!-- Back layer: moving kitchen background, Cetriolo at the stove -->
+      <video
+        class="pj-kitchen-bg"
+        id="pj-kitchen-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        poster=""
+      >
+        <source src="assets/avatar/Background-Shakey-Stirring.mp4" type="video/mp4">
+      </video>
+
+      <!-- Middle layer: live Head Pepper raw green-screen stream.
+           The right side is cropped/faded to preserve the hat while
+           keeping visual separation from Cetriolo. -->
+      <div class="pj-kitchen-avatar-stage" id="pj-kitchen-avatar-stage" hidden>
+        <video
+          class="pj-kitchen-avatar-source"
+          id="pj-kitchen-avatar-source"
+          autoplay
+          playsinline
+        ></video>
+      </div>
+
+      <!-- Front layer: fixed transparent foreground piece (counter + shelf composited into one image) -->
+      <img
+        class="pj-kitchen-prep-counter"
+        src="assets/avatar/Prep-Counter.png"
+        alt=""
+        aria-hidden="true"
+      >
+
+      <div
+        class="pj-chef-pepper-display"
+        id="pj-chef-pepper-display"
+        role="log"
+        aria-live="polite"
+        aria-label="Chef Pepper's written replies"
+      >
+        <div class="pj-chef-pepper-transcript" id="pj-chef-pepper-transcript">
+          <p>Chef Pepper's consultation will appear here.</p>
+        </div>
+      </div>
+
+      <button
+        class="pj-kitchen-pause-btn"
+        id="pj-kitchen-pause-btn"
+        type="button"
+        aria-label="Pause kitchen background motion"
+        aria-pressed="false"
+      >
+        <svg class="pj-kitchen-pause-icon-pause" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+          <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+        </svg>
+        <svg class="pj-kitchen-pause-icon-play" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" hidden>
+          <path d="M7 4.5v15l13-7.5-13-7.5z"></path>
+        </svg>
+      </button>
+
+    </section>
+
+    <!-- DEV ONLY: Pass 1 typed Chef Pepper consultation. No LiveAvatar session is started. -->
+    <div class="pj-chef-pepper-controls" id="pj-chef-pepper-controls">
+      <form class="pj-chef-pepper-chat" id="pj-chef-pepper-chat">
+        <input
+          id="pj-chef-pepper-message"
+          type="text"
+          autocomplete="off"
+          maxlength="4000"
+          placeholder="Talk to Chef Pepper…"
+        >
+        <button class="pj-chef-pepper-btn" id="pj-chef-pepper-send" type="submit">Send</button>
+      </form>
+      <span class="pj-chef-pepper-status" id="pj-chef-pepper-status">Checking Chef Pepper's text brain…</span>
     </div>
 
     <div class="pj-layout">
@@ -688,7 +1243,7 @@ body {
     <option value="Very Hot">Very Hot — Now ya know you're having a hot sauce</option>
     <option value="Super Hot">Super Hot — Will clear your sinuses but won't curl your hair</option>
     <option value="Extreme">Extreme — Let's ya know who's boss</option>
-    <option value="Nuclear">Nuclear — An afternoon of regret</option>
+    <option value="Inferno">Inferno — An afternoon of regret</option>
   </select>
 </div>
 
@@ -739,23 +1294,6 @@ body {
       </aside>
 
       <main>
-        <section class="pj-recipe-widget" id="pj-recipe-widget">
-          <h3>From the Pepper Junction Kitchen</h3>
-          <p>These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.</p>
-          <p>And depending on how bad you cook, we can’t guarantee the results either.</p>
-
-          <div class="pj-field">
-            <label for="pj-recipe-select">Recipe</label>
-            <select id="pj-recipe-select">
-              <option value="">Select a recipe</option>
-            </select>
-          </div>
-
-          <div class="pj-recipe-actions">
-            <a class="pj-link-btn" id="pj-recipe-open" href="#" target="_blank" rel="noopener" aria-disabled="true">Open Recipe</a>
-            <button class="pj-btn" id="pj-clear-recipe" type="button">Clear Recipe</button>
-          </div>
-        </section>
        <div class="pj-results-head">
   <div>
     <h2>Matching Sauces</h2>
@@ -769,6 +1307,57 @@ body {
     </div>
   </div>
 
+  <!-- ═══ FOOTER ═══════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <img src="assets/PJ-logo.png" alt="Pepper Junction" />
+        <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
+        <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
+        <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+      </div>
+
+      <div>
+        <span class="footer-col-title">Shop</span>
+        <ul class="footer-col-links">
+          <li><a href="hot-sauces.html">Hot Sauces</a></li>
+          <li><a href="buffalo-condiments.html">Wing & Buffalo</a></li>
+          <li><a href="seasonings-bbq.html">BBQ & Seasonings</a></li>
+          <li><a href="buffalo-condiments.html">Condiments</a></li>
+          <li><a href="snacks.html">Snacks</a></li>
+          <li><a href="olive-oils-vinegar.html">Olive Oils & Vinegars</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <span class="footer-col-title">Pepper Junction</span>
+        <ul class="footer-col-links">
+          <li><a href="main.html">Home</a></li>
+          <li><a href="index.html">Pairing Bar</a></li>
+          <li><a href="recipe.html">Recipes</a></li>
+          <li><a href="main.html#about">Our Story</a></li>
+          <li><a href="main.html#location">Visit Us</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <span class="footer-col-title">Help</span>
+        <ul class="footer-col-links">
+          <li><a href="policies.html#damaged">Damaged Products</a></li>
+          <li><a href="policies.html#shipping">Shipping Info</a></li>
+          <li><a href="policies.html#returns">Returns</a></li>
+          <li><a href="policies.html#contact">Contact Us</a></li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
+      <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
+    </div>
+  </footer>
+
   <script>
    /* ── PJ_DATA — fetched from JSON CNS ──────────────────────────
       Replaces hardcoded array. Widget field references unchanged.
@@ -778,6 +1367,7 @@ body {
    ── ────────────────────────────────────────────────────────── */
    let PJ_DATA = [];
    let PJ_DATA_LOADED = false;
+   let PJ_LAST_RENDERED_PRODUCTS = [];
 
    /* Remap JSON fields to match widget's existing field references */
    function remapProduct(p) {
@@ -792,7 +1382,7 @@ body {
        'Heat Curve':          p['How it Hits']         || '',
        'Heat Finish':         p['Heat Finish']         || '',
        'Primary Flavor Notes':p['Primary Flavor Notes']|| '',
-       'Product URL':         p['Product URL']         || '',
+       'Product URL':         (p['slug'] ? ('products/' + p['slug'] + '.html') : (p['Product URL'] || '')),
        'Product Image':       'assets/sauces/' + (p['slug'] || '') + '.png',
        'Best Food Pairings':  p['Best Food Pairings']  || '',
        'in_stock':            p['in_stock'] !== false,
@@ -830,23 +1420,15 @@ body {
      .then(function(data) {
        PJ_DATA = data.map(remapProduct);
        PJ_DATA_LOADED = true;
-       loadRecipeMap();
        render();
      })
      .catch(function(err) {
        console.error('PJ_DATA load error:', err);
        /* Render empty state so widget UI still appears */
        PJ_DATA_LOADED = true;
-       loadRecipeMap();
        render();
      });
     const PRODUCT_URL_COL = "Product URL";
-    const RECIPE_JSON_PATH = './data/PJ_Master_Recipe_Map_cleaned.json';
-    let recipeMap = [];
-    let activeMode = 'discovery';
-    let activeRecipe = null;
-    let recipeLockedProducts = [];
-
 
     const LOCKED_PHRASES = [
   "mac and cheese",
@@ -893,46 +1475,8 @@ const PROTECTED_WORDS = [
       apply: document.getElementById('pj-apply'),
       reset: document.getElementById('pj-reset'),
       results: document.getElementById('pj-results'),
-      count: document.getElementById('pj-count'),
-      recipeSelect: document.getElementById('pj-recipe-select'),
-      recipeOpen: document.getElementById('pj-recipe-open'),
-      recipeClear: document.getElementById('pj-clear-recipe')
+      count: document.getElementById('pj-count')
     };
-
-    async function loadRecipeMap() {
-      try {
-        const res = await fetch(RECIPE_JSON_PATH, { cache: 'no-store' });
-        if (!res.ok) throw new Error(`Failed to load recipe map: ${res.status}`);
-
-        const data = await res.json();
-        recipeMap = data.filter(r =>
-          String(r["Active?"] || '').trim().toUpperCase() === 'TRUE' &&
-          String(r["Recipe ID"] || '').trim() &&
-          String(r["Required Product 1"] || '').trim()
-        );
-
-        populateRecipeDropdown();
-        console.log('Recipe map loaded:', recipeMap.length);
-      } catch (err) {
-        console.error('Recipe map load error:', err);
-        recipeMap = [];
-        if (els.recipeSelect) {
-          els.recipeSelect.innerHTML = '<option value=>Recipe list unavailable</option>';
-        }
-      }
-    }
-
-    function populateRecipeDropdown() {
-      if (!els.recipeSelect) return;
-      els.recipeSelect.innerHTML = '<option value="">Select a recipe</option>';
-
-      recipeMap.forEach(recipe => {
-        const opt = document.createElement('option');
-        opt.value = recipe["Recipe ID"];
-        opt.textContent = recipe["Dropdown Label"] || recipe["Recipe Name"];
-        els.recipeSelect.appendChild(opt);
-      });
-    }
 
     function clearDiscoveryInputs() {
       els.search.value = '';
@@ -944,74 +1488,11 @@ const PROTECTED_WORDS = [
       els.heatFinish.value = '';
     }
 
-    function updateRecipeOpenLink(recipe) {
-      if (!els.recipeOpen) return;
-      const url = recipe && recipe["Recipe URL"] ? String(recipe["Recipe URL"]).trim() : '';
-      els.recipeOpen.href = url || '#';
-      els.recipeOpen.setAttribute('aria-disabled', url ? 'false' : 'true');
-    }
-
-    function clearRecipeMode(shouldRender = true) {
-      activeRecipe = null;
-      recipeLockedProducts = [];
-      activeMode = 'discovery';
-      if (els.recipeSelect) els.recipeSelect.value = '';
-      updateRecipeOpenLink(null);
-      if (shouldRender) render();
-    }
-
-    function activateDiscoveryMode() {
-      if (activeMode === 'recipe') {
-        activeRecipe = null;
-        recipeLockedProducts = [];
-        if (els.recipeSelect) els.recipeSelect.value = '';
-        updateRecipeOpenLink(null);
-      }
-      activeMode = 'discovery';
-    }
-
     function containsRecipeIntent(query) {
       return /\brecipes?\b/i.test(String(query || '').trim());
     }
 
-    function normalizeKey(value) {
-      return String(value || '').replace(/\s+/g, ' ').trim().toLowerCase();
-    }
-
-    function getRecipeProductEntries(recipe) {
-      return [
-        { role: 'Required Product', name: recipe["Required Product 1"] },
-        { role: 'Required Product', name: recipe["Required Product 2"] },
-        { role: 'Alternative Product', name: recipe["Alternative Product 1"] },
-        { role: 'Alternative Product', name: recipe["Alternative Product 2"] },
-        { role: 'Suggested Product', name: recipe["Suggested Product"] }
-      ].filter(entry => String(entry.name || '').trim());
-    }
-
-    function getLockedRecipeProducts(recipe) {
-      const byName = new Map(PJ_DATA.map(product => [normalizeKey(product["Product Name"]), product]));
-      return getRecipeProductEntries(recipe)
-        .map(entry => {
-          const product = byName.get(normalizeKey(entry.name));
-          return product ? { product, role: entry.role } : null;
-        })
-        .filter(Boolean);
-    }
-
-    function loadRecipeById(recipeId) {
-      const recipe = recipeMap.find(r => r["Recipe ID"] === recipeId);
-      if (!recipe) return;
-
-      clearDiscoveryInputs();
-      activeMode = 'recipe';
-      activeRecipe = recipe;
-      recipeLockedProducts = getLockedRecipeProducts(recipe);
-      updateRecipeOpenLink(recipe);
-      render();
-    }
-
     function onDiscoveryInteraction() {
-      activateDiscoveryMode();
       render();
     }
 
@@ -1402,10 +1883,10 @@ function renderRecipeRedirectCard() {
         "Heat Curve": '',
         "Heat Finish": '',
         "Primary Flavor Notes": 'Recipe search detected',
-        "Best Food Pairings": 'Use the Pepper Junction recipe selector below the Discovery Engine controls.'
+        "Best Food Pairings": 'Visit The Pepper Junction Kitchen to browse recipes.'
       }, {
         modeLabel: 'Recipe Redirect',
-        note: 'Recipes live in the Pepper Junction recipe widget. The Discovery Engine is reserved for product, flavor, heat, and pairing searches.',
+        note: 'Recipes live on their own page now. The Discovery Engine is reserved for product, flavor, heat, and pairing searches.',
         system: true
       });
 
@@ -1413,84 +1894,19 @@ function renderRecipeRedirectCard() {
       bindCardImageFallbacks();
     }
 
-function renderRecipeResults() {
-  const recipeLabel = activeRecipe
-    ? (activeRecipe["Dropdown Label"] || activeRecipe["Recipe Name"] || "Selected Recipe")
-    : "Selected Recipe";
-
-  const recipeUrl = activeRecipe && activeRecipe["Recipe URL"]
-    ? String(activeRecipe["Recipe URL"]).trim()
-    : "";
-
-  const descriptorParts = [
-    activeRecipe && activeRecipe["Course"] ? String(activeRecipe["Course"]).trim() : "",
-    activeRecipe && activeRecipe["Food Type"] ? String(activeRecipe["Food Type"]).trim() : ""
-  ].filter(Boolean);
-
-  const descriptor = descriptorParts.join(" • ");
-
-  els.count.textContent = `${recipeLockedProducts.length} recipe product${recipeLockedProducts.length === 1 ? '' : 's'} loaded`;
-
-  const introCard = `
-    <article class="pj-card pj-system-card">
-      <div class="pj-mode-pill">Recipe</div>
-      <div class="pj-brand">Pepper Junction</div>
-      <h3 class="pj-name">${escapeHtml(recipeLabel)}</h3>
-
-      ${descriptor ? `<div><span class="pj-pill">${escapeHtml(descriptor)}</span></div>` : ""}
-
-      <div class="pj-section">
-        <div class="pj-v">
-          These recipes were crafted by John and developed with these specific products/ingredients. By changing them, we can’t guarantee the intended results.${recipeUrl ? ` <a href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">Cont.</a>` : ""}
-        </div>
-       <div class="pj-fineprint" style="color: #2b1d15;">
-  And depending on how bad you cook, we can't guarantee the results either.
-</div>
-      </div>
-
-      ${recipeUrl ? `
-        <div class="pj-card-actions">
-          <a class="pj-btn sauce" href="${escapeHtml(recipeUrl)}" target="_blank" rel="noopener noreferrer">View Recipe</a>
-        </div>
-      ` : ""}
-    </article>
-  `;
-
-  if (!recipeLockedProducts.length) {
-    els.results.innerHTML = introCard;
-    bindCardImageToggles();
-    bindCardImageFallbacks();
-    return;
-  }
-
-  const productCards = recipeLockedProducts.map(({ product, role }) =>
-    card(product, {
-      modeLabel: role,
-      note: role === 'Suggested Product'
-        ? 'Suggested supporting item for this recipe.'
-        : role === 'Alternative Product'
-          ? 'Approved backup option for this recipe.'
-          : 'Core product locked to this recipe.'
-    })
-  ).join('');
-
-  els.results.innerHTML = introCard + productCards;
-  bindCardImageToggles();
-  bindCardImageFallbacks();
-}
-
     function renderDiscoveryResults() {
       const filtered = PJ_DATA.filter(matches);
       els.count.textContent = `${filtered.length} product${filtered.length === 1 ? '' : 's'} found`;
 
       if (!filtered.length) {
+        PJ_LAST_RENDERED_PRODUCTS = [];
         els.results.innerHTML = `
           <div class="pj-empty">
             <strong>No matches found.</strong><br><br>
             Try widening the filters or searching by food, flavor, or pepper type.
           </div>
         `;
-        return;
+        return [];
       }
 
       filtered.sort((a, b) => {
@@ -1512,23 +1928,38 @@ function renderRecipeResults() {
       els.results.innerHTML = filtered.map(record => card(record)).join('');
       bindCardImageToggles();
       bindCardImageFallbacks();
+      PJ_LAST_RENDERED_PRODUCTS = filtered.map(record => ({
+        name: String(record["Product Name"] || '').trim(),
+        url: String(record[PRODUCT_URL_COL] || '').trim()
+      })).filter(product => product.name && product.url);
+      return PJ_LAST_RENDERED_PRODUCTS.slice();
     }
 
-    function render() {
+    function render(finalizeChefPepperRecommendations = false) {
       const query = els.search.value.trim();
 
-      if (activeMode === 'recipe') {
-        renderRecipeResults();
-        return;
-      }
-
       if (containsRecipeIntent(query)) {
+        PJ_LAST_RENDERED_PRODUCTS = [];
         renderRecipeRedirectCard();
-        return;
+        return [];
       }
 
-      renderDiscoveryResults();
+      const products = renderDiscoveryResults();
+      if (finalizeChefPepperRecommendations) {
+        window.dispatchEvent(new CustomEvent('pj:chef-pepper-recommendations-finalized', {
+          detail: { products: products.map(product => ({ ...product })) }
+        }));
+      }
+      return products;
     }
+
+    /* Final-RI integration seam: this is the only Pairing Bar action that
+       both presents the completed CNS-backed cards and records that exact
+       recommendation set in Chef Pepper's visit transcript. */
+    window.pjFinalizeChefPepperRecommendations = function() {
+      if (!PJ_DATA_LOADED) return [];
+      return render(true);
+    };
 
 els.apply.addEventListener('click', onDiscoveryInteraction);
 
@@ -1549,34 +1980,245 @@ els.search.addEventListener('keydown', (e) => {
 
 els.reset.addEventListener('click', () => {
   clearDiscoveryInputs();
-  activateDiscoveryMode();
   render();
 });
 
-    if (els.recipeSelect) {
-      els.recipeSelect.addEventListener('change', (e) => {
-        const recipeId = e.target.value;
-        if (!recipeId) {
-          clearRecipeMode();
-          return;
-        }
-        loadRecipeById(recipeId);
-      });
-    }
+/* Kitchen scene pause/play control */
+(function initKitchenPauseButton() {
+  const video = document.getElementById('pj-kitchen-video');
+  const btn = document.getElementById('pj-kitchen-pause-btn');
+  if (!video || !btn) return;
 
-    if (els.recipeClear) {
-      els.recipeClear.addEventListener('click', () => {
-        clearRecipeMode();
-      });
-    }
+  const pauseIcon = btn.querySelector('.pj-kitchen-pause-icon-pause');
+  const playIcon = btn.querySelector('.pj-kitchen-pause-icon-play');
 
-    updateRecipeOpenLink(null);
-    /* loadRecipeMap() and render() called after JSON fetch resolves above */
+  function setState(isPaused) {
+    pauseIcon.hidden = isPaused;
+    playIcon.hidden = !isPaused;
+    btn.setAttribute('aria-pressed', isPaused ? 'true' : 'false');
+    btn.setAttribute('aria-label', isPaused ? 'Play kitchen background motion' : 'Pause kitchen background motion');
+  }
+
+  btn.addEventListener('click', () => {
+    if (video.paused) {
+      video.play();
+      setState(false);
+    } else {
+      video.pause();
+      setState(true);
+    }
+  });
+})();
+
+    /* render() called after JSON fetch resolves above */
     /* Add session writer to all product card link clicks */
     document.addEventListener('click', function(e) {
       var card = e.target.closest('a[href*="products/"]');
       if (card) writeWidgetSession();
     });
+  </script>
+
+  <script>
+    (() => {
+      const CHAT_ENDPOINT = "/api/chef-pepper-chat";
+      const STATUS_ENDPOINT = "/api/chef-pepper-status";
+      const SESSION_STORAGE_KEY = "pjChefPepperConversationId";
+      const TRANSCRIPT_STORAGE_KEY = "pjChefPepperTranscriptV1";
+      const MAX_TRANSCRIPT_ENTRIES = 80;
+
+      const display = document.getElementById("pj-chef-pepper-display");
+      const transcriptElement = document.getElementById("pj-chef-pepper-transcript");
+      const status = document.getElementById("pj-chef-pepper-status");
+      const chatForm = document.getElementById("pj-chef-pepper-chat");
+      const messageInput = document.getElementById("pj-chef-pepper-message");
+      const sendBtn = document.getElementById("pj-chef-pepper-send");
+
+      if (!display || !transcriptElement || !status || !chatForm || !messageInput || !sendBtn) return;
+
+      let submitting = false;
+      let transcript = loadTranscript();
+
+      function createConversationId() {
+        if (window.crypto && typeof window.crypto.randomUUID === "function") {
+          return window.crypto.randomUUID();
+        }
+        return "chef_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2);
+      }
+
+      function getConversationId() {
+        let conversationId = sessionStorage.getItem(SESSION_STORAGE_KEY);
+        if (!conversationId) {
+          conversationId = createConversationId();
+          sessionStorage.setItem(SESSION_STORAGE_KEY, conversationId);
+        }
+        return conversationId;
+      }
+
+      function setStatus(message) {
+        status.textContent = message;
+      }
+
+      function setSubmitting(nextSubmitting) {
+        submitting = nextSubmitting;
+        messageInput.disabled = nextSubmitting;
+        sendBtn.disabled = nextSubmitting;
+        display.classList.toggle("is-waiting", nextSubmitting);
+      }
+
+      function cleanReplyText(text) {
+        return String(text || "")
+          .replace(/&#x20;|&#32;|&nbsp;/gi, " ")
+          .replace(/\*\*([\s\S]*?)\*\*/g, "$1");
+      }
+
+      function loadTranscript() {
+        try {
+          const stored = JSON.parse(sessionStorage.getItem(TRANSCRIPT_STORAGE_KEY) || "[]");
+          if (!Array.isArray(stored)) return [];
+          return stored.filter(entry => (
+            entry &&
+            (entry.type === "message" || entry.type === "recommendations")
+          )).slice(-MAX_TRANSCRIPT_ENTRIES);
+        } catch {
+          return [];
+        }
+      }
+
+      function saveTranscript() {
+        try {
+          sessionStorage.setItem(TRANSCRIPT_STORAGE_KEY, JSON.stringify(transcript));
+        } catch (err) {
+          console.warn("Chef Pepper transcript could not be saved", err);
+        }
+      }
+
+      function renderTranscript() {
+        transcriptElement.replaceChildren();
+
+        if (!transcript.length) {
+          const empty = document.createElement("p");
+          empty.textContent = "Chef Pepper's consultation will appear here.";
+          transcriptElement.append(empty);
+          return;
+        }
+
+        transcript.forEach(entry => {
+          const section = document.createElement("section");
+          section.className = "pj-chef-pepper-transcript-entry";
+
+          const label = document.createElement("span");
+          label.className = "pj-chef-pepper-transcript-speaker";
+
+          if (entry.type === "message") {
+            section.classList.add(entry.speaker === "customer" ? "is-customer" : "is-chef-pepper");
+            label.textContent = entry.speaker === "customer" ? "You" : "Chef Pepper";
+            const text = document.createElement("p");
+            text.textContent = cleanReplyText(entry.text);
+            section.append(label, text);
+          } else {
+            section.classList.add("pj-chef-pepper-transcript-recommendations");
+            label.textContent = "Recommendations shown";
+            const list = document.createElement("ul");
+            (entry.products || []).forEach(product => {
+              if (!product || !product.name || !product.url) return;
+              const item = document.createElement("li");
+              const link = document.createElement("a");
+              link.href = product.url;
+              link.textContent = product.name;
+              link.target = "_blank";
+              link.rel = "noopener noreferrer";
+              item.append(link);
+              list.append(item);
+            });
+            section.append(label, list);
+          }
+
+          transcriptElement.append(section);
+        });
+
+        display.scrollTop = display.scrollHeight;
+      }
+
+      function appendTranscriptEntry(entry) {
+        transcript.push(entry);
+        transcript = transcript.slice(-MAX_TRANSCRIPT_ENTRIES);
+        saveTranscript();
+        renderTranscript();
+      }
+
+      async function checkChefPepper() {
+        try {
+          const response = await fetch(STATUS_ENDPOINT, { cache: "no-store" });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(data.error || "Chef Pepper status check failed.");
+          setStatus(
+            data.ready
+              ? `Chef Pepper text consultation ready · Identity Root v${data.identity_version}`
+              : "Chef Pepper's server is running, but OPENAI_API_KEY is not set."
+          );
+        } catch {
+          setStatus("Chef Pepper's local text server is not available.");
+        }
+      }
+
+      chatForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const text = messageInput.value.trim();
+        if (!text || submitting) return;
+
+        setSubmitting(true);
+        setStatus("Chef Pepper is thinking…");
+        appendTranscriptEntry({ type: "message", speaker: "customer", text });
+
+        try {
+          const response = await fetch(CHAT_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              conversation_id: getConversationId(),
+              message: text
+            })
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok || !data.reply) {
+            throw new Error(data.error || "Chef Pepper did not return a written reply.");
+          }
+
+          appendTranscriptEntry({
+            type: "message",
+            speaker: "chef-pepper",
+            text: cleanReplyText(data.reply)
+          });
+          messageInput.value = "";
+          setStatus(`Chef Pepper replied · Identity Root v${data.identity_version}`);
+          console.log("Chef Pepper:", data.reply);
+        } catch (err) {
+          setStatus(err && err.message ? err.message : String(err));
+          console.error("Chef Pepper chat error", err);
+        } finally {
+          setSubmitting(false);
+          messageInput.focus();
+        }
+      });
+
+      window.addEventListener("pj:chef-pepper-recommendations-finalized", event => {
+        const products = Array.isArray(event.detail?.products)
+          ? event.detail.products.filter(product => product?.name && product?.url)
+          : [];
+        if (!products.length) return;
+        appendTranscriptEntry({
+          type: "recommendations",
+          products: products.map(product => ({
+            name: String(product.name),
+            url: String(product.url)
+          }))
+        });
+      });
+
+      getConversationId();
+      renderTranscript();
+      checkChefPepper();
+    })();
   </script>
 </body>
 </html>
