@@ -161,7 +161,7 @@
         '<a class="pj-cart-action pj-cart-view" href="' + cartPath('cart-page.html') + '">View Full Cart</a>' +
         '<button class="pj-cart-action pj-cart-checkout" type="button">Checkout Now</button>' +
 
-        '<div class="pj-cart-note">Checkout bridge coming soon. Square remains the register.</div>' +
+        '<div class="pj-cart-note">Secure checkout is handled by Square.</div>' +
       '</div>';
 
     document.body.appendChild(overlay);
@@ -381,9 +381,15 @@
 
   function renderSubtotal(summary) {
     var subtotalEl = document.getElementById('pj-cart-subtotal');
+    var drawer = document.getElementById(DRAWER_ID);
+    var checkoutBtn = drawer ? drawer.querySelector('.pj-cart-checkout') : null;
 
     if (subtotalEl) {
       subtotalEl.textContent = summary.subtotal_display;
+    }
+
+    if (checkoutBtn) {
+      checkoutBtn.disabled = summary.item_count === 0;
     }
   }
 
@@ -466,25 +472,39 @@
 
   function handleCheckoutNow() {
     var summary = window.PJCart.getSummary();
+    var drawer = document.getElementById(DRAWER_ID);
+    var btn = drawer ? drawer.querySelector('.pj-cart-checkout') : null;
+    var note = drawer ? drawer.querySelector('.pj-cart-note') : null;
 
     if (!summary.items.length) {
       openDrawer();
       return;
     }
 
-    console.info(
-      'PJCartDrawer: Checkout bridge not connected yet.',
-      summary
-    );
-
-    var note = document.querySelector('.pj-cart-note');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Opening Square Checkout…';
+    }
 
     if (note) {
-      note.textContent =
-        'Checkout bridge coming soon — cart session is ready for Square handoff.';
-
+      note.textContent = 'Validating your lineup with Square…';
       note.classList.add('active');
     }
+
+    window.PJCart.startCheckout()
+      .catch(function (error) {
+        console.error('PJCartDrawer: checkout failed.', error);
+
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Checkout Now';
+        }
+
+        if (note) {
+          note.textContent = 'Checkout could not be opened. Please try again.';
+          note.classList.add('active');
+        }
+      });
   }
 
   document.addEventListener('DOMContentLoaded', init);
