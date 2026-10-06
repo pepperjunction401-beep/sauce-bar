@@ -35,6 +35,7 @@
   }
 
   var BADGE_BASE = 'assets/badges/';
+  var COMMERCIAL_ENDPOINT = 'https://cdbenwthxhypuuipyjlv.supabase.co/functions/v1/square-commercial-public';
 
   function esc(value) {
     return String(value || '')
