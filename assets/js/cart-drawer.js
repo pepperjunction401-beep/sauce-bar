@@ -78,8 +78,9 @@
 
           price = Math.round(price * 100) / 100;
 
-          if (Number(item.price) !== price) {
+          if (Number(item.price) !== price || item.price_source !== 'square-commercial') {
             item.price = price;
+            item.price_source = 'square-commercial';
             changed = true;
           }
         });
