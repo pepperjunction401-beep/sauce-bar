@@ -23,6 +23,7 @@
  * - Talk to Supabase yet
  * - Award badges
  * - Process checkout
+ * - Render authoritative Square-synced display pricing
  */
 
 (function () {
