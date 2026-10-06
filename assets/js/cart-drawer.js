@@ -32,6 +32,7 @@
   var OVERLAY_ID = 'pj-cart-overlay';
   var CART_BUTTON_ID = 'pj-cart-toggle';
   var CART_COUNT_ID = 'pj-cart-count';
+  var COMMERCIAL_ENDPOINT = 'https://cdbenwthxhypuuipyjlv.supabase.co/functions/v1/square-commercial-public';
 
   function getCartBasePath() {
     var path = window.location.pathname || '';
