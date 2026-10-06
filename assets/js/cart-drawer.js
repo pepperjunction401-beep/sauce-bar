@@ -140,6 +140,7 @@
     injectDrawer();
     bindEvents();
     render();
+    syncCommercialPrices();
   }
 
   function injectHeaderCartButton() {
