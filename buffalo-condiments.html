@@ -693,6 +693,28 @@
       .site-footer { padding: 20px; }
     }
 
+  .site-footer { background: var(--green-dark); border-top: 2px solid var(--brass); position: relative; z-index: 1; }
+    .footer-top { max-width: 1100px; margin: 0 auto; padding: 48px 48px 40px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
+    .footer-brand { display: flex; flex-direction: column; gap: 10px; }
+    .footer-brand img { height: 44px; width: auto; margin-bottom: 4px; }
+    .footer-contact-item { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; }
+    .footer-contact-item a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
+    .footer-contact-item a:hover { opacity: 1; }
+    .footer-col-title { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass); opacity: 0.8; display: block; margin-bottom: 14px; }
+    .footer-col-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col-links li a { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream); opacity: 0.45; text-decoration: none; transition: opacity 0.2s; }
+    .footer-col-links li a:hover { opacity: 1; }
+    .footer-bottom { border-top: 1px solid rgba(184,137,57,0.2); padding: 18px 48px; display: flex; align-items: center; justify-content: space-between; max-width: 100%; }
+    .footer-copy { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); opacity: 0.35; }
+    .footer-standard { font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); opacity: 0.45; }
+    .footer-sep { display: none; }
+    @media (max-width: 768px) {
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; padding: 32px 20px 28px; }
+      .footer-bottom { padding: 14px 20px; flex-direction: column; gap: 6px; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .footer-top { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -761,7 +783,7 @@
       <div class="product-grid">
 
         <!-- ── Defcon Defense Condition #3 Mild ── -->
-        <a class="product-card reveal" href="products/defcon-defense-condition-3-mild.html">
+        <a class="product-card reveal" href="products/defcon-condition-3.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
             <div class="award-badge"><span class="award-badge-text">🏆 NYC Expo Wing Sauce '16 &amp; '17</span></div>
@@ -782,7 +804,7 @@
         </a>
 
         <!-- ── Defcon Defense Condition #2 Medium ── -->
-        <a class="product-card reveal" href="products/defcon-defense-condition-2-medium.html">
+        <a class="product-card reveal" href="products/defcon-condition-2.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
             <div class="award-badge"><span class="award-badge-text">🏆 NYC Expo Wing Sauce '15 &amp; '23</span></div>
@@ -803,7 +825,7 @@
         </a>
 
         <!-- ── Defcon Cluckwing Orange ── -->
-        <a class="product-card reveal" href="products/defcon-cluckwing-orange.html">
+        <a class="product-card reveal" href="products/defcon-cluckwing.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Defcon</span></div>
             <div class="award-badge"><span class="award-badge-text">🏆 Award Winning</span></div>
@@ -869,7 +891,7 @@
       <div class="product-grid">
 
         <!-- ── Colon Cleaner Mustard Sauce ── -->
-        <a class="product-card reveal" href="products/colon-cleaner-mustard-sauce.html">
+        <a class="product-card reveal" href="products/sauce-crafters-colon-cleaner-mustard.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Colon Cleaner</span></div>
             <img src="assets/pullman-product-display/cat-colon-cleaner-mustard-hot-sauce.png" alt="Colon Cleaner Mustard Sauce" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
@@ -909,7 +931,7 @@
         </a>
 
         <!-- ── Melinda's Ghost Pepper Ketchup ── -->
-        <a class="product-card reveal" href="products/melindas-ghost-pepper-ketchup.html">
+        <a class="product-card reveal" href="products/melindas-naga-jolokia-ketchup.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Melinda's</span></div>
             <img src="assets/pullman-product-display/cat-melindas-ghost-pepper-ketchup.png" alt="Melinda's Ghost Pepper Ketchup" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
@@ -929,7 +951,7 @@
         </a>
 
         <!-- ── Spicy Shark Habanero Maple Syrup ── -->
-        <a class="product-card reveal" href="products/spicy-shark-habanero-maple-syrup.html">
+        <a class="product-card reveal" href="products/the-spicy-shark-habanero-maple-syrup.html">
           <div class="product-card-image">
             <div class="maker-badge"><span class="maker-badge-text">Spicy Shark</span></div>
             <img src="assets/pullman-product-display/cat-spicy-shark-hot-maple-syrup.png" alt="Spicy Shark Habanero Maple Syrup" loading="lazy" onerror="this.src='assets/pullman-product-display/cat-placeholder.png'" />
@@ -959,14 +981,51 @@
 
   <!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
   <footer class="site-footer">
-    <div class="footer-left">
-      <span class="footer-item"><a href="https://www.pepperjunction401.com">pepperjunction401.com</a></span>
-      <span class="footer-sep"></span>
-      <span class="footer-item">320 Kingstown Rd · Richmond, RI</span>
-      <span class="footer-sep"></span>
-      <span class="footer-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
+        <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
+        <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
+      </div>
+
+      <div>
+        <span class="footer-col-title">Shop</span>
+        <ul class="footer-col-links">
+          <li><a href="hot-sauces.html">Hot Sauces</a></li>
+          <li><a href="buffalo-condiments.html">Wing &amp; Buffalo</a></li>
+          <li><a href="seasonings-bbq.html">BBQ &amp; Seasonings</a></li>
+          <li><a href="buffalo-condiments.html">Condiments</a></li>
+          <li><a href="snacks.html">Snacks</a></li>
+          <li><a href="olive-oils-vinegar.html">Olive Oils &amp; Vinegars</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <span class="footer-col-title">Pepper Junction</span>
+        <ul class="footer-col-links">
+          <li><a href="main.html">Home</a></li>
+          <li><a href="index.html">Pairing Bar</a></li>
+          <li><a href="main.html#about">Our Story</a></li>
+          <li><a href="main.html#location">Visit Us</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <span class="footer-col-title">Help</span>
+        <ul class="footer-col-links">
+          <li><a href="policies.html#damaged">Damaged Products</a></li>
+          <li><a href="policies.html#shipping">Shipping Info</a></li>
+          <li><a href="policies.html#returns">Returns</a></li>
+          <li><a href="policies.html#contact">Contact Us</a></li>
+        </ul>
+      </div>
+
     </div>
-    <div class="footer-right">© Pepper Junction · Est. 2014</div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
+      <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
+    </div>
   </footer>
 
   <!-- ═══ SCRIPTS ══════════════════════════════════════════════ -->
@@ -1009,6 +1068,7 @@
   })();
   </script>
 
+  <script src="assets/js/category-commercial-sync.js"></script>
   <script src="assets/js/cart-engine.js"></script>
   <script src="assets/js/cart-drawer.js"></script>
 
