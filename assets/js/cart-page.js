@@ -23,6 +23,7 @@
  * - Talk to Supabase yet
  * - Award badges
  * - Process checkout
+ * - Render authoritative Square-synced display pricing
  */
 
 (function () {
@@ -34,6 +35,66 @@
   }
 
   var BADGE_BASE = 'assets/badges/';
+  var COMMERCIAL_ENDPOINT = 'https://cdbenwthxhypuuipyjlv.supabase.co/functions/v1/square-commercial-public';
+
+
+  function syncCommercialPrices() {
+    var cart = window.PJCart.read();
+    var items = Array.isArray(cart && cart.items) ? cart.items : [];
+    var ids = Array.from(new Set(items.map(function (item) {
+      return item && item.product_id;
+    }).filter(Boolean)));
+
+    if (!ids.length) return;
+
+    fetch(COMMERCIAL_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store',
+      credentials: 'omit',
+      body: JSON.stringify({ product_ids: ids })
+    })
+      .then(function (response) {
+        return response.json().then(function (data) {
+          if (!response.ok) {
+            throw new Error(data.error || 'Unable to refresh Square pricing.');
+          }
+          return data;
+        });
+      })
+      .then(function (data) {
+        var byId = {};
+
+        (Array.isArray(data.items) ? data.items : []).forEach(function (item) {
+          if (item && item.product_id) byId[item.product_id] = item;
+        });
+
+        var latest = window.PJCart.read();
+        var changed = false;
+
+        latest.items.forEach(function (item) {
+          var state = byId[item.product_id];
+          if (!state || state.current !== true || state.available !== true) return;
+
+          var price = Number(state.price);
+          if (!Number.isFinite(price)) return;
+
+          price = Math.round(price * 100) / 100;
+
+          if (Number(item.price) !== price) {
+            item.price = price;
+            changed = true;
+          }
+        });
+
+        if (changed) {
+          window.PJCart.write(latest);
+        }
+      })
+      .catch(function (error) {
+        console.warn('PJCartPage: Square pricing refresh failed.', error);
+      });
+  }
 
   function esc(value) {
     return String(value || '')
@@ -50,6 +111,7 @@
   function init() {
     bindEvents();
     render();
+    syncCommercialPrices();
   }
 
   function bindEvents() {
@@ -260,18 +322,22 @@ function renderBadgeMedia(card) {
 
   function handleCheckout() {
     var summary = window.PJCart.getSummary();
-
-    if (!summary.items.length) return;
-
-    console.info('PJCartPage: Checkout bridge not connected yet.', summary);
-
     var btn = document.getElementById('pj-cart-page-checkout');
-    if (btn) {
-      btn.textContent = 'Checkout Bridge Coming Soon';
-      setTimeout(function () {
+
+    if (!summary.items.length || !btn) return;
+
+    btn.disabled = true;
+    btn.classList.add('disabled');
+    btn.textContent = 'Opening Square Checkout…';
+
+    window.PJCart.startCheckout()
+      .catch(function (error) {
+        console.error('PJCartPage: checkout failed.', error);
         btn.textContent = 'Checkout Now';
-      }, 2200);
-    }
+        btn.disabled = false;
+        btn.classList.remove('disabled');
+        window.alert('Checkout could not be opened. Please try again.');
+      });
   }
 
   document.addEventListener('DOMContentLoaded', init);

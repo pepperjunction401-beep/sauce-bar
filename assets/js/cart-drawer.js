@@ -32,6 +32,67 @@
   var OVERLAY_ID = 'pj-cart-overlay';
   var CART_BUTTON_ID = 'pj-cart-toggle';
   var CART_COUNT_ID = 'pj-cart-count';
+  var COMMERCIAL_ENDPOINT = 'https://cdbenwthxhypuuipyjlv.supabase.co/functions/v1/square-commercial-public';
+
+
+  function syncCommercialPrices() {
+    var cart = window.PJCart.read();
+    var items = Array.isArray(cart && cart.items) ? cart.items : [];
+    var ids = Array.from(new Set(items.map(function (item) {
+      return item && item.product_id;
+    }).filter(Boolean)));
+
+    if (!ids.length) return;
+
+    fetch(COMMERCIAL_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store',
+      credentials: 'omit',
+      body: JSON.stringify({ product_ids: ids })
+    })
+      .then(function (response) {
+        return response.json().then(function (data) {
+          if (!response.ok) {
+            throw new Error(data.error || 'Unable to refresh Square pricing.');
+          }
+          return data;
+        });
+      })
+      .then(function (data) {
+        var byId = {};
+
+        (Array.isArray(data.items) ? data.items : []).forEach(function (item) {
+          if (item && item.product_id) byId[item.product_id] = item;
+        });
+
+        var latest = window.PJCart.read();
+        var changed = false;
+
+        latest.items.forEach(function (item) {
+          var state = byId[item.product_id];
+          if (!state || state.current !== true || state.available !== true) return;
+
+          var price = Number(state.price);
+          if (!Number.isFinite(price)) return;
+
+          price = Math.round(price * 100) / 100;
+
+          if (Number(item.price) !== price || item.price_source !== 'square-commercial') {
+            item.price = price;
+            item.price_source = 'square-commercial';
+            changed = true;
+          }
+        });
+
+        if (changed) {
+          window.PJCart.write(latest);
+        }
+      })
+      .catch(function (error) {
+        console.warn('PJCartDrawer: Square pricing refresh failed.', error);
+      });
+  }
 
   function getCartBasePath() {
     var path = window.location.pathname || '';
@@ -80,6 +141,7 @@
     injectDrawer();
     bindEvents();
     render();
+    syncCommercialPrices();
   }
 
   function injectHeaderCartButton() {
@@ -161,7 +223,7 @@
         '<a class="pj-cart-action pj-cart-view" href="' + cartPath('cart-page.html') + '">View Full Cart</a>' +
         '<button class="pj-cart-action pj-cart-checkout" type="button">Checkout Now</button>' +
 
-        '<div class="pj-cart-note">Checkout bridge coming soon. Square remains the register.</div>' +
+        '<div class="pj-cart-note">Secure checkout is handled by Square.</div>' +
       '</div>';
 
     document.body.appendChild(overlay);
@@ -282,6 +344,12 @@
     renderItems(summary);
     renderSubtotal(summary);
     renderBadgeTeasers(summary);
+
+    if (summary.items.some(function (item) {
+      return item.price_source !== 'square-commercial';
+    })) {
+      syncCommercialPrices();
+    }
   }
 
   function renderCount(summary) {
@@ -381,9 +449,15 @@
 
   function renderSubtotal(summary) {
     var subtotalEl = document.getElementById('pj-cart-subtotal');
+    var drawer = document.getElementById(DRAWER_ID);
+    var checkoutBtn = drawer ? drawer.querySelector('.pj-cart-checkout') : null;
 
     if (subtotalEl) {
       subtotalEl.textContent = summary.subtotal_display;
+    }
+
+    if (checkoutBtn) {
+      checkoutBtn.disabled = summary.item_count === 0;
     }
   }
 
@@ -466,25 +540,39 @@
 
   function handleCheckoutNow() {
     var summary = window.PJCart.getSummary();
+    var drawer = document.getElementById(DRAWER_ID);
+    var btn = drawer ? drawer.querySelector('.pj-cart-checkout') : null;
+    var note = drawer ? drawer.querySelector('.pj-cart-note') : null;
 
     if (!summary.items.length) {
       openDrawer();
       return;
     }
 
-    console.info(
-      'PJCartDrawer: Checkout bridge not connected yet.',
-      summary
-    );
-
-    var note = document.querySelector('.pj-cart-note');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Opening Square Checkout…';
+    }
 
     if (note) {
-      note.textContent =
-        'Checkout bridge coming soon — cart session is ready for Square handoff.';
-
+      note.textContent = 'Validating your lineup with Square…';
       note.classList.add('active');
     }
+
+    window.PJCart.startCheckout()
+      .catch(function (error) {
+        console.error('PJCartDrawer: checkout failed.', error);
+
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Checkout Now';
+        }
+
+        if (note) {
+          note.textContent = 'Checkout could not be opened. Please try again.';
+          note.classList.add('active');
+        }
+      });
   }
 
   document.addEventListener('DOMContentLoaded', init);

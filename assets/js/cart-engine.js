@@ -13,7 +13,9 @@
 
   var CART_KEY = 'pj_cart';
   var CART_EVENT = 'pj-cart-updated';
+  var CHECKOUT_ENDPOINT = 'https://cdbenwthxhypuuipyjlv.supabase.co/functions/v1/square-checkout';
   var lifetimeContext = null;
+  var checkoutInFlight = false;
 
   function money(value) {
     var n = Number(value || 0);
@@ -900,6 +902,78 @@
     };
   }
 
+
+  function makeCheckoutRequestId() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+      return window.crypto.randomUUID();
+    }
+
+    return [
+      Date.now().toString(36),
+      Math.random().toString(36).slice(2),
+      Math.random().toString(36).slice(2)
+    ].join('-');
+  }
+
+  function startCheckout() {
+    var summary = getCartSummary();
+
+    if (!summary.items.length) {
+      return Promise.reject(new Error('Your cart is empty.'));
+    }
+
+    if (checkoutInFlight) {
+      return Promise.reject(new Error('Checkout is already opening.'));
+    }
+
+    checkoutInFlight = true;
+
+    var payload = {
+      checkout_request_id: makeCheckoutRequestId(),
+      items: summary.items.map(function (item) {
+        return {
+          product_id: item.product_id,
+          quantity: normalizeQty(item.quantity)
+        };
+      })
+    };
+
+    return fetch(CHECKOUT_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store',
+      credentials: 'omit',
+      body: JSON.stringify(payload)
+    })
+      .then(function (response) {
+        return response.json()
+          .catch(function () {
+            return {};
+          })
+          .then(function (data) {
+            if (!response.ok) {
+              throw new Error(data.error || 'Checkout could not be opened.');
+            }
+
+            if (!data.checkout_url) {
+              throw new Error('Square checkout URL was not returned.');
+            }
+
+            return data;
+          });
+      })
+      .then(function (data) {
+        window.location.assign(data.checkout_url);
+        return data;
+      })
+      .catch(function (error) {
+        checkoutInFlight = false;
+        throw error;
+      });
+  }
+
   window.PJCart = {
     key: CART_KEY,
     event: CART_EVENT,
@@ -917,6 +991,7 @@
     getItemCount: getItemCount,
     getSubtotal: getSubtotal,
     getSummary: getCartSummary,
+    startCheckout: startCheckout,
 
     getCelestialBadgeCard: getCelestialBadgeCard,
     getItemPurchaseAchievementProgress: getItemPurchaseAchievementProgress,

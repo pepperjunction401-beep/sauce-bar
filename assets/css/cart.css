@@ -89,6 +89,10 @@
 /* ── DRAWER SHELL ─────────────────────────────────────────── */
 
 .pj-cart-drawer {
+  /* Cart-local palette: works on pages without pj-product.css variables. */
+  --chalk: #F0EDE0;
+  --chalk-muted: #B8B4A0;
+  --chalk-surface: #1E2A1E;
   position: fixed;
   top: 0;
   right: 0;

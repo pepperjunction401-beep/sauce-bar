@@ -27,6 +27,115 @@
   ══════════════════════════════════════════════════════════════ */
 
   var SESSION_KEY = 'pj_session_pages';
+  var COMMERCIAL_ENDPOINT =
+    'https://cdbenwthxhypuuipyjlv.supabase.co/functions/v1/square-commercial-public';
+
+  function applyProductCommercialState(slug, state) {
+    if (!state || state.product_id !== slug || state.current !== true) return;
+
+    var price = Number(state.price);
+    var hasPrice = Number.isFinite(price);
+    var priceText = hasPrice ? '$' + price.toFixed(2) : '';
+    var available = state.available === true;
+
+    if (hasPrice) {
+      var priceEl = document.getElementById('hero-price');
+      if (priceEl) priceEl.textContent = priceText;
+    }
+
+    var buyBtn = document.getElementById('buy-now-btn');
+    if (buyBtn) {
+      if (available) {
+        buyBtn.classList.remove('out-of-stock');
+        buyBtn.disabled = false;
+        buyBtn.removeAttribute('aria-disabled');
+        buyBtn.removeAttribute('tabindex');
+        if (hasPrice) buyBtn.textContent = 'Add To Cart — ' + priceText;
+      } else {
+        buyBtn.classList.add('out-of-stock');
+        buyBtn.textContent = 'Currently Out of Stock';
+        buyBtn.disabled = true;
+        buyBtn.setAttribute('aria-disabled', 'true');
+        buyBtn.setAttribute('tabindex', '-1');
+      }
+    }
+
+    var calloutEl = document.getElementById('delivery-callout');
+    if (calloutEl) calloutEl.style.display = available ? '' : 'none';
+
+    var pillsEl = document.querySelector('.meta-pills');
+    var squareStockPill = pillsEl
+      ? pillsEl.querySelector('[data-square-commercial-stock]')
+      : null;
+
+    if (!available && pillsEl && !squareStockPill) {
+      squareStockPill = document.createElement('span');
+      squareStockPill.className = 'meta-pill out-of-stock';
+      squareStockPill.setAttribute('data-square-commercial-stock', 'true');
+      squareStockPill.textContent = 'Out of Stock';
+      pillsEl.appendChild(squareStockPill);
+    } else if (available && squareStockPill) {
+      squareStockPill.remove();
+    }
+
+    if (window.PJCurrentProduct && window.PJCurrentProduct.slug === slug) {
+      if (hasPrice) window.PJCurrentProduct.price = price;
+      window.PJCurrentProduct.available = available;
+      window.PJCurrentProduct.price_source = 'square-commercial';
+    }
+
+    var schema = document.getElementById('product-schema');
+    if (schema && hasPrice) {
+      try {
+        var schemaData = JSON.parse(schema.textContent);
+        if (schemaData && schemaData.offers) {
+          schemaData.offers.price = price.toFixed(2);
+          schema.textContent = JSON.stringify(schemaData, null, 2);
+        }
+      } catch (e) {
+        /* Product schema is presentation metadata only; do not block the page. */
+      }
+    }
+  }
+
+  function syncProductCommercialState(slug) {
+    if (!slug) return;
+
+    fetch(COMMERCIAL_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store',
+      credentials: 'omit',
+      body: JSON.stringify({ product_ids: [slug] })
+    })
+      .then(function(response) {
+        return response.json().then(function(data) {
+          if (!response.ok) {
+            throw new Error(data.error || 'Unable to refresh Square commercial state.');
+          }
+          return data;
+        });
+      })
+      .then(function(data) {
+        var state = Array.isArray(data.items) ? data.items[0] : null;
+        if (!state || state.product_id !== slug || state.current !== true) return;
+
+        window.PJCommercialState = state;
+        applyProductCommercialState(slug, state);
+
+        /* PJCurrentProduct is created by each page after the CNS fetch.
+           Reapply briefly so the cart object receives Square's live price/state
+           regardless of which request finishes first. */
+        [100, 500, 1500].forEach(function(delay) {
+          setTimeout(function() {
+            applyProductCommercialState(slug, state);
+          }, delay);
+        });
+      })
+      .catch(function(error) {
+        console.warn('Square commercial state unavailable:', error);
+      });
+  }
 
   function sessionRead() {
     try {
@@ -899,6 +1008,7 @@
      */
     init: function(slug) {
       sessionWrite(slug);
+      syncProductCommercialState(slug);
     },
 
     /**
