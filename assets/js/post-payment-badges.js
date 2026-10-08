@@ -80,6 +80,8 @@
 
   var soundMuted = false;
   var soundAttempted = false;
+  var celebrationLoopEndSeconds = 137;
+  var celebrationLoopTimer = null;
 
   function qs(sel, root) {
     return (root || document).querySelector(sel);
@@ -141,12 +143,12 @@
 
     if (badge.sound) {
       var action = createEl('div', 'pj-back-action');
-      var ringBtn = createEl('button', 'pj-ring-btn', 'Ring the Bell');
+      var ringBtn = createEl('button', 'pj-ring-btn', 'Play the Celebration');
       ringBtn.type = 'button';
 
       ringBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        playBell(true);
+        playCelebration(true);
       });
 
       action.appendChild(ringBtn);
@@ -262,31 +264,57 @@
       soundMuted = !soundMuted;
       btn.setAttribute('aria-pressed', soundMuted ? 'true' : 'false');
       btn.textContent = soundMuted ? 'Sound: Off' : 'Sound: On';
+
+      var audio = qs('#pj-badge-music');
+      if (!audio) return;
+
+      if (soundMuted) {
+        audio.pause();
+      } else {
+        playCelebration(true);
+      }
     });
   }
 
-  function playBell(userRequested) {
+  function startCelebrationLoopGuard(audio) {
+    if (celebrationLoopTimer) {
+      clearInterval(celebrationLoopTimer);
+    }
+
+    celebrationLoopTimer = setInterval(function() {
+      if (audio.paused || soundMuted) return;
+
+      if (audio.currentTime >= celebrationLoopEndSeconds) {
+        audio.currentTime = 0;
+      }
+    }, 40);
+  }
+
+  function playCelebration(userRequested) {
     if (soundMuted) {
       return;
     }
 
-    var audio = qs('#pj-badge-bell');
+    var audio = qs('#pj-badge-music');
 
     if (!audio) {
       return;
     }
 
     try {
-      audio.currentTime = 0;
+      if (audio.currentTime >= celebrationLoopEndSeconds) {
+        audio.currentTime = 0;
+      }
 
       var playPromise = audio.play();
+      startCelebrationLoopGuard(audio);
 
       if (playPromise && typeof playPromise.catch === 'function') {
         playPromise.catch(function() {
           if (!userRequested) {
             /*
               Browser blocked autoplay.
-              The Ring the Bell button remains available on major badge backs.
+              The Play the Celebration button remains available on major badge backs.
             */
           }
         });
@@ -311,10 +339,10 @@
 
     /*
       Browser may block this.
-      If blocked, customer can use Ring the Bell on the card back.
+      If blocked, customer can use Play the Celebration on the card back.
     */
     setTimeout(function() {
-      playBell(false);
+      playCelebration(false);
     }, 700);
   }
 
