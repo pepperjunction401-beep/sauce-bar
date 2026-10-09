@@ -1113,6 +1113,36 @@ body {
   .site-footer { padding: 28px 20px 20px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
 }
+
+/* Temporary launch notice — self-contained; Pairing Bar functionality retained. */
+.pj-coming-soon {
+  box-sizing: border-box;
+  width: min(1100px, calc(100% - 32px));
+  margin: 20px auto 12px;
+  padding: 22px 20px;
+  text-align: center;
+  background: #26382F;
+  border: 1px solid #B88A39;
+  border-radius: 8px;
+  color: #F3EBDD;
+}
+.pj-coming-soon__eyebrow {
+  display: block;
+  color: #D6AC62;
+  font: 700 11px/1.5 'Josefin Sans', sans-serif;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.pj-coming-soon__title {
+  margin: 8px 0;
+  color: #F2D6A1;
+  font: 700 clamp(25px, 5vw, 40px)/1.1 'Playfair Display', serif;
+}
+.pj-coming-soon__text {
+  margin: 0;
+  color: #F3EBDD;
+  font: 500 clamp(14px, 3.3vw, 18px)/1.45 'Josefin Sans', sans-serif;
+}
 </style>
 </head>
 <body>
@@ -1134,6 +1164,13 @@ body {
     <a href="main.html#location">Visit</a>
   </nav>
 </header>
+
+<!-- Temporary Head Pepper launch notice -->
+<section class="pj-coming-soon" aria-label="Head Pepper launch notice">
+  <span class="pj-coming-soon__eyebrow">Pepper Junction · Head Pepper Pairing Bar</span>
+  <h2 class="pj-coming-soon__title">COMING SOON!</h2>
+  <p class="pj-coming-soon__text">The Head Pepper is still not ready to make his debut.</p>
+</section>
 
   <div class="pj-wrap">
     <div class="pj-header">
