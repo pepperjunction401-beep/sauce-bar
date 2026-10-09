@@ -2120,7 +2120,7 @@
     <nav class="header-nav">
             <a href="wholesale-dry-rubs.html">Wholesale</a>
 <a href="#categories">Shop</a>
-      <a href="index.html">Pairing Bar</a>
+      <a href="pairing-bar.html">Pairing Bar</a>
       <a href="#location">Visit</a>
     </nav>
   </header>
@@ -2140,7 +2140,7 @@
       <video class="bartender-panorama" src="assets/video/main-background-motion-compressed.mp4" autoplay muted loop playsinline></video>
     </div>
     <div class="below-bar-actions">
-      <a href="index.html" class="pairing-bar-btn">Pairing Bar</a>
+      <a href="pairing-bar.html" class="pairing-bar-btn">Pairing Bar</a>
       <button type="button" id="play-welcome-btn" class="play-welcome-btn">
         <span class="play-icon"></span> Watch Welcome Video
       </button>
@@ -2542,12 +2542,12 @@ Hard rules:
     var playBartenderBtn = document.getElementById('play-bartender-btn');
     playBartenderBtn.addEventListener('click', function () { bartender.open(false); });
 
-    // Front-door check — only a real arrival FROM conductor.html
-    // (the site's front door) counts as "entering." Anything else
+    // Front-door check — only a real arrival FROM index.html / the site root
+    // (the Conductor front door) counts as "entering." Anything else
     // that lands on main.html — the logo, Shop, Visit, an item page,
     // a category page, a reload — is someone already inside the
     // site moving around, and never auto-plays a gate.
-    var cameFromConductor = /\/conductor\.html(?:[?#]|$)/.test(document.referrer);
+    var cameFromConductor = /\/(?:index\.html)?(?:[?#]|$)/.test(document.referrer);
 
     if (cameFromConductor) {
       var welcomeSeen = !!getCookie(WELCOME_COOKIE);
