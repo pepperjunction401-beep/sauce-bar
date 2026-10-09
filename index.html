@@ -3,2221 +3,711 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Head Pepper's Pairing Bar&#8482;</title>
-
-  <!-- ── SITE HEADER/FOOTER FONTS — matches product page branding ── -->
+  <title>Pepper Junction — Welcome Aboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-
- <style>
-:root {
-  --bg: #355E3B;
-  --bg-deep: #2d5233;
-  --panel: rgba(255, 248, 236, 0.94);
-  --panel-strong: rgba(250, 241, 226, 0.98);
-  --ticket: #f5e6c8;
-  --ticket-deep: #ead4ad;
-  --ticket-edge: #b48958;
-  --ticket-ink: #2b1d15;
-  --ticket-muted: #6d5440;
-  --border: #ccb089;
-  --accent: #972f1f;
-  --accent-hover: #7f2619;
-  --gold: #b88939;
-  --shadow: 0 10px 26px rgba(44, 27, 18, 0.16);
-  --shadow-soft: 0 6px 18px rgba(44, 27, 18, 0.1);
-}
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  color: var(--ticket-ink);
-  font-family: Georgia, "Times New Roman", serif;
-  background:
-    radial-gradient(circle at top, rgba(255,255,255,0.06), transparent 35%),
-    linear-gradient(180deg, #355E3B, #2d5233);
-  min-height: 100vh;
-}
-
-.pj-wrap {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 22px;
-}
-
-.pj-header {
-  margin-bottom: 14px;
-  padding: 22px 24px;
-  border: 1px solid rgba(163, 119, 72, 0.45);
-  border-radius: 18px;
-  background: #f5e6c8;
-  box-shadow: var(--shadow-soft);
-  position: relative;
-  overflow: hidden;
-}
-
-.pj-header::after {
-  content: "";
-  position: absolute;
-  inset: 10px;
-  border: 1px solid rgba(180, 137, 88, 0.28);
-  border-radius: 12px;
-  pointer-events: none;
-}
-
-.pj-title {
-  margin: 0 0 8px;
-  font-size: 32px;
-  line-height: 1.08;
-  letter-spacing: 0.01em;
-  color: #6B0F1A;
-}
-
-.pj-sub {
-  margin: 0;
-  color: var(--ticket-muted);
-  font-size: 15px;
-  line-height: 1.55;
-  max-width: 760px;
-}
-
-/* ── KITCHEN / SAUCE PROF SCENE ───────────────────────────────
-   Full-width layered composition, sits above the filter/results
-   grid rather than inside it. Aspect-ratio locked to the source
-   video (1440x1080 = 4:3) so all three layers share one coordinate
-   system and stay in registration at any viewport width.
-   ────────────────────────────────────────────────────────────── */
-.pj-kitchen {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  margin-bottom: 18px;
-  border: 1px solid rgba(163, 119, 72, 0.45);
-  border-radius: 18px;
-  overflow: hidden;
-  background: #1a1410;
-  box-shadow: var(--shadow);
-}
-
-/* Back layer — kitchen/Ralph video. This is the master coordinate
-   plane every other layer is positioned against. */
-.pj-kitchen-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-}
-
-/* Middle layer — live Head Pepper.
-   Locked first-spin geometry from the LiveAvatar lab:
-   left -10%, top -1%, width 70%, raw green-screen stream,
-   right crop 19%, right fade 3%. */
-.pj-kitchen-avatar-stage {
-  --pj-avatar-right-crop: 19%;
-  --pj-avatar-right-fade: 3%;
-  position: absolute;
-  left: -10%;
-  top: -1%;
-  width: 70%;
-  aspect-ratio: 16 / 9;
-  z-index: 2;
-  pointer-events: none;
-  clip-path: inset(0 var(--pj-avatar-right-crop) 0 0);
-  -webkit-mask-image: linear-gradient(
-    to right,
-    #000 0%,
-    #000 calc(100% - var(--pj-avatar-right-crop) - var(--pj-avatar-right-fade)),
-    transparent calc(100% - var(--pj-avatar-right-crop)),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    #000 0%,
-    #000 calc(100% - var(--pj-avatar-right-crop) - var(--pj-avatar-right-fade)),
-    transparent calc(100% - var(--pj-avatar-right-crop)),
-    transparent 100%
-  );
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-}
-
-.pj-kitchen-avatar-stage[hidden] {
-  display: none;
-}
-
-.pj-kitchen-avatar-source {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* Chef Pepper Pass 1: written replies on the silver kitchen panel,
-   with the typed consultation control directly below the scene. */
-.pj-chef-pepper-display {
-  position: absolute;
-  left: 18%;
-  right: 9%;
-  bottom: 2.4%;
-  height: 13.2%;
-  z-index: 4;
-  padding: 9px 48px 8px 18px;
-  overflow-y: auto;
-  background: #fff;
-  color: #241d18;
-  font: 600 clamp(11px, 1.45vw, 18px)/1.35 Georgia, "Times New Roman", serif;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(61, 51, 43, 0.45) transparent;
-}
-
-.pj-chef-pepper-display p {
-  margin: 0;
-  white-space: pre-wrap;
-}
-
-.pj-chef-pepper-transcript {
-  display: grid;
-  gap: 8px;
-}
-
-.pj-chef-pepper-transcript-entry {
-  margin: 0;
-}
-
-.pj-chef-pepper-transcript-speaker {
-  display: block;
-  margin-bottom: 2px;
-  color: #6B0F1A;
-  font: 700 clamp(8px, 0.9vw, 11px)/1 "Josefin Sans", sans-serif;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.pj-chef-pepper-transcript-entry.is-customer .pj-chef-pepper-transcript-speaker {
-  color: #1E3020;
-}
-
-.pj-chef-pepper-transcript-recommendations ul {
-  margin: 3px 0 0;
-  padding-left: 18px;
-}
-
-.pj-chef-pepper-transcript-recommendations a {
-  color: #6B0F1A;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.pj-chef-pepper-display.is-waiting {
-  opacity: 0.62;
-}
-
-.pj-chef-pepper-controls {
-  margin: -6px 0 18px;
-  padding: 10px 12px;
-  border: 1px solid rgba(184, 137, 57, 0.42);
-  border-radius: 12px;
-  background: rgba(30, 48, 32, 0.92);
-  color: #FDF6E8;
-  box-shadow: var(--shadow-soft);
-  font-family: "Josefin Sans", sans-serif;
-  display: grid;
-  gap: 7px;
-}
-
-.pj-chef-pepper-btn {
-  border: 1px solid #D4A832;
-  border-radius: 9px;
-  padding: 9px 12px;
-  background: #D4A832;
-  color: #2b1d15;
-  font: 700 12px/1 "Josefin Sans", sans-serif;
-  cursor: pointer;
-}
-
-.pj-chef-pepper-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.pj-chef-pepper-status {
-  font-size: 11px;
-  line-height: 1.3;
-  color: rgba(253, 246, 232, 0.82);
-}
-
-.pj-chef-pepper-chat {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px;
-}
-
-.pj-chef-pepper-chat input {
-  min-width: 0;
-  border: 1px solid rgba(184, 137, 57, 0.45);
-  border-radius: 9px;
-  padding: 10px 11px;
-  background: rgba(255, 255, 255, 0.94);
-  color: #2b1d15;
-  font: 14px/1.2 Georgia, "Times New Roman", serif;
-}
-
-.pj-chef-pepper-chat input:disabled {
-  opacity: 0.55;
-}
-
-@media (max-width: 640px) {
-  .pj-chef-pepper-display {
-    left: 12%;
-    right: 7%;
-    bottom: 2.1%;
-    height: 13.8%;
-    padding: 5px 38px 4px 10px;
-  }
-
-  .pj-chef-pepper-chat {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Front layer — fixed foreground piece. Prep counter and sauce
-   shelf are composited into one cropped-tight transparent PNG. */
-.pj-kitchen-prep-counter {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: auto;
-  z-index: 3;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* Pause/play control — sits above every layer, subtle until hovered. */
-.pj-kitchen-pause-btn {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  z-index: 5;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(184, 137, 57, 0.5);
-  border-radius: 999px;
-  background: rgba(26, 20, 16, 0.45);
-  color: rgba(253, 246, 232, 0.75);
-  cursor: pointer;
-  backdrop-filter: blur(2px);
-  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
-  opacity: 0.6;
-}
-
-.pj-kitchen-pause-btn:hover,
-.pj-kitchen-pause-btn:focus-visible {
-  opacity: 1;
-  background: rgba(26, 20, 16, 0.72);
-  border-color: #D4A832;
-  color: #FDF6E8;
-}
-
-.pj-kitchen-pause-btn:focus-visible {
-  outline: 2px solid #D4A832;
-  outline-offset: 2px;
-}
-
-@media (max-width: 640px) {
-  .pj-kitchen {
-    border-radius: 14px;
-    aspect-ratio: 4 / 3.4;
-  }
-
-}
-
-.pj-layout {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 18px;
-  align-items: start;
-}
-
-.pj-panel,
-.pj-results-head {
-  border: 1px solid rgba(163, 119, 72, 0.4);
-  border-radius: 18px;
-  position: relative;
-  overflow: hidden;
-}
-
-.pj-panel::before {
-  content: "";
-  position: absolute;
-  inset: 10px;
-  border: 1px solid rgba(180, 137, 88, 0.2);
-  border-radius: 12px;
-  pointer-events: none;
-}
-
-.pj-panel {
-  background: #6B0F1A;
-  padding: 18px;
-  position: sticky;
-  top: 16px;
-  color: #ffde52;
-  box-shadow: var(--shadow-soft);
-}
-
-.pj-results-head {
-  background: #f5e6c8;
-  border: 1px solid rgba(163, 119, 72, 0.45);
-  border-radius: 18px;
-  padding: 14px 20px;
-  margin-bottom: 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  box-shadow: var(--shadow-soft);
-}
-   .pj-results-head::before {
-  content: "";
-  position: absolute;
-  inset: 10px;
-  border: 1px solid rgba(180, 137, 88, 0.2);
-  border-radius: 12px;
-  pointer-events: none;
-}
-
-.pj-results-head h2 {
-  margin: 0;
-  font-size: 24px;
-  color: #6B0F1A;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-}
-.pj-results-slogan {
-  margin: 2px 0 4px;
-  font-size: 14px;
-  font-style: italic;
-  color: #6B0F1A;
-  letter-spacing: 0.04em;
-}
-.pj-count {
-  font-size: 13px;
-  color: var(--ticket-muted);
-  letter-spacing: 0.03em;
-}
-.pj-panel h2 {
-  margin: 0 0 14px;
-  font-size: 28px;
-  line-height: 1.2;
-  color: #ffde52;
-}
-
-.pj-field {
-  margin-bottom: 12px;
-}
-
-.pj-field label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #ffde52;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.pj-field select,
-.pj-field input {
-  width: 100%;
-  border: 1px solid rgba(174, 132, 84, 0.45);
-  border-radius: 10px;
-  background: rgba(255,255,255,0.82);
-  color: var(--ticket-ink);
-  padding: 11px 12px;
-  font-size: 14px;
-  font-family: inherit;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
-}
-
-.pj-field select:focus,
-.pj-field input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(151, 47, 31, 0.12);
-}
-
-.pj-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.pj-btn {
-  border: 1px solid rgba(174, 132, 84, 0.45);
-  background: rgba(255,255,255,0.86);
-  color: #2b1d15;
-  padding: 10px 13px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 700;
-  font-family: inherit;
-  text-decoration: none;
-  display: inline-block;
-  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
-}
-
-.pj-btn:hover {
-  transform: translateY(-1px);
-  background: #fffdfa;
-}
-
-.pj-btn.primary {
-  background: #ffde52;
-  color: #4a2418;
-  border-color: #ffde52;
-}
-
-.pj-btn.primary:hover {
-  background: #f0cf3f;
-  border-color: #f0cf3f;
-}
-
-   .pj-btn.sauce {
-  background: #355E3B;
-  color: #ffde52;
-  border-color: #355E3B;
-}
-
-.pj-btn.sauce:hover {
-  background: #2d5233;
-  border-color: #2d5233;
-  transform: translateY(-1px);
-}
-.pj-count {
-  color: var(--ticket-muted);
-  font-size: 14px;
-}
-
-  .pj-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-    gap: 16px;
-    counter-reset: ticket;
-  }
-
-.pj-card {
-  counter-increment: ticket;
-  border: 1px solid rgba(160, 116, 70, 0.52);
-  border-radius: 16px;
-  background:
-    radial-gradient(circle at top left, rgba(255,255,255,0.28), transparent 28%),
-    linear-gradient(180deg, rgba(245,230,200,0.98), rgba(234,212,173,0.98));
-  padding: 16px 16px 18px;
-  box-shadow: var(--shadow);
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-   cursor: pointer;
-}
-
-.pj-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(78, 49, 24, 0.18);
-}
-
-.pj-card::before {
-  content: "";
-  position: absolute;
-  inset: 9px;
-  border: 1px dashed rgba(132, 94, 58, 0.42);
-  border-radius: 10px;
-  pointer-events: none;
-}
-
-.pj-card::after {
-  content: "Route 401  •  Ticket No. " counter(ticket, decimal-leading-zero);
-  position: absolute;
-  right: 16px;
-  bottom: 10px;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(85, 57, 35, 0.56);
-  pointer-events: none;
-}
-
-  .pj-brand {
-    color: #2b1d15;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 7px;
-    position: relative;
-    z-index: 1;
-  }
-
-.pj-name {
-  margin: 0 0 10px;
-  font-size: 20px;
-  line-height: 1.25;
-  color: #2b1d15;
-  position: relative;
-  padding-right: 92px;
- transition: color 0.18s ease;
-}
-
-.pj-card:hover .pj-name {
-  color: #2b1d15;
-}
-   
-.pj-name::before {
-  content: "";
-  display: block;
-  width: 72px;
-  height: 2px;
-  background: rgba(163, 119, 72, 0.45);
-  margin: 6px 0 8px;
-}
-   
- .pj-name::after {
-  content: "";
-  position: absolute;
-  width: 92px;
-  height: 92px;
-  top: -40px;
-  right: -12px;
-  background: url("assets/PJ-logo.png") no-repeat center;
-  background-size: contain;
-   pointer-events: none;
-}
-   .pj-meta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 10px;
-    margin-bottom: 2px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .pj-pill {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    color: #2b1d15;
-    background: rgba(255, 248, 236, 0.72);
-    border: 1px solid rgba(174, 132, 84, 0.42);
-    border-radius: 999px;
-    padding: 5px 9px;
-    margin: 0 6px 6px 0;
-    position: relative;
-    z-index: 1;
-  }
-
-  .pj-section {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed rgba(143, 108, 74, 0.38);
-    position: relative;
-    z-index: 1;
-  }
-
-  .pj-k {
-    display: block;
-    font-size: 11px;
-    color: #2b1d15;
-    margin-bottom: 4px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-  }
-
-  .pj-v {
-    font-size: 14px;
-    line-height: 1.5;
-    color: #2b1d15;
-  }
-
-  .pj-card-actions {
-    margin-top: 14px;
-    position: relative;
-    z-index: 1;
-    padding-bottom: 12px;
-  }
-
-  .pj-card-actions .pj-btn {
-    width: 100%;
-    text-align: center;
-  }
-
-  .pj-card-actions.dual {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    align-items: stretch;
-  }
-
-  .pj-card-actions.dual .pj-btn {
-    width: 100%;
-  }
-
-.pj-card-media {
-  margin-top: 4px;
-  margin-left: -14px;
-  margin-right: -14px;
-  position: relative;
-  z-index: 1;
-}
-
-.pj-card-image-panel {
-  position: relative;
-}
-
-.pj-card-image-shell {
-  min-height: 380px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-
-.pj-card-image-shell img {
-  width: 100%;
-  max-width: none;
-  max-height: 380px;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-}
-
-.pj-card-image-panel.is-fallback .pj-card-image-shell img {
-  max-height: 190px;
-}
-
-  .pj-card-image-caption {
-    margin-top: 10px;
-    font-size: 12px;
-    line-height: 1.4;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ticket-fade);
-  }
-
-  .pj-card-image-panel.is-fallback .pj-card-image-shell img {
-    max-height: 190px;
-  }
-
-  .pj-card-image-back {
-    margin-top: 0;
-  }
-
-  .pj-card-close-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 32px;
-    height: 32px;
-    border: 1px solid rgba(163, 119, 72, 0.35);
-    border-radius: 999px;
-    background: rgba(255, 250, 242, 0.92);
-    color: var(--ticket-ink);
-    font-size: 24px;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 0;
-    z-index: 3;
-    appearance: none;
-    -webkit-appearance: none;
-  }
-
-  .pj-card-close-btn:hover {
-    transform: translateY(-1px);
-  }
-
-  
-
-.pj-recipe-widget {
-  margin-top: 18px;
-  padding: 18px 20px;
-  border: 1px solid rgba(163, 119, 72, 0.45);
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgba(107, 15, 26, 0.98), rgba(82, 11, 19, 0.98));
-  box-shadow: var(--shadow-soft);
-  position: relative;
-  overflow: hidden;
-}
-
-.pj-recipe-widget::before {
-  content: "";
-  position: absolute;
-  inset: 10px;
-  border: 1px solid rgba(255, 222, 82, 0.18);
-  border-radius: 12px;
-  pointer-events: none;
-}
-
-.pj-recipe-header {
-  position: relative;
-  z-index: 1;
-}
-
-.pj-recipe-widget > h3 {
-  margin: 0 0 6px;
-  font-size: 20px;
-  color: #ffde52;
-}
-
-.pj-recipe-widget > p {
-  margin: 0 0 14px;
-  color: rgba(255, 249, 241, 0.96);
-  line-height: 1.5;
-}
-
-.pj-recipe-actions {
-  display: flex;
-  gap: 10px;
-  align-items: stretch;
-  justify-content: flex-start;
-  position: relative;
-  z-index: 1;
-}
-
-.pj-recipe-actions .pj-btn,
-.pj-recipe-actions .pj-link-btn {
-  width: auto;
-  min-height: 42px;
-}
-
-.pj-link-btn {
-  border: 1px solid #ffde52;
-  background: #ffde52;
-  color: #6B0F1A;
-  padding: 10px 13px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-family: inherit;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
-}
-
-.pj-link-btn:hover {
-  transform: translateY(-1px);
-  background: #f0cf3f;
-}
-
-@media (max-width: 720px) {
-  .pj-recipe-actions {
-    flex-wrap: wrap;
-  }
-
-  .pj-card-image-shell {
-    min-height: 320px;
-  }
-
-  .pj-card-image-shell img {
-    max-height: 320px;
-  }
-}
-.pj-link-btn[aria-disabled="true"] {
-  opacity: 0.85;
-  pointer-events: none;
-}
-
-.pj-card-note {
-  margin: 10px 0 0;
-  color: var(--ticket-muted);
-  font-size: 14px;
-  line-height: 1.45;
-}
-
-.pj-fineprint {
-  margin-top: 8px;
-  font-size: 11px;
-  line-height: 1.35;
-  color: var(--ticket-ink) !important;
-  opacity: 1;
-}
-
-.pj-system-card .pj-card-note {
-  font-size: 15px;
-}
-
-.pj-mode-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(160, 116, 70, 0.4);
-  background: rgba(255,255,255,0.68);
-  color: var(--ticket-muted);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-
-.pj-empty {
-    border: 1px dashed rgba(160, 116, 70, 0.52);
-    border-radius: 16px;
-    background: var(--panel-strong);
-    padding: 24px;
-    text-align: center;
-    color: var(--ticket-muted);
-    box-shadow: var(--shadow-soft);
-  }
-
-  @media (max-width: 860px) {
-    .pj-layout {
-      grid-template-columns: 1fr;
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0d0700;
     }
 
-    .pj-panel {
-      position: static;
-    }
-  }
-
-  @media (max-width: 560px) {
-    .pj-wrap {
-      padding: 14px;
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
     }
 
-    .pj-header,
-    .pj-panel,
-    .pj-results-head,
-    .pj-card {
-      border-radius: 14px;
+    .stage img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #0d0700;
+      display: block;
     }
 
-    .pj-title {
-      font-size: 27px;
+    /* ── Greeting — upper empty space above the car ─── */
+    .greeting {
+      position: absolute;
+      top: 16%;
+      left: 22%;
+      text-align: left;
+      opacity: 0;
+      animation: rise 0.9s ease 0.3s forwards;
     }
 
-    .pj-name {
-      font-size: 19px;
+    .greeting-main {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4.5vw, 60px);
+      font-weight: 900;
+      font-style: italic;
+      color: #f4e8d0;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      display: block;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.8);
     }
 
-    .pj-meta {
-      grid-template-columns: 1fr;
+    .greeting-sub {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(16px, 2vw, 26px);
+      font-weight: 700;
+      font-style: italic;
+      color: #f4e8d0;
+      opacity: 0.85;
+      letter-spacing: 0.03em;
+      line-height: 1.4;
+      display: block;
+      white-space: nowrap;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
     }
 
-    .pj-actions {
+    /* ── Buttons — independent, below the car ────────────────── */
+    .buttons {
+      position: absolute;
+      bottom: 12%;
+      left: 0;
+      right: 0;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeIn 0.9s ease 0.6s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .btn {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #1a1008;
+      background: #c49a3c;
+      border: 1px solid #d4a832;
+      padding: 14px 38px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: #d4a832;
+      color: #0d0700;
+      transform: translateY(-2px);
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes rise-centered {
+      from { opacity: 0; transform: translateX(-50%) translateY(14px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* ── Mobile ───────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      html, body { overflow: auto; }
+      .stage { height: 100svh; }
+      .greeting {
+        top: 16%;
+        left: 5%;
+      }
+      .greeting-sub { white-space: normal; }
+      .buttons {
+        left: 0;
+        right: 0;
+        bottom: 12%;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+      .btn { width: 220px; text-align: center; }
+    }
+
+    /* ── SPLIT-FLAP BOARD — added styles only ─────────────────── */
+    #board-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: all;
+      transition: opacity 0.6s ease;
+    }
+
+    #board-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .board-wrap {
+      width: 88vw;
+      max-width: none;
+      min-height: 72vh;
+      background: #000;
+      border: 2px solid #f0ece4;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.95);
+      padding: 36px 48px 52px;
+      position: relative;
+      display: flex;
       flex-direction: column;
+      justify-content: center;
     }
-  }
 
-/* ── SITE HEADER — matches product page branding ─────────────── */
-@font-face {
-  font-family: 'BlackRiver';
-  src: url('assets/fonts/Blackriver-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-display: swap;
-}
+    .board-station {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(240,236,228,0.1);
+    }
 
-.site-header {
-  background: #1E3020;
-  border-bottom: 2px solid #B88939;
-  padding: 20px 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.4);
-}
+    .board-station-left {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: #f0ece4;
+      opacity: 0.32;
+    }
 
-.header-logo {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  text-decoration: none;
-}
+    .board-station-right {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: #b8903a;
+      opacity: 0.52;
+    }
 
-.header-logo img { height: 52px; width: auto; }
+    .board-col-header {
+      display: grid;
+      grid-template-columns: 1fr 130px 80px;
+      gap: 0;
+      padding: 0 4px 8px 4px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid rgba(184,144,58,0.3);
+    }
 
-.header-wordmark { display: flex; flex-direction: column; gap: 2px; }
+    .board-col-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: #b8903a;
+      opacity: 0.55;
+    }
 
-.header-name {
-  font-family: 'BlackRiver', 'Playfair Display', serif;
-  font-size: 22px;
-  color: #FDF6E8;
-  line-height: 1;
-  letter-spacing: 0.04em;
-}
+    .board-divider {
+      height: 2px;
+      margin: 3px 0;
+      background: linear-gradient(90deg,
+        rgba(184,144,58,0.7) 0%,
+        rgba(184,144,58,0.7) 90%,
+        transparent 100%
+      );
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .board-divider.active { opacity: 1; }
 
-.header-tagline {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: #B88939;
-  opacity: 0.8;
-}
+    .board-row {
+      display: grid;
+      grid-template-columns: 1fr 130px 80px;
+      gap: 0;
+      align-items: center;
+      min-height: 66px;
+      visibility: hidden;
+      padding: 2px 0;
+    }
+    .board-row.active { visibility: visible; }
 
-.header-nav {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-}
+    .board-col {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+    }
 
-.header-nav a {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  color: #F5ECD6;
-  opacity: 0.90;
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
-.header-nav a:hover { opacity: 1; color: #D4A832; }
+    .board-col:nth-child(3) {
+      padding-left: 18px;
+    }
 
-@media (max-width: 860px) {
-  .site-header { padding: 16px 20px; }
-  .header-nav { display: none; }
-}
+    .board-col:nth-child(2) {
+      margin-left: -18px;
+    }
 
-/* ── SITE FOOTER — matches product page branding ─────────────── */
-.site-footer {
-  background: #1E3020;
-  border-top: 2px solid #B88939;
-  padding: 40px 48px 24px;
-  position: relative;
-  z-index: 1;
-  margin-top: 22px;
-}
+    .board-col-label:nth-child(2) {
+      padding-left: 18px;
+    }
 
-.footer-top {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr;
-  gap: 40px;
-  margin-bottom: 32px;
-  padding-bottom: 32px;
-  border-bottom: 1px solid rgba(184,137,57,0.2);
-}
+    .board-col-label:nth-child(3) {
+      padding-left: 18px;
+    }
 
-.footer-brand img {
-  height: 48px;
-  width: auto;
-  margin-bottom: 14px;
-  opacity: 0.85;
-}
+    .flap-cell {
+      width: 28px;
+      height: 49px;
+      background: #080808;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
 
-.footer-contact-item {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  color: #F5ECD6;
-  opacity: 0.55;
-  margin-bottom: 6px;
-  display: block;
-}
+    .flap-cell::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0;
+      top: 50%;
+      height: 1px;
+      background: #000;
+      z-index: 2;
+    }
 
-.footer-contact-item a { color: inherit; text-decoration: none; }
-.footer-contact-item a:hover { opacity: 1; color: #D4A832; }
+    .flap-cell span {
+      font-family: 'Courier New', 'Courier', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: #f0ece4;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+      user-select: none;
+      display: block;
+    }
 
-.footer-col-title {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: #D4A832;
-  opacity: 0.8;
-  margin-bottom: 14px;
-  display: block;
-}
+    .flap-cell.is-space {
+      background: transparent;
+      border-color: transparent;
+      width: 10px;
+    }
+    .flap-cell.is-space::after { display: none; }
+    .flap-cell.is-punct { width: 16px; }
 
-.footer-col-links {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-}
+    .board-col:first-child .flap-cell span { color: #ffde52; }
 
-.footer-col-links li a {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #F5ECD6;
-  opacity: 0.5;
-  text-decoration: none;
-  transition: opacity 0.2s, color 0.2s;
-}
+    .board-skip {
+      position: absolute;
+      bottom: -52px;
+      right: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #d4a832, #c49a3c);
+      border: 2px solid #f0d878;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #1a1008;
+      cursor: pointer;
+      padding: 11px 24px;
+      border-radius: 30px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .board-skip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
 
-.footer-col-links li a:hover { opacity: 1; color: #D4A832; }
+    @media (max-width: 640px) {
+      .board-wrap { width: 92vw; padding: 16px 12px 28px; }
+      .board-col-header { grid-template-columns: 1fr 80px 42px; }
+      .board-row { grid-template-columns: 1fr 80px 42px; min-height: 40px; }
+      .flap-cell { width: 18px; height: 34px; }
+      .flap-cell span { font-size: 14px; }
+      .flap-cell.is-space { width: 7px; }
+      /* Hide Time and Track data on mobile — destination takes full width */
+      .board-row .board-col:nth-child(2),
+      .board-row .board-col:nth-child(3) { visibility: hidden; }
+    }
 
-.footer-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-}
+    /* ── AUDIO CONTROLS — added styles only ──────────────────── */
+    #mute-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 950;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(240,236,228,0.18);
+      color: rgba(240,236,228,0.45);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 7px 13px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s;
+      display: none;
+    }
+    #mute-btn:hover {
+      color: rgba(240,236,228,0.85);
+      border-color: rgba(240,236,228,0.45);
+    }
 
-.footer-copy {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #B88939;
-  opacity: 0.45;
-}
+    #audio-credit {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 950;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(240,236,228,0.2);
+      display: none;
+    }
 
-.footer-standard {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #F5ECD6;
-  opacity: 0.25;
-  font-style: italic;
-}
+    /* ── ENTER BUTTON ─────────────────────────────────────────── */
+    #enter-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.82);
+    }
 
-@media (max-width: 900px) {
-  .footer-top { grid-template-columns: 1fr 1fr; }
-}
+    #enter-btn {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #1a1008;
+      background: linear-gradient(135deg, #d4a832, #c49a3c);
+      border: 2px solid #d4a832;
+      padding: 22px 64px;
+      border-radius: 2px;
+      cursor: pointer;
+      box-shadow: 0 0 40px rgba(212,168,50,0.5), 0 8px 32px rgba(0,0,0,0.6);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-@media (max-width: 640px) {
-  .footer-top { grid-template-columns: 1fr; }
-  .site-footer { padding: 28px 20px 20px; }
-  .footer-bottom { flex-direction: column; align-items: flex-start; }
-}
-</style>
+    #enter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 60px rgba(212,168,50,0.7), 0 12px 40px rgba(0,0,0,0.6);
+    }
+
+  </style>
 </head>
 <body>
 
-<!-- ═══ HEADER ══════════════════════════════════════════════════ -->
-<header class="site-header">
-  <a class="header-logo" href="main.html">
-    <img src="assets/PJ-logo.png" alt="Pepper Junction" />
-    <div class="header-wordmark">
-      <span class="header-name">Pepper Junction</span>
-      <span class="header-tagline">Est. 2014 · Rhode Island</span>
-    </div>
-  </a>
-  <nav class="header-nav">
-    <a href="hot-sauces.html">Hot Sauces</a>
-    <a href="main.html">Home</a>
-    <a href="index.html">Pairing Bar</a>
-    <a href="recipe.html">Recipes</a>
-    <a href="main.html#location">Visit</a>
-  </nav>
-</header>
-
-  <div class="pj-wrap">
-    <div class="pj-header">
-     <h1 class="pj-title">The Head Pepper's Pairing Bar&#8482;</h1>
-      <p class="pj-sub">All aboard the Sauce Discovery Engine&#8482;. Find your next bottle by heat, flavor, pepper, or food pairing.</p>
-    </div>
-
-    <!-- ═══ KITCHEN / SAUCE PROF SCENE — full width, spans both grid columns below ═══ -->
-    <section class="pj-kitchen" id="pj-kitchen" aria-label="Head Pepper in the Pepper Junction kitchen">
-
-      <!-- Back layer: moving kitchen background, Cetriolo at the stove -->
-      <video
-        class="pj-kitchen-bg"
-        id="pj-kitchen-video"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-        poster=""
-      >
-        <source src="assets/avatar/Background-Shakey-Stirring.mp4" type="video/mp4">
-      </video>
-
-      <!-- Middle layer: live Head Pepper raw green-screen stream.
-           The right side is cropped/faded to preserve the hat while
-           keeping visual separation from Cetriolo. -->
-      <div class="pj-kitchen-avatar-stage" id="pj-kitchen-avatar-stage" hidden>
-        <video
-          class="pj-kitchen-avatar-source"
-          id="pj-kitchen-avatar-source"
-          autoplay
-          playsinline
-        ></video>
-      </div>
-
-      <!-- Front layer: fixed transparent foreground piece (counter + shelf composited into one image) -->
-      <img
-        class="pj-kitchen-prep-counter"
-        src="assets/avatar/Prep-Counter.png"
-        alt=""
-        aria-hidden="true"
-      >
-
-      <div
-        class="pj-chef-pepper-display"
-        id="pj-chef-pepper-display"
-        role="log"
-        aria-live="polite"
-        aria-label="Chef Pepper's written replies"
-      >
-        <div class="pj-chef-pepper-transcript" id="pj-chef-pepper-transcript">
-          <p>Chef Pepper's consultation will appear here.</p>
-        </div>
-      </div>
-
-      <button
-        class="pj-kitchen-pause-btn"
-        id="pj-kitchen-pause-btn"
-        type="button"
-        aria-label="Pause kitchen background motion"
-        aria-pressed="false"
-      >
-        <svg class="pj-kitchen-pause-icon-pause" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-          <rect x="6" y="4" width="4" height="16" rx="1"></rect>
-          <rect x="14" y="4" width="4" height="16" rx="1"></rect>
-        </svg>
-        <svg class="pj-kitchen-pause-icon-play" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" hidden>
-          <path d="M7 4.5v15l13-7.5-13-7.5z"></path>
-        </svg>
-      </button>
-
-    </section>
-
-    <!-- DEV ONLY: Pass 1 typed Chef Pepper consultation. No LiveAvatar session is started. -->
-    <div class="pj-chef-pepper-controls" id="pj-chef-pepper-controls">
-      <form class="pj-chef-pepper-chat" id="pj-chef-pepper-chat">
-        <input
-          id="pj-chef-pepper-message"
-          type="text"
-          autocomplete="off"
-          maxlength="4000"
-          placeholder="Talk to Chef Pepper…"
-        >
-        <button class="pj-chef-pepper-btn" id="pj-chef-pepper-send" type="submit">Send</button>
-      </form>
-      <span class="pj-chef-pepper-status" id="pj-chef-pepper-status">Checking Chef Pepper's text brain…</span>
-    </div>
-
-    <div class="pj-layout">
-      <aside class="pj-panel">
-        <h2>Sauce Finder</h2>
-
-        <div class="pj-field">
-          <label for="pj-search">Search</label>
-          <input id="pj-search" type="text" placeholder="Try tacos, smoky, habanero, wings..." />
-        </div>
-
-      <div class="pj-field">
- <div class="pj-field">
-  <label for="pj-heat-tier">Heat Preference&#8482;</label>
-  <select id="pj-heat-tier">
-    <option value="">All</option>
-    <option value="Mild">Mild — Any milder I wouldn't call it a hot sauce</option>
-    <option value="Medium">Medium — No surprises</option>
-    <option value="Hot">Hot — This is where ya start knowing you're having a hot sauce</option>
-    <option value="Very Hot">Very Hot — Now ya know you're having a hot sauce</option>
-    <option value="Super Hot">Super Hot — Will clear your sinuses but won't curl your hair</option>
-    <option value="Extreme">Extreme — Let's ya know who's boss</option>
-    <option value="Inferno">Inferno — An afternoon of regret</option>
-  </select>
-</div>
-
-<div class="pj-field">
-  <label for="pj-category">Category</label>
-  <select id="pj-category">
-    <option value="">All</option>
-    <option value="BBQ SAUCE">Bbq Sauce</option><option value="CONDIMENTS">Condiments</option><option value="HOT SAUCE">Hot Sauce</option><option value="Merch">Merch</option><option value="Olive Oil/Vinegar">Olive Oil/Vinegar</option><option value="SEASONINGS/DRY RUBS">Seasonings/Dry Rubs</option><option value="SNACKS">Snacks</option><option value="WING SAUCE">Wing Sauce</option>
-  </select>
-</div>
-
-        <div class="pj-field">
-          <label for="pj-food-style">Food Style</label>
-          <select id="pj-food-style">
-            <option value="">All</option>
-            <option value="American">American</option><option value="Asian">Asian</option><option value="BBQ">BBQ</option><option value="Cajun">Cajun</option><option value="Caribbean">Caribbean</option><option value="Cayenne">Cayenne</option><option value="Chipotle">Chipotle</option><option value="Fruit">Fruit</option><option value="Indian">Indian</option><option value="Ketchup">Ketchup</option><option value="Mediterranean">Mediterranean</option><option value="Mexican">Mexican</option><option value="Mustard">Mustard</option><option value="Seasoning">Seasoning</option><option value="Syrup">Syrup</option><option value="Taco">Taco</option><option value="Vegetable">Vegetable</option><option value="Verde">Verde</option><option value="Wing">Wing</option>
-          </select>
-        </div>
-
-        <div class="pj-field">
-          <label for="pj-pepper-type">Pepper Type</label>
-          <select id="pj-pepper-type">
-            <option value="">All</option>
-            <option value="Aji Lemon Drop">Aji Lemon Drop</option><option value="Apollo">Apollo</option><option value="Cayenne">Cayenne</option><option value="Chili Peppers">Chili Peppers</option><option value="Chipotle">Chipotle</option><option value="Ghost Pepper">Ghost Pepper</option><option value="Habanero">Habanero</option><option value="Jalapeño">Jalapeño</option><option value="Paprika">Paprika</option><option value="Pepper X">Pepper X</option><option value="Reaper">Reaper</option><option value="Red Pepper">Red Pepper</option><option value="Scorpion">Scorpion</option><option value="Scotch Bonnet">Scotch Bonnet</option><option value="Spices">Spices</option><option value="none">none</option>
-          </select>
-        </div>
-
-        <div class="pj-field">
-          <label for="pj-heat-curve">How it Hits&#8482;</label>
-          <select id="pj-heat-curve">
-            <option value="">All</option>
-            <option value="Delayed Escalation">Delayed Escalation</option><option value="Escalator Up">Escalator Up</option><option value="Immediate Hit">Immediate Hit</option>
-          </select>
-        </div>
-
-        <div class="pj-field">
-          <label for="pj-heat-finish">Heat Finish&#8482;</label>
-          <select id="pj-heat-finish">
-            <option value="">All</option>
-            <option value="Ends With Flavor">Ends With Flavor</option><option value="Escalator Down">Escalator Down</option><option value="Feel the Flame">Feel the Flame</option><option value="Fire Pole Down">Fire Pole Down</option><option value="Say Goodnight">Say Goodnight</option><option value="Stays for Coffee">Stays for Coffee</option>
-          </select>
-        </div>
-
-        <div class="pj-actions">
-          <button class="pj-btn primary" id="pj-apply" type="button">Apply Filters</button>
-          <button class="pj-btn" id="pj-reset" type="button">Reset</button>
-        </div>
-      </aside>
-
-      <main>
-       <div class="pj-results-head">
-  <div>
-    <h2>Matching Sauces</h2>
-    <p class="pj-results-slogan">Find Your Heat. Find Your Flavor.</p>
-    <div class="pj-count" id="pj-count"></div>
+  <!-- ═══ ENTER BUTTON ══════════════════════════════════════ -->
+  <div id="enter-overlay">
+    <button id="enter-btn">Click to Enter<br><span style="font-size:11px;letter-spacing:0.45em;opacity:0.75;">Pepper Junction</span></button>
   </div>
-</div>
 
-        <div id="pj-results" class="pj-grid"></div>
-      </main>
+  <!-- ═══ AUDIO ══════════════════════════════════════════════ -->
+  <audio id="platform-audio" src="assets/audio/RR_Essex_3.mp3" preload="auto"></audio>
+  <audio id="flap-audio" src="assets/audio/Split_Flap_Board_Chatter.mp3" preload="auto"></audio>
+  <button id="mute-btn">♪ Mute</button>
+  <div id="audio-credit">Platform audio · @connecticut_rail_films</div>
+
+  <!-- ═══ SPLIT-FLAP BOARD ═══════════════════════════════════ -->
+  <div id="board-overlay">
+    <div class="board-wrap">
+      <div class="board-station">
+        <span class="board-station-left">Providence Union Station</span>
+        <span class="board-station-right">Pepper Junction · Est. 2014</span>
+      </div>
+      <div class="board-col-header">
+        <span class="board-col-label">Destination</span>
+        <span class="board-col-label">Time</span>
+        <span class="board-col-label">Trk</span>
+      </div>
+      <div id="board-rows" style="display:flex;flex-direction:column;gap:3px;"></div>
+      <button class="board-skip" id="board-skip"><span style="font-size:15px;line-height:1;">&#9193;</span> Skip</button>
     </div>
   </div>
 
-  <!-- ═══ FOOTER ═══════════════════════════════════════════════════ -->
-  <footer class="site-footer">
-    <div class="footer-top">
+  <div class="stage">
 
-      <div class="footer-brand">
-        <img src="assets/PJ-logo.png" alt="Pepper Junction" />
-        <span class="footer-contact-item">320 Kingstown Rd · Richmond, RI</span>
-        <span class="footer-contact-item"><a href="tel:4013001474">(401) 300-1474</a></span>
-        <span class="footer-contact-item"><a href="mailto:pepperjunction401@gmail.com">pepperjunction401@gmail.com</a></span>
-      </div>
+    <img src="assets/Landing_page_image_Pullman.png"
+         alt="NYNH&H Pullman parlor car conductor welcoming passengers aboard" />
 
-      <div>
-        <span class="footer-col-title">Shop</span>
-        <ul class="footer-col-links">
-          <li><a href="hot-sauces.html">Hot Sauces</a></li>
-          <li><a href="buffalo-condiments.html">Wing & Buffalo</a></li>
-          <li><a href="seasonings-bbq.html">BBQ & Seasonings</a></li>
-          <li><a href="buffalo-condiments.html">Condiments</a></li>
-          <li><a href="snacks.html">Snacks</a></li>
-          <li><a href="olive-oils-vinegar.html">Olive Oils & Vinegars</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <span class="footer-col-title">Pepper Junction</span>
-        <ul class="footer-col-links">
-          <li><a href="main.html">Home</a></li>
-          <li><a href="index.html">Pairing Bar</a></li>
-          <li><a href="recipe.html">Recipes</a></li>
-          <li><a href="main.html#location">Visit Us</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <span class="footer-col-title">Help</span>
-        <ul class="footer-col-links">
-          <li><a href="policies.html#damaged">Damaged Products</a></li>
-          <li><a href="policies.html#shipping">Shipping Info</a></li>
-          <li><a href="policies.html#returns">Returns</a></li>
-          <li><a href="policies.html#contact">Contact Us</a></li>
-        </ul>
-      </div>
-
+   <div class="greeting">
+      <span class="greeting-main">Welcome Aboard!</span>
+      <span class="greeting-sub">Join us on the Main Page or the Pairing Bar.</span>
     </div>
-    <div class="footer-bottom">
-      <div class="footer-copy">© Pepper Junction · Est. 2014 · Richmond, Rhode Island</div>
-      <div class="footer-standard">Approved under The Pepper Junction Standard™</div>
+
+    <div class="buttons">
+      <a class="btn" href="main.html">Main</a>
+      <a class="btn" href="pairing-bar.html">Pairing Bar</a>
     </div>
-  </footer>
+   </div>
 
+  <!-- ═══ BOARD SCRIPT ════════════════════════════════════════ -->
   <script>
-   /* ── PJ_DATA — fetched from JSON CNS ──────────────────────────
-      Replaces hardcoded array. Widget field references unchanged.
-      Fields remapped on load: Heat Category→Heat Tier, How it Hits→Heat Curve,
-      slug→Product Image path.
-      Widget session writer added for Pairing Bar→product page handoff.
-   ── ────────────────────────────────────────────────────────── */
-   let PJ_DATA = [];
-   let PJ_DATA_LOADED = false;
-   let PJ_LAST_RENDERED_PRODUCTS = [];
-
-   /* Remap JSON fields to match widget's existing field references */
-   function remapProduct(p) {
-     return {
-       'Category':            p['Category']            || '',
-       'Food Style':          p['Food Style']          || '',
-       'Brand':               p['Brand']               || '',
-       'Product Name':        p['Product Name']        || '',
-       'Pepper Type':         p['Pepper Type']         || '',
-       'Heat Tier':           p['Heat Category']       || '',
-       'Heat Level':          p['Heat Level']          || 0,
-       'Heat Curve':          p['How it Hits']         || '',
-       'Heat Finish':         p['Heat Finish']         || '',
-       'Primary Flavor Notes':p['Primary Flavor Notes']|| '',
-       'Product URL':         (p['slug'] ? ('products/' + p['slug'] + '.html') : (p['Product URL'] || '')),
-       'Product Image':       'assets/sauces/' + (p['slug'] || '') + '.png',
-       'Best Food Pairings':  p['Best Food Pairings']  || '',
-       'in_stock':            p['in_stock'] !== false,
-       'slug':                p['slug']                || ''
-     };
-   }
-
-   /* Write Pairing Bar search state to sessionStorage
-      so product pages can use it as recommendation signal */
-   function writeWidgetSession() {
-     try {
-       var q     = document.getElementById('pj-search');
-       var heat  = document.getElementById('pj-heat-tier');
-       var style = document.getElementById('pj-food-style');
-       var pep   = document.getElementById('pj-pepper-type');
-       var curve = document.getElementById('pj-heat-curve');
-       var fin   = document.getElementById('pj-heat-finish');
-       var cat   = document.getElementById('pj-category');
-       if (q     && q.value.trim())     sessionStorage.setItem('pj_search_query', q.value.trim());
-       if (heat  && heat.value)         sessionStorage.setItem('pj_heat_pref',    heat.value);
-       if (style && style.value)        sessionStorage.setItem('pj_food_style',   style.value);
-       if (pep   && pep.value)          sessionStorage.setItem('pj_pepper_type',  pep.value);
-       if (curve && curve.value)        sessionStorage.setItem('pj_how_it_hits',  curve.value);
-       if (fin   && fin.value)          sessionStorage.setItem('pj_heat_finish',  fin.value);
-       if (cat   && cat.value)          sessionStorage.setItem('pj_category',     cat.value);
-     } catch(e) {}
-   }
-
-   /* Fetch JSON, remap, then initialize widget */
-   fetch('./data/Database_Pepper_Junction.json', { cache: 'no-store' })
-     .then(function(r) {
-       if (!r.ok) throw new Error('JSON fetch failed: ' + r.status);
-       return r.json();
-     })
-     .then(function(data) {
-       PJ_DATA = data.map(remapProduct);
-       PJ_DATA_LOADED = true;
-       render();
-     })
-     .catch(function(err) {
-       console.error('PJ_DATA load error:', err);
-       /* Render empty state so widget UI still appears */
-       PJ_DATA_LOADED = true;
-       render();
-     });
-    const PRODUCT_URL_COL = "Product URL";
-
-    const LOCKED_PHRASES = [
-  "mac and cheese",
-  "steak and cheese",
-  "breakfast burritos",
-  "breakfast sandwiches",
-  "buffalo chicken",
-  "buffalo dip",
-  "fish sandwich",
-  "roast beef sandwich",
-  "clam cakes",
-  "fried clams",
-  "chicken and waffles",
-  "prime rib",
-  "home fries",
-  "egg salad",
-  "chicken salad",
-  "tuna salad",
-  "potato salad",
-  "pasta salad",
-  "lobster salad",
-  "beef roasts",
-  "mashed potatoes",
-  "italian grinder",
-  "italian grinders",
-  "cold cuts",
-  "seafood salad",
-  "breakfast burrito",
-  "breakfast sandwich"
-];
-
-const PROTECTED_WORDS = [
-  "brie"
-];
-
-    const els = {
-      search: document.getElementById('pj-search'),
-      category: document.getElementById('pj-category'),
-      heatTier: document.getElementById('pj-heat-tier'),
-      foodStyle: document.getElementById('pj-food-style'),
-      pepperType: document.getElementById('pj-pepper-type'),
-      heatCurve: document.getElementById('pj-heat-curve'),
-      heatFinish: document.getElementById('pj-heat-finish'),
-      apply: document.getElementById('pj-apply'),
-      reset: document.getElementById('pj-reset'),
-      results: document.getElementById('pj-results'),
-      count: document.getElementById('pj-count')
-    };
-
-    function clearDiscoveryInputs() {
-      els.search.value = '';
-      els.category.value = '';
-      els.heatTier.value = '';
-      els.foodStyle.value = '';
-      els.pepperType.value = '';
-      els.heatCurve.value = '';
-      els.heatFinish.value = '';
-    }
-
-    function containsRecipeIntent(query) {
-      return /\brecipes?\b/i.test(String(query || '').trim());
-    }
-
-    function onDiscoveryInteraction() {
-      render();
-    }
-
-    function normalizeText(value) {
-  return String(value || "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function escapeRegExp(str) {
-  return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function getQueryVariants(term) {
-  const t = normalizeText(term);
-  if (!t) return [];
-
-  const variants = new Set([t]);
-
-  if (t.length > 3) {
-    if (t.endsWith("s")) {
-      variants.add(t.slice(0, -1));
-    } else {
-      variants.add(`${t}s`);
-    }
-  }
-
-  return [...variants];
-}
-
-function hasWholeWord(text, term) {
-  const normalized = normalizeText(text);
-  if (!normalized) return false;
-
-  return getQueryVariants(term).some((variant) => {
-    const pattern = new RegExp(`(^|[^a-z0-9])${escapeRegExp(variant)}($|[^a-z0-9])`, "i");
-    return pattern.test(normalized);
-  });
-}
-
-function hasWholePhrase(text, phrase) {
-  const normalized = normalizeText(text);
-  const target = normalizeText(phrase);
-  if (!normalized || !target) return false;
-
-  const pattern = new RegExp(`(^|[^a-z0-9])${escapeRegExp(target)}($|[^a-z0-9])`, "i");
-  return pattern.test(normalized);
-}
-
-function isLockedPhrase(query) {
-  const q = normalizeText(query);
-  return LOCKED_PHRASES.some((phrase) => normalizeText(phrase) === q);
-}
-
-function isProtectedWord(query) {
-  const q = normalizeText(query);
-  return PROTECTED_WORDS.some((word) => normalizeText(word) === q);
-}
-
-function recordFields(record) {
-  return {
-    brand: record["Brand"] || "",
-    productName: record["Product Name"] || "",
-    category: record["Category"] || "",
-    foodStyle: record["Food Style"] || "",
-    pepperType: record["Pepper Type"] || "",
-    heatTier: record["Heat Tier"] || "",
-    heatCurve: record["Heat Curve"] || "",
-    heatFinish: record["Heat Finish"] || "",
-    flavorNotes: record["Primary Flavor Notes"] || "",
-    pairings: record["Best Food Pairings"] || ""
-  };
-}
-
-function matchesSearch(record, query) {
-  const q = normalizeText(query);
-  if (!q) return true;
-
-  const fields = recordFields(record);
-
-  const priorityFields = [
-    fields.productName,
-    fields.pairings,
-    fields.flavorNotes,
-    fields.foodStyle,
-    fields.brand,
-    fields.category,
-    fields.pepperType
-  ];
-
-  const secondaryFields = [
-    fields.heatTier,
-    fields.heatCurve,
-    fields.heatFinish
-  ];
-
-  if (isLockedPhrase(q)) {
-    return [...priorityFields, ...secondaryFields].some((text) => hasWholePhrase(text, q));
-  }
-
-  if (isProtectedWord(q)) {
-    return [...priorityFields, ...secondaryFields].some((text) => hasWholeWord(text, q));
-  }
-
-  const parts = q.split(/\s+/).filter(Boolean);
-
-  if (parts.length > 1) {
- const allText = [...priorityFields, ...secondaryFields]
-  .map((text) => normalizeText(text))
-  .join(" | ");
-
-return parts.every((part) => allText.includes(part));
-  }
-
- return [...priorityFields, ...secondaryFields].some((text) =>
-  normalizeText(text).includes(q)
-);
-}
-
-function matches(record) {
-  const q = els.search.value.trim();
-  const category = els.category.value;
-  const heatTier = els.heatTier.value;
-  const foodStyle = els.foodStyle.value;
-  const pepperType = els.pepperType.value;
-  const heatCurve = els.heatCurve.value;
-  const heatFinish = els.heatFinish.value;
-
-  if (category && record["Category"] !== category) return false;
-  if (heatTier && record["Heat Tier"] !== heatTier) return false;
-  if (foodStyle && record["Food Style"] !== foodStyle) return false;
-  if (pepperType && record["Pepper Type"] !== pepperType) return false;
-  if (heatCurve && record["Heat Curve"] !== heatCurve) return false;
-  if (heatFinish && record["Heat Finish"] !== heatFinish) return false;
-
-  if (!matchesSearch(record, q)) return false;
-
-  return true;
-}
-
-function getRelevanceScore(record, query) {
-  let score = 0;
-  const q = normalizeText(query);
-  if (!q) return score;
-
-  const fields = recordFields(record);
-
-  if (isLockedPhrase(q)) {
-    if (hasWholePhrase(fields.productName, q)) score += 30;
-    if (hasWholePhrase(fields.pairings, q)) score += 40;
-    if (hasWholePhrase(fields.flavorNotes, q)) score += 18;
-    if (hasWholePhrase(fields.foodStyle, q)) score += 16;
-    if (hasWholePhrase(fields.brand, q)) score += 8;
-    if (hasWholePhrase(fields.category, q)) score += 6;
-    return score;
-  }
-
-  if (isProtectedWord(q)) {
-    if (hasWholeWord(fields.productName, q)) score += 22;
-    if (hasWholeWord(fields.pairings, q)) score += 28;
-    if (hasWholeWord(fields.flavorNotes, q)) score += 14;
-    if (hasWholeWord(fields.foodStyle, q)) score += 12;
-    if (hasWholeWord(fields.brand, q)) score += 6;
-    if (hasWholeWord(fields.category, q)) score += 4;
-    return score;
-  }
-
-  const parts = q.split(/\s+/).filter(Boolean);
-
-  if (parts.length > 1) {
-    parts.forEach((part) => {
-      if (hasWholeWord(fields.productName, part)) score += 10;
-      if (hasWholeWord(fields.pairings, part)) score += 12;
-      if (hasWholeWord(fields.flavorNotes, part)) score += 6;
-      if (hasWholeWord(fields.foodStyle, part)) score += 7;
-      if (hasWholeWord(fields.brand, part)) score += 3;
-      if (hasWholeWord(fields.category, part)) score += 2;
-    });
-    return score;
-  }
-
-  if (hasWholeWord(fields.productName, q)) score += 12;
-  if (hasWholeWord(fields.pairings, q)) score += 15;
-  if (hasWholeWord(fields.foodStyle, q)) score += 14;
-  if (hasWholeWord(fields.flavorNotes, q)) score += 8;
-  if (hasWholeWord(fields.pepperType, q)) score += 5;
-  if (hasWholeWord(fields.category, q)) score += 4;
-
-  return score;
-}
-    function pill(text) {
-      if (!text) return '';
-      return `<span class="pj-pill">${escapeHtml(text)}</span>`;
-    }
-
-    function escapeHtml(s) {
-      return String(s || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
-
-function card(record, options = {}) {
-  const productUrl = PRODUCT_URL_COL ? String(record[PRODUCT_URL_COL] || '').trim() : '';
-  const productImage = String(record["Product Image"] || '').trim();
-  const fallbackImage = 'assets/PJ-logo.png';
-  const cardId = `pj-card-${Math.random().toString(36).slice(2, 10)}`;
-
-  const modePill = options.modeLabel
-    ? `<div class="pj-mode-pill">${escapeHtml(options.modeLabel)}</div>`
-    : '';
-
-  const note = options.note
-    ? `<p class="pj-card-note">${escapeHtml(options.note)}</p>`
-    : '';
-
-  const purchaseAction = productUrl
-    ? `<a class="pj-btn sauce" href="${escapeHtml(productUrl)}" target="_blank" rel="noopener noreferrer">Purchase Sauce</a>`
-    : '';
-
-  const showViewButton = !options.system;
-  const viewAction = showViewButton
-    ? `<button class="pj-btn sauce pj-view-sauce-btn" type="button" data-card-toggle="${cardId}" aria-expanded="false">View Sauce</button>`
-    : '';
-
-  const actions = (viewAction || purchaseAction)
-    ? `<div class="pj-card-actions dual">${viewAction}${purchaseAction}</div>`
-    : '';
-
-  const hasImage = !!productImage;
-  const imageSrc = hasImage ? productImage : fallbackImage;
-  const imageAlt = hasImage
-    ? `${String(record["Brand"] || 'Pepper Junction')} ${String(record["Product Name"] || options.title || '')}`
-    : 'Pepper Junction logo';
-
-  const imageCaption = hasImage ? '' : 'Image coming soon';
-
-  const imagePanel = showViewButton
-    ? `
-      <div class="pj-card-media" hidden data-card-panel="${cardId}">
-        <div class="pj-card-image-panel${hasImage ? '' : ' is-fallback'}">
-          <div class="pj-card-image-shell">
-            <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" loading="lazy" data-fallback-logo="${fallbackImage}" data-has-image="${hasImage ? 'true' : 'false'}">
-          </div>
-          ${imageCaption ? `<div class="pj-card-image-caption">${imageCaption}</div>` : ''}
-          <div class="pj-card-image-back">
-           <button class="pj-card-close-btn" type="button" data-card-toggle="${cardId}" aria-label="Back to details" aria-expanded="true">×</button>
-          </div>
-        </div>
-      </div>
-    `
-    : '';
-
-  return `
-    <article class="pj-card${options.system ? ' pj-system-card' : ''}" data-card-id="${cardId}">
-      ${modePill}
-
-      <div data-card-front="${cardId}">
-        <div class="pj-brand">${escapeHtml(record["Brand"] || 'Pepper Junction')}</div>
-        <h3 class="pj-name">${escapeHtml(record["Product Name"] || options.title || '')}</h3>
-
-        <div>
-          ${pill(record["Category"])}
-          ${pill(record["Food Style"])}
-          ${pill(record["Pepper Type"])}
-          ${pill(record["Heat Tier"])}
-        </div>
-
-        <div class="pj-meta">
-          <div class="pj-section">
-            <span class="pj-k">Heat Level</span>
-            <div class="pj-v">${escapeHtml(record["Heat Level"])}</div>
-          </div>
-          <div class="pj-section">
-            <span class="pj-k">How it Hits&#8482;</span>
-            <div class="pj-v">${escapeHtml(record["Heat Curve"])}</div>
-          </div>
-        </div>
-
-        <div class="pj-section">
-          <span class="pj-k">Heat Finish&#8482;</span>
-          <div class="pj-v">${escapeHtml(record["Heat Finish"])}</div>
-        </div>
-
-        <div class="pj-section">
-          <span class="pj-k">Flavor Notes</span>
-          <div class="pj-v">${escapeHtml(record["Primary Flavor Notes"])}</div>
-        </div>
-
-        <div class="pj-section">
-          <span class="pj-k">Best Food Pairings</span>
-          <div class="pj-v">${escapeHtml(record["Best Food Pairings"])}</div>
-        </div>
-
-        ${note}
-        ${actions}
-      </div>
-
-      ${imagePanel}
-    </article>
-  `;
-}
-
-function bindCardImageToggles() {
-  document.querySelectorAll('[data-card-toggle]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const cardId = btn.getAttribute('data-card-toggle');
-      const front = document.querySelector(`[data-card-front="${cardId}"]`);
-      const panel = document.querySelector(`[data-card-panel="${cardId}"]`);
-
-      if (!front || !panel) return;
-
-      const isOpening = panel.hasAttribute('hidden');
-
-      if (isOpening) {
-        front.hidden = true;
-        panel.hidden = false;
-      } else {
-        panel.hidden = true;
-        front.hidden = false;
+  (function () {
+
+    const DEPARTURES = [
+      { dest: 'INSPIRED BY:',       time: '9:08A', trk: '4'  },
+      { dest: 'RI RAIL ROAD',       time: '9:22A', trk: '2'  },
+      { dest: 'SHORE LINE SERVICE', time: '9:45A', trk: '6'  },
+      { dest: 'C. 1930S',           time: '9:13P', trk: '1'  },
+      { dest: 'PEPPER JUNCTION',    time: '7:11P', trk: '20' },
+      { dest: 'EST. 2014',          time: '4:15P', trk: '13' },
+      { dest: 'ALL ABOARD!',        time: '——',    trk: '——' },
+    ];
+
+    const CHARS = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!·:—APM';
+
+    const overlay = document.getElementById('board-overlay');
+    const rowsEl  = document.getElementById('board-rows');
+    const skipBtn = document.getElementById('board-skip');
+
+    function makeCell(ch) {
+      const isSpace = (ch === ' ');
+      const isPunct = ('·:—-'.indexOf(ch) >= 0);
+      const cell = document.createElement('div');
+      cell.className = 'flap-cell' +
+        (isSpace ? ' is-space' : '') +
+        (isPunct ? ' is-punct' : '');
+      if (!isSpace) {
+        const span = document.createElement('span');
+        span.textContent = CHARS[Math.floor(Math.random() * (CHARS.length - 1))];
+        cell.appendChild(span);
       }
+      return cell;
+    }
 
-      document.querySelectorAll(`[data-card-toggle="${cardId}"]`).forEach((toggleBtn) => {
-        toggleBtn.setAttribute('aria-expanded', isOpening ? 'true' : 'false');
+    function makeCol(text) {
+      const col = document.createElement('div');
+      col.className = 'board-col';
+      Array.from(text).forEach(function (ch) { col.appendChild(makeCell(ch)); });
+      return col;
+    }
+
+    function buildDOM() {
+      rowsEl.innerHTML = '';
+      const topDiv = document.createElement('div');
+      topDiv.className = 'board-divider';
+      rowsEl.appendChild(topDiv);
+
+      DEPARTURES.forEach(function (dep, idx) {
+        const row = document.createElement('div');
+        row.className = 'board-row';
+        row.dataset.idx = idx;
+        row.appendChild(makeCol(dep.dest));
+        row.appendChild(makeCol(dep.time));
+        row.appendChild(makeCol(dep.trk));
+        rowsEl.appendChild(row);
+
+        const div = document.createElement('div');
+        div.className = 'board-divider';
+        rowsEl.appendChild(div);
       });
-    });
-  });
-
-  // Tap anywhere on the back of the card to flip back to front
-  document.querySelectorAll('[data-card-panel]').forEach((panel) => {
-    panel.addEventListener('click', (e) => {
-      // Let the X button handle its own click — don't double-fire
-      if (e.target.closest('[data-card-toggle]')) return;
-
-      const cardId = panel.getAttribute('data-card-panel');
-      const front = document.querySelector(`[data-card-front="${cardId}"]`);
-      if (!front || panel.hasAttribute('hidden')) return;
-
-      panel.hidden = true;
-      front.hidden = false;
-
-      document.querySelectorAll(`[data-card-toggle="${cardId}"]`).forEach((toggleBtn) => {
-        toggleBtn.setAttribute('aria-expanded', 'false');
-      });
-    });
-  });
-}
-
-function bindCardImageFallbacks() {
-  document.querySelectorAll('.pj-card-image-shell img[data-fallback-logo]').forEach((img) => {
-    if (img.dataset.fallbackBound === 'true') return;
-    img.dataset.fallbackBound = 'true';
-
-    img.addEventListener('error', () => {
-      const fallbackLogo = img.getAttribute('data-fallback-logo') || 'assets/PJ-logo.png';
-      if (img.getAttribute('src') === fallbackLogo) return;
-
-      img.setAttribute('src', fallbackLogo);
-
-      const panel = img.closest('.pj-card-image-panel');
-      if (panel) {
-        panel.classList.add('is-fallback');
-        let caption = panel.querySelector('.pj-card-image-caption');
-        if (!caption) {
-          caption = document.createElement('div');
-          caption.className = 'pj-card-image-caption';
-          panel.insertBefore(caption, panel.querySelector('.pj-card-image-back'));
-        }
-        caption.textContent = 'Image coming soon';
-      }
-    });
-  });
-}
-
-function renderRecipeRedirectCard() {
-      els.count.textContent = 'Recipe redirect active';
-      els.results.innerHTML = card({
-        "Brand": 'Pepper Junction',
-        "Product Name": 'Looking for recipes?',
-        "Category": '',
-        "Food Style": '',
-        "Pepper Type": '',
-        "Heat Tier": '',
-        "Heat Level": '',
-        "Heat Curve": '',
-        "Heat Finish": '',
-        "Primary Flavor Notes": 'Recipe search detected',
-        "Best Food Pairings": 'Visit The Pepper Junction Kitchen to browse recipes.'
-      }, {
-        modeLabel: 'Recipe Redirect',
-        note: 'Recipes live on their own page now. The Discovery Engine is reserved for product, flavor, heat, and pairing searches.',
-        system: true
-      });
-
-      bindCardImageToggles();
-      bindCardImageFallbacks();
     }
 
-    function renderDiscoveryResults() {
-      const filtered = PJ_DATA.filter(matches);
-      els.count.textContent = `${filtered.length} product${filtered.length === 1 ? '' : 's'} found`;
+    function animateCell(cell, targetChar, startDelay, onDone) {
+      const span = cell.querySelector('span');
+      if (!span) { if (onDone) onDone(); return; }
 
-      if (!filtered.length) {
-        PJ_LAST_RENDERED_PRODUCTS = [];
-        els.results.innerHTML = `
-          <div class="pj-empty">
-            <strong>No matches found.</strong><br><br>
-            Try widening the filters or searching by food, flavor, or pepper type.
-          </div>
-        `;
-        return [];
+      const curIdx    = Math.max(0, CHARS.indexOf(span.textContent));
+      const targetIdx = Math.max(0, CHARS.indexOf(targetChar));
+
+      if (curIdx === targetIdx) { if (onDone) onDone(); return; }
+
+      const steps = [];
+      let i = curIdx;
+      while (true) {
+        i = (i + 1) % CHARS.length;
+        steps.push(CHARS[i]);
+        if (i === targetIdx) break;
+        if (steps.length > CHARS.length + 2) break;
       }
 
-      filtered.sort((a, b) => {
-        const query = els.search.value.trim().toLowerCase();
-
-        if (query) {
-          const scoreA = getRelevanceScore(a, query);
-          const scoreB = getRelevanceScore(b, query);
-          if (scoreA !== scoreB) return scoreB - scoreA;
-        }
-
-        const heatA = Number(a["Heat Level"] || 0);
-        const heatB = Number(b["Heat Level"] || 0);
-        if (heatA !== heatB) return heatA - heatB;
-
-        return String(a["Product Name"] || '').localeCompare(String(b["Product Name"] || ''));
-      });
-
-      els.results.innerHTML = filtered.map(record => card(record)).join('');
-      bindCardImageToggles();
-      bindCardImageFallbacks();
-      PJ_LAST_RENDERED_PRODUCTS = filtered.map(record => ({
-        name: String(record["Product Name"] || '').trim(),
-        url: String(record[PRODUCT_URL_COL] || '').trim()
-      })).filter(product => product.name && product.url);
-      return PJ_LAST_RENDERED_PRODUCTS.slice();
-    }
-
-    function render(finalizeChefPepperRecommendations = false) {
-      const query = els.search.value.trim();
-
-      if (containsRecipeIntent(query)) {
-        PJ_LAST_RENDERED_PRODUCTS = [];
-        renderRecipeRedirectCard();
-        return [];
-      }
-
-      const products = renderDiscoveryResults();
-      if (finalizeChefPepperRecommendations) {
-        window.dispatchEvent(new CustomEvent('pj:chef-pepper-recommendations-finalized', {
-          detail: { products: products.map(product => ({ ...product })) }
-        }));
-      }
-      return products;
-    }
-
-    /* Final-RI integration seam: this is the only Pairing Bar action that
-       both presents the completed CNS-backed cards and records that exact
-       recommendation set in Chef Pepper's visit transcript. */
-    window.pjFinalizeChefPepperRecommendations = function() {
-      if (!PJ_DATA_LOADED) return [];
-      return render(true);
-    };
-
-els.apply.addEventListener('click', onDiscoveryInteraction);
-
-els.search.addEventListener('input', () => {
-  onDiscoveryInteraction();
-});
-
-els.search.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    onDiscoveryInteraction();
-  }
-});
-
-[els.category, els.heatTier, els.foodStyle, els.pepperType, els.heatCurve, els.heatFinish].forEach(el =>
-  el.addEventListener('change', onDiscoveryInteraction)
-);
-
-els.reset.addEventListener('click', () => {
-  clearDiscoveryInputs();
-  render();
-});
-
-/* Kitchen scene pause/play control */
-(function initKitchenPauseButton() {
-  const video = document.getElementById('pj-kitchen-video');
-  const btn = document.getElementById('pj-kitchen-pause-btn');
-  if (!video || !btn) return;
-
-  const pauseIcon = btn.querySelector('.pj-kitchen-pause-icon-pause');
-  const playIcon = btn.querySelector('.pj-kitchen-pause-icon-play');
-
-  function setState(isPaused) {
-    pauseIcon.hidden = isPaused;
-    playIcon.hidden = !isPaused;
-    btn.setAttribute('aria-pressed', isPaused ? 'true' : 'false');
-    btn.setAttribute('aria-label', isPaused ? 'Play kitchen background motion' : 'Pause kitchen background motion');
-  }
-
-  btn.addEventListener('click', () => {
-    if (video.paused) {
-      video.play();
-      setState(false);
-    } else {
-      video.pause();
-      setState(true);
-    }
-  });
-})();
-
-    /* render() called after JSON fetch resolves above */
-    /* Add session writer to all product card link clicks */
-    document.addEventListener('click', function(e) {
-      var card = e.target.closest('a[href*="products/"]');
-      if (card) writeWidgetSession();
-    });
-  </script>
-
-  <script>
-    (() => {
-      const CHAT_ENDPOINT = "/api/chef-pepper-chat";
-      const STATUS_ENDPOINT = "/api/chef-pepper-status";
-      const SESSION_STORAGE_KEY = "pjChefPepperConversationId";
-      const TRANSCRIPT_STORAGE_KEY = "pjChefPepperTranscriptV1";
-      const MAX_TRANSCRIPT_ENTRIES = 80;
-
-      const display = document.getElementById("pj-chef-pepper-display");
-      const transcriptElement = document.getElementById("pj-chef-pepper-transcript");
-      const status = document.getElementById("pj-chef-pepper-status");
-      const chatForm = document.getElementById("pj-chef-pepper-chat");
-      const messageInput = document.getElementById("pj-chef-pepper-message");
-      const sendBtn = document.getElementById("pj-chef-pepper-send");
-
-      if (!display || !transcriptElement || !status || !chatForm || !messageInput || !sendBtn) return;
-
-      let submitting = false;
-      let transcript = loadTranscript();
-
-      function createConversationId() {
-        if (window.crypto && typeof window.crypto.randomUUID === "function") {
-          return window.crypto.randomUUID();
-        }
-        return "chef_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2);
-      }
-
-      function getConversationId() {
-        let conversationId = sessionStorage.getItem(SESSION_STORAGE_KEY);
-        if (!conversationId) {
-          conversationId = createConversationId();
-          sessionStorage.setItem(SESSION_STORAGE_KEY, conversationId);
-        }
-        return conversationId;
-      }
-
-      function setStatus(message) {
-        status.textContent = message;
-      }
-
-      function setSubmitting(nextSubmitting) {
-        submitting = nextSubmitting;
-        messageInput.disabled = nextSubmitting;
-        sendBtn.disabled = nextSubmitting;
-        display.classList.toggle("is-waiting", nextSubmitting);
-      }
-
-      function cleanReplyText(text) {
-        return String(text || "")
-          .replace(/&#x20;|&#32;|&nbsp;/gi, " ")
-          .replace(/\*\*([\s\S]*?)\*\*/g, "$1");
-      }
-
-      function loadTranscript() {
-        try {
-          const stored = JSON.parse(sessionStorage.getItem(TRANSCRIPT_STORAGE_KEY) || "[]");
-          if (!Array.isArray(stored)) return [];
-          return stored.filter(entry => (
-            entry &&
-            (entry.type === "message" || entry.type === "recommendations")
-          )).slice(-MAX_TRANSCRIPT_ENTRIES);
-        } catch {
-          return [];
-        }
-      }
-
-      function saveTranscript() {
-        try {
-          sessionStorage.setItem(TRANSCRIPT_STORAGE_KEY, JSON.stringify(transcript));
-        } catch (err) {
-          console.warn("Chef Pepper transcript could not be saved", err);
-        }
-      }
-
-      function renderTranscript() {
-        transcriptElement.replaceChildren();
-
-        if (!transcript.length) {
-          const empty = document.createElement("p");
-          empty.textContent = "Chef Pepper's consultation will appear here.";
-          transcriptElement.append(empty);
+      let stepIdx = 0;
+      function tick() {
+        if (stepIdx >= steps.length) {
+          span.textContent = targetChar;
+          if (onDone) onDone();
           return;
         }
+        span.textContent = steps[stepIdx++];
+        const progress = stepIdx / steps.length;
+        const delay = 18 + Math.random() * 10 + (progress > 0.8 ? (progress - 0.8) * 60 : 0);
+        setTimeout(tick, delay);
+      }
+      setTimeout(tick, startDelay);
+    }
 
-        transcript.forEach(entry => {
-          const section = document.createElement("section");
-          section.className = "pj-chef-pepper-transcript-entry";
+    function animateCol(colEl, targetText, baseDelay, onDone) {
+      const cells = colEl.querySelectorAll('.flap-cell:not(.is-space)');
+      const chars = Array.from(targetText).filter(function (ch) { return ch !== ' '; });
+      let done = 0;
+      const total = cells.length;
+      if (total === 0) { if (onDone) onDone(); return; }
+      cells.forEach(function (cell, i) {
+        animateCell(cell, chars[i] || ' ', baseDelay + i * 42, function () {
+          done++;
+          if (done === total && onDone) onDone();
+        });
+      });
+    }
 
-          const label = document.createElement("span");
-          label.className = "pj-chef-pepper-transcript-speaker";
+    function revealRow(idx, onDone) {
+      const row = rowsEl.querySelector('.board-row[data-idx="' + idx + '"]');
+      if (!row) { if (onDone) onDone(); return; }
+      row.classList.add('active');
+      const dep  = DEPARTURES[idx];
+      const cols = row.querySelectorAll('.board-col');
+      let colsDone = 0;
+      function colDone() {
+        colsDone++;
+        if (colsDone === 3 && onDone) onDone();
+      }
+      animateCol(cols[0], dep.dest, 0,   colDone);
+      animateCol(cols[1], dep.time, 80,  colDone);
+      animateCol(cols[2], dep.trk,  140, colDone);
+    }
 
-          if (entry.type === "message") {
-            section.classList.add(entry.speaker === "customer" ? "is-customer" : "is-chef-pepper");
-            label.textContent = entry.speaker === "customer" ? "You" : "Chef Pepper";
-            const text = document.createElement("p");
-            text.textContent = cleanReplyText(entry.text);
-            section.append(label, text);
+    function showDividers() {
+      rowsEl.querySelectorAll('.board-divider').forEach(function (d) {
+        d.classList.add('active');
+      });
+    }
+
+    function runSequence() {
+      showDividers();
+
+      let rowIdx = 0;
+      function nextRow() {
+        if (rowIdx >= DEPARTURES.length) {
+          // Stop clatter immediately before dismiss to clip any tail
+          var flapAudioEarly = document.getElementById('flap-audio');
+          if (flapAudioEarly) {
+            flapAudioEarly.pause();
+            flapAudioEarly.currentTime = 0;
+          }
+          setTimeout(dismiss, 1800);
+          return;
+        }
+        revealRow(rowIdx++, function () {
+          setTimeout(nextRow, 0);
+        });
+      }
+      nextRow();
+    }
+
+    function dismiss() {
+      overlay.classList.add('fade-out');
+      setTimeout(function () { overlay.style.display = 'none'; }, 700);
+
+      // Stop flap chatter immediately — board is done
+      var flapAudio = document.getElementById('flap-audio');
+      if (flapAudio) {
+        flapAudio.pause();
+        flapAudio.currentTime = 0;
+      }
+
+      // Wire mute button to platform audio
+      var audio   = document.getElementById('platform-audio');
+      var muteBtn = document.getElementById('mute-btn');
+      if (muteBtn && audio) {
+        muteBtn.addEventListener('click', function () {
+          if (audio.paused) {
+            audio.play();
+            muteBtn.textContent = '♪ Mute';
           } else {
-            section.classList.add("pj-chef-pepper-transcript-recommendations");
-            label.textContent = "Recommendations shown";
-            const list = document.createElement("ul");
-            (entry.products || []).forEach(product => {
-              if (!product || !product.name || !product.url) return;
-              const item = document.createElement("li");
-              const link = document.createElement("a");
-              link.href = product.url;
-              link.textContent = product.name;
-              link.target = "_blank";
-              link.rel = "noopener noreferrer";
-              item.append(link);
-              list.append(item);
-            });
-            section.append(label, list);
+            audio.pause();
+            muteBtn.textContent = '♪ Play';
           }
-
-          transcriptElement.append(section);
         });
+      }
+    }
 
-        display.scrollTop = display.scrollHeight;
+    skipBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dismiss();
+    });
+
+    // Reset both audio elements on every page load
+    var platformAudio = document.getElementById('platform-audio');
+    var flapAudio2    = document.getElementById('flap-audio');
+    if (platformAudio) { platformAudio.currentTime = 0; }
+    if (flapAudio2)    { flapAudio2.currentTime = 0; }
+
+    buildDOM();
+
+    // Enter button — single interaction unlocks everything
+    var enterOverlay = document.getElementById('enter-overlay');
+    var enterBtn     = document.getElementById('enter-btn');
+
+    function onEnter() {
+      // Hide enter overlay
+      enterOverlay.style.display = 'none';
+
+      // Unlock AudioContext for mobile Safari
+      try {
+        var ac = new (window.AudioContext || window.webkitAudioContext)();
+        ac.resume();
+      } catch(e) {}
+
+      // Fire flap chatter
+      var flapAudio = document.getElementById('flap-audio');
+      if (flapAudio) {
+        flapAudio.currentTime = 0;
+        flapAudio.volume = 0.9;
+        flapAudio.play().catch(function () {});
       }
 
-      function appendTranscriptEntry(entry) {
-        transcript.push(entry);
-        transcript = transcript.slice(-MAX_TRANSCRIPT_ENTRIES);
-        saveTranscript();
-        renderTranscript();
+      // Essex audio leans in at 3 seconds — train already moving as board animates
+      var platformAudio = document.getElementById('platform-audio');
+      if (platformAudio) {
+        platformAudio.currentTime = 0;
+        platformAudio.volume = 0.75;
+        setTimeout(function () {
+          platformAudio.play().catch(function () {});
+          var muteBtn = document.getElementById('mute-btn');
+          var creditEl = document.getElementById('audio-credit');
+          if (muteBtn) muteBtn.style.display = 'block';
+          if (creditEl) creditEl.style.display = 'block';
+        }, 3000);
       }
 
-      async function checkChefPepper() {
-        try {
-          const response = await fetch(STATUS_ENDPOINT, { cache: "no-store" });
-          const data = await response.json().catch(() => ({}));
-          if (!response.ok) throw new Error(data.error || "Chef Pepper status check failed.");
-          setStatus(
-            data.ready
-              ? `Chef Pepper text consultation ready · Identity Root v${data.identity_version}`
-              : "Chef Pepper's server is running, but OPENAI_API_KEY is not set."
-          );
-        } catch {
-          setStatus("Chef Pepper's local text server is not available.");
-        }
-      }
+      // Start board sequence
+      setTimeout(runSequence, 150);
+    }
 
-      chatForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const text = messageInput.value.trim();
-        if (!text || submitting) return;
+    enterBtn.addEventListener('click',      onEnter);
+    enterBtn.addEventListener('touchend',   function(e) { e.preventDefault(); onEnter(); });
 
-        setSubmitting(true);
-        setStatus("Chef Pepper is thinking…");
-        appendTranscriptEntry({ type: "message", speaker: "customer", text });
-
-        try {
-          const response = await fetch(CHAT_ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              conversation_id: getConversationId(),
-              message: text
-            })
-          });
-          const data = await response.json().catch(() => ({}));
-          if (!response.ok || !data.reply) {
-            throw new Error(data.error || "Chef Pepper did not return a written reply.");
-          }
-
-          appendTranscriptEntry({
-            type: "message",
-            speaker: "chef-pepper",
-            text: cleanReplyText(data.reply)
-          });
-          messageInput.value = "";
-          setStatus(`Chef Pepper replied · Identity Root v${data.identity_version}`);
-          console.log("Chef Pepper:", data.reply);
-        } catch (err) {
-          setStatus(err && err.message ? err.message : String(err));
-          console.error("Chef Pepper chat error", err);
-        } finally {
-          setSubmitting(false);
-          messageInput.focus();
-        }
-      });
-
-      window.addEventListener("pj:chef-pepper-recommendations-finalized", event => {
-        const products = Array.isArray(event.detail?.products)
-          ? event.detail.products.filter(product => product?.name && product?.url)
-          : [];
-        if (!products.length) return;
-        appendTranscriptEntry({
-          type: "recommendations",
-          products: products.map(product => ({
-            name: String(product.name),
-            url: String(product.url)
-          }))
-        });
-      });
-
-      getConversationId();
-      renderTranscript();
-      checkChefPepper();
-    })();
+  })();
   </script>
+
 </body>
 </html>
