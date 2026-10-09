@@ -2537,17 +2537,20 @@
     // site moving around, and never auto-plays a gate.
     var cameFromConductor = /\/(?:index\.html)?(?:[?#]|$)/.test(document.referrer);
 
-    if (cameFromConductor) {
-      var welcomeSeen = !!getCookie(WELCOME_COOKIE);
+    // One automatic greeting per browser tab/session, including mobile.
+    // Navigation back to Main must not restart either video.
+    // The manual "Watch Bartender Greeting" button remains available.
+    var greetingAlreadyShown = false;
+    try { greetingAlreadyShown = sessionStorage.getItem('pj_auto_greeting_seen') === '1'; }
+    catch (e) { greetingAlreadyShown = true; } // Fail closed if storage is unavailable.
 
+    if (cameFromConductor && !greetingAlreadyShown) {
+      try { sessionStorage.setItem('pj_auto_greeting_seen', '1'); }
+      catch (e) { /* A disabled storage API must not break page navigation. */ }
+      var welcomeSeen = !!getCookie(WELCOME_COOKIE);
       if (!welcomeSeen) {
-        // First time through the front door, or the 60-day welcome
-        // cookie has expired — full welcome plays.
         welcome.open(true);
       } else {
-        // They've had the full welcome within the last 60 days —
-        // every time they leave and come back through the front
-        // door, greet them with the short bartender clip instead.
         bartender.open(true);
       }
     }
