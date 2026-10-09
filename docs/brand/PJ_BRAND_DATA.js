@@ -43,7 +43,7 @@ window.PJ_HOST_ANSWERS = {
       "ship",
       "delivery"
     ],
-    "answer": "Pepper Junction ships across the United States. The Brand Master lists $9.99 flat-rate shipping. Please check checkout for the current rate."
+    "answer": "Pepper Junction ships throughout the United States! Shipping is a flat $9.99 per order."
   },
   "returns": {
     "terms": [
@@ -52,7 +52,7 @@ window.PJ_HOST_ANSWERS = {
       "damage",
       "broken"
     ],
-    "answer": "Returns require advance authorization, within 30 days of purchase, for unopened and resalable goods. For shipping damage, take photos of the item and shipping box and contact Pepper Junction within 14 days."
+    "answer": "Returns require prior authorization, a receipt, and must be requested within 30 days of purchase. Items must be unopened, unused, in their original packaging, and in resalable condition. If an order arrives damaged, photograph both the item and shipping box and contact Pepper Junction within 14 days of delivery."
   },
   "events": {
     "terms": [
