@@ -689,6 +689,14 @@
       .section-jump { padding: 12px 20px; top: 84px; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .wood-divider { height: 120px; }
+      /* Narrow cards: keep maker/award/type badges in the frame margins. */
+      .maker-badge, .award-badge { left: 7px; right: auto; max-width: calc(100% - 14px); padding: 3px 5px; }
+      .maker-badge { top: 8px; }
+      .award-badge { top: 35px; }
+      .maker-badge-text, .award-badge-text { font-size: 6px; letter-spacing: 0.08em; white-space: normal; overflow-wrap: anywhere; }
+      .type-badge { left: 7px; bottom: 7px; max-width: calc(100% - 14px); padding: 3px 5px; }
+      .type-badge-text { font-size: 7px; letter-spacing: 0.08em; white-space: normal; }
+
       .header-nav { display: none; }
       .site-footer { padding: 20px; }
     }

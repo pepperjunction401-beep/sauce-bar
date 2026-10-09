@@ -956,7 +956,12 @@
     @media (max-width: 640px) {
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
-      .hero { aspect-ratio: 4 / 1; }
+      /* Preserve the hero artwork while fitting the full message on phones. */
+      .hero { aspect-ratio: 2.5 / 1; background-image: url('assets/textures/Hero-Banner-Mobile.png'); }
+      .hero-inner { padding: 6px 5%; }
+      .hero-tag { font-size: clamp(8px, 2.2vw, 11px); letter-spacing: 0.16em; margin-bottom: 4px; }
+      .hero-headline { font-size: clamp(15px, 4.2vw, 24px); line-height: 1.15; white-space: normal; margin-bottom: 4px; }
+      .hero-sub { font-size: clamp(10px, 2.7vw, 14px); line-height: 1.25; white-space: normal; }
       .panels-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
       .header-nav { display: none; }
       .dispatch-body { padding: 24px 20px; }

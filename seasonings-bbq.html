@@ -727,6 +727,14 @@
       .section-jump { padding: 12px 20px; top: 84px; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .wood-divider { height: 120px; }
+      /* Keep labels at the frame edges on narrow two-column cards. */
+      .maker-badge, .award-badge { left: 7px; right: auto; max-width: calc(100% - 14px); padding: 3px 5px; }
+      .maker-badge { top: 8px; }
+      .award-badge { top: 35px; }
+      .maker-badge-text, .award-badge-text { font-size: 6px; letter-spacing: 0.08em; white-space: normal; overflow-wrap: anywhere; }
+      .type-badge { left: 7px; bottom: 7px; max-width: calc(100% - 14px); padding: 3px 5px; }
+      .type-badge-text { font-size: 7px; letter-spacing: 0.08em; white-space: normal; }
+
       .header-nav { display: none; }
       .site-footer { padding: 20px; }
     }
@@ -1262,27 +1270,28 @@
 
     // Grid 0 = BBQ Sauces + Dry Rubs, Grid 1 = Seasonings
     var GRID_CATEGORIES = [
-      ['BBQ SAUCE', 'SEASONINGS/DRY RUBS'],  // grid 0 — bbq-rubs section
-      ['SEASONINGS/DRY RUBS']                 // grid 1 — seasonings section (Slap Ya Mama + Ass Kickin)
+      ['BBQ SAUCE'],                   // grid 0 — BBQ sauces
+      ['SEASONINGS/DRY RUBS'],         // grid 1 — dry rubs
+      ['SEASONINGS/DRY RUBS']          // grid 2 — seasonings
     ];
 
     var AWARD_BADGES = {
       'sucklebusters-original-bbq':              "\uD83C\uDFC6 Award Winning",
       'sucklebusters-bbq-chipotle':              "\uD83C\uDFC6 Award Winning",
-      'sucklebusters-sucklebusters-hogwaller-14oz':   "\uD83C\uDFC6 Award Winning",
-      'sucklebusters-sucklebusters-clucker-dust-14oz':"\uD83C\uDFC6 Award Winning",
-      '2-pig-mafia-2-pig-mafia-steak-seasoning-14oz': "\uD83C\uDFC6 2019 World Steak Championship"
+      'sucklebusters-hogwaller-14oz':   "\uD83C\uDFC6 Award Winning",
+      'sucklebusters-clucker-dust-14oz':"\uD83C\uDFC6 Award Winning",
+      '2-pig-mafia-steak-seasoning-14oz': "\uD83C\uDFC6 2019 World Steak Championship"
     };
 
     var IMAGE_MAP = {
       'sucklebusters-original-bbq':                    'sucklebusters-original-bbq-sauce',
       'sucklebusters-bbq-chipotle':                    'sucklebusters-chipotle-bbq-sauce',
-      'sucklebusters-sucklebusters-hogwaller-14oz':    'sucklebusters-hogwaller-bbq-dry-rub',
-      'suckelbusters-suckelbusters-1836-14oz':         'sucklebusters-1836-beef-rub',
-      '2-pig-mafia-2-pig-mafia-steak-seasoning-14oz':  'two-pig-mafia-steak-seasoning',
+      'sucklebusters-hogwaller-14oz':    'sucklebusters-hogwaller-bbq-dry-rub',
+      'suckelbusters-1836-14oz':         'sucklebusters-1836-beef-rub',
+      '2-pig-mafia-steak-seasoning-14oz':  'two-pig-mafia-steak-seasoning',
       'pepper-junction-all-purpose-spg-14oz':          'pj-all-purpose-spg',
-      'sucklebusters-sucklebusters-clucker-dust-14oz': 'sucklebusters-cluckerdust-chipotle-bbq-dry-rub',
-      'sucklebusters-sucklebusters-bamm-14oz':         'sucklebusters-bamm-bbq-dry-rub',
+      'sucklebusters-clucker-dust-14oz': 'sucklebusters-cluckerdust-chipotle-bbq-dry-rub',
+      'sucklebusters-bamm-14oz':         'sucklebusters-bamm-bbq-dry-rub',
       'walker-son-slap-ya-mama-cajun-original':        'slap-ya-mama-cajun-seasoning-original',
       'walker-son-slap-ya-mama-cajun-hot':             'slap-ya-mama-cajun-seasoning-hot',
       'walker-son-slap-ya-mama-cajun-low-sodium':      'slap-ya-mama-cajun-seasoning-low-sodium',
@@ -1332,19 +1341,20 @@
           return res.json();
         })
         .then(function(data) {
-          // Grid 0: BBQ sauces + dry rubs (exclude Slap Ya Mama seasonings)
-          var bbqRubs = data.filter(function(p) {
-            return (p['Category'] === 'BBQ SAUCE' || p['Category'] === 'SEASONINGS/DRY RUBS') &&
+          // Preserve the three separate visual grids: BBQ, Dry Rubs, Seasonings.
+          var bbqSauces = data.filter(function(p) {
+            return p['Category'] === 'BBQ SAUCE';
+          });
+          var dryRubs = data.filter(function(p) {
+            return p['Category'] === 'SEASONINGS/DRY RUBS' &&
                    p['Brand'] !== 'Walker & Son' && p['Brand'] !== 'Ass Kickin';
           });
-
-          // Grid 1: Seasonings (Slap Ya Mama + Ass Kickin)
           var seasonings = data.filter(function(p) {
             return p['Category'] === 'SEASONINGS/DRY RUBS' &&
                    (p['Brand'] === 'Walker & Son' || p['Brand'] === 'Ass Kickin');
           });
 
-          var groups  = [bbqRubs, seasonings];
+          var groups  = [bbqSauces, dryRubs, seasonings];
           var revEls  = [];
 
           document.querySelectorAll('.product-grid').forEach(function(grid, i) {
