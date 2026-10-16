@@ -903,6 +903,24 @@
   }
 
 
+  function bottleCoinShoppingSessionId() {
+    var key = 'pj_bottle_coin_shopping_session_id';
+    try {
+      var existing = sessionStorage.getItem(key);
+      if (existing && /^[0-9a-f]{8}-[0-9a-f-]{27,}$/.test(existing)) return existing;
+      var created = (window.crypto && typeof window.crypto.randomUUID === 'function')
+        ? window.crypto.randomUUID()
+        : [Date.now().toString(16).padStart(8, '0'), '0000', '4000', '8000',
+          Math.floor(Math.random() * 0xffffffffffff).toString(16).padStart(12, '0')].join('-');
+      sessionStorage.setItem(key, created);
+      return created;
+    } catch (error) {
+      return (window.crypto && typeof window.crypto.randomUUID === 'function')
+        ? window.crypto.randomUUID()
+        : '00000000-0000-4000-8000-000000000001';
+    }
+  }
+
   function makeCheckoutRequestId() {
     if (window.crypto && typeof window.crypto.randomUUID === 'function') {
       return window.crypto.randomUUID();
@@ -930,6 +948,7 @@
 
     var payload = {
       checkout_request_id: makeCheckoutRequestId(),
+      shopping_session_id: bottleCoinShoppingSessionId(),
       items: summary.items.map(function (item) {
         return {
           product_id: item.product_id,
