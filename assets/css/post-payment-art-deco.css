@@ -1,0 +1,205 @@
+/* Pepper Junction Post-Payment — ART DECO visual skin, candidate v0.1
+   Presentation-only CSS. No layout logic, award logic, JS, or DOM changes.
+   Load AFTER assets/css/post-payment-badges.css. */
+@import url('https://fonts.googleapis.com/css2?family=Limelight&family=Marcellus+SC&family=Josefin+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --pj-green-dark: #1E3020;
+  --pj-green-mid: #355E3B;
+  --pj-green-deep: #14251A;
+  --pj-brass: #B88939;
+  --pj-brass-bright: #F3CA68;
+  --pj-brass-dim: #98743B;
+  --pj-crimson: #750E0D;
+  --pj-cream: #F5E6C8;
+  --pj-cream-warm: #FFF1D5;
+  --pj-chalk: #F5E6C8;
+  --pj-chalk-muted: #C5B798;
+  --pj-ink: #1E3020;
+  --pj-card-dark: #1B3021;
+  --pj-card-green: #1E3020;
+  --pj-gold-glow: rgba(243,202,104,.14);
+  --pj-shadow: 0 14px 34px rgba(21,13,11,.18);
+}
+
+body {
+  color: #F5E6C8;
+  background:
+    radial-gradient(ellipse at 50% -15%,rgba(243,202,104,.19),transparent 45%),
+    repeating-linear-gradient(90deg,transparent 0,transparent 86px,rgba(117,14,13,.028) 87px, transparent 88px),
+    linear-gradient(165deg,#294832 0%,#1E3020 55%,#14251A 100%);
+}
+
+/* A richly colored rail-station masthead. Preserve Blackriver on brand name. */
+.pj-postpay-header {
+  background: linear-gradient(95deg,#5B0B0C 0%,#750E0D 52%,#5B0B0C 100%);
+  border-bottom: 4px double #F3CA68;
+  box-shadow: 0 7px 18px rgba(59,9,9,.22);
+  backdrop-filter: none;
+}
+.pj-brand strong { color: #FFF1D5; text-shadow: 0 2px 0 rgba(0,0,0,.12); }
+.pj-brand small { color: #F3CA68; opacity: 1; }
+.pj-postpay-shell { color:#283D2D; }
+
+/* The same original sections and positions, with upgraded material finish. */
+.pj-hero-card,
+.pj-status-card,
+.pj-section,
+.pj-review-card {
+  border: 1px solid rgba(117,14,13,.45);
+  box-shadow: 0 3px 0 rgba(117,14,13,.11),0 16px 33px rgba(48,31,17,.13);
+}
+.pj-hero-card {
+  background:
+    linear-gradient(90deg,transparent 0%,rgba(243,202,104,.10) 50%,transparent 100%),
+    linear-gradient(145deg,#294B31 0%,#1E3020 72%,#152319 100%);
+  border: 2px solid #C49A48;
+  outline: 1px solid rgba(243,202,104,.30);
+  outline-offset: -10px;
+}
+.pj-hero-card::before {
+  background:
+    radial-gradient(circle at 50% -28%,rgba(243,202,104,.15),transparent 68%),
+    repeating-linear-gradient(135deg,transparent 0,transparent 21px,rgba(243,202,104,.025) 22px,transparent 23px);
+}
+h1 {
+  font-family: 'Limelight', Georgia, serif;
+  font-size: clamp(42px,7.1vw,78px);
+  letter-spacing: .018em;
+  line-height: 1.15;
+  font-weight: 400;
+  color: #FFF1D5;
+  text-shadow: 0 3px 0 rgba(12,21,14,.22);
+}
+.pj-hero-copy { color:#FFF1D5; opacity:.96; }
+.pj-eyebrow {
+  color:#BD933E;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:11px;
+  letter-spacing:.24em;
+  opacity:1;
+}
+.pj-hero-card .pj-eyebrow { color:#F3CA68; }
+
+.pj-status-card {
+  background:linear-gradient(145deg,#FFF3DC,#F4E3C3);
+  border-left:5px solid #750E0D;
+}
+.pj-status-card h2,.pj-review-card h2,.pj-section h2,
+.pj-grasp-card h3 {
+  font-family:'Marcellus SC',Georgia,serif;
+  font-weight:400;
+  letter-spacing:.014em;
+  color:#750E0D;
+  line-height:1.2;
+}
+.pj-status-card p:not(.pj-eyebrow),
+.pj-review-card p:not(.pj-eyebrow),
+.pj-section-head p,
+.pj-grasp-card p {color:#2B422F;opacity:1;}
+.pj-section {
+  background:linear-gradient(160deg,#FFF2D9 0%,#F5E6C8 100%);
+  border-top:5px solid #750E0D;
+}
+.pj-section-head {border-bottom:1px solid rgba(117,14,13,.25);}
+.pj-count-pill {
+  background:#750E0D;
+  color:#FDE6B3;
+  border-color:#750E0D;
+}
+
+/* Buttons intentionally stay a readable sans; never Limelight at tiny sizes. */
+.pj-btn,.pj-ring-btn,.pj-sound-toggle {
+  font-family:'Josefin Sans',Arial,sans-serif;
+  font-weight:700;
+  font-size:11px;
+  letter-spacing:.095em;
+  line-height:1.35;
+  border-radius:2px;
+}
+.pj-btn-primary {
+  background:#750E0D;
+  color:#FFF0D1;
+  border-color:#750E0D;
+  box-shadow:inset 0 0 0 1px rgba(243,202,104,.24);
+}
+.pj-btn-primary:hover {background:#5F0A0B;}
+.pj-btn-ghost {
+  background:#1E3020;
+  color:#F3CA68;
+  border-color:#B88939;
+}
+.pj-btn-ghost:hover {background:#355E3B;}
+.pj-btn-review {
+  background:#FFF8E9;
+  color:#750E0D;
+  border-color:#750E0D;
+}
+.pj-btn-review:hover {background:#F3CA68;}
+
+/* Badge faces: backgrounds and trim only; art and flip mechanics untouched. */
+.pj-award-face {
+  background:linear-gradient(158deg,#264830 0%,#1A3020 100%);
+  border:2px solid rgba(243,202,104,.59);
+  box-shadow: 0 10px 24px rgba(35,31,17,.20),inset 0 0 0 5px rgba(243,202,104,.05);
+}
+.pj-award-back {
+  background:linear-gradient(160deg,#750E0D 0%,#4A1111 100%);
+}
+.pj-award-card.is-major .pj-award-face {
+  border-color:#F3CA68;
+  box-shadow:0 12px 30px rgba(35,31,17,.23),0 0 0 2px rgba(117,14,13,.22);
+}
+.pj-award-title,
+.pj-award-back h3 {
+  font-family:'Marcellus SC',Georgia,serif;
+  font-weight:400;
+  color:#FFF1D5;
+  letter-spacing:.015em;
+}
+.pj-award-subtitle {color:#E8D3A9;}
+.pj-tap-hint,.pj-back-label {color:#F3CA68;opacity:1;}
+.pj-major-ribbon {
+  background:#F3CA68;
+  color:#4A1111;
+  border-color:#F3CA68;
+}
+.pj-card-ribbon {border-color:#B88939;color:#F3CA68;}
+.pj-ring-btn {
+  color:#FFF1D5;
+  border-color:#F3CA68;
+  background:#750E0D;
+}
+.pj-ring-btn:hover {background:#8D1917;}
+.pj-award-back p {color:#FFF1D5;opacity:.95;}
+.pj-back-meta {color:#F3CA68;opacity:.92;}
+
+.pj-grasp-section {
+  background:linear-gradient(155deg,#FFF1D5,#EEE0BF);
+  border-color:#B88939;
+}
+.pj-grasp-card {background:#FFF7E6;border-color:rgba(117,14,13,.42);}
+.pj-review-card {
+  background:linear-gradient(105deg,#750E0D,#571013);
+  border:2px solid #C49A48;
+}
+.pj-review-card h2 {color:#FFF1D5;}
+.pj-review-card p:not(.pj-eyebrow) {color:#F8E9CE;}
+.pj-review-card .pj-eyebrow {color:#F3CA68;}
+.pj-sound-toggle {
+  background:#750E0D;
+  color:#FFF1D5;
+  border-color:#D9AF58;
+}
+
+/* Limit additional changes to cosmetics; existing mobile grid rules remain. */
+@media(max-width:640px) {
+  h1 {font-size:clamp(40px,11vw,60px);}
+  .pj-postpay-header {border-bottom-width:3px;}
+  .pj-status-card {border-left-width:3px;}
+}
+
+
+/* v0.4: GO square only — no size, layout or behavior changes. */
+.pj-go-tile { background:#750E0D; color:#F3CA68; border-color:#F3CA68; font-family:'Marcellus SC',Georgia,serif; font-weight:700; }
+.pj-go-tile::before { color:#F3CA68; font-family:'Marcellus SC',Georgia,serif; }
