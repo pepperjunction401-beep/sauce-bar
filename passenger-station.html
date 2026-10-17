@@ -25,6 +25,9 @@ h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(30px,5vw,52px);m
 </style><link rel="stylesheet" href="assets/css/cart.css">
 <style id="pj-passenger-station-navigation">
 .station-tabs{display:grid;grid-template-columns:minmax(74px,1fr) auto minmax(74px,1fr);align-items:center;gap:10px}
+/* Keep the shared cart overlay and drawer above the Station sticky navigation. */
+.pj-cart-overlay{z-index:400}
+.pj-cart-drawer{z-index:410}
 .station-tab-group{display:flex;align-items:stretch;justify-content:center;gap:10px}
 .station-edge{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:47px;padding:9px 13px;border:2px solid #a8853f;border-radius:6px;background:#355E3B;color:#F5E6C8;font:700 12px 'Josefin Sans',Arial,sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
 .station-edge:hover{background:#456c48}.station-edge:focus-visible{outline:3px solid white;outline-offset:2px}
