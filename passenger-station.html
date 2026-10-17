@@ -22,13 +22,26 @@ h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(30px,5vw,52px);m
 .station-header h1 {font-family:'Limelight',Georgia,serif; font-weight:400; font-variant:normal; font-size:clamp(32px,5.5vw,67px); letter-spacing:.045em; line-height:1.18; margin:11px 0 13px; text-shadow:0 2px 0 #5a180e,0 4px 10px rgba(0,0,0,.28);}
 .station-header h1::before,.station-header h1::after {content:'✦';font-family:Georgia,serif;font-weight:normal;font-size:.25em;color:var(--gold);vertical-align:middle;display:inline-block;margin:0 clamp(8px,2vw,28px);transform:translateY(-.23em);}
 @media(max-width:600px){.station-header h1{font-size:clamp(27px,7vw,42px);letter-spacing:.01em}.station-header h1::before,.station-header h1::after{margin:0 5px;font-size:.2em}}
+</style><link rel="stylesheet" href="assets/css/cart.css">
+<style id="pj-passenger-station-navigation">
+.station-tabs{display:grid;grid-template-columns:minmax(74px,1fr) auto minmax(74px,1fr);align-items:center;gap:10px}
+.station-tab-group{display:flex;align-items:stretch;justify-content:center;gap:10px}
+.station-edge{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:47px;padding:9px 13px;border:2px solid #a8853f;border-radius:6px;background:#355E3B;color:#F5E6C8;font:700 12px 'Josefin Sans',Arial,sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+.station-edge:hover{background:#456c48}.station-edge:focus-visible{outline:3px solid white;outline-offset:2px}
+.station-home{justify-self:start}.station-cart{justify-self:end}.station-edge>span:first-child{font-size:23px;line-height:1}
+.station-cart .pj-cart-count{position:static;display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;border-radius:50%;padding:2px 5px;background:#750E0D;color:#F3CA68;font-size:11px}
+@media(max-width:760px){.station-tabs{grid-template-columns:1fr 1fr;gap:7px}.station-home{grid-column:1;grid-row:1}.station-cart{grid-column:2;grid-row:1}.station-tab-group{grid-column:1/-1;grid-row:2;width:100%;gap:5px}.station-tab-group .station-tab{min-width:0;flex:1;padding:11px 5px;font-size:10px}}
 </style></head><body>
 <header class="station-header"><div class="station-kicker">Pepper Junction · Your Passenger Collection</div><h1>Passenger Station</h1><p class="station-intro">Your review challenges, personal tasting journal, and badge collection—all aboard in one place.</p></header>
-<nav aria-label="Passenger Station sections" class="station-tabs" role="tablist">
+<div class="station-tabs" aria-label="Passenger Station navigation">
+<a class="station-edge station-home" href="main.html" aria-label="Return to Pepper Junction storefront" title="Return to storefront"><span aria-hidden="true">⌂</span><span class="station-edge-label">Home</span></a>
+<nav aria-label="Passenger Station sections" class="station-tab-group" role="tablist">
 <button aria-controls="panel-board" aria-selected="true" class="station-tab" data-panel="board" id="tab-board" role="tab" tabindex="0">The Review Board</button>
 <button aria-controls="panel-yard" aria-selected="false" class="station-tab" data-panel="yard" id="tab-yard" role="tab" tabindex="-1">The Review Yard</button>
 <button aria-controls="panel-depot" aria-selected="false" class="station-tab" data-panel="depot" id="tab-depot" role="tab" tabindex="-1">The Badge Depot</button>
 </nav>
+<button id="pj-cart-toggle" type="button" class="station-edge station-cart" aria-label="Open Pepper Junction cart" aria-controls="pj-cart-drawer" aria-expanded="false" title="Open cart"><span aria-hidden="true">🛒</span><span class="station-edge-label">Cart</span><span class="pj-cart-count" id="pj-cart-count">0</span></button>
+</div>
 <section aria-labelledby="tab-board" class="station-panel" id="panel-board" role="tabpanel"><iframe id="frame-board" loading="eager" scrolling="no" srcdoc="&lt;!DOCTYPE html&gt;
 
 &lt;html lang=&quot;en&quot;&gt;&lt;head&gt;
@@ -4897,4 +4910,7 @@ document.addEventListener('click',function(event){
  const selected=location.hash.slice(1);
  if(ids.includes(selected))activate(selected,false);
 })();
-</script></body></html>
+</script>
+<script src="assets/js/cart-engine.js"></script>
+<script src="assets/js/cart-drawer.js"></script>
+</body></html>
