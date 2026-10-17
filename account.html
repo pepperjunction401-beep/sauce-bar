@@ -44,7 +44,7 @@
       <p class="pj-eyebrow">Your Ticket to the Depot</p>
       <h1>Welcome Aboard</h1>
       <p class="account-lead">Create your Pepper Junction account to collect your earned badges, track your progress, and find your way back to your favorite flavors. Already riding with us? Sign in.</p>
-      <div class="account-preview" role="note"><strong>Dev preview:</strong> This is the approved account-page design. Account creation, sign-in, email/phone verification, and Square purchase recovery are not connected yet. No personal information is submitted or saved here.</div>
+      <div class="account-preview" role="note" id="account-preview" hidden>External preview only. For your security, real account credentials are accepted only on an official Pepper Junction website or trusted local development environment.</div>
       <div class="account-tabs" role="tablist" aria-label="Account action">
         <button class="account-tab" type="button" role="tab" id="tab-create" aria-selected="true" aria-controls="panel-create">Create Account</button>
         <button class="account-tab" type="button" role="tab" id="tab-signin" aria-selected="false" aria-controls="panel-signin">Sign In</button>
@@ -55,6 +55,7 @@
             <label for="create-email">Email Address <span class="account-required">— Required</span></label>
             <input id="create-email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
           </div>
+          <div class="account-field"><label for="create-name">Full Name <span class="account-required">— Required</span></label><input id="create-name" type="text" autocomplete="name" maxlength="120" required placeholder="Your name"></div>
           <div class="account-field">
             <label for="create-password">Password <span class="account-required">— Required</span></label>
             <input id="create-password" type="password" autocomplete="new-password" placeholder="Create a password" required minlength="8">
@@ -62,7 +63,7 @@
           <div class="account-field">
             <label for="create-phone">Phone Number <span class="account-required">— Strongly Recommended</span></label>
             <input id="create-phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(401) 555-0123" aria-describedby="phone-help">
-            <small id="phone-help">Adding and verifying your phone number helps us locate past purchases made through our website and at our pop-ups, and identify your existing loyalty membership. Once those purchases are verified, Pepper Junction can use your purchase history to award eligible badges and Pepper Junction Loyalty Points. You can create an account without a phone number, but some previous purchases may not be recoverable through email alone.</small>
+            <small id="phone-help">Adding and verifying your phone number helps us locate past purchases made through our website and at our pop-ups, and identify your existing loyalty membership. Once those purchases are verified, Pepper Junction can use your purchase history to award eligible badges and Pepper Junction Loyalty Points. You can create an account without a phone number, but we will not be able to recover your previous purchases without a verified phone number.</small>
           </div>
           <div class="account-notice">After you verify your account, Pepper Junction will check for safely matchable Square purchase history. No match? Your account is still yours, and you're ready for future purchases.</div>
           <button class="account-submit" type="submit">Create My Account</button>
@@ -79,45 +80,141 @@
             <input id="signin-password" type="password" autocomplete="current-password" placeholder="Your password" required>
           </div>
           <button class="account-submit" type="submit">Sign In</button>
-          <p class="account-muted">Password reset will be available when Supabase authentication is activated.</p>
+          <button class="account-submit" type="button" id="reset-password" style="background:transparent;color:var(--pj-brass-bright)">Send Password Reset Email</button>
         </form>
       </section>
+      <section id="phone-verification" hidden><p class="account-notice">Verify your phone number to help connect your Square purchase history. Phone verification is optional, and you can continue to your Station without it.</p><div class="account-field"><label for="phone-code">SMS Verification Code</label><input id="phone-code" inputmode="numeric" autocomplete="one-time-code" placeholder="Code sent to your phone"></div><button class="account-submit" id="confirm-phone" type="button">Verify Phone</button><button class="account-submit" id="skip-phone" type="button" style="margin-top:8px;background:transparent;color:var(--pj-brass-bright)">Continue Without Phone</button></section>
       <p id="account-feedback" class="account-feedback" role="status" aria-live="polite" hidden></p>
       <a id="account-back" class="account-back" href="main.html">← Return to Shop</a>
     </div>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/pj-auth.js"></script>
   <script>
-    (function(){
-      'use strict';
-      var createTab=document.getElementById('tab-create');
-      var signinTab=document.getElementById('tab-signin');
-      var createPanel=document.getElementById('panel-create');
-      var signinPanel=document.getElementById('panel-signin');
-      var feedback=document.getElementById('account-feedback');
-      function show(mode){
-        var creating=mode==='create';
-        createTab.setAttribute('aria-selected',String(creating));
-        signinTab.setAttribute('aria-selected',String(!creating));
-        createPanel.hidden=!creating;
-        signinPanel.hidden=creating;
-        feedback.hidden=true;
-      }
-      createTab.addEventListener('click',function(){show('create');});
-      signinTab.addEventListener('click',function(){show('signin');});
-      var params=new URLSearchParams(location.search);
-      var from=params.get('return');
-      var safeDestination=from==='post-payment'?'post-payment-badges.html':from==='review'?'review.html'+(params.get('product')?'?product='+encodeURIComponent(params.get('product')):''):'main.html';
-      var back=document.getElementById('account-back');
-      back.href=safeDestination;
-      back.textContent=from==='post-payment'?'← Back to Badge Reveal':from==='review'?'← Back to Product Review':'← Return to Shop';
-      function previewOnly(event){
-        event.preventDefault();
-        feedback.textContent='This page is a Dev preview. No account was created, no sign-in occurred, and no information was saved.';
-        feedback.hidden=false;
-      }
-      document.getElementById('create-form').addEventListener('submit',previewOnly);
-      document.getElementById('signin-form').addEventListener('submit',previewOnly);
-    })();
+  (function () {
+    'use strict';
+    const auth = window.PJAuth;
+    const api = auth && auth.client;
+    const byId = id => document.getElementById(id);
+    const feedback = byId('account-feedback');
+    let pendingPhone = '';
+    let busy = false;
+    const params = new URLSearchParams(location.search);
+    const from = params.get('return');
+    const back = byId('account-back');
+    const safeDestination = from === 'post-payment' ? 'post-payment-badges.html' : from === 'review' ?
+      'review.html' + (params.get('product') ? '?product='+encodeURIComponent(params.get('product')) : '') : 'main.html';
+    back.href = safeDestination;
+    back.textContent = from === 'post-payment' ? '← Back to Badge Reveal' : from === 'review' ? '← Back to Product Review' : '← Return to Shop';
+    function message(t) { feedback.textContent = t; feedback.hidden = false; }
+    function show(mode) {
+      const creating = mode === 'create';
+      byId('tab-create').setAttribute('aria-selected', String(creating));
+      byId('tab-signin').setAttribute('aria-selected', String(!creating));
+      byId('panel-create').hidden = !creating;
+      byId('panel-signin').hidden = creating;
+      feedback.hidden = true;
+    }
+    byId('tab-create').addEventListener('click', () => show('create'));
+    byId('tab-signin').addEventListener('click', () => show('signin'));
+    function goStation() { location.assign(auth.destination()); }
+    function normalizeUSPhone(input) {
+      if (!input.trim()) return '';
+      const digits = input.replace(/\D/g, '');
+      if (digits.length === 10) return '+1'+digits;
+      if (digits.length === 11 && digits[0] === '1') return '+'+digits;
+      throw new Error('Enter a valid US phone number or leave the optional field empty.');
+    }
+    async function submitAction(fn) {
+      if (busy) return;
+      busy = true;
+      feedback.hidden = true;
+      document.querySelectorAll('.account-submit').forEach(b => b.disabled=true);
+      try { await fn(); }
+      catch (err) { message(err && err.message ? err.message : 'Something went wrong. Please try again.'); }
+      finally { busy=false; document.querySelectorAll('.account-submit').forEach(b => b.disabled=false); }
+    }
+    async function startOptionalPhone() {
+      if (!pendingPhone) return goStation();
+      const r = await api.auth.updateUser({phone:pendingPhone});
+      if (r.error) {message('Your account is verified. Phone verification is not available right now: '+r.error.message+' You can continue to your Station.');byId('phone-verification').hidden=false;return;}
+      byId('panel-create').hidden=true;byId('panel-signin').hidden=true;
+      byId('phone-verification').hidden=false;
+      message('Check your phone for the verification code. Your phone will not be counted as verified until you enter that code.');
+    }
+    byId('create-form').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!api) return;
+      submitAction(async () => {
+        const name = byId('create-name').value.trim();
+        if (!name) throw new Error('Please enter your name.');
+        pendingPhone = normalizeUSPhone(byId('create-phone').value);
+        const signup = await api.auth.signUp({
+          email:byId('create-email').value.trim(),password:byId('create-password').value,
+          options:{ data:{full_name:name}, emailRedirectTo:new URL('account.html?verified=1',location.href).href }
+        });
+        if (signup.error) throw signup.error;
+        if (signup.data && signup.data.session && await auth.verifiedUser()) {
+          await startOptionalPhone();
+        } else {
+          message('Check your email to verify your account. After verification, return here to sign in. Your phone can be verified after sign-in.');
+        }
+      });
+    });
+    byId('signin-form').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!api) return;
+      submitAction(async () => {
+        const r=await api.auth.signInWithPassword({email:byId('signin-email').value.trim(),password:byId('signin-password').value});
+        if (r.error) throw r.error;
+        if (!await auth.verifiedUser()) {await api.auth.signOut({scope:'local'});throw new Error('Please verify your email before entering Passenger Station.');}
+        goStation();
+      });
+    });
+    byId('reset-password').addEventListener('click', () => {
+      if (!api) return;
+      submitAction(async () => {
+        const email=byId('signin-email').value.trim();
+        if (!email) throw new Error('Enter your email in the Sign In field first.');
+        const r=await api.auth.resetPasswordForEmail(email,{redirectTo:new URL('account.html?reset=1',location.href).href});
+        if (r.error) throw r.error;
+        message('If an account exists for this email, password reset instructions will be sent.');
+      });
+    });
+    byId('confirm-phone').addEventListener('click', () => submitAction(async () => {
+      const r=await api.auth.verifyOtp({phone:pendingPhone,token:byId('phone-code').value.trim(),type:'phone_change'});
+      if (r.error) throw r.error;
+      message('Phone verified successfully. Taking you to your Passenger Station.');
+      goStation();
+    }));
+    byId('skip-phone').addEventListener('click', goStation);
+    if (!api) {
+      byId('account-preview').hidden=false;
+      document.querySelectorAll('#create-form input,#signin-form input').forEach(el => el.disabled=true);
+      document.querySelectorAll('.account-submit').forEach(el => el.disabled=true);
+      message('Account authentication is disabled on this third-party preview. Open this page on an official Pepper Junction host to sign in.');
+    } else {
+      (async () => {
+        try {
+          if (params.get('reset')==='1') {
+            const u=await auth.verifiedUser();
+            if (u) {
+              const password=window.prompt('Enter a new password (at least 8 characters):');
+              if (password && password.length>=8) {
+                const r=await api.auth.updateUser({password:password});
+                message(r.error?r.error.message:'Password updated. You can enter your Passenger Station.');
+              }
+            } else message('Open your password reset email link, then return here.');
+            return;
+          }
+          if (await auth.verifiedUser()) {
+            if (params.get('verified')==='1') {message('Email verified. Welcome aboard!');}
+            goStation();
+          }
+        } catch(e) {message('Unable to check the current session. Please sign in.');}
+      })();
+    }
+  })();
   </script>
 </body>
 </html>
