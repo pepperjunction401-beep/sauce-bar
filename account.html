@@ -117,6 +117,15 @@
     }
     byId('tab-create').addEventListener('click', () => show('create'));
     byId('tab-signin').addEventListener('click', () => show('signin'));
+    async function syncDisplayName(u) {
+      // Phase 1 profile is authoritative for customer display name; preserve existing names.
+      if (!u || !u.id || !api) return;
+      const fullName = String((u.user_metadata && u.user_metadata.full_name) || '').trim();
+      if (!fullName) return;
+      const current = await api.from('customer_profiles').select('display_name').eq('id',u.id).maybeSingle();
+      if (current.error || !current.data || current.data.display_name) return;
+      await api.from('customer_profiles').update({display_name:fullName}).eq('id',u.id);
+    }
     function goStation() { location.assign(auth.destination()); }
     function normalizeUSPhone(input) {
       if (!input.trim()) return '';
@@ -155,6 +164,7 @@
         });
         if (signup.error) throw signup.error;
         if (signup.data && signup.data.session && await auth.verifiedUser()) {
+          await syncDisplayName(await auth.verifiedUser());
           await startOptionalPhone();
         } else {
           message('Check your email to verify your account. After verification, return here to sign in. Your phone can be verified after sign-in.');
@@ -169,6 +179,7 @@
         if (r.error) throw r.error;
         if (!await auth.verifiedUser()) {await api.auth.signOut({scope:'local'});throw new Error('Please verify your email before entering Passenger Station.');}
         const u=await auth.verifiedUser();
+        await syncDisplayName(u);
         pendingPhone=(u && u.user_metadata && u.user_metadata.pending_phone && !u.phone_confirmed_at) ? u.user_metadata.pending_phone : '';
         if (pendingPhone) await startOptionalPhone(); else goStation();
       });
@@ -215,6 +226,7 @@
           }
           const u=await auth.verifiedUser();
           if (u) {
+            await syncDisplayName(u);
             pendingPhone=(u.user_metadata && u.user_metadata.pending_phone && !u.phone_confirmed_at) ? u.user_metadata.pending_phone : '';
             if (pendingPhone) await startOptionalPhone(); else goStation();
           }
