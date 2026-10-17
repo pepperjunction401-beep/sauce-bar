@@ -4916,4 +4916,39 @@ document.addEventListener('click',function(event){
 </script>
 <script src="assets/js/cart-engine.js"></script>
 <script src="assets/js/cart-drawer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="assets/js/pj-auth.js"></script>
+<script>
+(function () {
+  'use strict';
+  const auth = window.PJAuth;
+  if (!auth || !auth.firstParty) return; // External design preview: no credentials, no customer data.
+  if (!auth.enabled) {
+    document.body.hidden=true;
+    location.replace('account.html?return=station');
+    return;
+  }
+  document.body.hidden = true;
+  auth.verifiedUser().then(function(user) {
+    if (!user) {location.replace(auth.loginLocation());return;}
+    document.body.hidden = false;
+    const controls = document.querySelector('.station-tabs');
+    if (controls && !document.getElementById('pj-station-logout')) {
+      const logout=document.createElement('button');
+      logout.id='pj-station-logout';
+      logout.type='button';
+      logout.textContent='Sign Out';
+      logout.setAttribute('aria-label','Sign out of Pepper Junction');
+      logout.style.cssText='border:1px solid #a8853f;background:#355E3B;color:#F5E6C8;padding:8px;font:700 11px Josefin Sans,sans-serif;cursor:pointer';
+      // Keep Home | center tabs | Cart placement untouched; add logout immediately after nav.
+      controls.insertAdjacentElement('afterend',logout);
+      logout.addEventListener('click',async function(){
+        logout.disabled=true;
+        try {await auth.signOut();location.replace('account.html');}
+        catch(e){logout.disabled=false;window.alert('Sign out failed. Please try again.');}
+      });
+    }
+  }).catch(function(){location.replace(auth.loginLocation());});
+})();
+</script>
 </body></html>
