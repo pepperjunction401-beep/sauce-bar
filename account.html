@@ -137,7 +137,7 @@
     async function startOptionalPhone() {
       if (!pendingPhone) return goStation();
       const r = await api.auth.updateUser({phone:pendingPhone});
-      if (r.error) {message('Your account is verified. Phone verification is not available right now: '+r.error.message+' You can continue to your Station.');byId('phone-verification').hidden=false;return;}
+      if (r.error) {byId('panel-create').hidden=true;byId('panel-signin').hidden=true;message('Your account is verified. Phone verification is not available right now: '+r.error.message+' You can continue to your Station.');byId('phone-verification').hidden=false;return;}
       byId('panel-create').hidden=true;byId('panel-signin').hidden=true;
       byId('phone-verification').hidden=false;
       message('Check your phone for the verification code. Your phone will not be counted as verified until you enter that code.');
@@ -151,7 +151,7 @@
         pendingPhone = normalizeUSPhone(byId('create-phone').value);
         const signup = await api.auth.signUp({
           email:byId('create-email').value.trim(),password:byId('create-password').value,
-          options:{ data:{full_name:name}, emailRedirectTo:new URL('account.html?verified=1',location.href).href }
+          options:{ data:{full_name:name,pending_phone:pendingPhone||null}, emailRedirectTo:new URL('account.html?verified=1',location.href).href }
         });
         if (signup.error) throw signup.error;
         if (signup.data && signup.data.session && await auth.verifiedUser()) {
@@ -168,7 +168,9 @@
         const r=await api.auth.signInWithPassword({email:byId('signin-email').value.trim(),password:byId('signin-password').value});
         if (r.error) throw r.error;
         if (!await auth.verifiedUser()) {await api.auth.signOut({scope:'local'});throw new Error('Please verify your email before entering Passenger Station.');}
-        goStation();
+        const u=await auth.verifiedUser();
+        pendingPhone=(u && u.user_metadata && u.user_metadata.pending_phone && !u.phone_confirmed_at) ? u.user_metadata.pending_phone : '';
+        if (pendingPhone) await startOptionalPhone(); else goStation();
       });
     });
     byId('reset-password').addEventListener('click', () => {
@@ -184,10 +186,14 @@
     byId('confirm-phone').addEventListener('click', () => submitAction(async () => {
       const r=await api.auth.verifyOtp({phone:pendingPhone,token:byId('phone-code').value.trim(),type:'phone_change'});
       if (r.error) throw r.error;
+      await api.auth.updateUser({data:{pending_phone:null}});
       message('Phone verified successfully. Taking you to your Passenger Station.');
       goStation();
     }));
-    byId('skip-phone').addEventListener('click', goStation);
+    byId('skip-phone').addEventListener('click', async () => {
+      if (api) await api.auth.updateUser({data:{pending_phone:null}});
+      goStation();
+    });
     if (!api) {
       byId('account-preview').hidden=false;
       document.querySelectorAll('#create-form input,#signin-form input').forEach(el => el.disabled=true);
@@ -207,9 +213,10 @@
             } else message('Open your password reset email link, then return here.');
             return;
           }
-          if (await auth.verifiedUser()) {
-            if (params.get('verified')==='1') {message('Email verified. Welcome aboard!');}
-            goStation();
+          const u=await auth.verifiedUser();
+          if (u) {
+            pendingPhone=(u.user_metadata && u.user_metadata.pending_phone && !u.phone_confirmed_at) ? u.user_metadata.pending_phone : '';
+            if (pendingPhone) await startOptionalPhone(); else goStation();
           }
         } catch(e) {message('Unable to check the current session. Please sign in.');}
       })();
