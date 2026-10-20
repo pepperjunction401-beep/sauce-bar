@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pepper Junction — Direct Shelf-Forward Interaction (Dev Prototype)</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;background:#160a05;color:#f5dca9;font-family:Georgia,serif}
+button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #f5d18b;outline-offset:3px}
+header{display:flex;align-items:center;justify-content:space-between;padding:15px clamp(12px,4vw,54px);gap:12px;background:#1e3020;border-bottom:2px solid #b88939}
+header strong{font-size:clamp(14px,2vw,21px)}header span{font:11px Arial,sans-serif;letter-spacing:.08em;color:#d5b783}
+main{max-width:2206px;margin:auto}.scene{position:relative;line-height:0;isolation:isolate}.scene video{display:block;width:100%;height:auto}
+.hotspot{position:absolute;z-index:2;border:2px solid transparent;background:transparent;color:transparent;border-radius:4px;transition:background .15s,border-color .15s;touch-action:manipulation}
+.hotspot:hover,.hotspot:focus-visible{background:rgba(255,210,114,.18);border-color:#ffdda1;outline:none}
+.show-guides .hotspot{border-color:rgba(255,208,107,.7);background:rgba(255,197,65,.1)}
+.show-guides .hotspot:after{content:attr(aria-label);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#1b0a04e8;color:#ffe2af;font:bold clamp(8px,1vw,13px) Arial,sans-serif;line-height:1.3;text-align:center;padding:6px;white-space:normal;width:95%}
+.controls{padding:15px clamp(12px,4vw,54px);display:flex;gap:15px;align-items:center;justify-content:center;flex-wrap:wrap;font:13px/1.5 Arial,sans-serif}
+.controls button{color:#ffe1aa;background:#4b2110;padding:10px 14px;border:1px solid #bd8a40}
+#stage{position:fixed;inset:0;display:none;z-index:100;background:rgba(12,5,3,.78);backdrop-filter:blur(7px);padding:clamp(5px,1vw,14px)}
+#stage.open{display:flex;flex-direction:column}
+#shelf-head{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#261008;border:1px solid #bb874a;padding:8px 14px;min-height:52px}
+#shelf-head span{font:700 clamp(12px,2vw,17px) Arial,sans-serif;letter-spacing:.08em}#shelf-back{padding:9px 14px;background:#643018;color:#ffe1aa;border:1px solid #e7b875;font-size:13px}
+#shelf-frame{flex:1;min-height:0;width:min(100%,1350px);align-self:center;background:#170903;border:2px solid #b88939;box-shadow:0 25px 60px #000d;transform-origin:var(--origin-x,50%) var(--origin-y,50%);animation:approach .38s cubic-bezier(.18,.75,.18,1) both}
+#shelf-frame iframe{border:0;width:100%;height:100%;background:#1b0c06}
+@keyframes approach{from{opacity:.1;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+#stage.retreat #shelf-frame{animation:retreat .25s ease-in forwards}
+@keyframes retreat{to{opacity:0;transform:scale(.35)}}
+footer{font:12px/1.55 Arial,sans-serif;text-align:center;padding:10px 14px 22px;color:#d8b78b}
+@media(max-width:650px){#stage{padding:2px}#shelf-head{min-height:48px}#shelf-frame{width:100%}.hotspot{min-height:34px}}
+@media(prefers-reduced-motion:reduce){#shelf-frame,#stage.retreat #shelf-frame{animation:none}}
+</style></head><body>
+<header><strong>PEPPER JUNCTION · MERCANTILE</strong><span>Dev prototype · Direct shelf approach</span></header>
+<main><section class="scene" id="scene" aria-label="Mercantile departments in the passenger-car panorama">
+<video src="../../assets/video/main-background-motion-compressed.mp4" autoplay muted loop playsinline preload="metadata" poster="../../assets/textures/Main Page Welcome Panorama 1880 x 720  (4)(8).png"></video>
+<!-- Coordinates normalized to the 2206 × 946 source motion panorama. Order matches the existing Mercantile catalog. -->
+<button class="hotspot" style="left:29.5%;top:10.7%;width:10%;height:11.5%" data-dept="0" aria-label="Super Hot Sauces"></button>
+<button class="hotspot" style="left:41.9%;top:10.7%;width:10.8%;height:11.5%" data-dept="1" aria-label="Buffalo and Wing Sauces"></button>
+<button class="hotspot" style="left:54.3%;top:10.7%;width:10.5%;height:11.5%" data-dept="2" aria-label="BBQ Sauces and Rubs"></button>
+<button class="hotspot" style="left:29.5%;top:22.8%;width:10%;height:12%" data-dept="3" aria-label="Hot and Very Hot Sauces"></button>
+<button class="hotspot" style="left:41.9%;top:22.8%;width:10.8%;height:12%" data-dept="4" aria-label="Condiments"></button>
+<button class="hotspot" style="left:54.3%;top:22.8%;width:10.5%;height:12%" data-dept="5" aria-label="Seasonings"></button>
+<button class="hotspot" style="left:29.5%;top:35.2%;width:10%;height:12%" data-dept="6" aria-label="Mild and Medium Sauces"></button>
+<button class="hotspot" style="left:41.9%;top:35.2%;width:10.8%;height:12%" data-dept="7" aria-label="Snacks"></button>
+<button class="hotspot" style="left:54.3%;top:35.2%;width:10.5%;height:12%" data-dept="8" aria-label="Olive Oils and Vinegars"></button>
+</section><div class="controls"><span>Click a department in the moving panorama. The selected shelf comes directly forward.</span><button type="button" id="guides" aria-pressed="false">Show clickable areas</button></div></main>
+<div id="stage" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Selected Mercantile shelf">
+<div id="shelf-head"><span id="shelf-name">Selected shelf</span><button id="shelf-back" type="button">← Return shelf to panorama</button></div>
+<div id="shelf-frame"><iframe id="shelf-content" title="Selected Mercantile department" src="about:blank" loading="eager"></iframe></div>
+</div>
+<footer>This prototype leaves the Main page unchanged. Existing product inspection inside the shelf is retained; cart integration requires a separate verified pass.</footer>
+<script>
+(()=>{'use strict';
+const scene=document.getElementById('scene'),stage=document.getElementById('stage'),frame=document.getElementById('shelf-content'),back=document.getElementById('shelf-back'),head=document.getElementById('shelf-name'),panel=document.getElementById('shelf-frame');
+let last=null,active=null,closing=false,ready=false;
+function wireFrame(){try{const w=frame.contentWindow,d=w.document;if(!w.department)throw Error('shelf not ready');ready=true;if(active!==null)w.department(active);d.addEventListener('keydown',e=>{if(e.key==='Escape'&&!d.getElementById('inspector')?.classList.contains('open')){e.stopImmediatePropagation();e.preventDefault();close();}},true);}catch(err){head.textContent='Shelf unavailable — check prototype assets';}}
+function open(btn){if(closing)return;last=btn;active=Number(btn.dataset.dept);head.textContent=btn.getAttribute('aria-label');const a=btn.getBoundingClientRect();const x=(a.left+a.width/2)/innerWidth*100,y=(a.top+a.height/2)/innerHeight*100;panel.style.setProperty('--origin-x',Math.max(0,Math.min(100,x))+'%');panel.style.setProperty('--origin-y',Math.max(0,Math.min(100,y))+'%');stage.classList.remove('retreat');stage.classList.add('open');stage.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';if(ready){try{frame.contentWindow.department(active)}catch(e){ready=false}}if(!ready){frame.src='mercantile.html';}back.focus({preventScroll:true})}
+function close(){if(!stage.classList.contains('open')||closing)return;closing=true;stage.classList.add('retreat');const done=()=>{stage.classList.remove('open','retreat');stage.setAttribute('aria-hidden','true');document.body.style.overflow='';active=null;closing=false;if(last)last.focus({preventScroll:true});};if(matchMedia('(prefers-reduced-motion: reduce)').matches)done();else setTimeout(done,260)}
+scene.addEventListener('click',e=>{const b=e.target.closest('[data-dept]');if(b)open(b)});
+frame.addEventListener('load',wireFrame);back.addEventListener('click',close);
+document.getElementById('guides').addEventListener('click',e=>{const on=scene.classList.toggle('show-guides');e.currentTarget.setAttribute('aria-pressed',on);e.currentTarget.textContent=on?'Hide clickable areas':'Show clickable areas'});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&stage.classList.contains('open'))close()});
+})();
+</script></body></html>
