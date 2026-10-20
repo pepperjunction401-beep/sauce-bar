@@ -35,6 +35,24 @@ main{max-width:2206px;margin:0 auto}.scene{position:relative;line-height:0}.scen
 .product-action{display:inline-block;background:linear-gradient(#ddae65,#895321);color:#1e0a04;font:bold 13px Arial,sans-serif}
 @media(max-width:650px){header small{display:none}.overlay{padding:3px}.shelf{width:100%;max-height:99vh}.shelf-hero{height:140px}.product-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;padding:6px}.product-tile{min-height:150px;padding:4px}.product-tile img{height:110px}.product-tile span{font-size:10px}.product-focus{grid-template-columns:1fr;text-align:center}.product-focus img{max-height:30vh}.product-focus .actions{align-items:center}}
 @media(prefers-reduced-motion:reduce){.shelf,.product-focus,.retreat .shelf{animation:none!important}}
+/* APPROVED PULLMAN ARTWORK — DO NOT REPLACE WITH GENERATED SHELVING */
+.shelf{background:#100705;border:0;box-shadow:none;width:min(96vw,1200px)}
+.shelf-toolbar{position:relative;z-index:2;background:#180b07;border:1px solid #b88939}
+.shelf-hero{display:none!important}
+.product-grid{position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:1.7%;row-gap:0;padding:0 7.6% 4%;overflow:visible;background:#170804}
+.art-shelf{width:100%;height:auto;display:block}
+.shelf-stage{position:relative;min-height:0;overflow:auto;background:#170804}
+.shelf-stage .product-grid{position:absolute;inset:0;padding:8% 8% 9%;align-content:stretch}
+.shelf-stage.single .product-grid{padding-top:7.5%;padding-bottom:15%}
+.shelf-stage.double .product-grid{grid-template-rows:repeat(2,minmax(0,1fr));padding-top:6.5%;padding-bottom:7.5%}
+.shelf-stage .product-tile{height:100%;min-height:0;border:none;background:none;padding:0 2px 7%;justify-content:flex-end;align-items:center;overflow:visible}
+.shelf-stage .product-tile:hover{border:0;transform:translateY(-5px)}
+.shelf-stage .product-tile img{height:75%;max-height:100%;width:100%;object-fit:contain;object-position:center bottom}
+.shelf-stage .product-tile span{display:none}
+.product-focus{background:#160904 url('../../assets/mercantile/Pullman_Bottle_Alcove.jpg') center top / 100% 100% no-repeat;grid-template-columns:45% 55%;border:0;box-shadow:0 20px 80px #000}
+.product-focus img{height:clamp(140px,35vw,320px);align-self:end}
+.product-focus>div{background:#1a0b07e6;border:1px solid #ad7b44;padding:16px}
+@media(max-width:650px){.shelf-stage .product-grid{grid-template-columns:repeat(6,minmax(0,1fr));padding-left:8%;padding-right:8%}.shelf-stage .product-tile img{height:70%}.product-focus{grid-template-columns:40% 60%;gap:3px;padding:8px}.product-focus>div{padding:9px}.product-focus img{max-height:28vh}}
 </style></head><body>
 <header><strong>PEPPER JUNCTION · MERCANTILE</strong><small>Shelf-forward development preview · Main page unchanged</small></header>
 <main><section class="scene" id="scene" aria-label="Passenger-car mercantile panorama">
@@ -51,8 +69,7 @@ main{max-width:2206px;margin:0 auto}.scene{position:relative;line-height:0}.scen
 </section><div class="tips"><span>Click a merchandise shelf in the moving panorama.</span><button type="button" id="guide">Show clickable areas</button></div></main>
 <div class="overlay" id="shelf-layer" role="dialog" aria-modal="true" aria-label="Selected shelf" aria-hidden="true"><div class="shelf" id="shelf">
 <div class="shelf-toolbar"><div><h1 id="shelf-title"></h1><p id="shelf-sub"></p></div><button class="back" type="button" id="return-panorama">← Back to panorama</button></div>
-<div class="shelf-hero"><video src="../../assets/video/main-background-motion-compressed.mp4" autoplay muted loop playsinline aria-hidden="true"></video><strong id="shelf-art-title"></strong></div>
-<div class="product-grid" id="products"></div></div></div>
+<div class="shelf-stage single" id="shelf-stage"><img class="art-shelf" id="shelf-art" alt="Original Pullman illuminated mahogany display shelf" src="../../assets/mercantile/Pullman_Expanded_1_Shelves.jpg"><div class="product-grid" id="products"></div></div></div></div>
 <div class="overlay" id="product-layer" role="dialog" aria-modal="true" aria-label="Selected product" aria-hidden="true"><div class="product-focus">
 <img id="focus-img" alt=""><div><button class="back" id="return-shelf" type="button">← Back to this shelf</button><h2 id="focus-title"></h2><p>Inspect the selected product. Purchase links are enabled only for verified product-page paths.</p><div class="actions"><a id="product-page" class="product-action" href="#">View product and purchase →</a><small>Product pages with validated paths use the established Pepper Junction cart. This preview does not implement direct add-to-cart.</small></div></div></div></div>
 <script>
@@ -61,7 +78,7 @@ const regions=[[29.5,10.7,10,11.5],[41.9,10.7,10.8,11.5],[54.3,10.7,10.5,11.5],[
 const $=id=>document.getElementById(id);let current=-1,previousFocus=null,productFocus=null,leaving=false;
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function imgSrc(p){return '../../'+p.img}
-function openShelf(i,button){current=i;previousFocus=button;const r=regions[i];$('shelf').style.setProperty('--origin-x',r[0]+r[2]/2+'%');$('shelf').style.setProperty('--origin-y',r[1]+r[3]/2+'%');const hero=$('shelf').querySelector('.shelf-hero');hero.style.setProperty('--art-x',(r[0]+r[2]/2)+'%');hero.style.setProperty('--art-y',(r[1]+r[3]/2)+'%');$('shelf-title').textContent=CATALOG[i].title;$('shelf-sub').textContent=CATALOG[i].items.length+' products · '+CATALOG[i].sub;$('shelf-art-title').textContent=CATALOG[i].title;$('products').innerHTML=CATALOG[i].items.map((p,j)=>'<button class="product-tile" data-item="'+j+'" type="button" aria-label="View '+esc(p.name)+'"><img loading="lazy" src="'+esc(imgSrc(p))+'" alt=""><span>'+esc(p.name)+'</span></button>').join('');$('shelf-layer').classList.remove('retreat');show('shelf-layer');$('return-panorama').focus({preventScroll:true})}
+function openShelf(i,button){current=i;previousFocus=button;const r=regions[i];$('shelf').style.setProperty('--origin-x',r[0]+r[2]/2+'%');$('shelf').style.setProperty('--origin-y',r[1]+r[3]/2+'%');$('shelf-title').textContent=CATALOG[i].title;$('shelf-sub').textContent=CATALOG[i].items.length+' products · '+CATALOG[i].sub;const useDouble=CATALOG[i].items.length>6;$('shelf-stage').className='shelf-stage '+(useDouble?'double':'single');$('shelf-art').src='../../assets/mercantile/'+(useDouble?'Pullman_Expanded_2_Shelves.jpg':'Pullman_Expanded_1_Shelves.jpg');$('products').innerHTML=CATALOG[i].items.map((p,j)=>'<button class="product-tile" data-item="'+j+'" type="button" title="'+esc(p.name)+'" aria-label="View '+esc(p.name)+'"><img loading="lazy" src="'+esc(imgSrc(p))+'" alt=""><span>'+esc(p.name)+'</span></button>').join('');$('shelf-layer').classList.remove('retreat');show('shelf-layer');$('return-panorama').focus({preventScroll:true})}
 function show(id){$(id).classList.add('active');$(id).setAttribute('aria-hidden','false');document.body.style.overflow='hidden'}
 function hide(id){$(id).classList.remove('active');$(id).setAttribute('aria-hidden','true');if(!$('shelf-layer').classList.contains('active')&&!$('product-layer').classList.contains('active'))document.body.style.overflow=''}
 function openProduct(i,button){productFocus=button;const p=CATALOG[current].items[i];$('focus-img').src=imgSrc(p);$('focus-img').alt=p.name;$('focus-title').textContent=p.name;if(p.link){$('product-page').href='../../'+p.link;$('product-page').hidden=false;}else{$('product-page').hidden=true;}show('product-layer');$('return-shelf').focus({preventScroll:true})}
