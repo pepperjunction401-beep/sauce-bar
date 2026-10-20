@@ -55,6 +55,33 @@ main{max-width:2206px;margin:0 auto}.scene{position:relative;line-height:0}.scen
 @media(max-width:650px){.shelf-stage .product-grid{grid-template-columns:repeat(6,minmax(0,1fr));padding-left:8%;padding-right:8%}.shelf-stage .product-tile img{height:70%}.product-focus{grid-template-columns:40% 60%;gap:3px;padding:8px}.product-focus>div{padding:9px}.product-focus img{max-height:28vh}}
 .shelf-pager{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:8px;background:#180c07;border:1px solid #ad7b44;font:12px Arial,sans-serif}.shelf-pager[hidden]{display:none}.shelf-pager button:disabled{opacity:.35;cursor:default}.product-action[hidden]{display:none!important}
 
+
+/* APPROVED SHELF ART: bottle slots attach to shelf rail geometry; no opaque grid behind bottles. */
+.shelf-stage,.shelf-stage .product-grid{background:transparent!important}
+.shelf-stage{overflow:hidden}
+.shelf-stage .product-grid{
+ position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
+ grid-template-rows:1fr;padding:0 8.1%;gap:0 1.7%;overflow:visible;
+ align-content:stretch;align-items:stretch;
+}
+.shelf-stage.double .product-grid{grid-template-rows:repeat(2,minmax(0,1fr));padding:0 8.1%}
+.shelf-stage .product-tile{
+ position:relative;min-width:0;height:100%;min-height:0;padding:0;
+ display:block;background:transparent!important;border:0;transform:none;
+}
+.shelf-stage .product-tile img{
+ position:absolute;left:0;bottom:13%;width:100%;height:53%;
+ object-fit:contain;object-position:center bottom;max-height:none;
+ filter:drop-shadow(2px 4px 3px #0009)
+}
+.shelf-stage.double .product-tile img{bottom:12%;height:70%}
+.shelf-stage .product-tile:hover img,.shelf-stage .product-tile:focus-visible img{transform:translateY(-4px)}
+.shelf-stage .product-tile:hover{transform:none}
+@media(max-width:650px){
+ .shelf-stage .product-grid,.shelf-stage.double .product-grid{padding:0 8.1%;gap:0 1.7%}
+ .shelf-stage .product-tile img{bottom:13%;height:53%}
+ .shelf-stage.double .product-tile img{bottom:12%;height:70%}
+}
 /* Product alcove: preserve the supplied artwork; overlay bottle and chalkboard content. */
 @font-face{font-family:"PJ Blackriver";src:url("../../assets/fonts/Blackriver-Bold.ttf") format("truetype");font-display:swap}
 .product-focus{
