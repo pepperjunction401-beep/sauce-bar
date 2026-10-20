@@ -2606,28 +2606,15 @@ function refreshMercPrice(p){
   .then(body=>{if(request!==priceRequest||currentProduct?.slug!==p.slug)return;const state=Array.isArray(body.items)?body.items[0]:null;
     if(!state||state.product_id!==p.slug||state.current!==true||state.price==null||!Number.isFinite(Number(state.price)))throw Error('No current Square price');
     currentCommercial={price:Number(state.price),available:state.available===true};
-    priceEl.textContent='el('pj-merc-focus-img').src=art[p.slug];el('pj-merc-focus-img').alt=p['Product Name'];el('pj-merc-focus-title').textContent=p['Product Name'];el('pj-merc-heat').textContent=p['Heat Category']?'Heat: '+p['Heat Category']:'';el('pj-merc-flavor').textContent=p['Primary Flavor Notes']||p['hero sub']||'';const a=el('pj-merc-product-link');a.hidden=false;const url=new URL('products/'+encodeURIComponent(p.slug)+'.html',location.href);url.searchParams.set('pjMercShelf',el('pj-merc-products').dataset.dept);url.searchParams.set('pjMercBottle',p.slug);a.href=url.href;show(shelf,false);show(detail,true);el('pj-merc-return').focus({preventScroll:true})}
+    priceEl.textContent='$'+currentCommercial.price.toFixed(2);priceEl.classList.remove('is-pending');refreshMercCart();
+  }).catch(err=>{if(request!==priceRequest||currentProduct?.slug!==p.slug)return;priceEl.textContent='Price unavailable';priceEl.classList.add('is-pending');refreshMercCart();console.warn('Mercantile Square price unavailable',err)});
+}
+function openBottle(p,b){currentProduct=p;lastBottle=b;refreshMercCart();refreshMercPrice(p);el('pj-merc-focus-img').src=art[p.slug];el('pj-merc-focus-img').alt=p['Product Name'];el('pj-merc-focus-title').textContent=p['Product Name'];el('pj-merc-heat').textContent=p['Heat Category']?'Heat: '+p['Heat Category']:'';el('pj-merc-flavor').textContent=p['Primary Flavor Notes']||p['hero sub']||'';const a=el('pj-merc-product-link');a.hidden=false;const url=new URL('products/'+encodeURIComponent(p.slug)+'.html',location.href);url.searchParams.set('pjMercShelf',el('pj-merc-products').dataset.dept);url.searchParams.set('pjMercBottle',p.slug);a.href=url.href;show(shelf,false);show(detail,true);el('pj-merc-return').focus({preventScroll:true})}
 el('pj-merc-add').addEventListener('click',()=>{if(!currentProduct||!currentCommercial||!currentCommercial.available||!window.PJCart)return;
   const p=currentProduct;window.PJCart.addItem({product_id:p.slug,slug:p.slug,product_name:p['Product Name'],brand:p.Brand,price:currentCommercial.price,square_id:p.Square_ID,square_url:p['Product URL'],image:art[p.slug],quantity:1,category:p.Category,heat_category:p['Heat Category'],food_style:p['Food Style'],best_pairings:p['Best Food Pairings']});refreshMercCart();
 });
 el('pj-merc-subtract').addEventListener('click',()=>{if(currentProduct&&window.PJCart&&mercQuantity()>0){window.PJCart.decrement(currentProduct.slug);refreshMercCart()}});
 window.addEventListener('pj-cart-updated',refreshMercCart);
-function backBottle(){show(detail,false);show(shelf,true);lastBottle?.focus({preventScroll:true})}function closeShelf(){show(shelf,false);trigger?.focus({preventScroll:true})}
-el('pj-merc-spots').addEventListener('click',e=>{const b=e.target.closest('[data-pj-dept]');if(b)openShelf(Number(b.dataset.pjDept),b)});
-el('pj-merc-return').addEventListener('click',backBottle);el('pj-merc-exit').addEventListener('click',closeShelf);
-document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(detail.classList.contains('is-visible'))backBottle();else if(shelf.classList.contains('is-visible'))closeShelf()});
-fetch('data/Database_Pepper_Junction.json').then(r=>{if(!r.ok)throw Error('Catalog unavailable');return r.json()}).then(rows=>{data=rows;const params=new URLSearchParams(location.search);const indexText=params.get('pjMercShelf'),slug=params.get('pjMercBottle');if(indexText!==null&&slug&&/^\d+$/.test(indexText)){const i=Number(indexText);if(i<groups.length){const item=data.find(p=>p.slug===slug&&art[p.slug]&&groups[i][1](p));if(item){const triggerButton=document.querySelector('[data-pj-dept="'+i+'"]');openShelf(i,triggerButton);const bottle=Array.from(el('pj-merc-products').children).find(b=>b.dataset.pjMercSlug===slug);if(bottle)openBottle(item,bottle);const clean=new URL(location.href);clean.searchParams.delete('pjMercShelf');clean.searchParams.delete('pjMercBottle');history.replaceState(history.state,'',clean.href)}}}}).catch(e=>console.warn('Mercantile catalog unavailable',e));
-})();
-</script>
-  <script src="assets/js/cart-engine.js"></script>
-  <script src="assets/js/cart-drawer.js"></script>
-
-</body>
-</html>
-+currentCommercial.price.toFixed(2);priceEl.classList.remove('is-pending');refreshMercCart();
-  }).catch(err=>{if(request!==priceRequest||currentProduct?.slug!==p.slug)return;priceEl.textContent='Price unavailable';priceEl.classList.add('is-pending');refreshMercCart();console.warn('Mercantile Square price unavailable',err)});
-}
-function openBottle(p,b){currentProduct=p;lastBottle=b;refreshMercCart();refreshMercPrice(p);el('pj-merc-focus-img').src=art[p.slug];el('pj-merc-focus-img').alt=p['Product Name'];el('pj-merc-focus-title').textContent=p['Product Name'];el('pj-merc-heat').textContent=p['Heat Category']?'Heat: '+p['Heat Category']:'';el('pj-merc-flavor').textContent=p['Primary Flavor Notes']||p['hero sub']||'';const a=el('pj-merc-product-link');a.hidden=false;const url=new URL('products/'+encodeURIComponent(p.slug)+'.html',location.href);url.searchParams.set('pjMercShelf',el('pj-merc-products').dataset.dept);url.searchParams.set('pjMercBottle',p.slug);a.href=url.href;show(shelf,false);show(detail,true);el('pj-merc-return').focus({preventScroll:true})}
 function backBottle(){show(detail,false);show(shelf,true);lastBottle?.focus({preventScroll:true})}function closeShelf(){show(shelf,false);trigger?.focus({preventScroll:true})}
 el('pj-merc-spots').addEventListener('click',e=>{const b=e.target.closest('[data-pj-dept]');if(b)openShelf(Number(b.dataset.pjDept),b)});
 el('pj-merc-return').addEventListener('click',backBottle);el('pj-merc-exit').addEventListener('click',closeShelf);
