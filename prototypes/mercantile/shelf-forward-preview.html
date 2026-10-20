@@ -39,9 +39,9 @@ main{max-width:2206px;margin:0 auto}.scene{position:relative;line-height:0}.scen
 .shelf{background:#100705;border:0;box-shadow:none;width:min(96vw,1200px)}
 .shelf-toolbar{position:relative;z-index:2;background:#180b07;border:1px solid #b88939}
 .shelf-hero{display:none!important}
-.product-grid{position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:1.7%;row-gap:0;padding:0 7.6% 4%;overflow:visible;background:#170804}
+.product-grid{position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:1.7%;row-gap:0;padding:0 7.6% 4%;overflow:visible;background:none}
 .art-shelf{width:100%;height:auto;display:block}
-.shelf-stage{position:relative;min-height:0;overflow:auto;background:#170804}
+.shelf-stage{position:relative;min-height:0;overflow:auto;background:none}
 .shelf-stage .product-grid{position:absolute;inset:0;padding:8% 8% 9%;align-content:stretch}
 .shelf-stage.single .product-grid{padding-top:7.5%;padding-bottom:15%}
 .shelf-stage.double .product-grid{grid-template-rows:repeat(2,minmax(0,1fr));padding-top:6.5%;padding-bottom:7.5%}
@@ -57,7 +57,7 @@ main{max-width:2206px;margin:0 auto}.scene{position:relative;line-height:0}.scen
 
 
 /* APPROVED SHELF ART: bottle slots attach to shelf rail geometry; no opaque grid behind bottles. */
-.shelf-stage,.shelf-stage .product-grid{background:transparent!important}
+.shelf-stage,.shelf-stage .product-grid,.shelf-stage .product-tile{background:none!important;background-color:transparent!important}
 .shelf-stage{overflow:hidden}
 .shelf-stage .product-grid{
  position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
