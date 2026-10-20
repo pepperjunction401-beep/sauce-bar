@@ -6,8 +6,8 @@
     var params = new URLSearchParams(window.location.search);
     var shelf = params.get('pjMercShelf');
     var bottle = params.get('pjMercBottle');
-    if (!/^\\d+$/.test(shelf || '') || !bottle) return;
-    var currentSlug = window.location.pathname.split('/').pop().replace(/\\.html$/, '');
+    if (!/^\d+$/.test(shelf || '') || !bottle) return;
+    var currentSlug = window.location.pathname.split('/').pop().replace(/\.html$/, '');
     if (currentSlug !== bottle) return;
     var imageColumn = document.querySelector('aside.product-images');
     if (!imageColumn || document.getElementById('pj-merc-return-link')) return;
