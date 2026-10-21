@@ -2136,7 +2136,9 @@
  .pj-merc-cabinet-stage{width:100%;position:relative;flex:none}
  .pj-merc-cabinet-stage img{display:block;width:100%;height:auto}
  .pj-merc-cabinet-hotspots{position:absolute;left:7%;top:17%;width:86%;height:66%;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr)}
- .pj-merc-cabinet-hotspots button{background:transparent;border:0;padding:0;min-width:0;min-height:0;cursor:pointer}
+ .pj-merc-cabinet-hotspots button{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:1%;overflow:hidden;background:transparent;border:0;padding:0 1% 12%;min-width:0;min-height:0;cursor:pointer}
+ .pj-merc-cabinet-hotspots button img{display:block;flex:1 1 0;min-width:0;max-width:30%;height:74%;object-fit:contain;object-position:bottom center;filter:drop-shadow(1px 2px 1px #000b);pointer-events:none}
+ .pj-merc-cabinet-hotspots button:active img{transform:translateY(-2px)}
  .pj-merc-cabinet-hotspots button:focus-visible{outline:2px solid #f3d49b;outline-offset:-2px}
 }
 @media(prefers-reduced-motion:reduce){.pj-merc-frame,.pj-merc-alcove{animation:none}.pj-merc-bottle img{transition:none}}
@@ -2630,6 +2632,21 @@ el('pj-merc-add').addEventListener('click',()=>{if(!currentProduct||!currentComm
 el('pj-merc-subtract').addEventListener('click',()=>{if(currentProduct&&window.PJCart&&mercQuantity()>0){window.PJCart.decrement(currentProduct.slug);refreshMercCart()}});
 window.addEventListener('pj-cart-updated',refreshMercCart);
 function backBottle(){show(detail,false);show(shelf,true);lastBottle?.focus({preventScroll:true})}function closeShelf(){show(shelf,false);if(isMobileMerc()){show(cabinet,true);el('pj-merc-cabinet-close').focus({preventScroll:true})}else trigger?.focus({preventScroll:true})}
+function populateCabinet(){
+  const buttons=el('pj-merc-cabinet-hotspots').querySelectorAll('[data-pj-cabinet-dept]');
+  buttons.forEach(button=>{
+    const i=Number(button.dataset.pjCabinetDept);
+    const items=data.filter(groups[i][1]).filter(p=>art[p.slug]);
+    button.setAttribute('aria-label','Open '+groups[i][0]+' shelf');
+    button.title=groups[i][0];
+    button.replaceChildren();
+    items.slice(0,3).forEach(p=>{
+      const img=document.createElement('img');
+      img.src=art[p.slug];img.alt='';img.loading='lazy';
+      button.append(img);
+    });
+  });
+}
 function openCabinet(button){trigger=button;show(cabinet,true);el('pj-merc-cabinet-close').focus({preventScroll:true})}
 function closeCabinet(){show(cabinet,false);trigger?.focus({preventScroll:true})}
 el('pj-merc-spots').addEventListener('click',e=>{const b=e.target.closest('[data-pj-dept]');if(!b)return;if(isMobileMerc())openCabinet(b);else openShelf(Number(b.dataset.pjDept),b)});
@@ -2637,7 +2654,7 @@ el('pj-merc-cabinet-hotspots').addEventListener('click',e=>{const b=e.target.clo
 el('pj-merc-cabinet-close').addEventListener('click',closeCabinet);
 el('pj-merc-return').addEventListener('click',backBottle);el('pj-merc-exit').addEventListener('click',closeShelf);
 document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(detail.classList.contains('is-visible'))backBottle();else if(shelf.classList.contains('is-visible'))closeShelf();else if(cabinet.classList.contains('is-visible'))closeCabinet()});
-fetch('data/Database_Pepper_Junction.json').then(r=>{if(!r.ok)throw Error('Catalog unavailable');return r.json()}).then(rows=>{data=rows;const params=new URLSearchParams(location.search);const indexText=params.get('pjMercShelf'),slug=params.get('pjMercBottle');if(indexText!==null&&slug&&/^\d+$/.test(indexText)){const i=Number(indexText);if(i<groups.length){const item=data.find(p=>p.slug===slug&&art[p.slug]&&groups[i][1](p));if(item){const triggerButton=document.querySelector('[data-pj-dept="'+i+'"]');openShelf(i,triggerButton);const bottle=Array.from(el('pj-merc-products').children).find(b=>b.dataset.pjMercSlug===slug);if(bottle)openBottle(item,bottle);const clean=new URL(location.href);clean.searchParams.delete('pjMercShelf');clean.searchParams.delete('pjMercBottle');history.replaceState(history.state,'',clean.href)}}}}).catch(e=>console.warn('Mercantile catalog unavailable',e));
+fetch('data/Database_Pepper_Junction.json').then(r=>{if(!r.ok)throw Error('Catalog unavailable');return r.json()}).then(rows=>{data=rows;populateCabinet();const params=new URLSearchParams(location.search);const indexText=params.get('pjMercShelf'),slug=params.get('pjMercBottle');if(indexText!==null&&slug&&/^\d+$/.test(indexText)){const i=Number(indexText);if(i<groups.length){const item=data.find(p=>p.slug===slug&&art[p.slug]&&groups[i][1](p));if(item){const triggerButton=document.querySelector('[data-pj-dept="'+i+'"]');openShelf(i,triggerButton);const bottle=Array.from(el('pj-merc-products').children).find(b=>b.dataset.pjMercSlug===slug);if(bottle)openBottle(item,bottle);const clean=new URL(location.href);clean.searchParams.delete('pjMercShelf');clean.searchParams.delete('pjMercBottle');history.replaceState(history.state,'',clean.href)}}}}).catch(e=>console.warn('Mercantile catalog unavailable',e));
 })();
 </script>
   <script src="assets/js/cart-engine.js"></script>
