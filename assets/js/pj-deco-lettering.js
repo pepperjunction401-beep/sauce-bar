@@ -34,6 +34,25 @@ function render(node){
  });
  const readable=document.createElement('span');readable.className='pj-deco-readable';readable.textContent=label;node.replaceChildren(readable,holder);
 }
+/* Badge Car heading only: preserve its existing information bell and behavior. */
+function renderBadgeCarTitle(){
+ const title=document.querySelector('.badge-station-title');
+ if(!title||title.querySelector('.pj-deco-badge-title'))return;
+ const lettering=document.createElement('span');
+ lettering.className='pj-deco-badge-title';
+ lettering.setAttribute('role','img');
+ lettering.setAttribute('aria-label','Badge Car');
+ ['BADGE','CAR'].forEach((word,index)=>{
+   if(index){const space=document.createElement('span');space.className='pj-deco-space';lettering.appendChild(space);}
+   const group=document.createElement('span');group.className='pj-deco-word';
+   for(const char of word)group.appendChild(glyph(char));
+   lettering.appendChild(group);
+ });
+ for(const child of Array.from(title.childNodes)){
+   if(child.nodeType===3&&child.textContent.trim()==='Badge Car')title.removeChild(child);
+ }
+ title.insertBefore(lettering,title.firstChild);
+}
 function boot(){
  const eyebrow=document.querySelector('.product-hero-eyebrow');
  if(eyebrow)eyebrow.textContent=eyebrow.textContent.split('·')[0].trim();
@@ -41,6 +60,7 @@ function boot(){
  if(sub){const size=sub.querySelector('#hero-size'),price=sub.querySelector('#hero-price');if(size&&price){sub.replaceChildren(size,document.createTextNode(' · '),price);}}
  const target=document.querySelector('.product-hero-name');if(!target)return;
  render(target);
+ renderBadgeCarTitle();
  const observer=new MutationObserver(()=>{if(!target.querySelector('.pj-deco-render'))render(target)});
  observer.observe(target,{childList:true});
 }
