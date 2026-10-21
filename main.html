@@ -2136,7 +2136,9 @@
  .pj-merc-cabinet-stage{width:100%;position:relative;flex:none}
  .pj-merc-cabinet-stage img{display:block;width:100%;height:auto}
  .pj-merc-cabinet-hotspots{position:absolute;left:7%;top:17%;width:86%;height:66%;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr)}
- .pj-merc-cabinet-hotspots button{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:1%;overflow:hidden;background:transparent;border:0;padding:0 1% 12%;min-width:0;min-height:0;cursor:pointer}
+ .pj-merc-cabinet-hotspots button{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:1%;overflow:hidden;background:transparent;border:0;padding:0 1% 2%;min-width:0;min-height:0;cursor:pointer}
+ .pj-merc-cabinet-hotspots button:is([data-pj-cabinet-dept="0"],[data-pj-cabinet-dept="3"],[data-pj-cabinet-dept="6"]){gap:0}
+ .pj-merc-cabinet-hotspots button:is([data-pj-cabinet-dept="0"],[data-pj-cabinet-dept="3"],[data-pj-cabinet-dept="6"]) img{flex:0 0 20%;max-width:20%;margin-inline:-1.2%}
  .pj-merc-cabinet-hotspots button img{display:block;flex:1 1 0;min-width:0;max-width:30%;height:74%;object-fit:contain;object-position:bottom center;filter:drop-shadow(1px 2px 1px #000b);pointer-events:none}
  .pj-merc-cabinet-hotspots button:active img{transform:translateY(-2px)}
  .pj-merc-cabinet-hotspots button:focus-visible{outline:2px solid #f3d49b;outline-offset:-2px}
