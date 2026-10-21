@@ -26,6 +26,10 @@ function render(node){
  const readable=document.createElement('span');readable.className='pj-deco-readable';readable.textContent=label;node.replaceChildren(readable,holder);
 }
 function boot(){
+ const eyebrow=document.querySelector('.product-hero-eyebrow');
+ if(eyebrow)eyebrow.textContent=eyebrow.textContent.split('·')[0].trim();
+ const sub=document.querySelector('.product-hero-sub');
+ if(sub){const size=sub.querySelector('#hero-size'),price=sub.querySelector('#hero-price');if(size&&price){sub.replaceChildren(size,document.createTextNode(' · '),price);}}
  const target=document.querySelector('.product-hero-name');if(!target)return;
  render(target);
  const observer=new MutationObserver(()=>{if(!target.querySelector('.pj-deco-render'))render(target)});
