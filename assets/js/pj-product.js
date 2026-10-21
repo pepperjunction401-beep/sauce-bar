@@ -1073,3 +1073,9 @@
   };
 
 })();
+
+/* Shared original-vector Art Deco hero lettering, loaded once for every product page. */
+(function(){
+ function loadPJDeco(){if(document.getElementById('pj-deco-loader'))return;const s=document.createElement('script');s.id='pj-deco-loader';s.src='../assets/js/pj-deco-lettering.js';s.defer=true;document.head.appendChild(s)}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadPJDeco,{once:true});else loadPJDeco();
+})();
