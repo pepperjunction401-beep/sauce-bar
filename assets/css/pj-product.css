@@ -1371,7 +1371,15 @@ body {
   .img-frame { width: 80%; margin-left: auto; margin-right: auto; }
   .img-frame-inner { min-height: 220px; width: 100%; box-sizing: border-box; }
   .site-header { padding: 16px 20px; }
-  .header-nav { display: none; }
+  /* Keep the existing injected cart accessible in portrait; hide only links. */
+  .header-nav { display: flex; align-items: center; gap: 0; flex: none; }
+  .header-nav a { display: none; }
+  .header-logo { min-width: 0; gap: 8px; }
+  .header-logo img { height: 42px; flex: none; }
+  .header-wordmark { min-width: 0; }
+  .header-name { font-size: clamp(14px, 4vw, 18px); }
+  .header-tagline { font-size: 7px; letter-spacing: .12em; }
+  .site-header { padding: 12px; gap: 8px; }
   .page-outer { padding: 0 0 40px; }
   .chalkboard-surface { padding: 28px 20px 32px; }
   .uses-list { grid-template-columns: 1fr; }
