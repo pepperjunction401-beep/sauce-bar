@@ -30,6 +30,11 @@
     .account-muted{font-size:12px;line-height:1.7;color:var(--pj-chalk-muted)}
     [hidden]{display:none!important}
     @media(max-width:480px){.account-shell{padding-top:24px}.account-panel{padding:22px 18px}.account-tab{font-size:10px;letter-spacing:.06em}}
+    .account-password-wrap{position:relative}
+    .account-password-wrap input{padding-right:60px}
+    .account-password-toggle{position:absolute;right:4px;top:50%;transform:translateY(-50%);height:40px;width:44px;display:grid;place-items:center;border:0;background:transparent;color:#172319;cursor:pointer}
+    .account-password-toggle:focus-visible{outline:3px solid var(--pj-brass-bright);outline-offset:-3px}
+    .account-password-toggle svg{width:22px;height:22px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
   </style>
 </head>
 <body>
@@ -58,7 +63,10 @@
           <div class="account-field"><label for="create-name">Full Name <span class="account-required">— Required</span></label><input id="create-name" type="text" autocomplete="name" maxlength="120" required placeholder="Your name"></div>
           <div class="account-field">
             <label for="create-password">Password <span class="account-required">— Required</span></label>
+            <div class="account-password-wrap">
             <input id="create-password" type="password" autocomplete="new-password" placeholder="Create a password" required minlength="8">
+              <button type="button" class="account-password-toggle" data-password-target="create-password" aria-label="Show password" aria-pressed="false" title="Show password"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+            </div>
           </div>
           <div class="account-field">
             <label for="create-phone">Phone Number <span class="account-required">— Strongly Recommended</span></label>
@@ -77,7 +85,10 @@
           </div>
           <div class="account-field">
             <label for="signin-password">Password</label>
+            <div class="account-password-wrap">
             <input id="signin-password" type="password" autocomplete="current-password" placeholder="Your password" required>
+              <button type="button" class="account-password-toggle" data-password-target="signin-password" aria-label="Show password" aria-pressed="false" title="Show password"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+            </div>
           </div>
           <button class="account-submit" type="submit">Sign In</button>
           <button class="account-submit" type="button" id="reset-password" style="background:transparent;color:var(--pj-brass-bright)">Send Password Reset Email</button>
@@ -93,6 +104,19 @@
   <script>
   (function () {
     'use strict';
+    // Browser-only password visibility controls; never modify or log password values.
+    document.querySelectorAll('.account-password-toggle').forEach(function(toggle){
+      toggle.addEventListener('click',function(){
+        const field=document.getElementById(toggle.dataset.passwordTarget);
+        if(!field)return;
+        const visible=field.type==='password';
+        field.type=visible?'text':'password';
+        toggle.setAttribute('aria-pressed',String(visible));
+        toggle.setAttribute('aria-label',visible?'Hide password':'Show password');
+        toggle.title=visible?'Hide password':'Show password';
+        toggle.innerHTML=visible?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 5.1A11.7 11.7 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.1 4M6.2 6.3C3.4 8.2 2 12 2 12s3.5 7 10 7c1.5 0 2.8-.4 4-1"/><path d="M10 10a3 3 0 0 0 4 4"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>';
+      });
+    });
     const auth = window.PJAuth;
     const api = auth && auth.client;
     const byId = id => document.getElementById(id);
