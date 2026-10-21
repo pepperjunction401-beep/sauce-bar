@@ -9,7 +9,7 @@
     "Product Name": "Dragon’s Breath",
     "Pepper Type": "Jalapeño",
     "Heat Category": "Mild",
-    "Heat Level": 2,
+    "Heat Level": 2.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Soy-ginger",
@@ -21,7 +21,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Wok Star, The Veggie Outlaws"
   },
   {
     "slug": "cajohns-la-segadora-carolina-reaper",
@@ -33,7 +34,7 @@
     "Product Name": "La Segadora Carolina Reaper",
     "Pepper Type": "Reaper",
     "Heat Category": "Extreme",
-    "Heat Level": 9,
+    "Heat Level": 9.0,
     "How it Hits": "Hit'n Run",
     "Heat Finish": "Fire Pole Down",
     "Primary Flavor Notes": "Taco",
@@ -45,7 +46,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Taco Fever, Muy Rico!, This Is Your Brain on Hot Sauce"
   },
   {
     "slug": "dirty-dicks-hot-tropical-hot-sauce",
@@ -57,7 +59,7 @@
     "Product Name": "Hot Tropical Hot Sauce",
     "Pepper Type": "Habanero",
     "Heat Category": "Very Hot",
-    "Heat Level": 7,
+    "Heat Level": 7.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Sweet tropical fruit",
@@ -69,7 +71,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Wok Star, Epic Wingman, Fruity Pants, Is This Love, This Is Your Brain on Hot Sauce, The Veggie Outlaws, Shore Dinner Regular"
   },
   {
     "slug": "ghost-scream",
@@ -81,7 +84,7 @@
     "Product Name": "Ghost Scream",
     "Pepper Type": "Ghost Pepper",
     "Heat Category": "Super Hot",
-    "Heat Level": 8,
+    "Heat Level": 8.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Stays for Coffee",
     "Primary Flavor Notes": "Roasted red pepper",
@@ -93,7 +96,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!, Shore Dinner Regular"
   },
   {
     "slug": "heartbreaking-dawns-the-green",
@@ -105,7 +109,7 @@
     "Product Name": "The Green",
     "Pepper Type": "Jalapeño",
     "Heat Category": "Hot",
-    "Heat Level": 5,
+    "Heat Level": 5.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Verde",
@@ -117,7 +121,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": "verde-marty",
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Señor Verde, Taco Fever, Garlic Breath, The Veggie Outlaws, Muy Rico!"
   },
   {
     "slug": "high-river-sauces-hellacious",
@@ -129,7 +134,7 @@
     "Product Name": "Hellacious",
     "Pepper Type": "Chipotle, jalapeno",
     "Heat Category": "Hot",
-    "Heat Level": 5,
+    "Heat Level": 5.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Chipotle-smoky",
@@ -141,7 +146,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Wok Star, Taco Fever, Muy Rico!, Shore Dinner Regular, This Is Your Brain on Hot Sauce"
   },
   {
     "slug": "high-river-sauces-psych-sauce",
@@ -153,7 +159,7 @@
     "Product Name": "Psych Sauce",
     "Pepper Type": "Cayenne",
     "Heat Category": "Hot",
-    "Heat Level": 5,
+    "Heat Level": 5.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Cayenne black pepper",
@@ -165,7 +171,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Marty Bras, Garlic Breath, Shore Dinner Regular"
   },
   {
     "slug": "high-river-sauces-foo-foo-mama-choo",
@@ -177,7 +184,7 @@
     "Product Name": "Foo Foo Mama Choo",
     "Pepper Type": "Reaper",
     "Heat Category": "Extreme",
-    "Heat Level": 10,
+    "Heat Level": 10.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Feel the Flame",
     "Primary Flavor Notes": "Asian sweet",
@@ -189,7 +196,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Wok Star, Curry On, The Veggie Outlaws, Shore Dinner Regular"
   },
   {
     "slug": "high-river-sauces-peppers-up",
@@ -201,7 +209,7 @@
     "Product Name": "Peppers Up",
     "Pepper Type": "Apollo",
     "Heat Category": "Inferno",
-    "Heat Level": 11,
+    "Heat Level": 11.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Say Goodnight",
     "Primary Flavor Notes": "Black - Blue Berry",
@@ -213,7 +221,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Wok Star, Fruity Pants, Taco Fever, This Is Your Brain on Hot Sauce, Shore Dinner Regular"
   },
   {
     "slug": "high-river-sauces-rogue",
@@ -225,7 +234,7 @@
     "Product Name": "Rogue",
     "Pepper Type": "Scorpion",
     "Heat Category": "Super Hot",
-    "Heat Level": 8,
+    "Heat Level": 8.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Stays for Coffee",
     "Primary Flavor Notes": "Blood Orange-Pear",
@@ -237,7 +246,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Wok Star, Fruity Pants, Is This Love, Shore Dinner Regular"
   },
   {
     "slug": "high-river-sauces-tears-of-the-sun",
@@ -249,7 +259,7 @@
     "Product Name": "Tears of the Sun",
     "Pepper Type": "Habanero",
     "Heat Category": "Medium",
-    "Heat Level": 4,
+    "Heat Level": 4.0,
     "How it Hits": "Hit'n Run",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Fruity",
@@ -261,7 +271,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Wok Star, Fruity Pants, Is This Love, Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!, Shore Dinner Regular"
   },
   {
     "slug": "high-river-sauces-thunder-juice",
@@ -273,7 +284,7 @@
     "Product Name": "Thunder Juice",
     "Pepper Type": "Reaper",
     "Heat Category": "Extreme",
-    "Heat Level": 10,
+    "Heat Level": 10.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Feel the Flame",
     "Primary Flavor Notes": "Fruit and berries",
@@ -285,7 +296,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Fruity Pants, Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!"
   },
   {
     "slug": "high-river-sauces-taco-x",
@@ -297,7 +309,7 @@
     "Product Name": "Taco X",
     "Pepper Type": "Pepper X",
     "Heat Category": "Inferno",
-    "Heat Level": 12,
+    "Heat Level": 12.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Say Goodnight",
     "Primary Flavor Notes": "Taco",
@@ -309,7 +321,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!"
   },
   {
     "slug": "hells-kitchen-cinnamon-ghost",
@@ -321,19 +334,20 @@
     "Product Name": "Cinnamon Ghost",
     "Pepper Type": "Ghost Pepper",
     "Heat Category": "Super Hot",
-    "Heat Level": 8,
+    "Heat Level": 8.0,
     "How it Hits": "Hit'n Run",
     "Heat Finish": "Stays for Coffee",
     "Primary Flavor Notes": "Cinnamon",
     "Single Flavor Note": "Cinnamon",
     "Product URL": "https://www.pepperjunction401.com/product/hell-s-kitchen-cinnamon-ghost-punch-hot-sauce-5oz-/E6VYVOI2666KH27HV2YEVJWO?cs=true&cst=custom",
-    "Best Food Pairings": "Pork, ice cream, dumplings, naan, fried rice, stir fry, lo mein, pad thai, curry, vegetable samosa, indian, asian",
+    "Best Food Pairings": "Pork, ice cream, dumplings, naan, fried rice, stir fry, lo mein, pad thai, curry, vegetable samosa, indian, asian, waffles, pancakes",
     "Square_ID": "ERM6J6BEW3AFMRINGOR3UDAO",
     "featured": false,
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Wok Star, Curry On, The Veggie Outlaws, This Is Your Brain on Hot Sauce"
   },
   {
     "slug": "hells-kitchen-coconut-curry",
@@ -345,7 +359,7 @@
     "Product Name": "Coconut Curry",
     "Pepper Type": "Scotch Bonnet",
     "Heat Category": "Hot",
-    "Heat Level": 6,
+    "Heat Level": 6.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Coconut curry",
@@ -357,7 +371,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Wok Star, Curry On, Is This Love, Muy Rico!, Shore Dinner Regular"
   },
   {
     "slug": "hells-kitchen-black-forest",
@@ -369,7 +384,7 @@
     "Product Name": "Black Forest",
     "Pepper Type": "Ghost Pepper",
     "Heat Category": "Very Hot",
-    "Heat Level": 7,
+    "Heat Level": 7.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Black cherry-balsamic",
@@ -381,7 +396,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Olive Oil & Vin – Ch. 1"
   },
   {
     "slug": "hells-kitchen-black-westside-red",
@@ -393,7 +409,7 @@
     "Product Name": "Westside Red",
     "Pepper Type": "Habanero",
     "Heat Category": "Hot",
-    "Heat Level": 5,
+    "Heat Level": 5.0,
     "How it Hits": null,
     "Heat Finish": null,
     "Primary Flavor Notes": null,
@@ -405,7 +421,8 @@
     "new_arrival": true,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Wok Star, Epic Wingman, Taco Fever, This Is Your Brain on Hot Sauce, Marty Bras, Muy Rico!, Shore Dinner Regular"
   },
   {
     "slug": "sauce-crafters-hogs-ass-garlic-habanero-sauce",
@@ -417,7 +434,7 @@
     "Product Name": "Hog's Ass Garlic Habanero Sauce",
     "Pepper Type": "Habanero",
     "Heat Category": "Very Hot",
-    "Heat Level": 7,
+    "Heat Level": 7.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Garlic-forward",
@@ -429,7 +446,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Garlic Breath, Muy Rico!, Shore Dinner Regular"
   },
   {
     "slug": "ashley-foods-mad-dog-sriracha",
@@ -441,7 +459,7 @@
     "Product Name": "Mad Dog Sriracha",
     "Pepper Type": "Reaper",
     "Heat Category": "Extreme",
-    "Heat Level": 10,
+    "Heat Level": 10.0,
     "How it Hits": "Hit'n Run",
     "Heat Finish": "Say Goodnight",
     "Primary Flavor Notes": "Sriracha",
@@ -453,7 +471,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Wok Star, Curry On, Shore Dinner Regular"
   },
   {
     "slug": "melindas-mango-habanero",
@@ -465,7 +484,7 @@
     "Product Name": "Mango Habanero",
     "Pepper Type": "Habanero",
     "Heat Category": "Medium",
-    "Heat Level": 3,
+    "Heat Level": 3.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Mango",
@@ -477,7 +496,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Fruity Pants, Is This Love, Taco Fever, Muy Rico!, Shore Dinner Regular"
   },
   {
     "slug": "melindas-original-naga-jolokia",
@@ -489,7 +509,7 @@
     "Product Name": "Original Naga Jolokia",
     "Pepper Type": "Ghost Pepper",
     "Heat Category": "Super Hot",
-    "Heat Level": 8,
+    "Heat Level": 8.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Stays for Coffee",
     "Primary Flavor Notes": "Fruity",
@@ -501,7 +521,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Fruity Pants, Is This Love, Taco Fever, This Is Your Brain on Hot Sauce, The Veggie Outlaws, Muy Rico!, Shore Dinner Regular"
   },
   {
     "slug": "melindas-scotch-bonnet-sauce",
@@ -513,7 +534,7 @@
     "Product Name": "Scotch Bonnet Sauce",
     "Pepper Type": "Scotch Bonnet",
     "Heat Category": "Hot",
-    "Heat Level": 6,
+    "Heat Level": 6.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Fruity",
@@ -525,7 +546,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Fruity Pants, Is This Love, Taco Fever, This Is Your Brain on Hot Sauce, The Veggie Outlaws, Muy Rico!, Shore Dinner Regular"
   },
   {
     "slug": "mikey-vs-i-love-taco-sauce-hot",
@@ -537,7 +559,7 @@
     "Product Name": "I love Taco Sauce Hot",
     "Pepper Type": "Habanero",
     "Heat Category": "Hot",
-    "Heat Level": 5,
+    "Heat Level": 5.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Taco",
@@ -549,7 +571,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!"
   },
   {
     "slug": "mikey-vs-jalapeno-dill-pickle",
@@ -561,19 +584,20 @@
     "Product Name": "Jalapeno Dill Pickle",
     "Pepper Type": "Jalapeño",
     "Heat Category": "Mild",
-    "Heat Level": 1,
+    "Heat Level": 1.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Dill pickle tang",
     "Single Flavor Note": "Dill pickle",
     "Product URL": "https://www.pepperjunction401.com/product/mikey-v-s-jalapeno-dill-pickle-hot-sauce-5-fl-oz-/207?cs=true&cst=custom",
-    "Best Food Pairings": "Hot dogs, burgers, potato salad, eggs, chicken, sandwiches, chicken salad, egg salad, grain bowls, rice bowls, crab cakes, chips, tater tots",
+    "Best Food Pairings": "Hot dogs, burgers, potato salad, eggs, chicken, sandwiches, chicken salad, egg salad, grain bowls, rice bowls, crab cakes, chips, tater tots, dips, clubs",
     "Square_ID": "P6LAVIRFAUAOXX367STJBQE2",
     "featured": false,
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "The Veggie Outlaws"
   },
   {
     "slug": "mikey-vs-reaper-jalapeno-dill-pickle",
@@ -585,19 +609,20 @@
     "Product Name": "Reaper Jalapeno Dill Pickle",
     "Pepper Type": "Reaper, jalapeno",
     "Heat Category": "Extreme",
-    "Heat Level": 9,
+    "Heat Level": 9.0,
     "How it Hits": "Hit'n Run",
     "Heat Finish": "Stays for Coffee",
     "Primary Flavor Notes": "Dill pickle tang",
     "Single Flavor Note": "Dill pickle",
     "Product URL": "https://www.pepperjunction401.com/product/mikey-v-s-carolina-reaper-dill-pickle-hot-sauce-5-oz/2L6BEUUPBPCFKPRI4OGULQVJ?cs=true&cst=custom",
-    "Best Food Pairings": "Hot dogs, burgers, potato salad, eggs, chicken, sandwiches, chicken salad, egg salad, grain bowls, rice bowls, crab cakes, chips, tater tots",
+    "Best Food Pairings": "Hot dogs, burgers, potato salad, eggs, chicken, sandwiches, chicken salad, egg salad, grain bowls, rice bowls, crab cakes, chips, tater tots, dips, clubs",
     "Square_ID": "R6LZJPSSROOROST3GVBV2IAH",
     "featured": false,
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "The Veggie Outlaws"
   },
   {
     "slug": "mikey-vs-ghostly-garlic",
@@ -609,7 +634,7 @@
     "Product Name": "Ghostly Garlic",
     "Pepper Type": "Ghost Pepper",
     "Heat Category": "Super Hot",
-    "Heat Level": 8,
+    "Heat Level": 8.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Garlic-forward",
@@ -621,7 +646,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Epic Wingman, This Is Your Brain on Hot Sauce, Garlic Breath, Flavor Junkie, Snack Shack, Shore Dinner Regular, Olive Oil & Vin – Ch. 1"
   },
   {
     "slug": "sauce-crafters-mountain-man-fire-roasted-habanero",
@@ -633,7 +659,7 @@
     "Product Name": "Fire Roasted Habanero",
     "Pepper Type": "Habanero",
     "Heat Category": "Very Hot",
-    "Heat Level": 7,
+    "Heat Level": 7.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Roasted",
@@ -645,7 +671,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "This Is Your Brain on Hot Sauce, Taco Fever"
   },
   {
     "slug": "sauce-leopard-road-dawg-red-chili-garlic",
@@ -657,19 +684,20 @@
     "Product Name": "Road Dawg Red Chili Garlic",
     "Pepper Type": "Habanero",
     "Heat Category": "Hot",
-    "Heat Level": 6,
+    "Heat Level": 6.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Stays for Coffee",
     "Primary Flavor Notes": "Garlic",
     "Single Flavor Note": "Garlic",
     "Product URL": "https://www.pepperjunction401.com/product/sauce-leopard-road-dawg-red-chili-garlic-hot-sauce-5oz/NMFIHF6XKLKTT2TBGKZXQQ74?cs=true&cst=custom",
-    "Best Food Pairings": "Tacos, eggs, pizza, burgers, nachos, chowder, clam cakes, fish sandwich, breakfast sandwiches, omelets, hash browns, home fries, mac and cheese, calzones, lasagna, baked beans, italian, mexican",
+    "Best Food Pairings": "Tacos, eggs, pizza, burgers, nachos, chowder, clam cakes, fish sandwich, breakfast sandwiches, omelets, hash browns, home fries, mac and cheese, calzones, baked beans, mexican",
     "Square_ID": "GMWAW2XML2JQ3ZDRTGQUVH4K",
     "featured": false,
     "new_arrival": true,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Garlic Breath, Muy Rico!, Shore Dinner Regular"
   },
   {
     "slug": "puckerbutt-puckerbutt-gator-sauce",
@@ -681,7 +709,7 @@
     "Product Name": "Puckerbutt Gator Sauce",
     "Pepper Type": "Pepper X",
     "Heat Category": "Inferno",
-    "Heat Level": 12,
+    "Heat Level": 12.0,
     "How it Hits": "Hit'n Run",
     "Heat Finish": "Say Goodnight",
     "Primary Flavor Notes": "Fruity",
@@ -693,7 +721,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Wok Star, Taco Fever, This Is Your Brain on Hot Sauce, The Veggie Outlaws, Shore Dinner Regular"
   },
   {
     "slug": "rheds-deja-vu",
@@ -705,7 +734,7 @@
     "Product Name": "Deja Vu",
     "Pepper Type": "Guajillo",
     "Heat Category": "Medium",
-    "Heat Level": 4,
+    "Heat Level": 4.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Soy-ginger",
@@ -717,7 +746,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Wok Star, Curry On, The Veggie Outlaws, Shore Dinner Regular"
   },
   {
     "slug": "rheds-lemon-drop",
@@ -729,7 +759,7 @@
     "Product Name": "Lemon Drop",
     "Pepper Type": "Aji Lemon Drop",
     "Heat Category": "Medium",
-    "Heat Level": 4,
+    "Heat Level": 4.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Lemon citrus",
@@ -741,7 +771,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Shore Dinner Regular"
   },
   {
     "slug": "rheds-original",
@@ -753,7 +784,7 @@
     "Product Name": "Rhed's Original",
     "Pepper Type": "Jalapeño",
     "Heat Category": "Medium",
-    "Heat Level": 3,
+    "Heat Level": 3.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Cajun",
@@ -765,7 +796,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Marty Bras, Muy Rico!, Shore Dinner Regular"
   },
   {
     "slug": "stanky-sauce-clasico",
@@ -777,19 +809,20 @@
     "Product Name": "The Clasico",
     "Pepper Type": "Jalapeño",
     "Heat Category": "Medium",
-    "Heat Level": 3,
+    "Heat Level": 3.0,
     "How it Hits": null,
     "Heat Finish": null,
     "Primary Flavor Notes": "Roasted",
     "Single Flavor Note": "Smoky",
-    "Product URL": "https://www.pepperjunction401.com/product/stanky-sauce-cl-sico/PMDPG6XIEANUAEA2LMYUVWU5?cs=true&cst=custom",
-    "Best Food Pairings": null,
+    "Product URL": null,
+    "Best Food Pairings": "Tacos, eggs, chili, fish sandwich, stuffies, little necks, crab cakes, mac and cheese, seafood, mexican",
     "Square_ID": "FCBZBLZEEMTDBO4FLXT5NUQW",
     "featured": false,
     "new_arrival": true,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Muy Rico!, Taco Fever, This Is Your Brain on Hot Sauce, Wok Star, The Veggie Outlaws"
   },
   {
     "slug": "walker-son-slap-ya-mama-hot-sauce",
@@ -801,7 +834,7 @@
     "Product Name": "Slap Ya Mama Hot Sauce",
     "Pepper Type": "Cayenne",
     "Heat Category": "Medium",
-    "Heat Level": 4,
+    "Heat Level": 4.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Cajun",
@@ -813,7 +846,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Marty Bras, Muy Rico!, Shore Dinner Regular"
   },
   {
     "slug": "defcon-curbstomp",
@@ -825,7 +859,7 @@
     "Product Name": "Curbstomp",
     "Pepper Type": "Reaper",
     "Heat Category": "Extreme",
-    "Heat Level": 10,
+    "Heat Level": 10.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Feel the Flame",
     "Primary Flavor Notes": "Buffalo cayenne",
@@ -837,7 +871,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Epic Wingman, The Veggie Outlaws"
   },
   {
     "slug": "defcon-cluckwing",
@@ -849,7 +884,7 @@
     "Product Name": "Cluckwing",
     "Pepper Type": "Scorpion",
     "Heat Category": "Super Hot",
-    "Heat Level": 8,
+    "Heat Level": 8.0,
     "How it Hits": "Hit'n Run",
     "Heat Finish": "Feel the Flame",
     "Primary Flavor Notes": "Buffalo cayenne",
@@ -861,7 +896,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Epic Wingman, The Veggie Outlaws"
   },
   {
     "slug": "defcon-condition-2",
@@ -873,7 +909,7 @@
     "Product Name": "Defense Condition #2",
     "Pepper Type": "Habanero",
     "Heat Category": "Medium",
-    "Heat Level": 4,
+    "Heat Level": 4.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Buffalo cayenne",
@@ -885,7 +921,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 7
+    "PJ_Credits": 7.0,
+    "Food Badge Categories": "Epic Wingman, The Veggie Outlaws"
   },
   {
     "slug": "defcon-condition-3",
@@ -897,7 +934,7 @@
     "Product Name": "Defense Condition #3",
     "Pepper Type": "Cayenne",
     "Heat Category": "Mild",
-    "Heat Level": 2,
+    "Heat Level": 2.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Buffalo cayenne",
@@ -909,7 +946,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 7
+    "PJ_Credits": 7.0,
+    "Food Badge Categories": "Epic Wingman, The Veggie Outlaws"
   },
   {
     "slug": "sucklebusters-original-bbq",
@@ -921,7 +959,7 @@
     "Product Name": "Original BBQ",
     "Pepper Type": "Spices",
     "Heat Category": "Mild",
-    "Heat Level": 2,
+    "Heat Level": 2.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Sweet tang",
@@ -933,7 +971,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Smoking Section"
   },
   {
     "slug": "sucklebusters-bbq-chipotle",
@@ -945,7 +984,7 @@
     "Product Name": "BBQ Chipotle",
     "Pepper Type": "Chipotle",
     "Heat Category": "Medium",
-    "Heat Level": 4,
+    "Heat Level": 4.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Smoky sweet tang",
@@ -957,7 +996,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Smoking Section"
   },
   {
     "slug": "sauce-crafters-colon-cleaner-mustard",
@@ -969,7 +1009,7 @@
     "Product Name": "Colon Cleaner Mustard",
     "Pepper Type": "Habanero",
     "Heat Category": "Hot",
-    "Heat Level": 6,
+    "Heat Level": 6.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Mustard",
@@ -981,7 +1021,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 7
+    "PJ_Credits": 7.0,
+    "Food Badge Categories": "Flavor Junkie"
   },
   {
     "slug": "melindas-chipotle-ketchup",
@@ -993,7 +1034,7 @@
     "Product Name": "Chipotle Ketchup",
     "Pepper Type": "Chipotle",
     "Heat Category": "Medium",
-    "Heat Level": 3,
+    "Heat Level": 3.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Smoky pepper",
@@ -1005,7 +1046,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Flavor Junkie"
   },
   {
     "slug": "melindas-naga-jolokia-ketchup",
@@ -1017,7 +1059,7 @@
     "Product Name": "Naga Jolokia Ketchup",
     "Pepper Type": "Ghost Pepper",
     "Heat Category": "Super Hot",
-    "Heat Level": 8,
+    "Heat Level": 8.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Tomato",
@@ -1029,7 +1071,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Flavor Junkie"
   },
   {
     "slug": "the-spicy-shark-habanero-maple-syrup",
@@ -1041,7 +1084,7 @@
     "Product Name": "Habanero Maple Syrup",
     "Pepper Type": "Habanero",
     "Heat Category": "Medium",
-    "Heat Level": 4,
+    "Heat Level": 4.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Maple",
@@ -1053,7 +1096,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Smoking Section, This Is Your Brain on Hot Sauce, Flavor Junkie"
   },
   {
     "slug": "mikey-vs-gator-toes-spicy",
@@ -1065,7 +1109,7 @@
     "Product Name": "Gator Toes - Spicy",
     "Pepper Type": "Red Pepper",
     "Heat Category": "Medium",
-    "Heat Level": 3,
+    "Heat Level": 3.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Garlic cayenne",
@@ -1077,7 +1121,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 7
+    "PJ_Credits": 7.0,
+    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack"
   },
   {
     "slug": "mikey-vs-gator-toes-bbq",
@@ -1089,7 +1134,7 @@
     "Product Name": "Gator Toes - BBQ",
     "Pepper Type": "none",
     "Heat Category": null,
-    "Heat Level": 0,
+    "Heat Level": 0.0,
     "How it Hits": null,
     "Heat Finish": null,
     "Primary Flavor Notes": "Garlic bbq",
@@ -1101,7 +1146,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 7
+    "PJ_Credits": 7.0,
+    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack"
   },
   {
     "slug": "mikey-vs-gator-toes-buffalo",
@@ -1113,7 +1159,7 @@
     "Product Name": "Gator Toes - Buffalo",
     "Pepper Type": "Paprika",
     "Heat Category": "Medium",
-    "Heat Level": 3,
+    "Heat Level": 3.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Garlic buffalo",
@@ -1125,7 +1171,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 7
+    "PJ_Credits": 7.0,
+    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack"
   },
   {
     "slug": "mikey-vs-gator-toes-dill-pickle",
@@ -1137,7 +1184,7 @@
     "Product Name": "Gator Toes - Dill Pickle",
     "Pepper Type": "none",
     "Heat Category": null,
-    "Heat Level": 0,
+    "Heat Level": 0.0,
     "How it Hits": null,
     "Heat Finish": null,
     "Primary Flavor Notes": "Garlic dill pickle",
@@ -1149,7 +1196,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 7
+    "PJ_Credits": 7.0,
+    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack"
   },
   {
     "slug": "mikey-vs-gator-toes-loco-spice",
@@ -1161,7 +1209,7 @@
     "Product Name": "Gator Toes - Loco Spice",
     "Pepper Type": "Reaper",
     "Heat Category": "Extreme",
-    "Heat Level": 10,
+    "Heat Level": 10.0,
     "How it Hits": "Hit'n Run",
     "Heat Finish": "Feel the Flame",
     "Primary Flavor Notes": "Garlic",
@@ -1173,7 +1221,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack"
   },
   {
     "slug": "sweet-gs-smoked-cheddar-pretzels-sourdough",
@@ -1185,7 +1234,7 @@
     "Product Name": "Smoked Cheddar Pretzels",
     "Pepper Type": "Fresno",
     "Heat Category": "Very Hot",
-    "Heat Level": 7,
+    "Heat Level": 7.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Stays for Coffee",
     "Primary Flavor Notes": "Cheddar",
@@ -1197,7 +1246,8 @@
     "new_arrival": true,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 7
+    "PJ_Credits": 7.0,
+    "Food Badge Categories": "Snack Shack"
   },
   {
     "slug": "2-pig-mafia-steak-seasoning-14oz",
@@ -1209,7 +1259,7 @@
     "Product Name": "2 Pig Mafia Steak Seasoning 13oz",
     "Pepper Type": "Chili Peppers",
     "Heat Category": "Medium",
-    "Heat Level": 4,
+    "Heat Level": 4.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Spicy salt pepper garlic lightly sweet",
@@ -1221,7 +1271,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Smoking Section, Garlic Breath, Flavortown Mayor"
   },
   {
     "slug": "sucklebusters-hogwaller-14oz",
@@ -1233,7 +1284,7 @@
     "Product Name": "Sucklebusters Hogwaller 14oz",
     "Pepper Type": "Chili Peppers",
     "Heat Category": "Mild",
-    "Heat Level": 2,
+    "Heat Level": 2.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "BBQ sweet",
@@ -1245,7 +1296,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Smoking Section, Epic Wingman, Flavortown Mayor"
   },
   {
     "slug": "suckelbusters-1836-14oz",
@@ -1257,7 +1309,7 @@
     "Product Name": "Suckelbusters 1836 14oz",
     "Pepper Type": "Spices",
     "Heat Category": "Mild",
-    "Heat Level": 2,
+    "Heat Level": 2.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Cracked Pepper",
@@ -1269,7 +1321,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Smoking Section, The Veggie Outlaws, Flavortown Mayor"
   },
   {
     "slug": "sucklebusters-clucker-dust-14oz",
@@ -1281,7 +1334,7 @@
     "Product Name": "Sucklebusters Clucker Dust 14oz",
     "Pepper Type": "Chipotle",
     "Heat Category": "Medium",
-    "Heat Level": 3,
+    "Heat Level": 3.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Sweet BBQ chipotle",
@@ -1293,7 +1346,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Smoking Section, Epic Wingman, Flavortown Mayor"
   },
   {
     "slug": "sucklebusters-bamm-14oz",
@@ -1305,7 +1359,7 @@
     "Product Name": "Sucklebusters Bamm 14oz",
     "Pepper Type": "Habanero",
     "Heat Category": "Hot",
-    "Heat Level": 5,
+    "Heat Level": 5.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Sweet heat habanero",
@@ -1317,7 +1371,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Smoking Section, Epic Wingman, Flavortown Mayor"
   },
   {
     "slug": "pepper-junction-all-purpose-spg-14oz",
@@ -1329,7 +1384,7 @@
     "Product Name": "All Purpose SPG 14oz",
     "Pepper Type": "none",
     "Heat Category": "Mild",
-    "Heat Level": 1,
+    "Heat Level": 1.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "SPG Salt pepper garlic",
@@ -1341,7 +1396,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": "spg",
-    "PJ_Credits": 10
+    "PJ_Credits": 10.0,
+    "Food Badge Categories": "Smoking Section, Garlic Breath, The Veggie Outlaws, Flavortown Mayor"
   },
   {
     "slug": "walker-son-slap-ya-mama-cajun-original",
@@ -1353,7 +1409,7 @@
     "Product Name": "Slap Ya Mama Cajun Original",
     "Pepper Type": "Red Pepper",
     "Heat Category": "Mild",
-    "Heat Level": 2,
+    "Heat Level": 2.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Cajun",
@@ -1365,7 +1421,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 3
+    "PJ_Credits": 3.0,
+    "Food Badge Categories": "Epic Wingman, This Is Your Brain on Hot Sauce, Marty Bras, The Veggie Outlaws, Shore Dinner Regular"
   },
   {
     "slug": "walker-son-slap-ya-mama-cajun-hot",
@@ -1377,7 +1434,7 @@
     "Product Name": "Slap Ya Mama Cajun Hot",
     "Pepper Type": "Red Pepper",
     "Heat Category": "Medium",
-    "Heat Level": 4,
+    "Heat Level": 4.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Cajun",
@@ -1389,7 +1446,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 3
+    "PJ_Credits": 3.0,
+    "Food Badge Categories": "Epic Wingman, This Is Your Brain on Hot Sauce, Marty Bras, The Veggie Outlaws, Shore Dinner Regular"
   },
   {
     "slug": "walker-son-slap-ya-mama-cajun-low-sodium",
@@ -1401,7 +1459,7 @@
     "Product Name": "Slap Ya Mama Cajun Low Sodium",
     "Pepper Type": "Red Pepper",
     "Heat Category": "Mild",
-    "Heat Level": 2,
+    "Heat Level": 2.0,
     "How it Hits": "Delayed Escalation",
     "Heat Finish": "Ends With Flavor",
     "Primary Flavor Notes": "Cajun",
@@ -1413,7 +1471,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 3
+    "PJ_Credits": 3.0,
+    "Food Badge Categories": "Epic Wingman, This Is Your Brain on Hot Sauce, Marty Bras, The Veggie Outlaws, Snack Shack, Shore Dinner Regular"
   },
   {
     "slug": "ass-kickin-habanero-garlic-salt",
@@ -1425,7 +1484,7 @@
     "Product Name": "Habanero Garlic Salt",
     "Pepper Type": "Habanero",
     "Heat Category": "Hot",
-    "Heat Level": 5,
+    "Heat Level": 5.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Garlic-forward",
@@ -1437,7 +1496,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": null,
-    "PJ_Credits": 5
+    "PJ_Credits": 5.0,
+    "Food Badge Categories": "Epic Wingman, Garlic Breath, The Veggie Outlaws, Flavortown Mayor"
   },
   {
     "slug": "ariston-chili-infused-olive-oil",
@@ -1449,7 +1509,7 @@
     "Product Name": "Chili Infused Olive Oil",
     "Pepper Type": "Chili Peppers",
     "Heat Category": "Medium",
-    "Heat Level": 4,
+    "Heat Level": 4.0,
     "How it Hits": "Plane Take-Off",
     "Heat Finish": "Plane Landing",
     "Primary Flavor Notes": "Chili",
@@ -1461,7 +1521,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": "olive-vin",
-    "PJ_Credits": 12
+    "PJ_Credits": 12.0,
+    "Food Badge Categories": "The Veggie Outlaws, Olive Oil & Vin – Ch. 1"
   },
   {
     "slug": "ariston-garlic-infused-olive-oil",
@@ -1473,7 +1534,7 @@
     "Product Name": "Garlic Infused Olive Oil",
     "Pepper Type": "none",
     "Heat Category": null,
-    "Heat Level": 0,
+    "Heat Level": 0.0,
     "How it Hits": null,
     "Heat Finish": null,
     "Primary Flavor Notes": "Garlic-forward",
@@ -1485,7 +1546,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": "olive-vin",
-    "PJ_Credits": 12
+    "PJ_Credits": 12.0,
+    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Olive Oil & Vin – Ch. 1"
   },
   {
     "slug": "ariston-tuscan-herb-infused-olive-oil",
@@ -1497,7 +1559,7 @@
     "Product Name": "Tuscan Herb Infused Olive Oil",
     "Pepper Type": "none",
     "Heat Category": null,
-    "Heat Level": 0,
+    "Heat Level": 0.0,
     "How it Hits": null,
     "Heat Finish": null,
     "Primary Flavor Notes": "Herbs",
@@ -1509,7 +1571,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": "olive-vin",
-    "PJ_Credits": 12
+    "PJ_Credits": 12.0,
+    "Food Badge Categories": "The Veggie Outlaws, Olive Oil & Vin – Ch. 1"
   },
   {
     "slug": "ariston-lemon-infused-olive-oil",
@@ -1521,7 +1584,7 @@
     "Product Name": "Lemon Infused Olive Oil",
     "Pepper Type": "none",
     "Heat Category": null,
-    "Heat Level": 0,
+    "Heat Level": 0.0,
     "How it Hits": null,
     "Heat Finish": null,
     "Primary Flavor Notes": "Lemon",
@@ -1533,7 +1596,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": "olive-vin",
-    "PJ_Credits": 12
+    "PJ_Credits": 12.0,
+    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Shore Dinner Regular, Olive Oil & Vin – Ch. 1"
   },
   {
     "slug": "ariston-fig-infused-balsamic-vinegar",
@@ -1545,7 +1609,7 @@
     "Product Name": "Fig Infused Balsamic Vinegar",
     "Pepper Type": "none",
     "Heat Category": null,
-    "Heat Level": 0,
+    "Heat Level": 0.0,
     "How it Hits": null,
     "Heat Finish": null,
     "Primary Flavor Notes": "Fig",
@@ -1557,7 +1621,8 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": "olive-vin",
-    "PJ_Credits": 12
+    "PJ_Credits": 12.0,
+    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Olive Oil & Vin – Ch. 1"
   },
   {
     "slug": "ariston-black-cherry-infused-balsamic-vinegar",
@@ -1569,7 +1634,7 @@
     "Product Name": "Black Cherry Infused Balsamic Vinegar",
     "Pepper Type": "none",
     "Heat Category": null,
-    "Heat Level": 0,
+    "Heat Level": 0.0,
     "How it Hits": null,
     "Heat Finish": null,
     "Primary Flavor Notes": "Cherry",
@@ -1581,6 +1646,7 @@
     "new_arrival": false,
     "limited_addition": false,
     "narrative_series": "olive-vin",
-    "PJ_Credits": 12
+    "PJ_Credits": 12.0,
+    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Olive Oil & Vin – Ch. 1"
   }
 ]
