@@ -1,3 +1,33 @@
+(function () {
+  'use strict';
+
+  // Mercantile return navigation; only appears when arriving from a bottle alcove.
+  function insertMercantileReturn() {
+    var params = new URLSearchParams(window.location.search);
+    var shelf = params.get('pjMercShelf');
+    var bottle = params.get('pjMercBottle');
+    if (!/^\d+$/.test(shelf || '') || !bottle) return;
+    var currentSlug = window.location.pathname.split('/').pop().replace(/\.html$/, '');
+    if (currentSlug !== bottle) return;
+    var imageColumn = document.querySelector('aside.product-images');
+    if (!imageColumn || document.getElementById('pj-merc-return-link')) return;
+    var link = document.createElement('a');
+    link.id = 'pj-merc-return-link';
+    var url = new URL('../main.html', window.location.href);
+    url.searchParams.set('pjMercShelf', shelf);
+    url.searchParams.set('pjMercBottle', bottle);
+    link.href = url.href;
+    link.textContent = '← Back to Mercantile';
+    link.style.cssText = "display:block;margin:0 0 15px;padding:7px 0;color:inherit;font-family:'Limelight',Georgia,serif;font-size:clamp(14px,1.5vw,19px);text-decoration:underline;text-underline-offset:4px;";
+    imageColumn.insertBefore(link, imageColumn.firstChild);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', insertMercantileReturn);
+  } else {
+    insertMercantileReturn();
+  }
+})();
+
 /**
  * pj-product.js
  * Pepper Junction — Product Page Intelligence Layer
@@ -1042,4 +1072,10 @@
 
   };
 
+})();
+
+/* Shared original-vector Art Deco hero lettering, loaded once for every product page. */
+(function(){
+ function loadPJDeco(){if(document.getElementById('pj-deco-loader'))return;const s=document.createElement('script');s.id='pj-deco-loader';s.src='../assets/js/pj-deco-lettering.js';s.defer=true;document.head.appendChild(s)}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadPJDeco,{once:true});else loadPJDeco();
 })();

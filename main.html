@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Limelight&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/cart.css">
   <style>
 
@@ -183,7 +184,7 @@
 
     /* ── HERO ─────────────────────────────────────────────────── */
     .hero {
-      background: url('assets/textures/Hero-Banner-Pullman-Burgandy.png') center center / 100% 100% no-repeat;
+      background: url('assets/textures/Hero-Deco-Approved.webp') center center / 100% 100% no-repeat;
       aspect-ratio: 4 / 1;
       padding: 0;
       position: relative;
@@ -191,6 +192,8 @@
       border-bottom: 1px solid rgba(184,137,57,0.3);
     }
 
+    /* Exact approved lettering is part of the hero art; retain accessible heading text. */
+    .hero .hero-inner {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     .hero::before {
       content: none;
     }
@@ -208,8 +211,8 @@
     }
 
     .hero-headline {
-      font-family: 'BlackRiver', 'Playfair Display', serif;
-      font-size: clamp(18px, 3.6vw, 54px);
+      font-family: 'Limelight', Georgia, serif;
+      font-size: clamp(18px, 3.35vw, 49px);
       color: var(--cream-warm);
       line-height: 1.2;
       letter-spacing: 0.02em;
@@ -957,7 +960,7 @@
       .container { padding: 0 20px; }
       .site-header { padding: 16px 20px; }
       /* Preserve the hero artwork while fitting the full message on phones. */
-      .hero { aspect-ratio: 2.5 / 1; background-image: url('assets/textures/Hero-Banner-Mobile.png'); }
+      .hero { aspect-ratio: 2.5 / 1; background-image: url('assets/textures/Hero-Deco-Approved.webp'); background-size: cover; }
       .hero-inner { padding: 6px 5%; }
       .hero-tag { font-size: clamp(8px, 2.2vw, 11px); letter-spacing: 0.16em; margin-bottom: 4px; }
       .hero-headline { font-size: clamp(15px, 4.2vw, 24px); line-height: 1.15; white-space: normal; margin-bottom: 4px; }
@@ -2109,7 +2112,72 @@
       #bartender-gate-restart { bottom: 70px; font-size: 9px; padding: 9px 16px; }
     }
 
-  </style>
+  
+/* Authorized Mercantile illustrations remain visible, with transparent interactive overlays. */
+
+.pj-merc-spots{position:absolute;inset:0;z-index:4;pointer-events:none}.pj-merc-hotspot{position:absolute;border:0;background:transparent;cursor:pointer;pointer-events:auto;padding:0}.pj-merc-hotspot:hover,.pj-merc-hotspot:focus-visible{outline:2px solid #dfbd7c;outline-offset:-2px}
+.pj-merc-layer{position:fixed;inset:0;z-index:9996;display:none;align-items:center;justify-content:center;background:#080402e8;padding:12px}.pj-merc-layer.is-visible{display:flex}
+.pj-merc-frame{width:min(1200px,96vw);max-height:96vh;overflow:auto;animation:pjApproach .3s ease both}@keyframes pjApproach{from{opacity:.35;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+ .pj-merc-toolbar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:9px 15px;gap:10px;background:#241209;color:#f6e3b7;border:1px solid #b88d45;font-family:'Limelight',Georgia,serif} .pj-merc-toolbar #pj-merc-title{grid-column:2;grid-row:1;text-align:center}.pj-merc-toolbar #pj-merc-exit{grid-column:1;grid-row:1;justify-self:start}.pj-merc-toolbar button,.pj-merc-back{font:inherit;cursor:pointer;background:#2a110a;color:#f7dcac;border:1px solid #a88249;padding:8px}
+.pj-merc-stage{position:relative;width:100%;line-height:0;background:transparent}.pj-merc-stage>img{width:100%;height:auto;display:block}
+.pj-merc-bottles{position:absolute;inset:0;display:grid;grid-template-columns:repeat(var(--pj-merc-columns,6),minmax(0,1fr));gap:0 1%;padding:0 8%;pointer-events:none}.pj-merc-bottles.one{grid-template-rows:1fr}.pj-merc-bottles.two{grid-template-rows:repeat(2,minmax(0,1fr))}
+.pj-merc-bottle{height:100%;width:100%;position:relative;pointer-events:auto;cursor:pointer;background:none;border:0;padding:0}.pj-merc-bottle img{position:absolute;left:0;width:100%;height:53%;bottom:13%;object-fit:contain;object-position:bottom center;filter:drop-shadow(3px 5px 3px #0009);transition:transform .17s ease}.pj-merc-bottles.two .pj-merc-bottle img{height:72%;bottom:12%}.pj-merc-bottles.two .pj-merc-bottle.pj-merc-upper img{bottom:-9%}.pj-merc-bottle:hover img,.pj-merc-bottle:focus-visible img{transform:translateY(-18px)}.pj-merc-bottle:focus-visible{outline:2px solid #e9c477}.pj-merc-bottles.one .pj-merc-bottle img{bottom:7%}.pj-merc-bottles[data-dept='8'].one .pj-merc-bottle img{bottom:11%}
+.pj-merc-alcove{width:min(1100px,96vw);aspect-ratio:1662/946;position:relative;background:url('assets/mercantile/Pullman_Bottle_Alcove.png') center/100% 100% no-repeat;animation:pjApproach .3s ease both}.pj-merc-alcove-bottle{position:absolute;left:20.5%;bottom:16%;width:27%;height:59%;object-fit:contain;object-position:bottom center;filter:drop-shadow(5px 9px 4px #0009)}
+.pj-merc-board{position:absolute;left:52%;top:13.5%;width:35%;height:58%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(3px,.7vw,10px);text-align:center;color:#f7e0ae;overflow:auto;box-sizing:border-box;padding-top:11%}
+.pj-merc-board h2{font:clamp(14px,3.15vw,37px)/1.13 'Limelight',Georgia,serif;margin:0;color:inherit;transform:translateY(-clamp(10px,1.8vw,22px))}.pj-merc-board p{font:clamp(9px,1.35vw,16px)/1.4 Georgia,serif;margin:0;color:inherit}
+.pj-merc-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}.pj-merc-actions a,.pj-merc-actions button{font:clamp(9px,1vw,13px) 'Limelight',Georgia,serif;background:#ddba77;color:#1e0d06;padding:7px 9px;border:1px solid #ba9253;text-decoration:none}.pj-merc-actions button:disabled{opacity:.7;cursor:not-allowed}
+.pj-merc-price{position:absolute;top:26.5%;right:11.5%;z-index:2;font-family:'Fredericka the Great',cursive;font-size:clamp(22px,3.4vw,45px);line-height:1.2;color:#f3efe1;transform:rotate(15deg);transform-origin:center;text-shadow:1px 1px 1px #f2ebd355;white-space:nowrap;pointer-events:none}.pj-merc-price.is-pending{font-family:Georgia,serif;font-size:clamp(9px,1.2vw,14px);transform:none}.pj-merc-quantity{display:inline-flex;align-items:center;border:1px solid #ba9253;background:#ddba77;color:#1e0d06}.pj-merc-actions .pj-merc-quantity button{border:0;padding:7px 10px;min-width:30px}.pj-merc-quantity output{min-width:2ch;font:clamp(12px,1.4vw,17px) Georgia,serif;text-align:center}.pj-merc-actions .pj-merc-quantity button:disabled{opacity:.35}.pj-merc-back{position:absolute;z-index:3;top:20%;left:53%;background:transparent;border:0;font:clamp(11px,1.5vw,19px) 'Limelight',Georgia,serif}
+@media(max-width:650px){.pj-merc-layer{padding:3px}.pj-merc-toolbar{font-size:11px;padding:5px}.pj-merc-board{left:51%;width:38%;top:23%;height:61%;gap:2px}.pj-merc-board h2{font-size:clamp(11px,2.9vw,19px);transform:translateY(-6px)}.pj-merc-board p{font-size:clamp(7px,1.7vw,10px)}.pj-merc-actions a,.pj-merc-actions button{font-size:8px;padding:4px}.pj-merc-back{font-size:10px}}
+/* Portrait-phone alcove refinements only; desktop and landscape unaffected. */
+@media (max-width:650px) and (orientation:portrait){
+ #pj-merc-detail .pj-merc-alcove{width:100vw}
+ #pj-merc-detail .pj-merc-back{top:6%;left:52%;font-size:clamp(10px,3vw,13px);padding:2px 0;white-space:nowrap}
+ #pj-merc-detail .pj-merc-price{top:22%;right:11.5%;font-size:clamp(18px,5.8vw,25px)}
+ #pj-merc-detail .pj-merc-board{top:36%;left:52%;width:36%;height:60%;padding-top:0;gap:clamp(3px,1vw,6px);justify-content:space-evenly;overflow:visible}
+ #pj-merc-detail .pj-merc-board h2{font-size:clamp(11px,3.2vw,15px);transform:none;line-height:1.05}
+ #pj-merc-detail .pj-merc-board p{font-size:clamp(8px,2.35vw,11px);line-height:1.15}
+ #pj-merc-detail .pj-merc-actions{gap:4px}
+ #pj-merc-detail .pj-merc-actions a{font-size:clamp(8px,2.1vw,10px);padding:3px}
+ #pj-merc-detail .pj-merc-quantity{background:#efc984;border-color:#d6ae67}
+ #pj-merc-detail .pj-merc-actions .pj-merc-quantity button{font:700 clamp(17px,5vw,23px)/1 Arial,sans-serif;color:#1e0d06;min-width:29px;min-height:29px;padding:3px 5px}
+ #pj-merc-detail .pj-merc-quantity output{font:700 clamp(15px,4vw,20px)/1 Arial,sans-serif;color:#1e0d06;min-width:2ch}
+ #pj-merc-detail .pj-merc-actions .pj-merc-quantity button:disabled{opacity:.58}
+}
+/* Portrait alcove: navigation above the case, shopping actions beneath it. */
+@media (max-width:650px) and (orientation:portrait){
+ #pj-merc-detail .pj-merc-alcove{margin:48px 0 78px;flex:none}
+ #pj-merc-detail .pj-merc-back{top:-38px;left:51%;font-size:clamp(11px,3vw,14px);padding:8px 0;z-index:4}
+ #pj-merc-detail .pj-merc-board{display:contents}
+ #pj-merc-detail .pj-merc-board h2,
+ #pj-merc-detail .pj-merc-board p{position:absolute;left:52%;width:36%;margin:0;text-align:center}
+ #pj-merc-detail #pj-merc-focus-title{top:35%;font-size:clamp(11px,3.2vw,15px);line-height:1.12}
+ #pj-merc-detail #pj-merc-heat{top:53%;font-size:clamp(9px,2.35vw,12px)}
+ #pj-merc-detail #pj-merc-flavor{top:64%;font-size:clamp(9px,2.35vw,12px)}
+ #pj-merc-detail .pj-merc-actions{position:absolute;top:calc(100% + 12px);left:7%;right:7%;display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:10px}
+ #pj-merc-detail .pj-merc-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;box-sizing:border-box;font-size:clamp(9px,2.35vw,12px);padding:8px;white-space:nowrap}
+ #pj-merc-detail .pj-merc-quantity{flex:none}
+ #pj-merc-detail .pj-merc-actions .pj-merc-quantity button{min-width:38px;min-height:44px}
+}
+/* Mobile-only full-cabinet stage: maintain original cabinet artwork and proportions. */
+.pj-merc-cabinet-layer{display:none}
+@media(max-width:650px){
+ .pj-merc-cabinet-layer.is-visible{display:flex}
+ .pj-merc-cabinet-layer{padding:0;background:#090706}
+ .pj-merc-cabinet-wrap{width:100vw;max-height:100dvh;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;align-items:center}
+ .pj-merc-cabinet-close{flex:none;align-self:stretch;min-height:44px;background:#241209;color:#f6e3b7;border:0;border-bottom:1px solid #b88d45;font:12px 'Limelight',Georgia,serif;text-align:left;padding:12px 16px}
+ .pj-merc-cabinet-stage{width:100%;position:relative;flex:none}
+ .pj-merc-cabinet-stage img{display:block;width:100%;height:auto}
+ .pj-merc-cabinet-hotspots{position:absolute;left:7%;top:17%;width:86%;height:66%;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr)}
+ .pj-merc-cabinet-hotspots button{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:1%;overflow:hidden;background:transparent;border:0;padding:0 1% 5%;min-width:0;min-height:0;cursor:pointer}
+ .pj-merc-cabinet-hotspots button:is([data-pj-cabinet-dept="0"],[data-pj-cabinet-dept="3"],[data-pj-cabinet-dept="6"]){gap:0;overflow:visible}
+ .pj-merc-cabinet-hotspots button:is([data-pj-cabinet-dept="0"],[data-pj-cabinet-dept="3"],[data-pj-cabinet-dept="6"]) img{flex:0 0 20%;max-width:20%;margin-inline:-1.2%;position:relative;left:-16%}
+ .pj-merc-cabinet-hotspots button img{display:block;flex:1 1 0;min-width:0;max-width:30%;height:74%;object-fit:contain;object-position:bottom center;filter:drop-shadow(1px 2px 1px #000b);pointer-events:none}
+ .pj-merc-cabinet-hotspots button:active img{transform:translateY(-2px)}
+ .pj-merc-cabinet-hotspots button:focus-visible{outline:2px solid #f3d49b;outline-offset:-2px}
+}
+@media(prefers-reduced-motion:reduce){.pj-merc-frame,.pj-merc-alcove{animation:none}.pj-merc-bottle img{transition:none}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap">
 </head>
 <body>
 
@@ -2142,7 +2210,7 @@
   <!-- ═══ PANORAMA ═════════════════════════════════════════════ -->
   <section class="panorama-section">
     <div class="bartender-panorama-wrap">
-      <video class="bartender-panorama" src="assets/video/main-background-motion-compressed.mp4" autoplay muted loop playsinline></video>
+      <video class="bartender-panorama" src="assets/video/main-background-motion-compressed.mp4" autoplay muted loop playsinline></video><div class="pj-merc-spots" id="pj-merc-spots"><button type="button" class="pj-merc-hotspot" data-pj-dept="0" aria-label="Open Mercantile category 1" style="left:29.5%;top:10.7%;width:10%;height:11.5%"></button><button type="button" class="pj-merc-hotspot" data-pj-dept="1" aria-label="Open Mercantile category 2" style="left:41.9%;top:10.7%;width:10.8%;height:11.5%"></button><button type="button" class="pj-merc-hotspot" data-pj-dept="2" aria-label="Open Mercantile category 3" style="left:54.3%;top:10.7%;width:10.5%;height:11.5%"></button><button type="button" class="pj-merc-hotspot" data-pj-dept="3" aria-label="Open Mercantile category 4" style="left:29.5%;top:22.8%;width:10%;height:12%"></button><button type="button" class="pj-merc-hotspot" data-pj-dept="4" aria-label="Open Mercantile category 5" style="left:41.9%;top:22.8%;width:10.8%;height:12%"></button><button type="button" class="pj-merc-hotspot" data-pj-dept="5" aria-label="Open Mercantile category 6" style="left:54.3%;top:22.8%;width:10.5%;height:12%"></button><button type="button" class="pj-merc-hotspot" data-pj-dept="6" aria-label="Open Mercantile category 7" style="left:29.5%;top:35.2%;width:10%;height:12%"></button><button type="button" class="pj-merc-hotspot" data-pj-dept="7" aria-label="Open Mercantile category 8" style="left:41.9%;top:35.2%;width:10.8%;height:12%"></button><button type="button" class="pj-merc-hotspot" data-pj-dept="8" aria-label="Open Mercantile category 9" style="left:54.3%;top:35.2%;width:10.5%;height:12%"></button></div>
     </div>
     <div class="below-bar-actions">
       <a href="pairing-bar.html" class="pairing-bar-btn">Pairing Bar</a>
@@ -2155,6 +2223,9 @@
     </div>
   </section>
 
+<div class="pj-merc-layer pj-merc-cabinet-layer" id="pj-merc-cabinet" role="dialog" aria-modal="true" aria-label="Mercantile display case" aria-hidden="true"><div class="pj-merc-cabinet-wrap"><button type="button" id="pj-merc-cabinet-close" class="pj-merc-cabinet-close">← Return to passenger car</button><div class="pj-merc-cabinet-stage"><img src="assets/mercantile/Pullman_Mercantile_Cabinet_No_Rails.jpg" alt="Complete Pullman Mercantile display cabinet"><div class="pj-merc-cabinet-hotspots" id="pj-merc-cabinet-hotspots"><button type="button" data-pj-cabinet-dept="0" aria-label="Open top left shelf"></button><button type="button" data-pj-cabinet-dept="1" aria-label="Open top center shelf"></button><button type="button" data-pj-cabinet-dept="2" aria-label="Open top right shelf"></button><button type="button" data-pj-cabinet-dept="3" aria-label="Open middle left shelf"></button><button type="button" data-pj-cabinet-dept="4" aria-label="Open middle center shelf"></button><button type="button" data-pj-cabinet-dept="5" aria-label="Open middle right shelf"></button><button type="button" data-pj-cabinet-dept="6" aria-label="Open bottom left shelf"></button><button type="button" data-pj-cabinet-dept="7" aria-label="Open bottom center shelf"></button><button type="button" data-pj-cabinet-dept="8" aria-label="Open bottom right shelf"></button></div></div></div></div>
+<div class="pj-merc-layer" id="pj-merc-shelf" role="dialog" aria-modal="true" aria-label="Mercantile shelf" aria-hidden="true"><div class="pj-merc-frame"><div class="pj-merc-toolbar"><strong id="pj-merc-title"></strong><button id="pj-merc-exit" type="button">← Return to passenger car</button></div><div class="pj-merc-stage"><img id="pj-merc-shelf-art" src="assets/mercantile/Pullman_Expanded_1_Shelves.jpg" alt="Illuminated Pullman shelf"><div class="pj-merc-bottles one" id="pj-merc-products"></div></div></div></div>
+<div class="pj-merc-layer" id="pj-merc-detail" role="dialog" aria-modal="true" aria-label="Pullman bottle alcove" aria-hidden="true"><div class="pj-merc-alcove"><img class="pj-merc-alcove-bottle" id="pj-merc-focus-img" alt=""><button class="pj-merc-back" id="pj-merc-return" type="button">← Back to shelf</button><div class="pj-merc-price is-pending" id="pj-merc-price" aria-live="polite">Checking price…</div><div class="pj-merc-board"><h2 id="pj-merc-focus-title"></h2><p id="pj-merc-heat"></p><p id="pj-merc-flavor"></p><div class="pj-merc-actions"><a id="pj-merc-product-link" href="#">Full product page →</a><div class="pj-merc-quantity" role="group" aria-label="Quantity in cart"><button id="pj-merc-add" type="button" aria-label="Add one bottle" disabled>+</button><output id="pj-merc-count" aria-live="polite">0</output><button id="pj-merc-subtract" type="button" aria-label="Remove one bottle" disabled>−</button></div></div></div></div></div>
   <!-- ═══ VIDEO GATE ═══════════════════════════════════════════ -->
   <div id="video-gate">
     <video id="video-gate-player" src="assets/video/pepper-junction-welcome.mp4" playsinline muted></video>
@@ -2557,6 +2628,69 @@
   })();
   </script>
 
+
+<script>
+/* Mercantile visuals and navigation. Existing cart and commercial architecture unchanged. */
+(function(){'use strict';
+const art={"13-stars-dragons-breath":"assets/sauces/13-stars-dragons-breath.png","cajohns-la-segadora-carolina-reaper":"assets/sauces/cajohns-la-segadora-carolina-reaper.png","dirty-dicks-hot-tropical-hot-sauce":"assets/sauces/dirty-dicks-hot-tropical-hot-sauce.png","ghost-scream":"assets/sauces/ghost-scream.png","heartbreaking-dawns-the-green":"assets/sauces/heartbreaking-dawns-the-green.png","high-river-sauces-hellacious":"assets/sauces/high-river-sauces-hellacious.png","high-river-sauces-psych-sauce":"assets/sauces/high-river-sauces-psych-sauce.png","high-river-sauces-foo-foo-mama-choo":"assets/sauces/high-river-sauces-foo-foo-mama-choo.png","high-river-sauces-peppers-up":"assets/sauces/high-river-sauces-peppers-up.png","high-river-sauces-rogue":"assets/sauces/high-river-sauces-rogue.png","high-river-sauces-tears-of-the-sun":"assets/sauces/high-river-sauces-tears-of-the-sun.png","high-river-sauces-thunder-juice":"assets/sauces/high-river-sauces-thunder-juice.png","high-river-sauces-taco-x":"assets/sauces/high-river-sauces-taco-x.png","hells-kitchen-cinnamon-ghost":"assets/sauces/hells-kitchen-cinnamon-ghost.png","hells-kitchen-coconut-curry":"assets/sauces/hells-kitchen-coconut-curry.png","hells-kitchen-black-forest":"assets/sauces/hells-kitchen-black-forest.png","sauce-crafters-hogs-ass-garlic-habanero-sauce":"assets/sauces/sauce-crafters-hogs-ass-garlic-habanero-sauce.png","ashley-foods-mad-dog-sriracha":"assets/sauces/ashley-foods-mad-dog-sriracha.png","melindas-mango-habanero":"assets/sauces/melindas-mango-habanero.png","melindas-original-naga-jolokia":"assets/sauces/melindas-original-naga-jolokia.png","melindas-scotch-bonnet-sauce":"assets/sauces/melindas-scotch-bonnet-sauce.png","mikey-vs-i-love-taco-sauce-hot":"assets/sauces/mikey-vs-i-love-taco-sauce-hot.png","mikey-vs-jalapeno-dill-pickle":"assets/sauces/mikey-vs-jalapeno-dill-pickle.png","mikey-vs-reaper-jalapeno-dill-pickle":"assets/sauces/mikey-vs-reaper-jalapeno-dill-pickle.png","mikey-vs-ghostly-garlic":"assets/sauces/mikey-vs-ghostly-garlic.png","sauce-crafters-mountain-man-fire-roasted-habanero":"assets/sauces/sauce-crafters-mountain-man-fire-roasted-habanero.png","puckerbutt-puckerbutt-gator-sauce":"assets/sauces/puckerbutt-puckerbutt-gator-sauce.png","rheds-deja-vu":"assets/sauces/rheds-deja-vu.png","rheds-lemon-drop":"assets/sauces/rheds-lemon-drop.png","rheds-original":"assets/sauces/rheds-original.png","walker-son-slap-ya-mama-hot-sauce":"assets/sauces/walker-son-slap-ya-mama-hot-sauce.png","defcon-curbstomp":"assets/sauces/defcon-curbstomp.png","defcon-cluckwing":"assets/sauces/defcon-cluckwing.png","defcon-condition-2":"assets/sauces/defcon-condition-2.png","defcon-condition-3":"assets/sauces/defcon-condition-3.png","sucklebusters-original-bbq":"assets/sauces/sucklebusters-original-bbq.png","sucklebusters-bbq-chipotle":"assets/sauces/sucklebusters-bbq-chipotle.png","sauce-crafters-colon-cleaner-mustard":"assets/sauces/sauce-crafters-colon-cleaner-mustard.png","melindas-chipotle-ketchup":"assets/sauces/melindas-chipotle-ketchup.png","melindas-naga-jolokia-ketchup":"assets/sauces/melindas-naga-jolokia-ketchup.png","the-spicy-shark-habanero-maple-syrup":"assets/sauces/the-spicy-shark-habanero-maple-syrup.png","mikey-vs-gator-toes-spicy":"assets/sauces/mikey-vs-gator-toes-spicy.png","mikey-vs-gator-toes-bbq":"assets/sauces/mikey-vs-gator-toes-bbq.png","mikey-vs-gator-toes-buffalo":"assets/sauces/mikey-vs-gator-toes-buffalo.png","mikey-vs-gator-toes-dill-pickle":"assets/sauces/mikey-vs-gator-toes-dill-pickle.png","mikey-vs-gator-toes-loco-spice":"assets/sauces/mikey-vs-gator-toes-loco-spice.png","2-pig-mafia-steak-seasoning-14oz":"assets/sauces/2-pig-mafia-steak-seasoning-14oz.png","sucklebusters-hogwaller-14oz":"assets/sauces/sucklebusters-hogwaller-14oz.png","suckelbusters-1836-14oz":"assets/sauces/suckelbusters-1836-14oz.png","sucklebusters-clucker-dust-14oz":"assets/sauces/sucklebusters-clucker-dust-14oz.png","sucklebusters-bamm-14oz":"assets/sauces/sucklebusters-bamm-14oz.png","pepper-junction-all-purpose-spg-14oz":"assets/sauces/pepper-junction-all-purpose-spg-14oz.png","walker-son-slap-ya-mama-cajun-original":"assets/sauces/walker-son-slap-ya-mama-cajun-original.png","walker-son-slap-ya-mama-cajun-hot":"assets/sauces/walker-son-slap-ya-mama-cajun-hot.png","walker-son-slap-ya-mama-cajun-low-sodium":"assets/sauces/walker-son-slap-ya-mama-cajun-low-sodium.png","ass-kickin-habanero-garlic-salt":"assets/sauces/ass-kickin-habanero-garlic-salt.png","ariston-chili-infused-olive-oil":"assets/sauces/ariston-chili-infused-olive-oil.png","ariston-garlic-infused-olive-oil":"assets/sauces/ariston-garlic-infused-olive-oil.png","ariston-tuscan-herb-infused-olive-oil":"assets/sauces/ariston-tuscan-herb-infused-olive-oil.png","ariston-lemon-infused-olive-oil":"assets/sauces/ariston-lemon-infused-olive-oil.png","ariston-fig-infused-balsamic-vinegar":"assets/sauces/ariston-fig-infused-balsamic-vinegar.png","ariston-black-cherry-infused-balsamic-vinegar":"assets/sauces/ariston-black-cherry-infused-balsamic-vinegar.png"};
+const groups=[
+['SUPER HOT SAUCES',p=>p.Category==='HOT SAUCE'&&['Super Hot','Extreme','Inferno'].includes(p['Heat Category'])],
+['BUFFALO & WING',p=>p.Category==='WING SAUCE'],
+['BBQ SAUCES & RUBS',p=>p.Category==='BBQ SAUCE'||(p.Category==='SEASONINGS/DRY RUBS'&&/sucklebusters|suckelbusters|2-pig|pepper-junction/.test(p.slug))],
+['HOT & VERY HOT',p=>p.Category==='HOT SAUCE'&&['Hot','Very Hot'].includes(p['Heat Category'])],
+['CONDIMENTS',p=>p.Category==='CONDIMENTS'],
+['SEASONINGS',p=>p.Category==='SEASONINGS/DRY RUBS'&&!/sucklebusters|suckelbusters|2-pig|pepper-junction/.test(p.slug)],
+['MILD & MEDIUM',p=>p.Category==='HOT SAUCE'&&['Mild','Medium'].includes(p['Heat Category'])],
+['SNACKS',p=>p.Category==='SNACKS'],
+['OILS & VINEGARS',p=>p.Category==='Olive Oil/Vinegar']
+];
+const el=id=>document.getElementById(id);const shelf=el('pj-merc-shelf'),detail=el('pj-merc-detail'),cabinet=el('pj-merc-cabinet');const isMobileMerc=()=>window.matchMedia('(max-width:650px)').matches;let data=[],trigger=null,lastBottle=null,currentProduct=null,currentCommercial=null,priceRequest=0;
+function show(layer,on){layer.classList.toggle('is-visible',on);layer.setAttribute('aria-hidden',String(!on));document.body.style.overflow=shelf.classList.contains('is-visible')||detail.classList.contains('is-visible')||cabinet.classList.contains('is-visible')?'hidden':''}
+function openShelf(i,button){if(!data.length)return;show(cabinet,false);trigger=button;const items=data.filter(groups[i][1]).filter(p=>art[p.slug]);const two=items.length>6;el('pj-merc-title').textContent=groups[i][0]+'';el('pj-merc-shelf-art').src='assets/mercantile/'+(two?'Pullman_Expanded_2_Shelves.jpg':'Pullman_Expanded_1_Shelves.jpg');const slots=el('pj-merc-products');slots.className='pj-merc-bottles '+(two?'two':'one');slots.dataset.dept=String(i);slots.style.setProperty('--pj-merc-columns',Math.max(1,two?Math.ceil(items.length/2):items.length));slots.replaceChildren();items.forEach((p,index)=>{const b=document.createElement('button');b.type='button';b.className='pj-merc-bottle'+(two&&index<Math.ceil(items.length/2)?' pj-merc-upper':'');b.setAttribute('aria-label','Inspect '+p['Product Name']);b.title=p['Product Name'];b.dataset.pjMercSlug=p.slug;const img=document.createElement('img');img.src=art[p.slug];img.alt='';b.append(img);b.addEventListener('click',()=>openBottle(p,b));slots.append(b)});show(shelf,true);el('pj-merc-exit').focus({preventScroll:true})}
+function mercQuantity(){if(!currentProduct||!window.PJCart)return 0;const item=window.PJCart.read().items.find(x=>x.product_id===currentProduct.slug);return item?Number(item.quantity)||0:0}
+function refreshMercCart(){const quantity=mercQuantity();el('pj-merc-count').textContent=String(quantity);el('pj-merc-subtract').disabled=!currentProduct||quantity===0;el('pj-merc-add').disabled=!currentProduct||!currentCommercial||currentCommercial.available!==true}
+function refreshMercPrice(p){
+  const request=++priceRequest;currentCommercial=null;const priceEl=el('pj-merc-price');priceEl.textContent='Checking price…';priceEl.classList.add('is-pending');refreshMercCart();
+  fetch('https://cdbenwthxhypuuipyjlv.supabase.co/functions/v1/square-commercial-public',{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',credentials:'omit',body:JSON.stringify({product_ids:[p.slug]})})
+  .then(r=>r.json().then(body=>{if(!r.ok)throw Error(body.error||'Price unavailable');return body}))
+  .then(body=>{if(request!==priceRequest||currentProduct?.slug!==p.slug)return;const state=Array.isArray(body.items)?body.items[0]:null;
+    if(!state||state.product_id!==p.slug||state.current!==true||state.price==null||!Number.isFinite(Number(state.price)))throw Error('No current Square price');
+    currentCommercial={price:Number(state.price),available:state.available===true};
+    priceEl.textContent='$'+currentCommercial.price.toFixed(2);priceEl.classList.remove('is-pending');refreshMercCart();
+  }).catch(err=>{if(request!==priceRequest||currentProduct?.slug!==p.slug)return;priceEl.textContent='Price unavailable';priceEl.classList.add('is-pending');refreshMercCart();console.warn('Mercantile Square price unavailable',err)});
+}
+function openBottle(p,b){currentProduct=p;lastBottle=b;refreshMercCart();refreshMercPrice(p);el('pj-merc-focus-img').src=art[p.slug];el('pj-merc-focus-img').alt=p['Product Name'];el('pj-merc-focus-title').textContent=p['Product Name'];el('pj-merc-heat').textContent=p['Heat Category']?'Heat: '+p['Heat Category']:'';el('pj-merc-flavor').textContent=p['Primary Flavor Notes']||p['hero sub']||'';const a=el('pj-merc-product-link');a.hidden=false;const url=new URL('products/'+encodeURIComponent(p.slug)+'.html',location.href);url.searchParams.set('pjMercShelf',el('pj-merc-products').dataset.dept);url.searchParams.set('pjMercBottle',p.slug);a.href=url.href;show(shelf,false);show(detail,true);el('pj-merc-return').focus({preventScroll:true})}
+el('pj-merc-add').addEventListener('click',()=>{if(!currentProduct||!currentCommercial||!currentCommercial.available||!window.PJCart)return;
+  const p=currentProduct;window.PJCart.addItem({product_id:p.slug,slug:p.slug,product_name:p['Product Name'],brand:p.Brand,price:currentCommercial.price,square_id:p.Square_ID,square_url:p['Product URL'],image:art[p.slug],quantity:1,category:p.Category,heat_category:p['Heat Category'],food_style:p['Food Style'],best_pairings:p['Best Food Pairings']});refreshMercCart();
+});
+el('pj-merc-subtract').addEventListener('click',()=>{if(currentProduct&&window.PJCart&&mercQuantity()>0){window.PJCart.decrement(currentProduct.slug);refreshMercCart()}});
+window.addEventListener('pj-cart-updated',refreshMercCart);
+function backBottle(){show(detail,false);show(shelf,true);lastBottle?.focus({preventScroll:true})}function closeShelf(){show(shelf,false);if(isMobileMerc()){show(cabinet,true);el('pj-merc-cabinet-close').focus({preventScroll:true})}else trigger?.focus({preventScroll:true})}
+function populateCabinet(){
+  const buttons=el('pj-merc-cabinet-hotspots').querySelectorAll('[data-pj-cabinet-dept]');
+  buttons.forEach(button=>{
+    const i=Number(button.dataset.pjCabinetDept);
+    const items=data.filter(groups[i][1]).filter(p=>art[p.slug]);
+    button.setAttribute('aria-label','Open '+groups[i][0]+' shelf');
+    button.title=groups[i][0];
+    button.replaceChildren();
+    items.slice(0,([0,3,6,8].includes(i)?5:i===1?4:3)).forEach(p=>{
+      const img=document.createElement('img');
+      img.src=art[p.slug];img.alt='';img.loading='lazy';
+      button.append(img);
+    });
+  });
+}
+function openCabinet(button){trigger=button;show(cabinet,true);el('pj-merc-cabinet-close').focus({preventScroll:true})}
+function closeCabinet(){show(cabinet,false);trigger?.focus({preventScroll:true})}
+el('pj-merc-spots').addEventListener('click',e=>{const b=e.target.closest('[data-pj-dept]');if(!b)return;if(isMobileMerc())openCabinet(b);else openShelf(Number(b.dataset.pjDept),b)});
+el('pj-merc-cabinet-hotspots').addEventListener('click',e=>{const b=e.target.closest('[data-pj-cabinet-dept]');if(b)openShelf(Number(b.dataset.pjCabinetDept),b)});
+el('pj-merc-cabinet-close').addEventListener('click',closeCabinet);
+el('pj-merc-return').addEventListener('click',backBottle);el('pj-merc-exit').addEventListener('click',closeShelf);
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(detail.classList.contains('is-visible'))backBottle();else if(shelf.classList.contains('is-visible'))closeShelf();else if(cabinet.classList.contains('is-visible'))closeCabinet()});
+fetch('data/Database_Pepper_Junction.json').then(r=>{if(!r.ok)throw Error('Catalog unavailable');return r.json()}).then(rows=>{data=rows;populateCabinet();const params=new URLSearchParams(location.search);const indexText=params.get('pjMercShelf'),slug=params.get('pjMercBottle');if(indexText!==null&&slug&&/^\d+$/.test(indexText)){const i=Number(indexText);if(i<groups.length){const item=data.find(p=>p.slug===slug&&art[p.slug]&&groups[i][1](p));if(item){const triggerButton=document.querySelector('[data-pj-dept="'+i+'"]');openShelf(i,triggerButton);const bottle=Array.from(el('pj-merc-products').children).find(b=>b.dataset.pjMercSlug===slug);if(bottle)openBottle(item,bottle);const clean=new URL(location.href);clean.searchParams.delete('pjMercShelf');clean.searchParams.delete('pjMercBottle');history.replaceState(history.state,'',clean.href)}}}}).catch(e=>console.warn('Mercantile catalog unavailable',e));
+})();
+</script>
   <script src="assets/js/cart-engine.js"></script>
   <script src="assets/js/cart-drawer.js"></script>
 
