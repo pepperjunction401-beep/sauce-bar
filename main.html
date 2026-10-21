@@ -2640,7 +2640,7 @@ function populateCabinet(){
     button.setAttribute('aria-label','Open '+groups[i][0]+' shelf');
     button.title=groups[i][0];
     button.replaceChildren();
-    items.slice(0,3).forEach(p=>{
+    items.slice(0,([0,3,6,8].includes(i)?5:i===1?4:3)).forEach(p=>{
       const img=document.createElement('img');
       img.src=art[p.slug];img.alt='';img.loading='lazy';
       button.append(img);
