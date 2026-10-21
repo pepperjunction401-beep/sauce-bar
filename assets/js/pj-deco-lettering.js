@@ -18,9 +18,9 @@ function render(node){
  if(node.querySelector('.pj-deco-render'))return;
  const label=node.textContent.trim();if(!label)return;
  const holder=document.createElement('span');holder.className='pj-deco-render';holder.setAttribute('aria-hidden','true');
- label.toUpperCase().split(/(\s+)/).forEach(word=>{
+ label.toUpperCase().replace(/SLAP YA MAMMA\s+HOT SAUCE/g,'SLAP YA MAMMA\nHOT SAUCE').split(/(\s+)/).forEach(word=>{
    if(!word)return;
-   if(/^\s+$/.test(word)){let space=document.createElement('span');space.className='pj-deco-space';holder.appendChild(space);return;}
+   if(/^\s+$/.test(word)){let space=document.createElement('span');space.className=word.includes('\n')?'pj-deco-line-break':'pj-deco-space';holder.appendChild(space);return;}
    let group=document.createElement('span');group.className='pj-deco-word';for(const c of word)group.appendChild(glyph(c));holder.appendChild(group);
  });
  const readable=document.createElement('span');readable.className='pj-deco-readable';readable.textContent=label;node.replaceChildren(readable,holder);
