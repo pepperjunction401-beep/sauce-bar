@@ -188,7 +188,7 @@ body {
 .pj-deco-glyph{display:block;flex:none;overflow:visible}
 .pj-deco-space{width:.52em;flex:none}
 .pj-deco-punctuation{font-family:Georgia,serif;font-size:.65em;color:#e4c07a;align-self:center}
-@media(max-width:650px){.product-hero-name:has(.pj-deco-render){font-size:24px}.pj-deco-render{column-gap:0;row-gap:.02em}.pj-deco-space{width:.4em}}
+@media(max-width:650px){.product-hero-name:has(.pj-deco-render){font-size:32px}.pj-deco-render{column-gap:0;row-gap:.02em}.pj-deco-space{width:.4em}}
 /* ── PAGE BODY ────────────────────────────────────────────── */
 .page-outer {
   max-width: 1200px;
