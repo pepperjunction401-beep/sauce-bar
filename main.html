@@ -2141,6 +2141,21 @@
  #pj-merc-detail .pj-merc-quantity output{font:700 clamp(15px,4vw,20px)/1 Arial,sans-serif;color:#1e0d06;min-width:2ch}
  #pj-merc-detail .pj-merc-actions .pj-merc-quantity button:disabled{opacity:.58}
 }
+/* Portrait alcove: navigation above the case, shopping actions beneath it. */
+@media (max-width:650px) and (orientation:portrait){
+ #pj-merc-detail .pj-merc-alcove{margin:48px 0 78px;flex:none}
+ #pj-merc-detail .pj-merc-back{top:-38px;left:51%;font-size:clamp(11px,3vw,14px);padding:8px 0;z-index:4}
+ #pj-merc-detail .pj-merc-board{display:contents}
+ #pj-merc-detail .pj-merc-board h2,
+ #pj-merc-detail .pj-merc-board p{position:absolute;left:52%;width:36%;margin:0;text-align:center}
+ #pj-merc-detail #pj-merc-focus-title{top:35%;font-size:clamp(11px,3.2vw,15px);line-height:1.12}
+ #pj-merc-detail #pj-merc-heat{top:53%;font-size:clamp(9px,2.35vw,12px)}
+ #pj-merc-detail #pj-merc-flavor{top:64%;font-size:clamp(9px,2.35vw,12px)}
+ #pj-merc-detail .pj-merc-actions{position:absolute;top:calc(100% + 12px);left:7%;right:7%;display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:10px}
+ #pj-merc-detail .pj-merc-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;box-sizing:border-box;font-size:clamp(9px,2.35vw,12px);padding:8px;white-space:nowrap}
+ #pj-merc-detail .pj-merc-quantity{flex:none}
+ #pj-merc-detail .pj-merc-actions .pj-merc-quantity button{min-width:38px;min-height:44px}
+}
 /* Mobile-only full-cabinet stage: maintain original cabinet artwork and proportions. */
 .pj-merc-cabinet-layer{display:none}
 @media(max-width:650px){
