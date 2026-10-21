@@ -2126,6 +2126,21 @@
 .pj-merc-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}.pj-merc-actions a,.pj-merc-actions button{font:clamp(9px,1vw,13px) 'Limelight',Georgia,serif;background:#ddba77;color:#1e0d06;padding:7px 9px;border:1px solid #ba9253;text-decoration:none}.pj-merc-actions button:disabled{opacity:.7;cursor:not-allowed}
 .pj-merc-price{position:absolute;top:26.5%;right:11.5%;z-index:2;font-family:'Fredericka the Great',cursive;font-size:clamp(22px,3.4vw,45px);line-height:1.2;color:#f3efe1;transform:rotate(15deg);transform-origin:center;text-shadow:1px 1px 1px #f2ebd355;white-space:nowrap;pointer-events:none}.pj-merc-price.is-pending{font-family:Georgia,serif;font-size:clamp(9px,1.2vw,14px);transform:none}.pj-merc-quantity{display:inline-flex;align-items:center;border:1px solid #ba9253;background:#ddba77;color:#1e0d06}.pj-merc-actions .pj-merc-quantity button{border:0;padding:7px 10px;min-width:30px}.pj-merc-quantity output{min-width:2ch;font:clamp(12px,1.4vw,17px) Georgia,serif;text-align:center}.pj-merc-actions .pj-merc-quantity button:disabled{opacity:.35}.pj-merc-back{position:absolute;z-index:3;top:20%;left:53%;background:transparent;border:0;font:clamp(11px,1.5vw,19px) 'Limelight',Georgia,serif}
 @media(max-width:650px){.pj-merc-layer{padding:3px}.pj-merc-toolbar{font-size:11px;padding:5px}.pj-merc-board{left:51%;width:38%;top:23%;height:61%;gap:2px}.pj-merc-board h2{font-size:clamp(11px,2.9vw,19px);transform:translateY(-6px)}.pj-merc-board p{font-size:clamp(7px,1.7vw,10px)}.pj-merc-actions a,.pj-merc-actions button{font-size:8px;padding:4px}.pj-merc-back{font-size:10px}}
+/* Portrait-phone alcove refinements only; desktop and landscape unaffected. */
+@media (max-width:650px) and (orientation:portrait){
+ #pj-merc-detail .pj-merc-alcove{width:100vw}
+ #pj-merc-detail .pj-merc-back{top:6%;left:52%;font-size:clamp(10px,3vw,13px);padding:2px 0;white-space:nowrap}
+ #pj-merc-detail .pj-merc-price{top:22%;right:11.5%;font-size:clamp(18px,5.8vw,25px)}
+ #pj-merc-detail .pj-merc-board{top:36%;left:52%;width:36%;height:60%;padding-top:0;gap:clamp(3px,1vw,6px);justify-content:space-evenly;overflow:visible}
+ #pj-merc-detail .pj-merc-board h2{font-size:clamp(11px,3.2vw,15px);transform:none;line-height:1.05}
+ #pj-merc-detail .pj-merc-board p{font-size:clamp(8px,2.35vw,11px);line-height:1.15}
+ #pj-merc-detail .pj-merc-actions{gap:4px}
+ #pj-merc-detail .pj-merc-actions a{font-size:clamp(8px,2.1vw,10px);padding:3px}
+ #pj-merc-detail .pj-merc-quantity{background:#efc984;border-color:#d6ae67}
+ #pj-merc-detail .pj-merc-actions .pj-merc-quantity button{font:700 clamp(17px,5vw,23px)/1 Arial,sans-serif;color:#1e0d06;min-width:29px;min-height:29px;padding:3px 5px}
+ #pj-merc-detail .pj-merc-quantity output{font:700 clamp(15px,4vw,20px)/1 Arial,sans-serif;color:#1e0d06;min-width:2ch}
+ #pj-merc-detail .pj-merc-actions .pj-merc-quantity button:disabled{opacity:.58}
+}
 /* Mobile-only full-cabinet stage: maintain original cabinet artwork and proportions. */
 .pj-merc-cabinet-layer{display:none}
 @media(max-width:650px){
