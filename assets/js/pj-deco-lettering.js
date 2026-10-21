@@ -18,14 +18,14 @@ function render(node){
  if(node.querySelector('.pj-deco-render'))return;
  const label=node.textContent.trim();if(!label)return;
  const holder=document.createElement('span');holder.className='pj-deco-render';holder.setAttribute('aria-hidden','true');
- const normalized=label.toUpperCase().replace(/\\s+/g,' ').trim();
+ const normalized=label.toUpperCase().replace(/\s+/g,' ').trim();
  const forcedLines=normalized==='SLAP YA MAMA HOT SAUCE'
    ? ['SLAP YA MAMA','HOT SAUCE'] : [normalized];
  forcedLines.forEach((line,index)=>{
    const row=document.createElement('span');row.className='pj-deco-title-row';
-   line.split(/(\\s+)/).forEach(word=>{
+   line.split(/(\s+)/).forEach(word=>{
      if(!word)return;
-     if(/^\\s+$/.test(word)){const space=document.createElement('span');space.className='pj-deco-space';row.appendChild(space);return;}
+     if(/^\s+$/.test(word)){const space=document.createElement('span');space.className='pj-deco-space';row.appendChild(space);return;}
      const group=document.createElement('span');group.className='pj-deco-word';
      for(const c of word)group.appendChild(glyph(c));
      row.appendChild(group);
