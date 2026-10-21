@@ -184,7 +184,7 @@
 
     /* ── HERO ─────────────────────────────────────────────────── */
     .hero {
-      background: url('assets/textures/Hero-Banner-Pullman-Burgandy.png') center center / 100% 100% no-repeat;
+      background: url('assets/textures/Hero-Deco-Approved.webp') center center / 100% 100% no-repeat;
       aspect-ratio: 4 / 1;
       padding: 0;
       position: relative;
@@ -192,6 +192,8 @@
       border-bottom: 1px solid rgba(184,137,57,0.3);
     }
 
+    /* Exact approved lettering is part of the hero art; retain accessible heading text. */
+    .hero .hero-inner {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     .hero::before {
       content: none;
     }
