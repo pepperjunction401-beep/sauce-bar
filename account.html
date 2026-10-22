@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,7 +72,7 @@
           <div class="account-field">
             <label for="create-phone">Phone Number <span class="account-required">— Strongly Recommended</span></label>
             <input id="create-phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(401) 555-0123" aria-describedby="phone-help">
-            <small id="phone-help">Adding and verifying your phone number helps us locate past purchases made through our website and at our pop-ups, and identify your existing loyalty membership. Once those purchases are verified, Pepper Junction can use your purchase history to award eligible badges and Pepper Junction Loyalty Points. You can create an account without a phone number, but we will not be able to recover your previous purchases without a verified phone number.</small>
+            <small id="phone-help">Adding your phone number helps us locate past purchases made through our website and at our pop-ups, and identify your existing loyalty membership. Once those purchases are verified, Pepper Junction can use your purchase history to award eligible badges and Pepper Junction Loyalty Points. You can create an account without a phone number, but we will not be able to recover your previous purchases.</small>
           </div>
           <div class="account-notice">After you verify your account, Pepper Junction will check for safely matchable Square purchase history. No match? Your account is still yours, and you're ready for future purchases.</div>
           <button class="account-submit" type="submit">Create My Account</button>
@@ -94,7 +95,7 @@
           <button class="account-submit" type="button" id="reset-password" style="background:transparent;color:var(--pj-brass-bright)">Send Password Reset Email</button>
         </form>
       </section>
-      <section id="phone-verification" hidden><p class="account-notice">Verify your phone number to help connect your Square purchase history. Phone verification is optional, and you can continue to your Station without it.</p><div class="account-field"><label for="phone-code">SMS Verification Code</label><input id="phone-code" inputmode="numeric" autocomplete="one-time-code" placeholder="Code sent to your phone"></div><button class="account-submit" id="confirm-phone" type="button">Verify Phone</button><button class="account-submit" id="skip-phone" type="button" style="margin-top:8px;background:transparent;color:var(--pj-brass-bright)">Continue Without Phone</button></section>
+
       <p id="account-feedback" class="account-feedback" role="status" aria-live="polite" hidden></p>
       <a id="account-back" class="account-back" href="main.html">← Return to Shop</a>
     </div>
@@ -167,14 +168,6 @@
       catch (err) { message(err && err.message ? err.message : 'Something went wrong. Please try again.'); }
       finally { busy=false; document.querySelectorAll('.account-submit').forEach(b => b.disabled=false); }
     }
-    async function startOptionalPhone() {
-      if (!pendingPhone) return goStation();
-      const r = await api.auth.updateUser({phone:pendingPhone});
-      if (r.error) {byId('panel-create').hidden=true;byId('panel-signin').hidden=true;message('Your account is verified. Phone verification is not available right now: '+r.error.message+' You can continue to your Station.');byId('phone-verification').hidden=false;return;}
-      byId('panel-create').hidden=true;byId('panel-signin').hidden=true;
-      byId('phone-verification').hidden=false;
-      message('Check your phone for the verification code. Your phone will not be counted as verified until you enter that code.');
-    }
     byId('create-form').addEventListener('submit', e => {
       e.preventDefault();
       if (!api) return;
@@ -189,9 +182,9 @@
         if (signup.error) throw signup.error;
         if (signup.data && signup.data.session && await auth.verifiedUser()) {
           await syncDisplayName(await auth.verifiedUser());
-          await startOptionalPhone();
+          goStation();
         } else {
-          message('Check your email to verify your account. After verification, return here to sign in. Your phone can be verified after sign-in.');
+          message('Check your email to verify your account. After verification, return here to sign in. Your phone number is used for historical purchase matching.');
         }
       });
     });
@@ -204,8 +197,7 @@
         if (!await auth.verifiedUser()) {await api.auth.signOut({scope:'local'});throw new Error('Please verify your email before entering Passenger Station.');}
         const u=await auth.verifiedUser();
         await syncDisplayName(u);
-        pendingPhone=(u && u.user_metadata && u.user_metadata.pending_phone && !u.phone_confirmed_at) ? u.user_metadata.pending_phone : '';
-        if (pendingPhone) await startOptionalPhone(); else goStation();
+        goStation();
       });
     });
     byId('reset-password').addEventListener('click', () => {
@@ -217,17 +209,6 @@
         if (r.error) throw r.error;
         message('If an account exists for this email, password reset instructions will be sent.');
       });
-    });
-    byId('confirm-phone').addEventListener('click', () => submitAction(async () => {
-      const r=await api.auth.verifyOtp({phone:pendingPhone,token:byId('phone-code').value.trim(),type:'phone_change'});
-      if (r.error) throw r.error;
-      await api.auth.updateUser({data:{pending_phone:null}});
-      message('Phone verified successfully. Taking you to your Passenger Station.');
-      goStation();
-    }));
-    byId('skip-phone').addEventListener('click', async () => {
-      if (api) await api.auth.updateUser({data:{pending_phone:null}});
-      goStation();
     });
     if (!api) {
       byId('account-preview').hidden=false;
@@ -251,8 +232,7 @@
           const u=await auth.verifiedUser();
           if (u) {
             await syncDisplayName(u);
-            pendingPhone=(u.user_metadata && u.user_metadata.pending_phone && !u.phone_confirmed_at) ? u.user_metadata.pending_phone : '';
-            if (pendingPhone) await startOptionalPhone(); else goStation();
+            goStation();
           }
         } catch(e) {message('Unable to check the current session. Please sign in.');}
       })();
