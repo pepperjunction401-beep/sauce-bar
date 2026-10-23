@@ -152,27 +152,29 @@
       await api.from('customer_profiles').update({display_name:fullName}).eq('id',u.id);
     }
     async function goStation() {
-      // Phase 4 staging integration: match only after Supabase confirms email.
-      // Production matching is NOT activated by this staging-only test hook.
-      if (location.hostname === 'magnificent-nougat-609a6e.netlify.app') {
+      // Select the identity matcher by the actual website hostname.
+      const hostname = location.hostname.toLowerCase();
+      const matchFunction = hostname === 'magnificent-nougat-609a6e.netlify.app'
+        ? 'square-sandbox-match'
+        : (hostname === 'pepperjunction401.com' || hostname === 'www.pepperjunction401.com')
+          ? 'square-production-match'
+          : null;
+      if (matchFunction && api) {
         try {
           const user = await auth.verifiedUser();
           if (user) {
             const state = await api.from('customer_profiles')
               .select('account_state').eq('id', user.id).maybeSingle();
             if (state.error) throw state.error;
-            if (state.data && state.data.account_state === 'verified_unmatched' &&
-                sessionStorage.getItem('pj_match_attempt_'+user.id) !== 'completed') {
-              const result = await api.functions.invoke('square-sandbox-match', {body:{}});
+            if (state.data && state.data.account_state === 'verified_unmatched') {
+              const result = await api.functions.invoke(matchFunction, {body:{}});
               if (result.error) throw result.error;
-              // A completed request can be a match, no-match, or review-required.
-              // The server alone determines customer identity and records its outcome.
-              sessionStorage.setItem('pj_match_attempt_'+user.id, 'completed');
+              // The trusted server owns identity matching and purchase recovery.
             }
           }
         } catch (error) {
-          console.error('Phase 4 staging identity match did not complete', error);
-          message('Account verified, but Square test matching could not complete. Please retry later.');
+          console.error('Phase 4 identity matching failed', error);
+          message('Account verified, but purchase matching could not complete. Please sign in again.');
           return;
         }
       }
