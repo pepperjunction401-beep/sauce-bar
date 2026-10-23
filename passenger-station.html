@@ -12,7 +12,7 @@ h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(30px,5vw,52px);m
 .station-intro{font-size:14px;color:#f0d9b1;margin:0 auto;max-width:750px;line-height:1.45}
 .station-tabs{display:flex;gap:10px;align-items:stretch;justify-content:center;background:#16291a;border-bottom:2px solid #a77e36;padding:12px 15px;position:sticky;top:0;z-index:300;flex-wrap:wrap}
 .station-tab{background:#355E3B;border:2px solid #a8853f;color:var(--cream);font:700 13px 'Josefin Sans',Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;min-width:180px;padding:14px 18px;border-radius:6px;transition:background .2s ease}
-.station-tab:hover{background:#456c48}.station-tab[aria-selected="true"]{background:var(--burgundy);border-color:var(--gold);color:var(--gold);box-shadow:inset 0 -3px var(--gold)}.station-tab:focus-visible{outline:3px solid white;outline-offset:2px}
+.station-tab:disabled{opacity:.48;cursor:not-allowed;filter:grayscale(.3)}.station-tab:disabled:hover{background:#355E3B}.station-tab:hover{background:#456c48}.station-tab[aria-selected="true"]{background:var(--burgundy);border-color:var(--gold);color:var(--gold);box-shadow:inset 0 -3px var(--gold)}.station-tab:focus-visible{outline:3px solid white;outline-offset:2px}
 .station-panel[hidden]{display:none}.station-panel{width:100%;margin:0 auto;background:var(--deep)}.station-panel iframe{width:100%;height:1400px;display:block;border:0;background:#1E3020;overflow:hidden}
 .station-demo{background:#203522;color:#d8ccae;text-align:center;border-top:1px solid #8a6a3e;padding:14px 20px;font-size:12px;line-height:1.6}
 @media(max-width:600px){.station-header{padding:18px 12px}.station-tabs{gap:6px;padding:9px 6px}.station-tab{flex:1;min-width:95px;font-size:10px;letter-spacing:0;padding:11px 6px}}
@@ -39,13 +39,13 @@ h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(30px,5vw,52px);m
 <div class="station-tabs" aria-label="Passenger Station navigation">
 <a class="station-edge station-home" href="main.html" aria-label="Return to Pepper Junction storefront" title="Return to storefront"><span aria-hidden="true">⌂</span><span class="station-edge-label">Home</span></a>
 <nav aria-label="Passenger Station sections" class="station-tab-group" role="tablist">
-<button aria-controls="panel-board" aria-selected="true" class="station-tab" data-panel="board" id="tab-board" role="tab" tabindex="0">The Review Board</button>
-<button aria-controls="panel-yard" aria-selected="false" class="station-tab" data-panel="yard" id="tab-yard" role="tab" tabindex="-1">The Review Yard</button>
-<button aria-controls="panel-depot" aria-selected="false" class="station-tab" data-panel="depot" id="tab-depot" role="tab" tabindex="-1">The Badge Depot</button>
+<button aria-controls="panel-board" aria-selected="false" aria-disabled="true" disabled class="station-tab" data-panel="board" id="tab-board" role="tab" tabindex="-1">The Review Board</button>
+<button aria-controls="panel-yard" aria-selected="false" aria-disabled="true" disabled class="station-tab" data-panel="yard" id="tab-yard" role="tab" tabindex="-1">The Review Yard</button>
+<button aria-controls="panel-depot" aria-selected="true" class="station-tab" data-panel="depot" id="tab-depot" role="tab" tabindex="0">The Badge Depot</button>
 </nav>
 <button id="pj-cart-toggle" type="button" class="station-edge station-cart" aria-label="Open Pepper Junction cart" aria-controls="pj-cart-drawer" aria-expanded="false" title="Open cart"><span aria-hidden="true">🛒</span><span class="station-edge-label">Cart</span><span class="pj-cart-count" id="pj-cart-count">0</span></button>
 </div>
-<section aria-labelledby="tab-board" class="station-panel" id="panel-board" role="tabpanel"><iframe id="frame-board" loading="eager" scrolling="no" srcdoc="&lt;!DOCTYPE html&gt;
+<section aria-labelledby="tab-board" class="station-panel" hidden id="panel-board" role="tabpanel"><iframe id="frame-board" loading="eager" scrolling="no" srcdoc="&lt;!DOCTYPE html&gt;
 
 &lt;html lang=&quot;en&quot;&gt;&lt;head&gt;
 &lt;base href=&quot;https://pepperjunction401.com/&quot;/&gt;&lt;meta charset=&quot;utf-8&quot;/&gt;&lt;meta content=&quot;width=device-width,initial-scale=1&quot; name=&quot;viewport&quot;/&gt;&lt;title&gt;The Review Board — Pepper Junction | Design Preview v0.6&lt;/title&gt;
@@ -539,7 +539,7 @@ function closeDialog(){
 
 try{if(window.parent!==window)window.parent.document.addEventListener('keydown',e=&gt;{if(e.key==='Escape'&amp;&amp;yardModalHost)closeDialog()})}catch(err){}
 &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" title="The Review Yard"></iframe></section>
-<section aria-labelledby="tab-depot" class="station-panel" hidden="" id="panel-depot" role="tabpanel"><iframe id="frame-depot" loading="eager" scrolling="no" srcdoc="&lt;!DOCTYPE html&gt;
+<section aria-labelledby="tab-depot" class="station-panel" id="panel-depot" role="tabpanel"><iframe id="frame-depot" loading="eager" scrolling="no" srcdoc="&lt;!DOCTYPE html&gt;
 
 &lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
@@ -4840,11 +4840,11 @@ document.addEventListener('click',function(event){
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
 " title="The Badge Depot"></iframe></section>
-<footer class="station-demo">Design prototype only · Components retain their existing demonstration data and local interactions · No Supabase, Square, or live website changes</footer>
+<footer class="station-demo">Badge Depot preview · Awards and loyalty balances shown here are illustrative, not your actual account totals</footer>
 <script>
 (function(){
  const tabs=Array.from(document.querySelectorAll('.station-tab'));
- const ids=['board','yard','depot'];
+ const ids=['depot'];
  const previous={};
  function fit(id){
    const iframe=document.getElementById('frame-'+id);
@@ -4911,7 +4911,7 @@ document.addEventListener('click',function(event){
  });
 
  const selected=location.hash.slice(1);
- if(ids.includes(selected))activate(selected,false);
+ activate('depot',false);
 })();
 </script>
 <script src="assets/js/cart-engine.js"></script>
