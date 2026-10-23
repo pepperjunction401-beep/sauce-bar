@@ -4946,23 +4946,60 @@ document.addEventListener('click',function(event){
     status.textContent = 'Checking earned badges…';
     statusBox.append(heading, status);
     if (depotPanel) depotPanel.prepend(statusBox);
-    auth.client.from('pj_customer_badge_awards')
-      .select('*', { count: 'exact', head: true })
-      .eq('customer_id', user.id)
-      .then(function(result) {
-        if (result.error) {
-          console.error('Badge award query failed', result.error);
-          status.textContent = 'Your badge records could not be retrieved. No awards or loyalty balance have been assumed.';
-          return;
-        }
-        const count = Number.isFinite(result.count) ? result.count : 0;
-        status.textContent = count === 0
-          ? 'No earned badge records are available for this account yet.'
-          : count + ' earned badge record' + (count === 1 ? '' : 's') + ' found. Detailed awards are not yet available on this page.';
-      }).catch(function(error) {
-        console.error('Badge award connection failed', error);
-        status.textContent = 'Your badge records could not be retrieved.';
+    // The award table is owned by the server and readable only by its customer.
+    // Never infer an award from its visual prototype or a purchase alone.
+    Promise.all([
+      auth.client.from('pj_customer_badge_awards')
+        .select('badge_code,earned_at,award_state,reversed_at')
+        .eq('customer_id', user.id)
+        .order('earned_at', { ascending: false }),
+      auth.client.from('pj_badge_definitions')
+        .select('badge_code,badge_family,badge_level,heat_category')
+        .eq('is_active', true)
+    ]).then(function(results) {
+      const awardsResult = results[0], definitionsResult = results[1];
+      if (awardsResult.error || definitionsResult.error) {
+        console.error('Badge records unavailable', awardsResult.error || definitionsResult.error);
+        status.textContent = 'Your earned badges could not be loaded. Please try again later.';
+        return;
+      }
+      const definitions = new Map((definitionsResult.data || []).map(function(d) { return [d.badge_code, d]; }));
+      const awarded = (awardsResult.data || []).filter(function(a) {
+        return !a.reversed_at && a.award_state === 'earned';
       });
+      status.textContent = awarded.length
+        ? awarded.length + ' earned badge award' + (awarded.length === 1 ? '' : 's') + ' recorded for this account.'
+        : 'No earned badge awards are recorded for this account yet.';
+      if (!awarded.length) return;
+      const list = document.createElement('ul');
+      list.style.cssText = 'list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;';
+      awarded.forEach(function(award) {
+        const definition = definitions.get(award.badge_code);
+        const item = document.createElement('li');
+        item.style.cssText = 'padding:16px;border:1px solid #a8853f;background:#1E3020;';
+        const name = document.createElement('strong');
+        name.textContent = award.badge_code.replace(/[_-]/g, ' ');
+        item.appendChild(name);
+        if (definition) {
+          const family = document.createElement('p');
+          family.textContent = [definition.badge_family, definition.heat_category,
+            definition.badge_level == null ? '' : 'Level ' + definition.badge_level]
+            .filter(Boolean).join(' · ');
+          item.appendChild(family);
+        }
+        if (award.earned_at) {
+          const date = document.createElement('p');
+          const parsed = new Date(award.earned_at);
+          date.textContent = Number.isNaN(parsed.getTime()) ? '' : 'Earned ' + parsed.toLocaleDateString();
+          item.appendChild(date);
+        }
+        list.appendChild(item);
+      });
+      statusBox.appendChild(list);
+    }).catch(function(error) {
+      console.error('Badge records connection failed', error);
+      status.textContent = 'Your earned badges could not be loaded.';
+    });
     const controls = document.querySelector('.station-tabs');
     if (controls && !document.getElementById('pj-station-logout')) {
       const logout=document.createElement('button');
