@@ -4984,7 +4984,7 @@ document.addEventListener('click',function(event){
         // Keep other families text-only rather than guess which design was earned.
         if (definition && definition.badge_family === 'heat_identity' &&
             definition.heat_category && [1,2,3].includes(Number(definition.badge_level))) {
-          const lane = definition.heat_category.toLowerCase().replace(/\\s+/g, '-');
+          const lane = definition.heat_category.toLowerCase().split(' ').join('-');
           const prefix = Number(definition.badge_level) === 1
             ? '' : 'L' + definition.badge_level + '-';
           const image = document.createElement('img');
