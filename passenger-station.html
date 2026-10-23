@@ -5081,13 +5081,15 @@ document.addEventListener('click',function(event){
         addAward(d.badge_title,'Food Category · Level '+a.earned_level,
           validFood.has(slug)?'assets/badges/food/badge-food-'+slug+'.png':null,a.earned_at);
       });
-      const validCoins=new Set(['penny','nickel','dime','quarter','half-dollar','peace-dollar']);
+      const coinArtwork={wheat_penny:'penny',buffalo_nickel:'nickel',
+        mercury_dime:'dime',standing_liberty_quarter:'quarter',
+        walking_liberty_half_dollar:'half-dollar',peace_dollar:'peace-dollar'};
       coinAwards.forEach(function(a) {
         const d=coinDefs.get(a.coin_code);
         if(!d)return;
-        const code=String(a.coin_code).toLowerCase().replace(/_/g,'-').replace(/^coin-/,'');
+        const code=coinArtwork[a.coin_code];
         addAward(d.coin_name,'Bottle Coin · Level '+a.earned_level,
-          validCoins.has(code)?'assets/badges/bottle-purchase-coins/badge-coin-'+code+'-obverse.png':null,
+          code?'assets/badges/bottle-purchase-coins/badge-coin-'+code+'-obverse.png':null,
           a.earned_at);
       });
       statusBox.appendChild(grid);
