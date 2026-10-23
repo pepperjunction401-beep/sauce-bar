@@ -151,7 +151,33 @@
       if (current.error || !current.data || current.data.display_name) return;
       await api.from('customer_profiles').update({display_name:fullName}).eq('id',u.id);
     }
-    function goStation() { location.assign(auth.destination()); }
+    async function goStation() {
+      // Phase 4 staging integration: match only after Supabase confirms email.
+      // Production matching is NOT activated by this staging-only test hook.
+      if (location.hostname === 'magnificent-nougat-609a6e.netlify.app') {
+        try {
+          const user = await auth.verifiedUser();
+          if (user) {
+            const state = await api.from('customer_profiles')
+              .select('account_state').eq('id', user.id).maybeSingle();
+            if (state.error) throw state.error;
+            if (state.data && state.data.account_state === 'verified_unmatched' &&
+                sessionStorage.getItem('pj_match_attempt_'+user.id) !== 'completed') {
+              const result = await api.functions.invoke('square-sandbox-match', {body:{}});
+              if (result.error) throw result.error;
+              // A completed request can be a match, no-match, or review-required.
+              // The server alone determines customer identity and records its outcome.
+              sessionStorage.setItem('pj_match_attempt_'+user.id, 'completed');
+            }
+          }
+        } catch (error) {
+          console.error('Phase 4 staging identity match did not complete', error);
+          message('Account verified, but Square test matching could not complete. Please retry later.');
+          return;
+        }
+      }
+      location.assign(auth.destination());
+    }
     function normalizeUSPhone(input) {
       if (!input.trim()) return '';
       const digits = input.replace(/\D/g, '');
@@ -182,7 +208,7 @@
         if (signup.error) throw signup.error;
         if (signup.data && signup.data.session && await auth.verifiedUser()) {
           await syncDisplayName(await auth.verifiedUser());
-          goStation();
+          await goStation();
         } else {
           message('Check your email to verify your account. After verification, return here to sign in. Your phone number is used for historical purchase matching.');
         }
@@ -197,7 +223,7 @@
         if (!await auth.verifiedUser()) {await api.auth.signOut({scope:'local'});throw new Error('Please verify your email before entering Passenger Station.');}
         const u=await auth.verifiedUser();
         await syncDisplayName(u);
-        goStation();
+        await goStation();
       });
     });
     byId('reset-password').addEventListener('click', () => {
@@ -232,7 +258,7 @@
           const u=await auth.verifiedUser();
           if (u) {
             await syncDisplayName(u);
-            goStation();
+            await goStation();
           }
         } catch(e) {message('Unable to check the current session. Please sign in.');}
       })();
