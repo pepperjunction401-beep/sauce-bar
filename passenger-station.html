@@ -4980,6 +4980,21 @@ document.addEventListener('click',function(event){
         const name = document.createElement('strong');
         name.textContent = award.badge_code.replace(/[_-]/g, ' ');
         item.appendChild(name);
+        // Only Heat Identity has a verified one-to-one award-to-artwork mapping.
+        // Keep other families text-only rather than guess which design was earned.
+        if (definition && definition.badge_family === 'heat_identity' &&
+            definition.heat_category && [1,2,3].includes(Number(definition.badge_level))) {
+          const lane = definition.heat_category.toLowerCase().replace(/\\s+/g, '-');
+          const prefix = Number(definition.badge_level) === 1
+            ? '' : 'L' + definition.badge_level + '-';
+          const image = document.createElement('img');
+          image.src = 'assets/badges/heat/' + prefix + 'badge-' + lane + '.png';
+          image.alt = definition.heat_category + ' Level ' + definition.badge_level + ' earned badge';
+          image.loading = 'lazy';
+          image.style.cssText = 'display:block;width:130px;height:130px;object-fit:contain;margin:12px auto;';
+          image.addEventListener('error', function() { image.hidden = true; });
+          item.insertBefore(image, name);
+        }
         if (definition) {
           const family = document.createElement('p');
           family.textContent = [definition.badge_family, definition.heat_category,
