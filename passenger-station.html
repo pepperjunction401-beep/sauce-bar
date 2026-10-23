@@ -5096,6 +5096,65 @@ document.addEventListener('click',function(event){
     }).catch(function(error) {
       console.error('Additional badge display failed',error);
     });
+    // Purchase Progress is governed by its own awarded-level ledger.
+    // Current earned levels, not hypothetical spend, determine visible badges.
+    Promise.all([
+      auth.client.from('pj_customer_purchase_progress_levels')
+        .select('badge_code,earned_level')
+        .eq('customer_id', user.id),
+      auth.client.from('pj_purchase_progress_definitions')
+        .select('badge_code,badge_title,threshold_amount')
+        .eq('is_active', true)
+    ]).then(function(results) {
+      if (results.some(function(r){ return r.error; })) {
+        console.error('Purchase Progress read failed',
+          results.filter(function(r){return r.error;}).map(function(r){return r.error;}));
+        const notice=document.createElement('p');
+        notice.textContent='Purchase Progress awards are temporarily unavailable.';
+        statusBox.appendChild(notice);
+        return;
+      }
+      const awarded=new Map((results[0].data||[]).map(function(r){return [r.badge_code,Number(r.earned_level)];}));
+      const definitions=(results[1].data||[])
+        .filter(function(d){return (awarded.get(d.badge_code)||0)>0;})
+        .sort(function(a,b){return Number(a.threshold_amount)-Number(b.threshold_amount);});
+      if(!definitions.length)return;
+      const artwork={
+        fill_er_up:'fuel',speakeasy:'spirits',sauce_director:'movies',
+        broadcast:'radio',market_run:'groceries',free_shipping:'free-shipping',
+        distance_rider:'taxi',rock_like_a_doc:'doctor',
+        there_goes_the_house:'mortgage',hot_sauce_over_a_yacht:'boat'
+      };
+      const heading=document.createElement('h3');
+      heading.textContent='Purchase Progress Awards';
+      statusBox.appendChild(heading);
+      const grid=document.createElement('div');
+      grid.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px';
+      definitions.forEach(function(d){
+        const card=document.createElement('article');
+        card.style.cssText='padding:16px;text-align:center;border:1px solid #a8853f;background:#1E3020';
+        const asset=artwork[d.badge_code];
+        if(asset){
+          const image=document.createElement('img');
+          image.src='assets/badges/purchase-progress/badge-purchase-progress-'+asset+'.png';
+          image.alt=d.badge_title+' earned badge';
+          image.loading='lazy';
+          image.style.cssText='width:130px;height:130px;object-fit:contain;display:block;margin:0 auto 12px';
+          image.addEventListener('error',function(){image.hidden=true;});
+          card.appendChild(image);
+        }
+        const name=document.createElement('strong');
+        name.textContent=d.badge_title;
+        card.appendChild(name);
+        const detail=document.createElement('p');
+        detail.textContent='Purchase Progress · Earned level '+awarded.get(d.badge_code);
+        card.appendChild(detail);
+        grid.appendChild(card);
+      });
+      statusBox.appendChild(grid);
+    }).catch(function(error){
+      console.error('Purchase Progress display failed',error);
+    });
     const controls = document.querySelector('.station-tabs');
     if (controls && !document.getElementById('pj-station-logout')) {
       const logout=document.createElement('button');
