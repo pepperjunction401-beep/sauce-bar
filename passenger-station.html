@@ -5015,6 +5015,85 @@ document.addEventListener('click',function(event){
       console.error('Badge records connection failed', error);
       status.textContent = 'Your earned badges could not be loaded.';
     });
+    // Independently awarded Food Category levels and Bottle Coin events.
+    // These families have separate authoritative award tables.
+    Promise.all([
+      auth.client.from('pj_food_badge_level_awards')
+        .select('badge_code,earned_level,earned_at')
+        .eq('customer_id', user.id),
+      auth.client.from('pj_food_badge_definitions')
+        .select('badge_code,food_category,badge_title')
+        .eq('is_active', true),
+      auth.client.from('pj_bottle_coin_award_events')
+        .select('coin_code,earned_level,earned_at')
+        .eq('customer_id', user.id),
+      auth.client.from('pj_bottle_coin_definitions')
+        .select('coin_code,coin_name')
+    ]).then(function(results) {
+      if (results.some(function(r) { return r.error; })) {
+        console.error('Additional badge records unavailable',
+          results.filter(function(r) { return r.error; }).map(function(r) { return r.error; }));
+        const note=document.createElement('p');
+        note.textContent='Some badge families could not be loaded. Please try again later.';
+        statusBox.appendChild(note);
+        return;
+      }
+      const foodDefs=new Map((results[1].data||[]).map(function(d){return [d.badge_code,d];}));
+      const coinDefs=new Map((results[3].data||[]).map(function(d){return [d.coin_code,d];}));
+      const foodAwards=results[0].data||[];
+      const coinAwards=results[2].data||[];
+      if (!foodAwards.length && !coinAwards.length) return;
+      const heading=document.createElement('h3');
+      heading.textContent='Food Category & Bottle Coin Awards';
+      statusBox.appendChild(heading);
+      const grid=document.createElement('div');
+      grid.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px';
+      function addAward(title,subtitle,asset,earnedAt) {
+        const card=document.createElement('article');
+        card.style.cssText='padding:16px;text-align:center;border:1px solid #a8853f;background:#1E3020';
+        if(asset) {
+          const img=document.createElement('img');
+          img.src=asset; img.alt=title; img.loading='lazy';
+          img.style.cssText='width:130px;height:130px;object-fit:contain;display:block;margin:auto';
+          img.addEventListener('error',function(){img.hidden=true});
+          card.appendChild(img);
+        }
+        const label=document.createElement('strong');label.textContent=title;
+        card.appendChild(label);
+        const sub=document.createElement('p');sub.textContent=subtitle;card.appendChild(sub);
+        if(earnedAt) {
+          const date=new Date(earnedAt);
+          if(!Number.isNaN(date.getTime())) {
+            const text=document.createElement('p');
+            text.textContent='Earned '+date.toLocaleDateString();
+            card.appendChild(text);
+          }
+        }
+        grid.appendChild(card);
+      }
+      const validFood=new Set(['bbq','asian','indian','wings','verde','fruit',
+        'caribbean','taco','breakfast','cajun','garlic','veggies','mexican',
+        'seasonings','condiments','snacks','seafood','mediterranean']);
+      foodAwards.forEach(function(a) {
+        const d=foodDefs.get(a.badge_code);
+        if(!d)return;
+        const slug=d.food_category;
+        addAward(d.badge_title,'Food Category · Level '+a.earned_level,
+          validFood.has(slug)?'assets/badges/food/badge-food-'+slug+'.png':null,a.earned_at);
+      });
+      const validCoins=new Set(['penny','nickel','dime','quarter','half-dollar','peace-dollar']);
+      coinAwards.forEach(function(a) {
+        const d=coinDefs.get(a.coin_code);
+        if(!d)return;
+        const code=String(a.coin_code).toLowerCase().replace(/_/g,'-').replace(/^coin-/,'');
+        addAward(d.coin_name,'Bottle Coin · Level '+a.earned_level,
+          validCoins.has(code)?'assets/badges/bottle-purchase-coins/badge-coin-'+code+'-obverse.png':null,
+          a.earned_at);
+      });
+      statusBox.appendChild(grid);
+    }).catch(function(error) {
+      console.error('Additional badge display failed',error);
+    });
     const controls = document.querySelector('.station-tabs');
     if (controls && !document.getElementById('pj-station-logout')) {
       const logout=document.createElement('button');
