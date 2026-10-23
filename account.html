@@ -260,7 +260,16 @@
           const u=await auth.verifiedUser();
           if (u) {
             await syncDisplayName(u);
-            await goStation();
+            // Do not automatically leave the account page on page load.
+            // Let a returning customer choose when to enter the Station.
+            show('signin');
+            message('You are already signed in. Select Continue to Passenger Station when you are ready.');
+            const continueButton = document.createElement('button');
+            continueButton.type = 'button';
+            continueButton.className = 'account-submit';
+            continueButton.textContent = 'Continue to Passenger Station';
+            continueButton.addEventListener('click', () => submitAction(goStation));
+            feedback.insertAdjacentElement('afterend', continueButton);
           }
         } catch(e) {message('Unable to check the current session. Please sign in.');}
       })();
