@@ -4971,7 +4971,7 @@ document.addEventListener('click',function(event){
       });
       status.textContent = awarded.length
         ? awarded.length + ' earned badge award' + (awarded.length === 1 ? '' : 's') + ' recorded for this account.'
-        : 'No earned badge awards are recorded for this account yet.';
+        : 'No Heat Identity awards are recorded for this account yet. Other badge families appear below when earned.';
       if (!awarded.length) return;
       const list = document.createElement('ul');
       list.style.cssText = 'list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;';
