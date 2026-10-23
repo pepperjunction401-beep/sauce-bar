@@ -4932,6 +4932,37 @@ document.addEventListener('click',function(event){
   auth.verifiedUser().then(function(user) {
     if (!user) {location.replace(auth.loginLocation());return;}
     document.body.hidden = false;
+    // Suppress the prototype collection until earned customer awards are rendered.
+    const depotFrame = document.getElementById('frame-depot');
+    if (depotFrame) depotFrame.hidden = true;
+    const depotPanel = document.getElementById('panel-depot');
+    const statusBox = document.createElement('section');
+    statusBox.id = 'pj-customer-badge-status';
+    statusBox.setAttribute('aria-live', 'polite');
+    statusBox.style.cssText = 'max-width:880px;margin:26px auto;padding:30px;border:1px solid #a8853f;background:#203522;color:#F5E6C8;font:16px Josefin Sans,Arial,sans-serif;line-height:1.6';
+    const heading = document.createElement('h2');
+    heading.textContent = 'Your Badge Depot';
+    const status = document.createElement('p');
+    status.textContent = 'Checking earned badges…';
+    statusBox.append(heading, status);
+    if (depotPanel) depotPanel.prepend(statusBox);
+    auth.client.from('pj_customer_badge_awards')
+      .select('*', { count: 'exact', head: true })
+      .eq('customer_id', user.id)
+      .then(function(result) {
+        if (result.error) {
+          console.error('Badge award query failed', result.error);
+          status.textContent = 'Your badge records could not be retrieved. No awards or loyalty balance have been assumed.';
+          return;
+        }
+        const count = Number.isFinite(result.count) ? result.count : 0;
+        status.textContent = count === 0
+          ? 'No earned badge records are available for this account yet.'
+          : count + ' earned badge record' + (count === 1 ? '' : 's') + ' found. Detailed awards are not yet available on this page.';
+      }).catch(function(error) {
+        console.error('Badge award connection failed', error);
+        status.textContent = 'Your badge records could not be retrieved.';
+      });
     const controls = document.querySelector('.station-tabs');
     if (controls && !document.getElementById('pj-station-logout')) {
       const logout=document.createElement('button');
