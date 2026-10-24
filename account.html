@@ -162,23 +162,36 @@
       if (matchFunction && api) {
         try {
           const user = await auth.verifiedUser();
-          if (user) {
-            const state = await api.from('customer_profiles')
-              .select('account_state').eq('id', user.id).maybeSingle();
-            if (state.error) throw state.error;
-            if (state.data && state.data.account_state === 'verified_unmatched') {
-              const result = await api.functions.invoke(matchFunction, {body:{}});
-              if (result.error) throw result.error;
-              // The trusted server owns identity matching and purchase recovery.
+          if (!user) { message('Please sign in to continue.'); return; }
+          const state = await api.from('customer_profiles')
+            .select('account_state').eq('id', user.id).maybeSingle();
+          if (state.error) throw state.error;
+          if (state.data && state.data.account_state === 'verified_unmatched') {
+            const result = await api.functions.invoke(matchFunction, {body:{}});
+            if (result.error) throw result.error;
+            const outcome = result.data && result.data.outcome;
+            if (outcome === 'matched') {
+              message('Square customer identity matched. Historical purchase recovery was requested. We will verify the imported records.');
+            } else if (outcome === 'no_match') {
+              message('Account verified. No matching Square customer record was found yet.');
+            } else if (outcome === 'review_required' || outcome === 'blocked_conflict') {
+              message('Account verified. Square matching needs owner review.');
+            } else {
+              message('Account verified. Square matching status: ' + String(outcome || 'unknown') + '.');
             }
+            return;
           }
+          message(state.data && state.data.account_state === 'verified_matched'
+            ? 'Account verified and linked to Square. Historical recovery status can be checked separately.'
+            : 'Account verified. Current status: ' + String((state.data && state.data.account_state) || 'unavailable') + '.');
+          return;
         } catch (error) {
           console.error('Phase 4 identity matching failed', error);
-          message('Account verified, but purchase matching could not complete. Please sign in again.');
+          message('Account verified, but Square matching could not complete. Please retry the sign-in.');
           return;
         }
       }
-      location.assign(auth.destination());
+      message('Account verified. Purchase matching is not enabled on this site.');
     }
     function normalizeUSPhone(input) {
       if (!input.trim()) return '';
