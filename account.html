@@ -153,46 +153,11 @@
       await api.from('customer_profiles').update({display_name:fullName}).eq('id',u.id);
     }
     async function goStation() {
-      // Select the identity matcher by the actual website hostname.
-      const hostname = location.hostname.toLowerCase();
-      const matchFunction = hostname === 'magnificent-nougat-609a6e.netlify.app'
-        ? 'square-sandbox-match'
-        : (hostname === 'pepperjunction401.com' || hostname === 'www.pepperjunction401.com')
-          ? 'square-production-match'
-          : null;
-      if (matchFunction && api) {
-        try {
-          const user = await auth.verifiedUser();
-          if (!user) { message('Please sign in to continue.'); return; }
-          const state = await api.from('customer_profiles')
-            .select('account_state').eq('id', user.id).maybeSingle();
-          if (state.error) throw state.error;
-          if (state.data && state.data.account_state === 'verified_unmatched') {
-            const result = await api.functions.invoke(matchFunction, {body:{}});
-            if (result.error) throw result.error;
-            const outcome = result.data && result.data.outcome;
-            if (outcome === 'matched') {
-              message('Square customer identity matched. Historical purchase recovery was requested. We will verify the imported records.');
-            } else if (outcome === 'no_match') {
-              message('Account verified. No matching Square customer record was found yet.');
-            } else if (outcome === 'review_required' || outcome === 'blocked_conflict') {
-              message('Account verified. Square matching needs owner review.');
-            } else {
-              message('Account verified. Square matching status: ' + String(outcome || 'unknown') + '.');
-            }
-            return;
-          }
-          message(state.data && state.data.account_state === 'verified_matched'
-            ? 'Account verified and linked to Square. Historical recovery status can be checked separately.'
-            : 'Account verified. Current status: ' + String((state.data && state.data.account_state) || 'unavailable') + '.');
-          return;
-        } catch (error) {
-          console.error('Phase 4 identity matching failed', error);
-          message('Account verified, but Square matching could not complete. Please retry the sign-in.');
-          return;
-        }
-      }
-      message('Account verified. Purchase matching is not enabled on this site.');
+      // Passenger Station has not yet been published to Main.
+      // Authenticated customers go directly to their existing Account Settings.
+      const u = await auth.verifiedUser();
+      if (!u) { message('Please sign in to continue.'); return; }
+      location.assign('account-settings.html');
     }
     function normalizeUSPhone(input) {
       if (!input.trim()) return '';
