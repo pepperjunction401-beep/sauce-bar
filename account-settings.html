@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pepper Junction — Account Settings</title>
+<style>
+:root{color-scheme:dark;font-family:Georgia,serif;background:#1b1510;color:#f7e9d0}*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#443022,#1b1510 75%)}
+header{max-width:960px;margin:auto;padding:24px 24px 12px;display:flex;justify-content:space-between;align-items:center;gap:18px}
+header a{color:#eec783;text-decoration:none}main{max-width:960px;margin:12px auto 60px;padding:30px;background:#271c16;border:1px solid #886b49;border-radius:16px;box-shadow:0 12px 38px #0006}h1{margin:0;font-size:clamp(1.65rem,3vw,2.6rem)}h2{color:#eac48f}p,small{line-height:1.6;color:#dcc9ad}section{padding:18px 0;border-bottom:1px solid #5c4837}section:last-child{border:0}
+label{display:block;margin:15px 0 6px;font-weight:bold}input{width:100%;padding:13px;border-radius:7px;background:#f8f2e8;color:#241a12;border:1px solid #b9a48d;font:inherit}input[disabled]{opacity:.7}
+button{padding:12px 20px;margin-top:14px;border-radius:7px;background:#bb8d51;color:#1e150e;border:0;cursor:pointer;font-weight:bold}button:disabled{opacity:.55;cursor:default}
+.notice{padding:14px;border-left:3px solid #d4aa74;background:#3a2a20}.status{margin:14px 0;padding:12px;background:#163b29;color:#e0f5e5;border-radius:8px}.error{background:#532626;color:#fff2e8}.hidden{display:none}@media(max-width:960px){main{margin:12px 16px;padding:20px}header{padding:20px}}
+</style></head>
+<body><header><div><small>PEPPER JUNCTION · PASSENGER STATION</small><h1>Account Settings</h1></div><a id="return-link" href="account.html">← Account</a></header>
+<main id="settings" hidden>
+<p>Your account information is yours to maintain. Your verified email is currently read-only.</p>
+<div id="status" role="status" aria-live="polite" class="hidden"></div>
+<section><h2>Personal Information</h2>
+<label for="display-name">Name</label><input id="display-name" autocomplete="name" maxlength="160">
+<button id="save-name" type="button">Save Name</button>
+<label for="email">Verified Email — Read Only</label><input id="email" type="email" disabled>
+<label for="phone">Phone Number (Optional)</label><input id="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(401) 555-0123">
+<small>Your phone number helps identify past Pepper Junction purchases and loyalty history in Square.</small>
+<div class="notice" id="contact-warning"><strong>Important: Changes to Your Account Information</strong>
+<p>Changing or removing identifying information may affect your purchase history, loyalty activity, badges, rewards, and other achievements. Although Pepper Junction is designed to preserve existing account history, we cannot guarantee that all information or account connections will remain accessible or recoverable after changes. Some information may be permanently lost or unavailable for recovery. Pepper Junction cannot guarantee restoration following customer-initiated changes.</p></div>
+<button id="save-phone" type="button">Save Phone Number</button>
+</section>
+<section><h2>Account Security</h2><label for="new-password">New Password</label><input id="new-password" type="password" autocomplete="new-password" minlength="8">
+<label for="confirm-password">Confirm New Password</label><input id="confirm-password" type="password" autocomplete="new-password" minlength="8">
+<button id="save-password" type="button">Change Password</button></section>
+<section><button id="sign-out" type="button">Sign Out</button></section></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="assets/js/pj-auth.js"></script>
+<script>
+(async function(){
+'use strict';
+const a=window.PJAuth, el=id=>document.getElementById(id), api=a&&a.client;
+if(!api){location.replace('account.html');return;}
+const user=await a.verifiedUser();
+if(!user){location.replace('account.html?return=station');return;}
+el('settings').hidden=false;el('email').value=user.email||'';
+el('phone').value=String(user.user_metadata?.pending_phone||'');
+const profile=await api.from('customer_profiles').select('display_name').eq('id',user.id).maybeSingle();
+if(!profile.error&&profile.data)el('display-name').value=profile.data.display_name||user.user_metadata?.full_name||'';
+const show=(msg,isError=false)=>{const e=el('status');e.textContent=msg;e.className='status'+(isError?' error':'');e.scrollIntoView({behavior:'smooth',block:'nearest'});};
+function phoneNormalize(v){const digits=v.replace(/\D/g,'');if(!v.trim())return '';if(digits.length===10)return '+1'+digits;if(digits.length===11&&digits[0]==='1')return '+'+digits;throw Error('Enter a valid US phone number, or leave it empty.');}
+async function save(id,fn){const b=el(id);b.disabled=true;try{await fn();}catch(e){show(e.message||'Unable to save the change.',true)}finally{b.disabled=false}}
+el('save-name').onclick=()=>save('save-name',async()=>{const name=el('display-name').value.trim();if(!name)throw Error('Enter a name.');const r=await api.from('customer_profiles').update({display_name:name}).eq('id',user.id);if(r.error)throw r.error;show('Name saved.');});
+el('save-phone').onclick=()=>save('save-phone',async()=>{
+const phone=phoneNormalize(el('phone').value);const old=String(user.user_metadata?.pending_phone||'');
+if(phone===old){show('Phone number is unchanged.');return;}
+if(old && !window.confirm('Changing or removing your phone number may make historical purchases, loyalty history, or achievements unavailable. Continue?'))return;
+const r=await api.auth.updateUser({data:{pending_phone:phone||null}});
+if(r.error)throw r.error;
+user.user_metadata={...(user.user_metadata||{}),pending_phone:phone||null};
+show('Phone information saved. Checking the Square customer connection…');
+const p=await api.from('customer_profiles').select('account_state').eq('id',user.id).maybeSingle();
+if(p.error)throw p.error;
+if(p.data?.account_state==='verified_unmatched'){
+const match=location.hostname==='pepperjunction401.com'||location.hostname==='www.pepperjunction401.com'?'square-production-match':location.hostname==='magnificent-nougat-609a6e.netlify.app'?'square-sandbox-match':null;
+if(!match){show('Phone saved. Matching will run when you return to the official site.');return;}
+const result=await api.functions.invoke(match,{body:{}});
+if(result.error){show('Phone saved, but Square matching could not complete. You can retry by signing in again.',true);return;}
+const outcome=result.data?.outcome;
+show(outcome==='matched'?'Phone saved. Square customer identity matched; history recovery requested.':outcome==='no_match'?'Phone saved. No Square customer match found yet.':outcome==='review_required'||outcome==='blocked_conflict'?'Phone saved. Square matching requires owner review.':'Phone saved. Square matching status: '+String(outcome||'unknown'));
+}else show('Phone number saved. Existing Square account connections remain preserved.');
+});
+el('save-password').onclick=()=>save('save-password',async()=>{const p=el('new-password').value;if(p.length<8)throw Error('Enter at least eight characters.');if(p!==el('confirm-password').value)throw Error('Passwords do not match.');const r=await api.auth.updateUser({password:p});if(r.error)throw r.error;el('new-password').value='';el('confirm-password').value='';show('Password updated.');});
+el('sign-out').onclick=async()=>{await a.signOut();location.replace('account.html');};
+if(location.pathname.includes('passenger-station'))el('return-link').href='passenger-station.html';
+})();
+</script></body></html>
