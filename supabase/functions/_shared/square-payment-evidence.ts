@@ -35,7 +35,7 @@ export function fullyPaidOpenSquareOrder(args: {
   const currency = order.total_money?.currency;
   if (order.state !== "OPEN" || !order.id || !currency ||
       order.location_id !== requiredLocationId ||
-      !Number.isSafeInteger(expected) || (expected as number) <= 0 ||
+      typeof expected !== "number" || !Number.isSafeInteger(expected) || expected <= 0 ||
       payments.length === 0) return false;
   let paid = 0;
   const seen = new Set<string>();
@@ -45,9 +45,9 @@ export function fullyPaidOpenSquareOrder(args: {
         (acceptedCustomerId && payment.customer_id !== acceptedCustomerId)) return false;
     seen.add(payment.id);
     const amount = payment.total_money?.amount ?? payment.amount_money?.amount;
-    if (!Number.isSafeInteger(amount) || (amount as number) <= 0 ||
+    if (typeof amount !== "number" || !Number.isSafeInteger(amount) || amount <= 0 ||
         (payment.total_money?.currency ?? payment.amount_money?.currency) !== currency) return false;
-    paid += amount as number;
+    paid += amount;
   }
   return paid === expected;
 }
