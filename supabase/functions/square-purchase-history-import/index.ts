@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { fullyPaidOpenSquareOrder, squarePaymentIds } from "../_shared/square-payment-evidence.ts";
 
 const SQUARE_BASE_URL = "https://connect.squareup.com";
 const SQUARE_VERSION = "2026-09-16";
@@ -460,18 +461,12 @@ Deno.serve(async (req: Request) => {
       // Existing COMPLETED-order discovery retains its established semantics.
       // An OPEN order qualifies ONLY when accepted-customer payments fully cover
       // the order total in the same currency; no partial-paid orders allowed.
-      const orderTotalCents = order.total_money?.amount;
-      const paymentTotalCents = verifiedPayments.reduce((sum, p) => sum + (p.total_money?.amount ?? p.amount_money?.amount ?? 0), 0);
-      const fullyPaidOpenOrder = order.state === "OPEN" &&
-        typeof orderTotalCents === "number" && orderTotalCents > 0 &&
-        paymentTotalCents === orderTotalCents &&
-        verifiedPayments.length > 0 &&
-        verifiedPayments.every((p) =>
-          p.status === "COMPLETED" &&
-          p.customer_id === matchedSquareCustomerId &&
-          p.location_id === order.location_id &&
-          (p.total_money?.currency ?? p.amount_money?.currency) === order.total_money?.currency
-        );
+      const fullyPaidOpenOrder = fullyPaidOpenSquareOrder({
+        order,
+        payments: verifiedPayments,
+        acceptedCustomerId: matchedSquareCustomerId,
+        requiredLocationId: squareLocationId,
+      });
       if (order.state !== "COMPLETED" && !fullyPaidOpenOrder) {
         skipped += 1;
         await admin.from("purchase_import_events").insert({
@@ -495,10 +490,7 @@ Deno.serve(async (req: Request) => {
         continue;
       }
 
-      const paymentIds = Array.from(new Set(
-        [...(order.tenders ?? []).map((t) => t.payment_id), ...verifiedPayments.map((p) => p.id)]
-          .filter((v): v is string => typeof v === "string" && v.length > 0)
-      ));
+      const paymentIds = squarePaymentIds(order.tenders, verifiedPayments);
 
       const destination = shippingDestination(order);
       const normalizedLines: any[] = [];
