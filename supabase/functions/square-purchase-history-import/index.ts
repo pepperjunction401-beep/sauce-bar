@@ -105,7 +105,7 @@ Deno.serve(async (req: Request) => {
   // A Testing function may not silently use a Production Supabase URL.
   const functionHost = new URL(req.url).hostname;
   const configuredHost = new URL(supabaseUrl).hostname;
-  if (!/^[a-z0-9]+\\.supabase\\.co$/.test(functionHost) || configuredHost !== functionHost) {
+  if (!/^[a-z0-9]+[.]supabase[.]co$/.test(functionHost) || configuredHost !== functionHost) {
     return json({ error: "Supabase project environment mismatch; import refused" }, 503);
   }
   if (!squareToken || !squareLocationId) {
