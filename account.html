@@ -50,7 +50,6 @@
       <p class="pj-eyebrow">Your Ticket to the Depot</p>
       <h1>Welcome Aboard</h1>
       <p class="account-lead">Create your Pepper Junction account to collect your earned badges, track your progress, and find your way back to your favorite flavors. Already riding with us? Sign in.</p>
-      <p style="margin:0 0 22px"><a href="account-settings.html" style="color:#e8c184;text-decoration:underline;font-weight:700">⚙ Account Settings — update name, phone, or password</a></p>
       <div class="account-preview" role="note" id="account-preview" hidden>External preview only. For your security, real account credentials are accepted only on an official Pepper Junction website or trusted local development environment.</div>
       <div class="account-tabs" role="tablist" aria-label="Account action">
         <button class="account-tab" type="button" role="tab" id="tab-create" aria-selected="true" aria-controls="panel-create">Create Account</button>
@@ -153,11 +152,33 @@
       await api.from('customer_profiles').update({display_name:fullName}).eq('id',u.id);
     }
     async function goStation() {
-      // Passenger Station has not yet been published to Main.
-      // Authenticated customers go directly to their existing Account Settings.
-      const u = await auth.verifiedUser();
-      if (!u) { message('Please sign in to continue.'); return; }
-      location.assign('account-settings.html');
+      // Select the identity matcher by the actual website hostname.
+      const hostname = location.hostname.toLowerCase();
+      const matchFunction = hostname === 'magnificent-nougat-609a6e.netlify.app'
+        ? 'square-sandbox-match'
+        : (hostname === 'pepperjunction401.com' || hostname === 'www.pepperjunction401.com')
+          ? 'square-production-match'
+          : null;
+      if (matchFunction && api) {
+        try {
+          const user = await auth.verifiedUser();
+          if (user) {
+            const state = await api.from('customer_profiles')
+              .select('account_state').eq('id', user.id).maybeSingle();
+            if (state.error) throw state.error;
+            if (state.data && state.data.account_state === 'verified_unmatched') {
+              const result = await api.functions.invoke(matchFunction, {body:{}});
+              if (result.error) throw result.error;
+              // The trusted server owns identity matching and purchase recovery.
+            }
+          }
+        } catch (error) {
+          console.error('Phase 4 identity matching failed', error);
+          message('Account verified, but purchase matching could not complete. Please sign in again.');
+          return;
+        }
+      }
+      location.assign(auth.destination());
     }
     function normalizeUSPhone(input) {
       if (!input.trim()) return '';
