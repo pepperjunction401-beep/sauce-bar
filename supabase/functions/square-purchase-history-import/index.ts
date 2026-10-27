@@ -1,0 +1,617 @@
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "npm:@supabase/supabase-js@2";
+
+const SQUARE_BASE_URL = "https://connect.squareup.com";
+const SQUARE_VERSION = "2026-09-16";
+
+type SquareMoney = { amount?: number; currency?: string };
+type SquareTender = { payment_id?: string; customer_id?: string };
+type SquareAddress = { administrative_district_level_1?: string; country?: string };
+type SquareFulfillment = { shipment_details?: { recipient?: { address?: SquareAddress } } };
+type SquareLine = {
+  uid?: string;
+  catalog_object_id?: string;
+  catalog_version?: number;
+  quantity?: string;
+  name?: string;
+  variation_name?: string;
+  base_price_money?: SquareMoney;
+  total_money?: SquareMoney;
+};
+type SquareOrder = {
+  id?: string;
+  customer_id?: string;
+  location_id?: string;
+  state?: string;
+  created_at?: string;
+  updated_at?: string;
+  closed_at?: string;
+  total_money?: SquareMoney;
+  tenders?: SquareTender[];
+  line_items?: SquareLine[];
+  fulfillments?: SquareFulfillment[];
+};
+type CatalogObject = {
+  type?: string;
+  id?: string;
+  item_variation_data?: { item_id?: string };
+};
+
+function json(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+function serviceRoleAuthorized(authHeader: string | null, apiKeyHeader: string | null) {
+  const presented = new Set<string>();
+
+  if (authHeader?.startsWith("Bearer ")) {
+    presented.add(authHeader.slice(7));
+  }
+  if (apiKeyHeader) {
+    presented.add(apiKeyHeader);
+  }
+
+  const candidates = new Set<string>();
+
+  for (const name of [
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_SECRET_KEY",
+  ]) {
+    const value = Deno.env.get(name);
+    if (value) candidates.add(value);
+  }
+
+  const secretKeysRaw = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (secretKeysRaw) {
+    try {
+      const parsed = JSON.parse(secretKeysRaw);
+      const stack: unknown[] = [parsed];
+
+      while (stack.length > 0) {
+        const current = stack.pop();
+
+        if (typeof current === "string") {
+          candidates.add(current);
+          continue;
+        }
+
+        if (Array.isArray(current)) {
+          for (const value of current) stack.push(value);
+          continue;
+        }
+
+        if (current && typeof current === "object") {
+          for (const value of Object.values(current as Record<string, unknown>)) {
+            stack.push(value);
+          }
+        }
+      }
+    } catch {
+      return false;
+    }
+  }
+
+  for (const value of presented) {
+    if (candidates.has(value)) return true;
+  }
+  return false;
+}
+
+async function squarePost(path: string, token: string, body: unknown) {
+  const res = await fetch(SQUARE_BASE_URL + path, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+      "Square-Version": SQUARE_VERSION,
+    },
+    body: JSON.stringify(body),
+  });
+  const payload = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error("Square " + path + " failed (" + res.status + "): " + JSON.stringify(payload));
+  }
+  return payload;
+}
+
+function chunks<T>(values: T[], size: number) {
+  const out: T[][] = [];
+  for (let i = 0; i < values.length; i += size) out.push(values.slice(i, i + size));
+  return out;
+}
+
+function shippingDestination(order: SquareOrder) {
+  for (const f of order.fulfillments ?? []) {
+    const address = f.shipment_details?.recipient?.address;
+    if (address?.administrative_district_level_1 || address?.country) {
+      return {
+        destination_region: address.administrative_district_level_1 ?? null,
+        destination_country_code: address.country ?? null,
+      };
+    }
+  }
+  return { destination_region: null, destination_country_code: null };
+}
+
+Deno.serve(async (req: Request) => {
+  if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
+  if (!serviceRoleAuthorized(req.headers.get("Authorization"), req.headers.get("apikey"))) {
+    return json({ error: "Service-role authorization required" }, 403);
+  }
+
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const squareToken = Deno.env.get("SQUARE_PRODUCTION_ACCESS_TOKEN");
+  const squareLocationId = Deno.env.get("SQUARE_PEPPER_JUNCTION_LOCATION_ID");
+
+  if (!supabaseUrl || !serviceRoleKey) return json({ error: "Supabase environment incomplete" }, 500);
+  if (!squareToken || !squareLocationId) {
+    return json({ error: "Square production transaction import is not configured" }, 503);
+  }
+
+  const body = await req.json().catch(() => ({}));
+  const customerId = typeof body?.customer_id === "string" ? body.customer_id : null;
+  if (!customerId) return json({ error: "customer_id is required" }, 400);
+
+  const historyReason = typeof body?.history_reason === "string"
+    ? body.history_reason
+    : "bootstrap";
+  const allowedHistoryReasons = new Set([
+    "bootstrap",
+    "failed_retry",
+    "identity_correction",
+    "new_alias",
+    "repair",
+  ]);
+  if (!allowedHistoryReasons.has(historyReason)) {
+    return json({ error: "history_reason is invalid" }, 400);
+  }
+
+  const admin = createClient(supabaseUrl, serviceRoleKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+
+  const { data: profile, error: profileError } = await admin
+    .from("customer_profiles")
+    .select("id, account_state")
+    .eq("id", customerId)
+    .maybeSingle();
+
+  if (profileError) return json({ error: "Unable to read customer identity state" }, 500);
+  if (!profile) return json({ error: "Customer not found" }, 404);
+
+  if (profile.account_state === "verified_matched") {
+    const { data: priorSuccess, error: priorSuccessError } = await admin
+      .from("purchase_import_runs")
+      .select("id, completed_at")
+      .eq("customer_id", customerId)
+      .eq("import_mode", "history_import")
+      .eq("status", "succeeded")
+      .order("completed_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (priorSuccessError) {
+      return json({ error: "Unable to read prior history import state" }, 500);
+    }
+
+    if (priorSuccess && historyReason === "bootstrap") {
+      return json({
+        status: "blocked",
+        reason: "history_bootstrap_already_completed",
+        prior_import_run_id: priorSuccess.id,
+      }, 409);
+    }
+
+    if (historyReason === "failed_retry") {
+      const { data: priorRetryable, error: priorRetryableError } = await admin
+        .from("purchase_import_runs")
+        .select("id")
+        .eq("customer_id", customerId)
+        .eq("import_mode", "history_import")
+        .in("status", ["failed", "partial_error"])
+        .limit(1)
+        .maybeSingle();
+
+      if (priorRetryableError) {
+        return json({ error: "Unable to read retryable history import state" }, 500);
+      }
+      if (!priorRetryable) {
+        return json({ status: "blocked", reason: "no_failed_history_import_to_retry" }, 409);
+      }
+    }
+  }
+
+  if (profile.account_state !== "verified_matched") {
+    const { data: blockedRun } = await admin
+      .from("purchase_import_runs")
+      .insert({
+        customer_id: customerId,
+        import_mode: "history_import",
+        history_reason: historyReason,
+        status: "blocked",
+        transactions_blocked: 1,
+        completed_at: new Date().toISOString(),
+        error_summary: "Phase 1 identity state is not verified_matched",
+      })
+      .select("id")
+      .single();
+
+    return json({
+      status: "blocked",
+      reason: "Customer is not Phase 1 verified_matched",
+      import_run_id: blockedRun?.id ?? null,
+    }, 409);
+  }
+
+  const { data: linkRows, error: linksError } = await admin
+    .from("square_customer_links")
+    .select("square_customer_id, is_active, is_historical_alias")
+    .eq("customer_id", customerId);
+
+  if (linksError) return json({ error: "Unable to read accepted Square identities" }, 500);
+
+  const acceptedIds = Array.from(new Set(
+    (linkRows ?? [])
+      .filter((r: any) => r.is_active === true || r.is_historical_alias === true)
+      .map((r: any) => r.square_customer_id)
+      .filter((v: unknown): v is string => typeof v === "string" && v.length > 0)
+  ));
+
+  if (acceptedIds.length === 0) {
+    const { data: blockedRun } = await admin
+      .from("purchase_import_runs")
+      .insert({
+        customer_id: customerId,
+        import_mode: "history_import",
+        history_reason: historyReason,
+        status: "blocked",
+        square_customer_ids: [],
+        transactions_blocked: 1,
+        completed_at: new Date().toISOString(),
+        error_summary: "No accepted Square customer identity is available",
+      })
+      .select("id")
+      .single();
+
+    return json({
+      status: "blocked",
+      reason: "No accepted Square customer identity is available",
+      import_run_id: blockedRun?.id ?? null,
+    }, 409);
+  }
+
+  const { data: run, error: runError } = await admin
+    .from("purchase_import_runs")
+    .insert({
+      customer_id: customerId,
+      import_mode: "history_import",
+      history_reason: historyReason,
+      status: "running",
+      square_customer_ids: acceptedIds,
+    })
+    .select("id")
+    .single();
+
+  if (runError || !run) return json({ error: "Unable to start purchase import run" }, 500);
+
+  const finishRun = async (values: Record<string, unknown>) => {
+    await admin.from("purchase_import_runs").update({
+      ...values,
+      completed_at: new Date().toISOString(),
+    }).eq("id", run.id);
+  };
+
+  try {
+    const ordersById = new Map<string, SquareOrder>();
+    // Preserve the accepted Square ID used to retrieve each order.
+    const discoveryCustomerByOrder = new Map<string, string>();
+
+    for (const discoveryCustomerId of acceptedIds) {
+      let cursor: string | undefined;
+      do {
+        const payload = await squarePost("/v2/orders/search", squareToken, {
+          location_ids: [squareLocationId],
+          return_entries: false,
+          limit: 500,
+          cursor,
+          query: {
+            filter: {
+              customer_filter: { customer_ids: [discoveryCustomerId] },
+              state_filter: { states: ["COMPLETED"] },
+            },
+            sort: { sort_field: "CLOSED_AT", sort_order: "ASC" },
+          },
+        });
+
+        for (const order of (payload.orders ?? []) as SquareOrder[]) {
+          if (order.id) {
+            ordersById.set(order.id, order);
+            if (!discoveryCustomerByOrder.has(order.id)) discoveryCustomerByOrder.set(order.id, discoveryCustomerId);
+          }
+        }
+        cursor = payload.cursor || undefined;
+      } while (cursor);
+    }
+
+    const orders = Array.from(ordersById.values());
+
+    const catalogIds = Array.from(new Set(
+      orders.flatMap((o) => (o.line_items ?? [])
+        .map((l) => l.catalog_object_id)
+        .filter((v): v is string => typeof v === "string" && v.length > 0))
+    ));
+
+    const catalogById = new Map<string, CatalogObject>();
+    for (const catalogBatch of chunks(catalogIds, 100)) {
+      const payload = await squarePost("/v2/catalog/batch-retrieve", squareToken, {
+        object_ids: catalogBatch,
+        include_related_objects: false,
+      });
+      for (const obj of (payload.objects ?? []) as CatalogObject[]) {
+        if (obj.id) catalogById.set(obj.id, obj);
+      }
+    }
+
+    const { data: mappings, error: mappingsError } = await admin
+      .from("square_product_mappings")
+      .select("product_id, square_item_library_token");
+    if (mappingsError) throw new Error("Unable to read PJ-to-Square product mappings");
+
+    const productBySquareToken = new Map<string, string>();
+    for (const m of mappings ?? []) {
+      productBySquareToken.set(m.square_item_library_token, m.product_id);
+    }
+
+    const productIds = Array.from(new Set((mappings ?? []).map((m: any) => m.product_id)));
+    const slugByProductId = new Map<string, string>();
+    if (productIds.length) {
+      const { data: products, error: productsError } = await admin
+        .from("pj_products")
+        .select("id, cns_slug")
+        .in("id", productIds);
+      if (productsError) throw new Error("Unable to read PJ product identities");
+      for (const p of products ?? []) slugByProductId.set(p.id, p.cns_slug);
+    }
+
+    const acceptedSet = new Set(acceptedIds);
+    let inserted = 0;
+    let refreshed = 0;
+    let skipped = 0;
+    let blocked = 0;
+    let failed = 0;
+    let historicalProductLinesSkipped = 0;
+
+    for (const order of orders) {
+      const orderId = order.id!;
+      // Square returned this completed-order candidate from a search explicitly
+      // filtered by a previously accepted Phase 1 Square customer ID.
+      // The order and its tenders need not independently repeat that ID.
+      const matchedSquareCustomerId = discoveryCustomerByOrder.get(orderId);
+      if (!matchedSquareCustomerId || !acceptedSet.has(matchedSquareCustomerId)) {
+        blocked += 1;
+        await admin.from("purchase_import_events").insert({
+          import_run_id: run.id,
+          square_order_id: orderId,
+          event_result: "blocked",
+          reason: "order_missing_accepted_search_provenance",
+          safe_detail: "Order was not retrieved through an accepted Square customer search.",
+        });
+        continue;
+      }
+
+      if (order.state !== "COMPLETED") {
+        skipped += 1;
+        await admin.from("purchase_import_events").insert({
+          import_run_id: run.id,
+          square_order_id: orderId,
+          event_result: "skipped",
+          reason: "square_order_not_completed",
+        });
+        continue;
+      }
+
+      const totalAmountCents = order.total_money?.amount;
+      if (typeof totalAmountCents !== "number" || totalAmountCents < 0) {
+        failed += 1;
+        await admin.from("purchase_import_events").insert({
+          import_run_id: run.id,
+          square_order_id: orderId,
+          event_result: "failed",
+          reason: "square_order_total_invalid",
+        });
+        continue;
+      }
+
+      const paymentIds = Array.from(new Set(
+        (order.tenders ?? [])
+          .map((t) => t.payment_id)
+          .filter((v): v is string => typeof v === "string" && v.length > 0)
+      ));
+
+      const destination = shippingDestination(order);
+      const normalizedLines: any[] = [];
+      let lineFailure = false;
+
+      for (const line of order.line_items ?? []) {
+        if (!line.uid) {
+          lineFailure = true;
+          break;
+        }
+
+        const quantity = Number(line.quantity);
+        const lineTotalCents = line.total_money?.amount;
+        if (!Number.isFinite(quantity) || quantity <= 0 || typeof lineTotalCents !== "number" || lineTotalCents < 0) {
+          lineFailure = true;
+          break;
+        }
+
+        const catalogId = line.catalog_object_id ?? null;
+        const catalog = catalogId ? catalogById.get(catalogId) : undefined;
+
+        let squareItemId: string | null = null;
+        let squareVariationId: string | null = null;
+        let mappingToken: string | null = null;
+
+        if (catalog?.type === "ITEM_VARIATION") {
+          squareVariationId = catalog.id ?? catalogId;
+          squareItemId = catalog.item_variation_data?.item_id ?? null;
+          mappingToken = squareItemId ?? squareVariationId;
+        } else if (catalog?.type === "ITEM") {
+          squareItemId = catalog.id ?? catalogId;
+          mappingToken = squareItemId;
+        } else if (catalogId) {
+          mappingToken = catalogId;
+        }
+
+        const variationProduct = squareVariationId ? productBySquareToken.get(squareVariationId) : undefined;
+        const parentProduct = squareItemId ? productBySquareToken.get(squareItemId) : undefined;
+        const directProduct = catalogId ? productBySquareToken.get(catalogId) : undefined;
+        const matches = [...new Set([variationProduct,parentProduct,directProduct].filter((id): id is string => Boolean(id)))];
+        if (matches.length > 1) throw new Error("Conflicting Square-to-CNS product mapping");
+        const productId = matches[0] ?? null;
+        const cnsSlug = productId ? (slugByProductId.get(productId) ?? null) : null;
+
+        if (!productId) {
+          historicalProductLinesSkipped += 1;
+          continue;
+        }
+
+        normalizedLines.push({
+          product_id: productId,
+          square_catalog_object_id: catalogId,
+          square_item_id: squareItemId,
+          square_variation_id: squareVariationId,
+          square_line_item_uid: line.uid,
+          cns_slug_snapshot: cnsSlug,
+          quantity,
+          unit_amount: typeof line.base_price_money?.amount === "number"
+            ? line.base_price_money.amount / 100
+            : null,
+          line_total_amount: lineTotalCents / 100,
+          currency_code: line.total_money?.currency ?? order.total_money?.currency ?? "USD",
+          pj_credits_rate_snapshot: null,
+          classification_snapshot: null,
+          source_product_snapshot: {
+            square_name: line.name ?? null,
+            square_variation_name: line.variation_name ?? null,
+            catalog_object_id: catalogId,
+            catalog_version: line.catalog_version ?? null,
+            mapping_status: "mapped",
+          },
+        });
+      }
+
+      if (lineFailure) {
+        failed += 1;
+        await admin.from("purchase_import_events").insert({
+          import_run_id: run.id,
+          square_order_id: orderId,
+          event_result: "failed",
+          reason: "invalid_line_item_shape",
+        });
+        continue;
+      }
+
+      if (normalizedLines.length === 0) {
+        skipped += 1;
+        await admin.from("purchase_import_events").insert({
+          import_run_id: run.id,
+          square_order_id: orderId,
+          event_result: "skipped",
+          reason: "historical_order_contains_no_current_cns_products",
+          safe_detail: "Square-confirmed history was checked, but no line item mapped to an existing current Pepper Junction CNS/PJ product. Nothing from this order was imported.",
+        });
+        continue;
+      }
+
+      const { data: recorded, error: recordError } = await admin.rpc("record_square_purchase", {
+        p_import_run_id: run.id,
+        p_customer_id: customerId,
+        p_square_customer_id: matchedSquareCustomerId,
+        p_order: {
+          square_order_id: orderId,
+          square_payment_id: paymentIds.length === 1 ? paymentIds[0] : null,
+          square_payment_ids: paymentIds,
+          square_location_id: order.location_id ?? squareLocationId,
+          total_amount: totalAmountCents / 100,
+          currency_code: order.total_money?.currency ?? "USD",
+          completed_at: order.closed_at ?? order.updated_at ?? null,
+          square_created_at: order.created_at ?? null,
+          square_updated_at: order.updated_at ?? null,
+          ...destination,
+        },
+        p_lines: normalizedLines,
+      });
+
+      if (recordError) {
+        failed += 1;
+        await admin.from("purchase_import_events").insert({
+          import_run_id: run.id,
+          square_payment_id: paymentIds.length === 1 ? paymentIds[0] : null,
+          square_order_id: orderId,
+          event_result: "failed",
+          reason: "atomic_purchase_record_failed",
+          safe_detail: recordError.message,
+        });
+        continue;
+      }
+
+      const result = recorded?.result;
+      if (result === "inserted") inserted += 1;
+      else if (result === "refreshed") refreshed += 1;
+      else if (result === "conflict") {
+        blocked += 1;
+        continue;
+      } else {
+        skipped += 1;
+        continue;
+      }
+
+    }
+
+    const status = failed > 0 ? (inserted + refreshed > 0 ? "partial_error" : "failed")
+      : blocked > 0 ? "partial_error"
+      : "succeeded";
+
+    await finishRun({
+      status,
+      transactions_seen: orders.length,
+      transactions_inserted: inserted,
+      transactions_refreshed: refreshed,
+      transactions_skipped: skipped,
+      transactions_blocked: blocked,
+      transactions_failed: failed,
+      historical_product_lines_skipped: historicalProductLinesSkipped,
+      error_summary: failed || blocked
+        ? JSON.stringify({ blocked, failed })
+        : null,
+    });
+
+    return json({
+      status,
+      import_run_id: run.id,
+      transactions_seen: orders.length,
+      transactions_inserted: inserted,
+      transactions_refreshed: refreshed,
+      transactions_skipped: skipped,
+      transactions_blocked: blocked,
+      transactions_failed: failed,
+      historical_product_lines_skipped: historicalProductLinesSkipped,
+    }, status === "failed" ? 502 : 200);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    await finishRun({
+      status: "failed",
+      error_summary: message,
+    });
+    return json({
+      error: "Purchase history import failed",
+      import_run_id: run.id,
+      detail: message,
+    }, 502);
+  }
+});
