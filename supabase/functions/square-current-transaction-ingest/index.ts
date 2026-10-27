@@ -174,8 +174,19 @@ Deno.serve(async (req: Request) => {
     const order = orderPayload?.order as Order | undefined;
 
     if (!order?.id) throw new Error("Square order response did not include order");
-    if (order.state !== "COMPLETED") {
-      return json({ status: "ignored", reason: "square_order_not_completed" });
+    // Square-hosted checkout can leave a paid order OPEN. Accept that state
+    // ONLY when the exact Square payment was retrieved and fully captured.
+    const paymentTotal = payment?.total_money?.amount ?? payment?.amount_money?.amount;
+    const paidOpenOrder = order.state === "OPEN" &&
+      payment?.status === "COMPLETED" &&
+      payment?.order_id === order.id &&
+      payment?.location_id === squareLocationId &&
+      typeof order.total_money?.amount === "number" &&
+      order.total_money.amount > 0 &&
+      paymentTotal === order.total_money.amount &&
+      (payment?.total_money?.currency ?? payment?.amount_money?.currency) === order.total_money.currency;
+    if (order.state !== "COMPLETED" && !paidOpenOrder) {
+      return json({ status: "ignored", reason: "square_order_not_completed_or_fully_paid" });
     }
     if (order.location_id && order.location_id !== squareLocationId) {
       return json({ status: "ignored", reason: "different_square_location" });
