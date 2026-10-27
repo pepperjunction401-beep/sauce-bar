@@ -176,6 +176,9 @@ Deno.serve(async (req: Request) => {
     const order = orderPayload?.order as Order | undefined;
 
     if (!order?.id) throw new Error("Square order response did not include order");
+    if (payment && payment.order_id !== order.id) {
+      throw new Error("Square payment is not linked to the supplied order");
+    }
     // Square-hosted checkout can leave a paid order OPEN. Accept that state
     // ONLY when the exact Square payment was retrieved and fully captured.
     const paidOpenOrder = fullyPaidOpenSquareOrder({
