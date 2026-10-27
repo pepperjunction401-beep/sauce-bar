@@ -1,0 +1,26 @@
+name: Phase 2 shared importer regression checks
+on:
+  push:
+    branches: [Sauce-Bar-Dev]
+    paths:
+      - 'supabase/functions/_shared/square-payment-evidence.ts'
+      - 'supabase/functions/_shared/square-payment-evidence_test.ts'
+      - 'supabase/functions/_shared/square-product-identity.ts'
+      - 'supabase/functions/_shared/square-product-identity_test.ts'
+      - '.github/workflows/phase2-shared-regression.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Type check shared components
+        run: deno check supabase/functions/_shared/square-payment-evidence.ts supabase/functions/_shared/square-product-identity.ts
+      - name: Run isolated regression tests
+        run: deno test --no-prompt supabase/functions/_shared/square-payment-evidence_test.ts supabase/functions/_shared/square-product-identity_test.ts
