@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { resolveSquareProduct } from "../_shared/square-product-identity.ts";
 import { fullyPaidOpenSquareOrder, squarePaymentIds } from "../_shared/square-payment-evidence.ts";
 
 const SQUARE_BASE_URL = "https://connect.squareup.com";
@@ -304,27 +305,7 @@ Deno.serve(async (req: Request) => {
       const catalogId = line.catalog_object_id ?? null;
       const catalog = catalogId ? catalogById.get(catalogId) : undefined;
 
-      let squareItemId: string | null = null;
-      let squareVariationId: string | null = null;
-      let mappingToken: string | null = null;
-
-      if (catalog?.type === "ITEM_VARIATION") {
-        squareVariationId = catalog.id ?? catalogId;
-        squareItemId = catalog.item_variation_data?.item_id ?? null;
-        mappingToken = squareItemId ?? squareVariationId;
-      } else if (catalog?.type === "ITEM") {
-        squareItemId = catalog.id ?? catalogId;
-        mappingToken = squareItemId;
-      } else if (catalogId) {
-        mappingToken = catalogId;
-      }
-
-      const variationProduct = squareVariationId ? productBySquareToken.get(squareVariationId) : undefined;
-      const parentProduct = squareItemId ? productBySquareToken.get(squareItemId) : undefined;
-      const directProduct = catalogId ? productBySquareToken.get(catalogId) : undefined;
-      const matches = [...new Set([variationProduct,parentProduct,directProduct].filter((id): id is string => Boolean(id)))];
-      if (matches.length > 1) throw new Error("Conflicting Square-to-CNS product mapping");
-      const productId = matches[0] ?? null;
+      const { squareItemId, squareVariationId, productId } = resolveSquareProduct(catalogId, catalog, productBySquareToken);
       if (!productId) {
         throw new Error("Current Square order contains a product without a valid current PJ/CNS mapping");
       }
