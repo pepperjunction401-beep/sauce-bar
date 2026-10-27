@@ -44,60 +44,23 @@ function json(body: unknown, status = 200) {
   });
 }
 
-function serviceRoleAuthorized(authHeader: string | null, apiKeyHeader: string | null) {
-  const presented = new Set<string>();
-
-  if (authHeader?.startsWith("Bearer ")) {
-    presented.add(authHeader.slice(7));
+async function serviceRoleAuthorized(authHeader: string | null): Promise<boolean> {
+  // Verify the JWT signature and claims through Supabase Auth; never trust decoded claims alone.
+  if (!authHeader?.startsWith("Bearer ")) return false;
+  const token = authHeader.slice(7).trim();
+  if (!token || token.startsWith("sb_")) return false;
+  const url = Deno.env.get("SUPABASE_URL");
+  const apiKey = Deno.env.get("SUPABASE_ANON_KEY");
+  if (!url || !apiKey) return false;
+  try {
+    const verifier = createClient(url, apiKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+    const { data, error } = await verifier.auth.getClaims(token);
+    return !error && data?.claims?.role === "service_role";
+  } catch {
+    return false;
   }
-  if (apiKeyHeader) {
-    presented.add(apiKeyHeader);
-  }
-
-  const candidates = new Set<string>();
-
-  for (const name of [
-    "SUPABASE_SERVICE_ROLE_KEY",
-    "SUPABASE_SECRET_KEY",
-  ]) {
-    const value = Deno.env.get(name);
-    if (value) candidates.add(value);
-  }
-
-  const secretKeysRaw = Deno.env.get("SUPABASE_SECRET_KEYS");
-  if (secretKeysRaw) {
-    try {
-      const parsed = JSON.parse(secretKeysRaw);
-      const stack: unknown[] = [parsed];
-
-      while (stack.length > 0) {
-        const current = stack.pop();
-
-        if (typeof current === "string") {
-          candidates.add(current);
-          continue;
-        }
-
-        if (Array.isArray(current)) {
-          for (const value of current) stack.push(value);
-          continue;
-        }
-
-        if (current && typeof current === "object") {
-          for (const value of Object.values(current as Record<string, unknown>)) {
-            stack.push(value);
-          }
-        }
-      }
-    } catch {
-      return false;
-    }
-  }
-
-  for (const value of presented) {
-    if (candidates.has(value)) return true;
-  }
-  return false;
 }
 
 async function squarePost(path: string, token: string, body: unknown) {
@@ -138,7 +101,7 @@ function shippingDestination(order: SquareOrder) {
 
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
-  if (!serviceRoleAuthorized(req.headers.get("Authorization"), req.headers.get("apikey"))) {
+  if (!(await serviceRoleAuthorized(req.headers.get("Authorization")))) {
     return json({ error: "Service-role authorization required" }, 403);
   }
 
