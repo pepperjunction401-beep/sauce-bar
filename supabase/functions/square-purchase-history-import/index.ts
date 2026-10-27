@@ -1,6 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { createSupabaseContext } from "npm:@supabase/server";
 
 const SQUARE_BASE_URL = "https://connect.squareup.com";
 const SQUARE_VERSION = "2026-09-16";
@@ -44,6 +43,62 @@ function json(body: unknown, status = 200) {
     status,
     headers: { "Content-Type": "application/json" },
   });
+}
+
+function serviceRoleAuthorized(authHeader: string | null, apiKeyHeader: string | null) {
+  const presented = new Set<string>();
+
+  if (authHeader?.startsWith("Bearer ")) {
+    presented.add(authHeader.slice(7));
+  }
+  if (apiKeyHeader) {
+    presented.add(apiKeyHeader);
+  }
+
+  const candidates = new Set<string>();
+
+  for (const name of [
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_SECRET_KEY",
+  ]) {
+    const value = Deno.env.get(name);
+    if (value) candidates.add(value);
+  }
+
+  const secretKeysRaw = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (secretKeysRaw) {
+    try {
+      const parsed = JSON.parse(secretKeysRaw);
+      const stack: unknown[] = [parsed];
+
+      while (stack.length > 0) {
+        const current = stack.pop();
+
+        if (typeof current === "string") {
+          candidates.add(current);
+          continue;
+        }
+
+        if (Array.isArray(current)) {
+          for (const value of current) stack.push(value);
+          continue;
+        }
+
+        if (current && typeof current === "object") {
+          for (const value of Object.values(current as Record<string, unknown>)) {
+            stack.push(value);
+          }
+        }
+      }
+    } catch {
+      return false;
+    }
+  }
+
+  for (const value of presented) {
+    if (candidates.has(value)) return true;
+  }
+  return false;
 }
 
 async function squarePost(path: string, token: string, body: unknown) {
@@ -93,8 +148,7 @@ function shippingDestination(order: SquareOrder) {
 
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
-  const { error: authError } = await createSupabaseContext(req, { auth: "secret" });
-  if (authError) return json({ error: "Administrator authorization required" }, 403);
+  if (!serviceRoleAuthorized(req.headers.get("Authorization"), req.headers.get("apikey"))) return json({ error: "Service-role authorization required" }, 403);
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
