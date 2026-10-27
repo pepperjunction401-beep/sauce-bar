@@ -139,6 +139,12 @@ Deno.serve(async (req: Request) => {
   const squareLocationId = Deno.env.get("SQUARE_PEPPER_JUNCTION_LOCATION_ID");
 
   if (!supabaseUrl || !serviceRoleKey) return json({ error: "Supabase environment incomplete" }, 500);
+  // Fail closed if a Testing function is accidentally configured for Production.
+  const functionHost = new URL(req.url).hostname;
+  const configuredHost = new URL(supabaseUrl).hostname;
+  if (!/^[a-z0-9]+[.]supabase[.]co$/.test(functionHost) || configuredHost !== functionHost) {
+    return json({ error: "Supabase project environment mismatch; intake refused" }, 503);
+  }
   if (!squareToken || !squareLocationId) return json({ error: "Square production transaction intake is not configured" }, 503);
 
   const body = await req.json().catch(() => ({}));
