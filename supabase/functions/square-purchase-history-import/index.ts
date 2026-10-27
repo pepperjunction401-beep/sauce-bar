@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { createSupabaseContext } from "npm:@supabase/server";
 
 const SQUARE_BASE_URL = "https://connect.squareup.com";
 const SQUARE_VERSION = "2026-09-16";
@@ -44,23 +45,6 @@ function json(body: unknown, status = 200) {
   });
 }
 
-function serviceRoleAuthorized(authHeader: string | null): boolean {
-  // Security invariant: deploy this function ONLY with verify_jwt=true.
-  // Supabase Gateway validates JWT signature and expiry before executing this code.
-  // Checking the verified claim prevents ordinary authenticated users from invoking admin repairs.
-  if (!authHeader?.startsWith("Bearer ")) return false;
-  const token = authHeader.slice(7).trim();
-  const parts = token.split(".");
-  if (parts.length !== 3) return false;
-  try {
-    const payload = parts[1].replace(/-/g, "+").replace(/_/g, "/");
-    const claims = JSON.parse(atob(payload.padEnd(Math.ceil(payload.length / 4) * 4, "=")));
-    return claims?.role === "service_role";
-  } catch {
-    return false;
-  }
-}
-
 async function squarePost(path: string, token: string, body: unknown) {
   const res = await fetch(SQUARE_BASE_URL + path, {
     method: "POST",
@@ -99,9 +83,8 @@ function shippingDestination(order: SquareOrder) {
 
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
-  if (!serviceRoleAuthorized(req.headers.get("Authorization"))) {
-    return json({ error: "Service-role authorization required" }, 403);
-  }
+  const { error: authError } = await createSupabaseContext(req, { auth: "secret" });
+  if (authError) return json({ error: "Administrator authorization required" }, 403);
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
