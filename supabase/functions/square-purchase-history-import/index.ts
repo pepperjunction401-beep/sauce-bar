@@ -44,20 +44,18 @@ function json(body: unknown, status = 200) {
   });
 }
 
-async function serviceRoleAuthorized(authHeader: string | null): Promise<boolean> {
-  // Verify the JWT signature and claims through Supabase Auth; never trust decoded claims alone.
+function serviceRoleAuthorized(authHeader: string | null): boolean {
+  // Security invariant: deploy this function ONLY with verify_jwt=true.
+  // Supabase Gateway validates JWT signature and expiry before executing this code.
+  // Checking the verified claim prevents ordinary authenticated users from invoking admin repairs.
   if (!authHeader?.startsWith("Bearer ")) return false;
   const token = authHeader.slice(7).trim();
-  if (!token || token.startsWith("sb_")) return false;
-  const url = Deno.env.get("SUPABASE_URL");
-  const apiKey = Deno.env.get("SUPABASE_ANON_KEY");
-  if (!url || !apiKey) return false;
+  const parts = token.split(".");
+  if (parts.length !== 3) return false;
   try {
-    const verifier = createClient(url, apiKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
-    const { data, error } = await verifier.auth.getClaims(token);
-    return !error && data?.claims?.role === "service_role";
+    const payload = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const claims = JSON.parse(atob(payload.padEnd(Math.ceil(payload.length / 4) * 4, "=")));
+    return claims?.role === "service_role";
   } catch {
     return false;
   }
@@ -101,7 +99,7 @@ function shippingDestination(order: SquareOrder) {
 
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
-  if (!(await serviceRoleAuthorized(req.headers.get("Authorization")))) {
+  if (!serviceRoleAuthorized(req.headers.get("Authorization"))) {
     return json({ error: "Service-role authorization required" }, 403);
   }
 
