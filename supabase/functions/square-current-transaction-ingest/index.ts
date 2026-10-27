@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { fullyPaidOpenSquareOrder, squarePaymentIds } from "../_shared/square-payment-evidence.ts";
 
 const SQUARE_BASE_URL = "https://connect.squareup.com";
 const SQUARE_VERSION = "2026-09-16";
@@ -176,15 +177,11 @@ Deno.serve(async (req: Request) => {
     if (!order?.id) throw new Error("Square order response did not include order");
     // Square-hosted checkout can leave a paid order OPEN. Accept that state
     // ONLY when the exact Square payment was retrieved and fully captured.
-    const paymentTotal = payment?.total_money?.amount ?? payment?.amount_money?.amount;
-    const paidOpenOrder = order.state === "OPEN" &&
-      payment?.status === "COMPLETED" &&
-      payment?.order_id === order.id &&
-      payment?.location_id === squareLocationId &&
-      typeof order.total_money?.amount === "number" &&
-      order.total_money.amount > 0 &&
-      paymentTotal === order.total_money.amount &&
-      (payment?.total_money?.currency ?? payment?.amount_money?.currency) === order.total_money.currency;
+    const paidOpenOrder = fullyPaidOpenSquareOrder({
+      order,
+      payments: payment ? [payment] : [],
+      requiredLocationId: squareLocationId,
+    });
     if (order.state !== "COMPLETED" && !paidOpenOrder) {
       return json({ status: "ignored", reason: "square_order_not_completed_or_fully_paid" });
     }
@@ -192,11 +189,7 @@ Deno.serve(async (req: Request) => {
       return json({ status: "ignored", reason: "different_square_location" });
     }
 
-    const paymentIds = Array.from(new Set(
-      (order.tenders ?? [])
-        .map((t) => t.payment_id)
-        .filter((v): v is string => typeof v === "string" && v.length > 0)
-    ));
+    const paymentIds = squarePaymentIds(order.tenders, payment ? [payment] : []);
 
     if (paymentIdInput && paymentIds.length > 0 && !paymentIds.includes(paymentIdInput)) {
       throw new Error("Square payment does not belong to the confirmed order");
