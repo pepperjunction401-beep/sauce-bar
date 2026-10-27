@@ -7,6 +7,7 @@ const SQUARE_VERSION = "2026-09-16";
 
 type SquareMoney = { amount?: number; currency?: string };
 type SquareTender = { payment_id?: string; customer_id?: string };
+type SquarePayment = { id?: string; order_id?: string; customer_id?: string; location_id?: string; status?: string; created_at?: string; updated_at?: string; amount_money?: SquareMoney; total_money?: SquareMoney };
 type SquareAddress = { administrative_district_level_1?: string; country?: string };
 type SquareFulfillment = { shipment_details?: { recipient?: { address?: SquareAddress } } };
 type SquareLine = {
@@ -62,6 +63,15 @@ async function squarePost(path: string, token: string, body: unknown) {
   return payload;
 }
 
+async function squareGet(path: string, token: string) {
+  const res = await fetch(SQUARE_BASE_URL + path, {
+    headers: { Authorization: "Bearer " + token, "Square-Version": SQUARE_VERSION },
+  });
+  const payload = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error("Square " + path.split("?")[0] + " failed (" + res.status + ")");
+  return payload;
+}
+
 function chunks<T>(values: T[], size: number) {
   const out: T[][] = [];
   for (let i = 0; i < values.length; i += size) out.push(values.slice(i, i + size));
@@ -92,6 +102,12 @@ Deno.serve(async (req: Request) => {
   const squareLocationId = Deno.env.get("SQUARE_PEPPER_JUNCTION_LOCATION_ID");
 
   if (!supabaseUrl || !serviceRoleKey) return json({ error: "Supabase environment incomplete" }, 500);
+  // A Testing function may not silently use a Production Supabase URL.
+  const functionHost = new URL(req.url).hostname;
+  const configuredHost = new URL(supabaseUrl).hostname;
+  if (!/^[a-z0-9]+\\.supabase\\.co$/.test(functionHost) || configuredHost !== functionHost) {
+    return json({ error: "Supabase project environment mismatch; import refused" }, 503);
+  }
   if (!squareToken || !squareLocationId) {
     return json({ error: "Square production transaction import is not configured" }, 503);
   }
@@ -281,6 +297,45 @@ Deno.serve(async (req: Request) => {
       } while (cursor);
     }
 
+    // Payment-backed history discovery: Square can leave a fully paid shipment
+    // order OPEN and omit order.customer_id, while Payment.customer_id is correct.
+    // This scans authoritative Square payments, not buyer-controlled data.
+    // Refuse incomplete pagination rather than reporting a false success.
+    const completedPaymentsByOrder = new Map<string, SquarePayment[]>();
+    let paymentCursor: string | undefined;
+    let pagesScanned = 0;
+    do {
+      if (++pagesScanned > 1000) throw new Error("Square payment discovery exceeded the safety page limit; no complete history claim");
+      const params = new URLSearchParams({
+        begin_time: "2013-01-01T00:00:00Z",
+        end_time: new Date().toISOString(),
+        limit: "100",
+        sort_order: "DESC",
+        location_id: squareLocationId,
+      });
+      if (paymentCursor) params.set("cursor", paymentCursor);
+      const payload = await squareGet("/v2/payments?" + params.toString(), squareToken);
+      for (const payment of (payload.payments ?? []) as SquarePayment[]) {
+        if (payment.status !== "COMPLETED" || !payment.order_id || !payment.id) continue;
+        if (!acceptedIds.includes(payment.customer_id ?? "")) continue;
+        if (payment.location_id !== squareLocationId) continue;
+        const items = completedPaymentsByOrder.get(payment.order_id) ?? [];
+        if (!items.some((p) => p.id === payment.id)) items.push(payment);
+        completedPaymentsByOrder.set(payment.order_id, items);
+      }
+      paymentCursor = payload.cursor || undefined;
+    } while (paymentCursor);
+
+    for (const [orderId, payments] of completedPaymentsByOrder) {
+      if (ordersById.has(orderId)) continue;
+      const payload = await squareGet("/v2/orders/" + encodeURIComponent(orderId), squareToken);
+      const order = payload.order as SquareOrder | undefined;
+      if (!order?.id || order.id !== orderId || order.location_id !== squareLocationId) continue;
+      ordersById.set(orderId, order);
+      // The accepted customer came from a Square-confirmed completed payment.
+      discoveryCustomerByOrder.set(orderId, payments[0].customer_id!);
+    }
+
     const orders = Array.from(ordersById.values());
 
     const catalogIds = Array.from(new Set(
@@ -347,7 +402,23 @@ Deno.serve(async (req: Request) => {
         continue;
       }
 
-      if (order.state !== "COMPLETED") {
+      const verifiedPayments = completedPaymentsByOrder.get(orderId) ?? [];
+      // Existing COMPLETED-order discovery retains its established semantics.
+      // An OPEN order qualifies ONLY when accepted-customer payments fully cover
+      // the order total in the same currency; no partial-paid orders allowed.
+      const orderTotalCents = order.total_money?.amount;
+      const paymentTotalCents = verifiedPayments.reduce((sum, p) => sum + (p.total_money?.amount ?? p.amount_money?.amount ?? 0), 0);
+      const fullyPaidOpenOrder = order.state === "OPEN" &&
+        typeof orderTotalCents === "number" && orderTotalCents > 0 &&
+        paymentTotalCents === orderTotalCents &&
+        verifiedPayments.length > 0 &&
+        verifiedPayments.every((p) =>
+          p.status === "COMPLETED" &&
+          p.customer_id === matchedSquareCustomerId &&
+          p.location_id === order.location_id &&
+          (p.total_money?.currency ?? p.amount_money?.currency) === order.total_money?.currency
+        );
+      if (order.state !== "COMPLETED" && !fullyPaidOpenOrder) {
         skipped += 1;
         await admin.from("purchase_import_events").insert({
           import_run_id: run.id,
@@ -371,8 +442,7 @@ Deno.serve(async (req: Request) => {
       }
 
       const paymentIds = Array.from(new Set(
-        (order.tenders ?? [])
-          .map((t) => t.payment_id)
+        [...(order.tenders ?? []).map((t) => t.payment_id), ...verifiedPayments.map((p) => p.id)]
           .filter((v): v is string => typeof v === "string" && v.length > 0)
       ));
 
@@ -483,7 +553,7 @@ Deno.serve(async (req: Request) => {
           square_location_id: order.location_id ?? squareLocationId,
           total_amount: totalAmountCents / 100,
           currency_code: order.total_money?.currency ?? "USD",
-          completed_at: order.closed_at ?? order.updated_at ?? null,
+          completed_at: fullyPaidOpenOrder ? (verifiedPayments[0].updated_at ?? verifiedPayments[0].created_at ?? null) : (order.closed_at ?? order.updated_at ?? null),
           square_created_at: order.created_at ?? null,
           square_updated_at: order.updated_at ?? null,
           ...destination,
