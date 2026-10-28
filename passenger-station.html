@@ -4968,7 +4968,8 @@ document.addEventListener('click',function(event){
       auth.client.from('pj_food_badge_level_awards').select('badge_code,earned_level').eq('customer_id',user.id),
       auth.client.from('pj_food_badge_definitions').select('badge_code,food_category').eq('is_active',true),
       auth.client.from('pj_bottle_coin_award_events').select('coin_code,earned_level').eq('customer_id',user.id),
-      auth.client.from('pj_customer_purchase_progress_levels').select('badge_code,earned_level').eq('customer_id',user.id)
+      auth.client.from('pj_customer_purchase_progress_levels').select('badge_code,earned_level').eq('customer_id',user.id),
+      auth.client.rpc('pj_celestial_my_earned_months')
     ];
     Promise.all(sections).then(function(results){
       const error=results.find(function(r){return r.error;});
@@ -4991,6 +4992,7 @@ document.addEventListener('click',function(event){
         broadcast:'radio',market_run:'groceries',free_shipping:'free-shipping',
         distance_rider:'taxi',rock_like_a_doc:'doctor',
         there_goes_the_house:'mortgage',hot_sauce_over_a_yacht:'boat'};
+      const celestialEarned=new Set((results[6].data||[]).filter(function(a){return Number(a.edition_year)===2026;}).map(function(a){return Number(a.month_number);}));
       const earnedAssets=new Set();
       foodEarned.forEach(function(slug){earnedAssets.add('badge-food-'+slug+'.png');});
       coins.forEach(function(code){if(coinNames[code])earnedAssets.add('badge-coin-'+coinNames[code]+'-obverse.png');});
@@ -5023,20 +5025,30 @@ document.addEventListener('click',function(event){
             card.hidden=true; // no secret hints or placeholders before verified earned state
           }
           if(sectionId==='celestial'){
-            card.classList.remove('retired','future','current');
             const group=card.closest('.celestial-grid');
             const all=group?Array.from(group.querySelectorAll('.celestial-flip-card')):[];
             const month=all.indexOf(card)+1;
+            const earnedMonth=celestialEarned.has(month);
+            card.classList.toggle('unearned',!earnedMonth);
+            card.classList.remove('retired','future','current');
+            if(earnedMonth)card.removeAttribute('aria-disabled');
+            else card.setAttribute('aria-disabled','true');
             const now=new Date();
-            if(month>0&&now.getFullYear()===2026&&!earned){
-              if(month<now.getMonth()+1)card.classList.add('retired');
-              else if(month>now.getMonth()+1)card.classList.add('future');
+            if(month>0&&!earnedMonth){
+              if(now.getFullYear()>2026||(now.getFullYear()===2026&&month<now.getMonth()+1))
+                card.classList.add('retired');
+              else if(now.getFullYear()<2026||(now.getFullYear()===2026&&month>now.getMonth()+1))
+                card.classList.add('future');
               else card.classList.add('current');
             }
             const label=card.querySelector('.celestial-badge-month');
-            if(label&&month===now.getMonth()+1&&now.getFullYear()===2026)
-              label.textContent=label.textContent.replace(/ · Now/g,'')+' · Now';
-            else if(label)label.textContent=label.textContent.replace(/ · Now/g,'');
+            if(label){
+              label.textContent=label.textContent.replace(/ · Now/g,'');
+              if(month===now.getMonth()+1&&now.getFullYear()===2026)
+                label.textContent+=' · Now';
+            }
+            const banner=card.querySelector('.celestial-banner-clip');
+            if(banner)banner.hidden=!card.classList.contains('retired');
           }
         });
         const secretSection=doc.getElementById('secret');
