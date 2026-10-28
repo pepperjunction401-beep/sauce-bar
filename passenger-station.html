@@ -4998,7 +4998,7 @@ document.addEventListener('click',function(event){
       heatEarned.forEach(function(code){
         const d=heatDefs.get(code);
         if(!d||d.badge_family!=='heat_identity'||!d.heat_category)return;
-        const lane=d.heat_category.toLowerCase().replace(/\\s+/g,'-');
+        const lane=d.heat_category.toLowerCase().replace(/\s+/g,'-');
         const level=Number(d.badge_level);
         if(level>=1&&level<=3)earnedAssets.add((level===1?'':'L'+level+'-')+'badge-'+lane+'.png');
       });
@@ -5011,10 +5011,12 @@ document.addEventListener('click',function(event){
           const asset=img?(img.getAttribute('src')||'').split('/').pop().split('?')[0]:'';
           const section=card.closest('.badge-category');
           const sectionId=section&&section.id;
-          const earned=earnedAssets.has(asset);
+          const earned=!!asset && earnedAssets.has(asset);
           // Only known award families can be activated. Unknown families remain locked
           // pending their individual governing data integration.
           card.classList.toggle('unearned',!earned);
+          if(!earned)card.setAttribute('aria-disabled','true');
+          else card.removeAttribute('aria-disabled');
           card.classList.remove('pj-expanded','pj-flipped','flipped');
           card.dataset.pjState='0';
           if(sectionId==='secret'||card.classList.contains('secret')){
@@ -5039,6 +5041,9 @@ document.addEventListener('click',function(event){
         });
         const secretSection=doc.getElementById('secret');
         if(secretSection)secretSection.hidden=true;
+        // The customer must not see owner catalog statistics or showroom-only instruction panels.
+        const stats=doc.querySelector('.stats-bar');
+        if(stats)stats.hidden=true;
         const pending=doc.querySelector('#celestial .pending-note');
         if(pending)pending.hidden=true; // owner-only construction notes
         const owner=doc.querySelectorAll('.owner-badge,.footer-private,.depot-preview-note');
