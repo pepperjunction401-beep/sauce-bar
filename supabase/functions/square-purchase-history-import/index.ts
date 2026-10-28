@@ -1,6 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { resolveSquareProduct } from "../_shared/square-product-identity.ts";
+import { lookupCnsProduct } from "../_shared/cns-product-snapshot.ts";
 import { fullyPaidOpenSquareOrder, squarePaymentIds } from "../_shared/square-payment-evidence.ts";
 
 const SQUARE_BASE_URL = "https://connect.squareup.com";
@@ -515,6 +516,7 @@ Deno.serve(async (req: Request) => {
           continue;
         }
 
+        const cnsData = lookupCnsProduct(cnsSlug, squareItemId);
         normalizedLines.push({
           product_id: productId,
           square_catalog_object_id: catalogId,
@@ -528,8 +530,8 @@ Deno.serve(async (req: Request) => {
             : null,
           line_total_amount: lineTotalCents / 100,
           currency_code: line.total_money?.currency ?? order.total_money?.currency ?? "USD",
-          pj_credits_rate_snapshot: null,
-          classification_snapshot: null,
+          pj_credits_rate_snapshot: cnsData.pj_credits_rate_snapshot,
+          classification_snapshot: cnsData.classification_snapshot,
           source_product_snapshot: {
             square_name: line.name ?? null,
             square_variation_name: line.variation_name ?? null,
