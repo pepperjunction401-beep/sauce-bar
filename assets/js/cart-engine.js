@@ -949,6 +949,10 @@
     var payload = {
       checkout_request_id: makeCheckoutRequestId(),
       shopping_session_id: bottleCoinShoppingSessionId(),
+      checkout_timezone: (function () {
+        try { return Intl.DateTimeFormat().resolvedOptions().timeZone || null; }
+        catch (_) { return null; }
+      })(),
       items: summary.items.map(function (item) {
         return {
           product_id: item.product_id,
