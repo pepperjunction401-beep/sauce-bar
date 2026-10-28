@@ -412,8 +412,10 @@ Deno.serve(async (req: Request) => {
     if (mappingsError) throw new Error("Unable to read PJ-to-Square product mappings");
 
     const productBySquareToken = new Map<string, string>();
+    const tokenByProduct = new Map<string, string>();
     for (const m of mappings ?? []) {
       productBySquareToken.set(m.square_item_library_token, m.product_id);
+      tokenByProduct.set(m.product_id, m.square_item_library_token);
     }
 
     const productIds = Array.from(new Set((mappings ?? []).map((m: any) => m.product_id)));
@@ -516,7 +518,7 @@ Deno.serve(async (req: Request) => {
           continue;
         }
 
-        const cnsData = lookupCnsProduct(cnsSlug, squareItemId, true);
+        const cnsData = lookupCnsProduct(cnsSlug, tokenByProduct.get(productId) ?? null, true);
         normalizedLines.push({
           product_id: productId,
           square_catalog_object_id: catalogId,
