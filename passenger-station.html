@@ -4952,228 +4952,105 @@ document.addEventListener('click',function(event){
   auth.verifiedUser().then(function(user) {
     if (!user) {location.replace(auth.loginLocation());return;}
     document.body.hidden = false;
-    // Suppress the prototype collection until earned customer awards are rendered.
-    const depotFrame = document.getElementById('frame-depot');
-    if (depotFrame) depotFrame.hidden = true;
-    const depotPanel = document.getElementById('panel-depot');
-    const statusBox = document.createElement('section');
-    statusBox.id = 'pj-customer-badge-status';
-    statusBox.setAttribute('aria-live', 'polite');
-    statusBox.style.cssText = 'max-width:880px;margin:26px auto;padding:30px;border:1px solid #a8853f;background:#203522;color:#F5E6C8;font:16px Josefin Sans,Arial,sans-serif;line-height:1.6';
-    const heading = document.createElement('h2');
-    heading.textContent = 'Your Badge Depot';
-    const status = document.createElement('p');
-    status.textContent = 'Checking earned badges…';
-    statusBox.append(heading, status);
-    if (depotPanel) depotPanel.prepend(statusBox);
-    // The award table is owned by the server and readable only by its customer.
-    // Never infer an award from its visual prototype or a purchase alone.
-    Promise.all([
-      auth.client.from('pj_customer_badge_awards')
-        .select('badge_code,earned_at,award_state,reversed_at')
-        .eq('customer_id', user.id)
-        .order('earned_at', { ascending: false }),
-      auth.client.from('pj_badge_definitions')
-        .select('badge_code,badge_family,badge_level,heat_category')
-        .eq('is_active', true)
-    ]).then(function(results) {
-      const awardsResult = results[0], definitionsResult = results[1];
-      if (awardsResult.error || definitionsResult.error) {
-        console.error('Badge records unavailable', awardsResult.error || definitionsResult.error);
-        status.textContent = 'Your earned badges could not be loaded. Please try again later.';
-        return;
-      }
-      const definitions = new Map((definitionsResult.data || []).map(function(d) { return [d.badge_code, d]; }));
-      const awarded = (awardsResult.data || []).filter(function(a) {
-        return !a.reversed_at && a.award_state === 'earned';
-      });
-      status.textContent = awarded.length
-        ? awarded.length + ' earned badge award' + (awarded.length === 1 ? '' : 's') + ' recorded for this account.'
-        : 'No Heat Identity awards are recorded for this account yet. Other badge families appear below when earned.';
-      if (!awarded.length) return;
-      const list = document.createElement('ul');
-      list.style.cssText = 'list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;';
-      awarded.forEach(function(award) {
-        const definition = definitions.get(award.badge_code);
-        const item = document.createElement('li');
-        item.style.cssText = 'padding:16px;border:1px solid #a8853f;background:#1E3020;';
-        const name = document.createElement('strong');
-        name.textContent = award.badge_code.replace(/[_-]/g, ' ');
-        item.appendChild(name);
-        // Only Heat Identity has a verified one-to-one award-to-artwork mapping.
-        // Keep other families text-only rather than guess which design was earned.
-        if (definition && definition.badge_family === 'heat_identity' &&
-            definition.heat_category && [1,2,3].includes(Number(definition.badge_level))) {
-          const lane = definition.heat_category.toLowerCase().split(' ').join('-');
-          const prefix = Number(definition.badge_level) === 1
-            ? '' : 'L' + definition.badge_level + '-';
-          const image = document.createElement('img');
-          image.src = 'assets/badges/heat/' + prefix + 'badge-' + lane + '.png';
-          image.alt = definition.heat_category + ' Level ' + definition.badge_level + ' earned badge';
-          image.loading = 'lazy';
-          image.style.cssText = 'display:block;width:130px;height:130px;object-fit:contain;margin:12px auto;';
-          image.addEventListener('error', function() { image.hidden = true; });
-          item.insertBefore(image, name);
-        }
-        if (definition) {
-          const family = document.createElement('p');
-          family.textContent = [definition.badge_family, definition.heat_category,
-            definition.badge_level == null ? '' : 'Level ' + definition.badge_level]
-            .filter(Boolean).join(' · ');
-          item.appendChild(family);
-        }
-        if (award.earned_at) {
-          const date = document.createElement('p');
-          const parsed = new Date(award.earned_at);
-          date.textContent = Number.isNaN(parsed.getTime()) ? '' : 'Earned ' + parsed.toLocaleDateString();
-          item.appendChild(date);
-        }
-        list.appendChild(item);
-      });
-      statusBox.appendChild(list);
-    }).catch(function(error) {
-      console.error('Badge records connection failed', error);
-      status.textContent = 'Your earned badges could not be loaded.';
-    });
-    // Independently awarded Food Category levels and Bottle Coin events.
-    // These families have separate authoritative award tables.
-    Promise.all([
-      auth.client.from('pj_food_badge_level_awards')
-        .select('badge_code,earned_level,earned_at')
-        .eq('customer_id', user.id),
-      auth.client.from('pj_food_badge_definitions')
-        .select('badge_code,food_category,badge_title')
-        .eq('is_active', true),
-      auth.client.from('pj_bottle_coin_award_events')
-        .select('coin_code,earned_level,earned_at')
-        .eq('customer_id', user.id),
-      auth.client.from('pj_bottle_coin_definitions')
-        .select('coin_code,coin_name')
-    ]).then(function(results) {
-      if (results.some(function(r) { return r.error; })) {
-        console.error('Additional badge records unavailable',
-          results.filter(function(r) { return r.error; }).map(function(r) { return r.error; }));
-        const note=document.createElement('p');
-        note.textContent='Some badge families could not be loaded. Please try again later.';
-        statusBox.appendChild(note);
-        return;
-      }
-      const foodDefs=new Map((results[1].data||[]).map(function(d){return [d.badge_code,d];}));
-      const coinDefs=new Map((results[3].data||[]).map(function(d){return [d.coin_code,d];}));
-      const foodAwards=results[0].data||[];
-      const coinAwards=results[2].data||[];
-      if (!foodAwards.length && !coinAwards.length) return;
-      const heading=document.createElement('h3');
-      heading.textContent='Food Category & Bottle Coin Awards';
-      statusBox.appendChild(heading);
-      const grid=document.createElement('div');
-      grid.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px';
-      function addAward(title,subtitle,asset,earnedAt) {
-        const card=document.createElement('article');
-        card.style.cssText='padding:16px;text-align:center;border:1px solid #a8853f;background:#1E3020';
-        if(asset) {
-          const img=document.createElement('img');
-          img.src=asset; img.alt=title; img.loading='lazy';
-          img.style.cssText='width:130px;height:130px;object-fit:contain;display:block;margin:auto';
-          img.addEventListener('error',function(){img.hidden=true});
-          card.appendChild(img);
-        }
-        const label=document.createElement('strong');label.textContent=title;
-        card.appendChild(label);
-        const sub=document.createElement('p');sub.textContent=subtitle;card.appendChild(sub);
-        if(earnedAt) {
-          const date=new Date(earnedAt);
-          if(!Number.isNaN(date.getTime())) {
-            const text=document.createElement('p');
-            text.textContent='Earned '+date.toLocaleDateString();
-            card.appendChild(text);
-          }
-        }
-        grid.appendChild(card);
-      }
-      const validFood=new Set(['bbq','asian','indian','wings','verde','fruit',
-        'caribbean','taco','breakfast','cajun','garlic','veggies','mexican',
-        'seasonings','condiments','snacks','seafood','mediterranean']);
-      foodAwards.forEach(function(a) {
-        const d=foodDefs.get(a.badge_code);
-        if(!d)return;
-        const slug=d.food_category;
-        addAward(d.badge_title,'Food Category · Level '+a.earned_level,
-          validFood.has(slug)?'assets/badges/food/badge-food-'+slug+'.png':null,a.earned_at);
-      });
-      const coinArtwork={wheat_penny:'penny',buffalo_nickel:'nickel',
-        mercury_dime:'dime',standing_liberty_quarter:'quarter',
-        walking_liberty_half_dollar:'half-dollar',peace_dollar:'peace-dollar'};
-      coinAwards.forEach(function(a) {
-        const d=coinDefs.get(a.coin_code);
-        if(!d)return;
-        const code=coinArtwork[a.coin_code];
-        addAward(d.coin_name,'Bottle Coin · Level '+a.earned_level,
-          code?'assets/badges/bottle-purchase-coins/badge-coin-'+code+'-obverse.png':null,
-          a.earned_at);
-      });
-      statusBox.appendChild(grid);
-    }).catch(function(error) {
-      console.error('Additional badge display failed',error);
-    });
-    // Purchase Progress is governed by its own awarded-level ledger.
-    // Current earned levels, not hypothetical spend, determine visible badges.
-    Promise.all([
-      auth.client.from('pj_customer_purchase_progress_levels')
-        .select('badge_code,earned_level')
-        .eq('customer_id', user.id),
-      auth.client.from('pj_purchase_progress_definitions')
-        .select('badge_code,badge_title,threshold_amount')
-        .eq('is_active', true)
-    ]).then(function(results) {
-      if (results.some(function(r){ return r.error; })) {
-        console.error('Purchase Progress read failed',
-          results.filter(function(r){return r.error;}).map(function(r){return r.error;}));
-        const notice=document.createElement('p');
-        notice.textContent='Purchase Progress awards are temporarily unavailable.';
-        statusBox.appendChild(notice);
-        return;
-      }
-      const awarded=new Map((results[0].data||[]).map(function(r){return [r.badge_code,Number(r.earned_level)];}));
-      const definitions=(results[1].data||[])
-        .filter(function(d){return (awarded.get(d.badge_code)||0)>0;})
-        .sort(function(a,b){return Number(a.threshold_amount)-Number(b.threshold_amount);});
-      if(!definitions.length)return;
-      const artwork={
-        fill_er_up:'fuel',speakeasy:'spirits',sauce_director:'movies',
+
+    // Depot presentation adapter: original Command Center artwork and interactions
+    // remain the sole customer presentation. Supabase supplies earned state only.
+    const depotFrame=document.getElementById('frame-depot');
+    if(depotFrame) depotFrame.hidden=false;
+    const stateNote=document.createElement('div');
+    stateNote.id='pj-depot-award-status';
+    stateNote.style.cssText='padding:10px 20px;background:#203522;color:#F5E6C8;text-align:center;font:12px Josefin Sans,sans-serif';
+    stateNote.textContent='Loading your badge collection…';
+    if(depotFrame)depotFrame.insertAdjacentElement('beforebegin',stateNote);
+    const sections=[
+      auth.client.from('pj_customer_badge_awards').select('badge_code,award_state,reversed_at').eq('customer_id',user.id),
+      auth.client.from('pj_badge_definitions').select('badge_code,badge_family,badge_level,heat_category').eq('is_active',true),
+      auth.client.from('pj_food_badge_level_awards').select('badge_code,earned_level').eq('customer_id',user.id),
+      auth.client.from('pj_food_badge_definitions').select('badge_code,food_category').eq('is_active',true),
+      auth.client.from('pj_bottle_coin_award_events').select('coin_code,earned_level').eq('customer_id',user.id),
+      auth.client.from('pj_customer_purchase_progress_levels').select('badge_code,earned_level').eq('customer_id',user.id)
+    ];
+    Promise.all(sections).then(function(results){
+      const error=results.find(function(r){return r.error;});
+      if(error){console.error('Depot award state unavailable',error.error);
+        stateNote.textContent='Some badge states could not be verified. Please try again later.';return;}
+      const heatDefs=new Map((results[1].data||[]).map(function(d){return [d.badge_code,d];}));
+      const heatEarned=new Set((results[0].data||[]).filter(function(a){
+        return a.award_state==='earned'&&!a.reversed_at;
+      }).map(function(a){return a.badge_code;}));
+      const foodDefs=new Map((results[3].data||[]).map(function(d){return [d.badge_code,d];}));
+      const foodEarned=new Set((results[2].data||[]).filter(function(a){return Number(a.earned_level)>0;})
+        .map(function(a){return foodDefs.get(a.badge_code)?.food_category;}).filter(Boolean));
+      const coins=new Set((results[4].data||[]).filter(function(a){return Number(a.earned_level)>0;})
+        .map(function(a){return a.coin_code;}));
+      const purchase=new Set((results[5].data||[]).filter(function(a){return Number(a.earned_level)>0;})
+        .map(function(a){return a.badge_code;}));
+      const coinNames={wheat_penny:'penny',buffalo_nickel:'nickel',mercury_dime:'dime',
+        standing_liberty_quarter:'quarter',walking_liberty_half_dollar:'half-dollar',peace_dollar:'peace-dollar'};
+      const purchaseNames={fill_er_up:'fuel',speakeasy:'spirits',sauce_director:'movies',
         broadcast:'radio',market_run:'groceries',free_shipping:'free-shipping',
         distance_rider:'taxi',rock_like_a_doc:'doctor',
-        there_goes_the_house:'mortgage',hot_sauce_over_a_yacht:'boat'
-      };
-      const heading=document.createElement('h3');
-      heading.textContent='Purchase Progress Awards';
-      statusBox.appendChild(heading);
-      const grid=document.createElement('div');
-      grid.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px';
-      definitions.forEach(function(d){
-        const card=document.createElement('article');
-        card.style.cssText='padding:16px;text-align:center;border:1px solid #a8853f;background:#1E3020';
-        const asset=artwork[d.badge_code];
-        if(asset){
-          const image=document.createElement('img');
-          image.src='assets/badges/purchase-progress/badge-purchase-progress-'+asset+'.png';
-          image.alt=d.badge_title+' earned badge';
-          image.loading='lazy';
-          image.style.cssText='width:130px;height:130px;object-fit:contain;display:block;margin:0 auto 12px';
-          image.addEventListener('error',function(){image.hidden=true;});
-          card.appendChild(image);
-        }
-        const name=document.createElement('strong');
-        name.textContent=d.badge_title;
-        card.appendChild(name);
-        const detail=document.createElement('p');
-        detail.textContent='Purchase Progress · Earned level '+awarded.get(d.badge_code);
-        card.appendChild(detail);
-        grid.appendChild(card);
+        there_goes_the_house:'mortgage',hot_sauce_over_a_yacht:'boat'};
+      const earnedAssets=new Set();
+      foodEarned.forEach(function(slug){earnedAssets.add('badge-food-'+slug+'.png');});
+      coins.forEach(function(code){if(coinNames[code])earnedAssets.add('badge-coin-'+coinNames[code]+'-obverse.png');});
+      purchase.forEach(function(code){if(purchaseNames[code])earnedAssets.add('badge-purchase-progress-'+purchaseNames[code]+'.png');});
+      heatEarned.forEach(function(code){
+        const d=heatDefs.get(code);
+        if(!d||d.badge_family!=='heat_identity'||!d.heat_category)return;
+        const lane=d.heat_category.toLowerCase().replace(/\\s+/g,'-');
+        const level=Number(d.badge_level);
+        if(level>=1&&level<=3)earnedAssets.add((level===1?'':'L'+level+'-')+'badge-'+lane+'.png');
       });
-      statusBox.appendChild(grid);
+      function paint(){
+        const doc=depotFrame&&depotFrame.contentDocument;
+        if(!doc||!doc.body){stateNote.textContent='Badge display unavailable.';return;}
+        const cards=doc.querySelectorAll('.coin-flip-card,.celestial-flip-card,.token-flip-card,.badge-card,.timeslot-card');
+        cards.forEach(function(card){
+          const img=card.querySelector('img[src]');
+          const asset=img?(img.getAttribute('src')||'').split('/').pop().split('?')[0]:'';
+          const section=card.closest('.badge-category');
+          const sectionId=section&&section.id;
+          const earned=earnedAssets.has(asset);
+          // Only known award families can be activated. Unknown families remain locked
+          // pending their individual governing data integration.
+          card.classList.toggle('unearned',!earned);
+          card.classList.remove('pj-expanded','pj-flipped','flipped');
+          card.dataset.pjState='0';
+          if(sectionId==='secret'||card.classList.contains('secret')){
+            card.hidden=true; // no secret hints or placeholders before verified earned state
+          }
+          if(sectionId==='celestial'){
+            card.classList.remove('retired','future','current');
+            const group=card.closest('.celestial-grid');
+            const all=group?Array.from(group.querySelectorAll('.celestial-flip-card')):[];
+            const month=all.indexOf(card)+1;
+            const now=new Date();
+            if(month>0&&now.getFullYear()===2026&&!earned){
+              if(month<now.getMonth()+1)card.classList.add('retired');
+              else if(month>now.getMonth()+1)card.classList.add('future');
+              else card.classList.add('current');
+            }
+            const label=card.querySelector('.celestial-badge-month');
+            if(label&&month===now.getMonth()+1&&now.getFullYear()===2026)
+              label.textContent=label.textContent.replace(/ · Now/g,'')+' · Now';
+            else if(label)label.textContent=label.textContent.replace(/ · Now/g,'');
+          }
+        });
+        const secretSection=doc.getElementById('secret');
+        if(secretSection)secretSection.hidden=true;
+        const pending=doc.querySelector('#celestial .pending-note');
+        if(pending)pending.hidden=true; // owner-only construction notes
+        const owner=doc.querySelectorAll('.owner-badge,.footer-private,.depot-preview-note');
+        owner.forEach(function(el){el.hidden=true;});
+        stateNote.textContent='Your Badge Depot · Earned badges appear in full color; others remain locked.';
+        if(depotFrame)depotFrame.style.height=Math.max(doc.body.scrollHeight,750)+'px';
+      }
+      if(depotFrame&&depotFrame.contentDocument&&depotFrame.contentDocument.readyState==='complete')paint();
+      else if(depotFrame)depotFrame.addEventListener('load',paint,{once:true});
     }).catch(function(error){
-      console.error('Purchase Progress display failed',error);
+      console.error('Depot integration unavailable',error);
+      stateNote.textContent='Your badge collection could not be loaded.';
     });
     const controls = document.querySelector('.station-tabs');
     if (controls && !document.getElementById('pj-station-logout')) {
