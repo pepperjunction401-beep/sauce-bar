@@ -4956,7 +4956,7 @@ document.addEventListener('click',function(event){
     // Depot presentation adapter: original Command Center artwork and interactions
     // remain the sole customer presentation. Supabase supplies earned state only.
     const depotFrame=document.getElementById('frame-depot');
-    if(depotFrame) depotFrame.hidden=false;
+    if(depotFrame) depotFrame.hidden=true; // fail closed until verified badge projection finishes
     const stateNote=document.createElement('div');
     stateNote.id='pj-depot-award-status';
     stateNote.style.cssText='padding:10px 20px;background:#203522;color:#F5E6C8;text-align:center;font:12px Josefin Sans,sans-serif';
@@ -5044,6 +5044,7 @@ document.addEventListener('click',function(event){
         const owner=doc.querySelectorAll('.owner-badge,.footer-private,.depot-preview-note');
         owner.forEach(function(el){el.hidden=true;});
         stateNote.textContent='Your Badge Depot · Earned badges appear in full color; others remain locked.';
+        if(depotFrame)depotFrame.hidden=false;
         if(depotFrame)depotFrame.style.height=Math.max(doc.body.scrollHeight,750)+'px';
       }
       if(depotFrame&&depotFrame.contentDocument&&depotFrame.contentDocument.readyState==='complete')paint();
