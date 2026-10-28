@@ -47,60 +47,55 @@ function json(body: unknown, status = 200) {
   });
 }
 
-function serviceRoleAuthorized(authHeader: string | null, apiKeyHeader: string | null) {
+async function serviceRoleAuthorized(authHeader: string | null, apiKeyHeader: string | null, supabaseUrl: string, serviceRoleKey: string): Promise<boolean> {
   const presented = new Set<string>();
+  if (authHeader?.startsWith("Bearer ")) presented.add(authHeader.slice(7).trim());
+  if (apiKeyHeader) presented.add(apiKeyHeader.trim());
 
-  if (authHeader?.startsWith("Bearer ")) {
-    presented.add(authHeader.slice(7));
-  }
-  if (apiKeyHeader) {
-    presented.add(apiKeyHeader);
-  }
-
+  // Fast path for an exact match to a configured server-side administrative key.
   const candidates = new Set<string>();
-
-  for (const name of [
-    "SUPABASE_SERVICE_ROLE_KEY",
-    "SUPABASE_SECRET_KEY",
-  ]) {
+  for (const name of ["SUPABASE_SERVICE_ROLE_KEY", "SUPABASE_SECRET_KEY"]) {
     const value = Deno.env.get(name);
     if (value) candidates.add(value);
   }
-
-  const secretKeysRaw = Deno.env.get("SUPABASE_SECRET_KEYS");
-  if (secretKeysRaw) {
+  const raw = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (raw) {
     try {
-      const parsed = JSON.parse(secretKeysRaw);
-      const stack: unknown[] = [parsed];
-
-      while (stack.length > 0) {
-        const current = stack.pop();
-
-        if (typeof current === "string") {
-          candidates.add(current);
-          continue;
-        }
-
-        if (Array.isArray(current)) {
-          for (const value of current) stack.push(value);
-          continue;
-        }
-
-        if (current && typeof current === "object") {
-          for (const value of Object.values(current as Record<string, unknown>)) {
-            stack.push(value);
-          }
-        }
+      const stack: unknown[] = [JSON.parse(raw)];
+      while (stack.length) {
+        const item = stack.pop();
+        if (typeof item === "string") candidates.add(item);
+        else if (Array.isArray(item)) stack.push(...item);
+        else if (item && typeof item === "object") stack.push(...Object.values(item));
       }
     } catch {
       return false;
     }
   }
-
-  for (const value of presented) {
-    if (candidates.has(value)) return true;
+  for (const credential of presented) {
+    if (candidates.has(credential)) return true;
   }
-  return false;
+
+  // Supabase's Auth admin endpoint cryptographically validates a presented
+  // legacy service_role JWT. Do not trust decoded, unsigned role claims.
+  // A server-only key supplies the apikey header; the CALLER'S JWT is the
+  // authorization under test. Fail closed on any error or non-200 response.
+  const bearer = authHeader?.startsWith("Bearer ") ? authHeader.slice(7).trim() : "";
+  if (!bearer) return false;
+  try {
+    const response = await fetch(supabaseUrl + "/auth/v1/admin/users?page=1&per_page=1", {
+      method: "GET",
+      headers: {
+        "apikey": serviceRoleKey,
+        "Authorization": "Bearer " + bearer,
+        "Accept": "application/json",
+      },
+      signal: AbortSignal.timeout(7000),
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
 }
 
 async function squarePost(path: string, token: string, body: unknown) {
@@ -150,14 +145,13 @@ function shippingDestination(order: SquareOrder) {
 
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
-  if (!serviceRoleAuthorized(req.headers.get("Authorization"), req.headers.get("apikey"))) return json({ error: "Service-role authorization required" }, 403);
-
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   const squareToken = Deno.env.get("SQUARE_PRODUCTION_ACCESS_TOKEN");
   const squareLocationId = Deno.env.get("SQUARE_PEPPER_JUNCTION_LOCATION_ID");
 
   if (!supabaseUrl || !serviceRoleKey) return json({ error: "Supabase environment incomplete" }, 500);
+  if (!(await serviceRoleAuthorized(req.headers.get("Authorization"), req.headers.get("apikey"), supabaseUrl, serviceRoleKey))) return json({ error: "Service-role authorization required" }, 403);
   // A Testing function may not silently use a Production Supabase URL.
   const functionHost = new URL(req.url).hostname;
   const configuredHost = new URL(supabaseUrl).hostname;
