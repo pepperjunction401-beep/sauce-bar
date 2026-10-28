@@ -288,7 +288,8 @@ Deno.serve(async (req: Request) => {
     if (mappingsError) throw new Error("Unable to read PJ-to-Square product mappings");
 
     const productBySquareToken = new Map<string, string>();
-    for (const m of mappings ?? []) productBySquareToken.set(m.square_item_library_token, m.product_id);
+    const tokenByProduct = new Map<string, string>();
+    for (const m of mappings ?? []) { productBySquareToken.set(m.square_item_library_token, m.product_id); tokenByProduct.set(m.product_id, m.square_item_library_token); }
 
     const productIds = Array.from(new Set((mappings ?? []).map((m: any) => m.product_id)));
     const slugByProductId = new Map<string, string>();
@@ -320,7 +321,7 @@ Deno.serve(async (req: Request) => {
         throw new Error("Current Square order contains a product without a valid current PJ/CNS mapping");
       }
 
-      const cnsData = lookupCnsProduct(slugByProductId.get(productId) ?? null, squareItemId);
+      const cnsData = lookupCnsProduct(slugByProductId.get(productId) ?? null, tokenByProduct.get(productId) ?? null);
       normalizedLines.push({
         product_id: productId,
         square_catalog_object_id: catalogId,
