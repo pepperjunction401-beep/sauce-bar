@@ -1405,6 +1405,15 @@
       border-top: 1px solid rgba(184,137,57,0.2);
     }
 
+
+/* Owner showroom inspection switch: isolated from customer Depot and award state. */
+.bcc-test-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 24px;background:#17291d;color:#f5e6c8;border-bottom:1px solid #8a6420;font:12px Georgia,serif}
+.bcc-test-controls button{padding:9px 14px;background:#750e0d;color:#fff0c9;border:1px solid #c49a49;cursor:pointer;border-radius:5px}
+body.bcc-customer-preview .bcc-owner-only{display:none!important}
+body.bcc-customer-preview .bcc-secret-hidden{display:none!important}
+body.bcc-customer-preview .unearned img{filter:grayscale(100%) brightness(.5)!important}
+body.bcc-customer-preview .unearned{cursor:default!important;animation:none!important}
+body.bcc-customer-preview .unearned .celestial-flip-hint{display:none!important}
   </style>
 </head>
 
@@ -1422,6 +1431,10 @@
   <div class="owner-badge">🔒 Owner Access Only</div>
 </header>
 
+<div class="bcc-test-controls">
+<button type="button" id="bcc-view-switch" aria-pressed="false">Switch to customer-state simulation</button>
+<span id="bcc-mode-caption">Owner showroom: all display states retained. Simulation is local to this page; no Supabase changes.</span>
+</div>
 <!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stat">
@@ -4651,6 +4664,54 @@
     });
   });
 
+})();
+
+/* Owner-only local inspection: remove showroom-assumed earned status without
+   changing markup/artwork, customer Depot, or Supabase awards. Shift-click in
+   customer simulation grants/revokes a sample state for visual verification. */
+(function(){
+ var selector='.token-flip-card,.celestial-flip-card,.coin-flip-card,.badge-card,.timeslot-card';
+ document.addEventListener('DOMContentLoaded',function(){
+  var cards=Array.from(document.querySelectorAll(selector));
+  var secrets=Array.from(document.querySelectorAll('#secret .badge-card'));
+  var btn=document.getElementById('bcc-view-switch');
+  var caption=document.getElementById('bcc-mode-caption');
+  var original=cards.map(function(card){return {card:card,classes:card.className};});
+  var preview=false;
+  function paint(){
+   document.body.classList.toggle('bcc-customer-preview',preview);
+   original.forEach(function(o){
+    var card=o.card;
+    card.className=o.classes;
+    card.classList.remove('pj-expanded','pj-flipped','flipped');
+    card.dataset.pjState='0';
+    if(preview){
+     var sample=card.dataset.bccSampleEarned==='true';
+     card.classList.toggle('unearned',!sample);
+     if(card.classList.contains('celestial-flip-card')){
+      card.classList.remove('retired','future','current');
+      var monthCard=Array.from(document.querySelectorAll('.celestial-grid > .celestial-flip-card')).indexOf(card)+1;
+      var now=new Date();
+      if(monthCard>0 && now.getFullYear()===2026 && !sample){
+       if(monthCard<now.getMonth()+1)card.classList.add('retired');
+       else if(monthCard>now.getMonth()+1)card.classList.add('future');
+       else card.classList.add('current');
+      }
+     }
+    }
+   });
+   secrets.forEach(function(card){card.classList.toggle('bcc-secret-hidden',preview && card.dataset.bccSampleEarned!=='true');});
+   btn.textContent=preview?'Return to owner showroom':'Switch to customer-state simulation';
+   btn.setAttribute('aria-pressed',String(preview));
+   caption.textContent=preview?'Sample customer: all badges start unearned. Shift-click a badge to test earned status. No real customer data.':'Owner showroom: original visual states restored. No Supabase changes.';
+  }
+  btn.addEventListener('click',function(){preview=!preview;paint();});
+  cards.forEach(function(card){card.addEventListener('click',function(e){
+   if(!preview||!e.shiftKey)return;
+   e.preventDefault();e.stopImmediatePropagation();
+   card.dataset.bccSampleEarned=card.dataset.bccSampleEarned==='true'?'false':'true';paint();
+  },true);});
+ });
 })();
 </script>
 </body>
