@@ -516,7 +516,7 @@ Deno.serve(async (req: Request) => {
           continue;
         }
 
-        const cnsData = lookupCnsProduct(cnsSlug, squareItemId);
+        const cnsData = lookupCnsProduct(cnsSlug, squareItemId, true);
         normalizedLines.push({
           product_id: productId,
           square_catalog_object_id: catalogId,
