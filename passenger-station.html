@@ -5074,7 +5074,7 @@ document.addEventListener('click',function(event){
             const label=card.querySelector('.celestial-badge-month');
             if(label){
               label.textContent=label.textContent.replace(/ · Now/g,'');
-              label.textContent=label.textContent.replace(/20(?:26|27)/g,String(editionYear)); if(month===now.getMonth()+1&&now.getFullYear()===editionYear
+              label.textContent=label.textContent.replace(/20(?:26|27)/g,String(editionYear)); if(month===now.getMonth()+1&&now.getFullYear()===editionYear)
                 label.textContent+=' · Now';
             }
             const banner=card.querySelector('.celestial-banner-clip');
