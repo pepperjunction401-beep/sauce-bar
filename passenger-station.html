@@ -4973,9 +4973,19 @@ document.addEventListener('click',function(event){
       auth.client.rpc('pj_round_clock_my_levels')
     ];
     Promise.all(sections).then(function(results){
-      const error=results.find(function(r){return r.error;});
-      if(error){console.error('Depot award state unavailable',error.error);
-        stateNote.textContent='Some badge states could not be verified. Please try again later.';return;}
+      // An optional family may not yet exist in the active Supabase project.
+      // Preserve already-functioning families without interpreting absent data
+      // as an earned award. Never let missing Celestial/Round functions expose
+      // showroom states or suppress the entire Depot.
+      const coreError=results.slice(0,6).find(function(r){return r.error;});
+      if(coreError){
+        console.error('Core Depot award state unavailable',coreError.error);
+        stateNote.textContent='Your badge collection could not be verified. Please try again later.';
+        return;
+      }
+      results.slice(6).forEach(function(r,i){
+        if(r.error) console.warn('Optional badge family unavailable:',i===0?'Celestial':'Shop ORound',r.error);
+      });
       const heatDefs=new Map((results[1].data||[]).map(function(d){return [d.badge_code,d];}));
       const heatEarned=new Set((results[0].data||[]).filter(function(a){
         return a.award_state==='earned'&&!a.reversed_at;
