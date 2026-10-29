@@ -1,3 +1,4 @@
+import { recordPassengerMerchandiseEvidence } from "../_shared/passenger-merchandise-evidence.ts";
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { resolveSquareProduct } from "../_shared/square-product-identity.ts";
@@ -21,6 +22,7 @@ type SquareLine = {
   variation_name?: string;
   base_price_money?: SquareMoney;
   total_money?: SquareMoney;
+  total_tax_money?: SquareMoney;
 };
 type SquareOrder = {
   id?: string;
@@ -599,6 +601,9 @@ Deno.serve(async (req: Request) => {
         continue;
       }
 
+      if (typeof recorded?.purchase_id === "string" && (recorded?.result === "inserted" || recorded?.result === "refreshed")) {
+        await recordPassengerMerchandiseEvidence(admin, recorded.purchase_id, order.line_items ?? []);
+      }
       const result = recorded?.result;
       if (result === "inserted") inserted += 1;
       else if (result === "refreshed") refreshed += 1;
