@@ -1,3 +1,4 @@
+import { recordPassengerMerchandiseEvidence } from "../_shared/passenger-merchandise-evidence.ts";
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { resolveSquareProduct } from "../_shared/square-product-identity.ts";
@@ -20,6 +21,7 @@ type Line = {
   variation_name?: string;
   base_price_money?: Money;
   total_money?: Money;
+  total_tax_money?: Money;
 };
 type Order = {
   id?: string;
@@ -402,6 +404,7 @@ Deno.serve(async (req: Request) => {
 
     const purchaseId = recorded?.purchase_id;
     if (typeof purchaseId !== "string") throw new Error("Purchase recorder did not return a purchase ID");
+    await recordPassengerMerchandiseEvidence(admin, purchaseId, order.line_items ?? []);
 
     await admin.from("purchase_import_runs").update({
       status: "succeeded",
