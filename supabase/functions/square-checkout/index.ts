@@ -470,14 +470,19 @@ Deno.serve(async (req: Request) => {
       return json(req, { error: "Square order identity missing" }, 502);
     }
     if (celestialTimezone) {
-      const { error: celestialBindError } = await admin.rpc("pj_celestial_register_checkout_timezone", {
-        p_order: orderId,
-        p_request: checkoutRequestId,
-        p_timezone: celestialTimezone,
-      });
-      if (celestialBindError) {
-        console.error("Celestial checkout timezone binding failed:", celestialBindError.message);
-        return json(req, { error: "Could not establish checkout timezone evidence" }, 503);
+      // A badge evidence failure must not strand a valid Square checkout.
+      // Log the Square order for controlled follow-up; never manufacture badge evidence.
+      try {
+        const { error: celestialBindError } = await admin.rpc("pj_celestial_register_checkout_timezone", {
+          p_order: orderId,
+          p_request: checkoutRequestId,
+          p_timezone: celestialTimezone,
+        });
+        if (celestialBindError) {
+          console.error("Checkout timezone evidence failed for Square order", orderId, celestialBindError.message);
+        }
+      } catch (celestialBindException) {
+        console.error("Checkout timezone evidence exception for Square order", orderId, celestialBindException);
       }
     }
     if (sessionKey) {
