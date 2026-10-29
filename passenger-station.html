@@ -4969,7 +4969,8 @@ document.addEventListener('click',function(event){
       auth.client.from('pj_food_badge_definitions').select('badge_code,food_category').eq('is_active',true),
       auth.client.from('pj_bottle_coin_award_events').select('coin_code,earned_level').eq('customer_id',user.id),
       auth.client.from('pj_customer_purchase_progress_levels').select('badge_code,earned_level').eq('customer_id',user.id),
-      auth.client.rpc('pj_celestial_my_earned_months')
+      auth.client.rpc('pj_celestial_my_earned_months'),
+      auth.client.rpc('pj_round_clock_my_levels')
     ];
     Promise.all(sections).then(function(results){
       const error=results.find(function(r){return r.error;});
@@ -4993,6 +4994,7 @@ document.addEventListener('click',function(event){
         distance_rider:'taxi',rock_like_a_doc:'doctor',
         there_goes_the_house:'mortgage',hot_sauce_over_a_yacht:'boat'};
       const celestialEarned=new Set((results[6].data||[]).filter(function(a){return Number(a.edition_year)===2026;}).map(function(a){return Number(a.month_number);}));
+      const roundLevels=new Map((results[7].data||[]).map(function(a){return [a.window_code,Number(a.earned_level)];}));
       const earnedAssets=new Set();
       foodEarned.forEach(function(slug){earnedAssets.add('badge-food-'+slug+'.png');});
       coins.forEach(function(code){if(coinNames[code])earnedAssets.add('badge-coin-'+coinNames[code]+'-obverse.png');});
@@ -5023,6 +5025,24 @@ document.addEventListener('click',function(event){
           card.dataset.pjState='0';
           if(sectionId==='secret'||card.classList.contains('secret')){
             card.hidden=true; // no secret hints or placeholders before verified earned state
+          }
+          if(sectionId==='shop-oround-the-clock'){
+            const windowByAsset={
+              'badge-shop-oround-the-clock-early-bird.png':'early_bird',
+              'badge-shop-oround-the-clock-lunch-hour.png':'lunch_hour',
+              'badge-shop-oround-the-clock-evening-commute.png':'evening_commute',
+              'badge-shop-oround-the-clock-late-night.png':'late_night',
+              'badge-shop-oround-the-clock-night-owl.png':'night_owl'
+            };
+            const level=roundLevels.get(windowByAsset[asset])||0;
+            card.classList.toggle('unearned',level<1);
+            if(level>0)card.removeAttribute('aria-disabled');
+            else card.setAttribute('aria-disabled','true');
+            let levelLabel=card.querySelector('.pj-round-level');
+            if(level>0){
+              if(!levelLabel){levelLabel=doc.createElement('div');levelLabel.className='pj-round-level timeslot-name';card.appendChild(levelLabel);}
+              levelLabel.textContent='Level '+level;
+            }else if(levelLabel)levelLabel.remove();
           }
           if(sectionId==='celestial'){
             const group=card.closest('.celestial-grid');
