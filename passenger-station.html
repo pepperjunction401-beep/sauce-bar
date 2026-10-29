@@ -4970,7 +4970,7 @@ document.addEventListener('click',function(event){
       auth.client.from('pj_bottle_coin_award_events').select('coin_code,earned_level').eq('customer_id',user.id),
       auth.client.from('pj_customer_purchase_progress_levels').select('badge_code,earned_level').eq('customer_id',user.id),
       auth.client.rpc('pj_celestial_my_earned_months'),
-      auth.client.rpc('pj_round_clock_my_levels')
+      auth.client.rpc('pj_round_clock_my_levels'), auth.client.rpc('pj_my_earned_time_secrets')
     ];
     Promise.all(sections).then(function(results){
       // An optional family may not yet exist in the active Supabase project.
@@ -5003,7 +5003,7 @@ document.addEventListener('click',function(event){
         broadcast:'radio',market_run:'groceries',free_shipping:'free-shipping',
         distance_rider:'taxi',rock_like_a_doc:'doctor',
         there_goes_the_house:'mortgage',hot_sauce_over_a_yacht:'boat'};
-      const celestialEarned=new Set((results[6].data||[]).filter(function(a){return Number(a.edition_year)===2026;}).map(function(a){return Number(a.month_number);}));
+      const celestialAwards=results[6].error?[]:(results[6].data||[]); let editionYear=2026; const timeSecrets=results[8]&&!results[8].error?(results[8].data||[]):[];
       const roundLevels=new Map((results[7].data||[]).map(function(a){return [a.window_code,Number(a.earned_level)];}));
       const earnedAssets=new Set();
       foodEarned.forEach(function(slug){earnedAssets.add('badge-food-'+slug+'.png');});
@@ -5039,7 +5039,7 @@ document.addEventListener('click',function(event){
           if(sectionId==='shop-oround-the-clock'){
             const windowByAsset={
               'badge-shop-oround-the-clock-early-bird.png':'early_bird',
-              'badge-shop-oround-the-clock-lunch-hour.png':'lunch_hour',
+              'badge-shop-oround-the-clock-lunch-rush.png':'lunch_hour',
               'badge-shop-oround-the-clock-evening-commute.png':'evening_commute',
               'badge-shop-oround-the-clock-late-night.png':'late_night',
               'badge-shop-oround-the-clock-night-owl.png':'night_owl'
@@ -5058,31 +5058,67 @@ document.addEventListener('click',function(event){
             const group=card.closest('.celestial-grid');
             const all=group?Array.from(group.querySelectorAll('.celestial-flip-card')):[];
             const month=all.indexOf(card)+1;
-            const earnedMonth=celestialEarned.has(month);
+            const earnedMonth=celestialAwards.some(function(a){return Number(a.edition_year)===editionYear && Number(a.month_number)===month;});
             card.classList.toggle('unearned',!earnedMonth);
             card.classList.remove('retired','future','current');
             if(earnedMonth)card.removeAttribute('aria-disabled');
             else card.setAttribute('aria-disabled','true');
             const now=new Date();
             if(month>0&&!earnedMonth){
-              if(now.getFullYear()>2026||(now.getFullYear()===2026&&month<now.getMonth()+1))
+              if(now.getFullYear()>editionYear||(now.getFullYear()===editionYear&&month<now.getMonth()+1))
                 card.classList.add('retired');
-              else if(now.getFullYear()<2026||(now.getFullYear()===2026&&month>now.getMonth()+1))
+              else if(now.getFullYear()<editionYear||(now.getFullYear()===editionYear&&month>now.getMonth()+1))
                 card.classList.add('future');
               else card.classList.add('current');
             }
             const label=card.querySelector('.celestial-badge-month');
             if(label){
               label.textContent=label.textContent.replace(/ · Now/g,'');
-              if(month===now.getMonth()+1&&now.getFullYear()===2026)
+              label.textContent=label.textContent.replace(/20(?:26|27)/g,String(editionYear)); if(month===now.getMonth()+1&&now.getFullYear()===editionYear
                 label.textContent+=' · Now';
             }
             const banner=card.querySelector('.celestial-banner-clip');
             if(banner)banner.hidden=!card.classList.contains('retired');
           }
         });
-        const secretSection=doc.getElementById('secret');
-        if(secretSection)secretSection.hidden=true;
+        // Year navigation preserves the original art with edition-specific earned state.
+        const celestialSection=doc.getElementById('celestial');
+        if(celestialSection){
+          let select=doc.getElementById('pj-celestial-edition');
+          if(!select){
+            select=doc.createElement('select');select.id='pj-celestial-edition';
+            select.setAttribute('aria-label','Celestial annual collection');
+            select.style.cssText='padding:9px;margin:12px 0;background:#203522;color:#F5E6C8;border:1px solid #b89959';
+            [2026,2027].forEach(function(y){let o=doc.createElement('option');o.value=String(y);o.textContent=y+' Edition';select.appendChild(o);});
+            const h=celestialSection.querySelector('.category-header');
+            if(h)h.insertAdjacentElement('afterend',select);
+            select.addEventListener('change',function(){editionYear=Number(select.value);paint();});
+          }
+          select.value=String(editionYear);
+          const heading=celestialSection.querySelector('.category-name');
+          if(heading)heading.textContent='Celestial Badges — '+editionYear;
+        }
+        // No secret badges or clues are shown until a verified earned-only projection exists.
+        const existing=doc.getElementById('pj-earned-time-secrets');if(existing)existing.remove();
+        const secrets={
+          celestial_horse_2026:['Year of the Horse 2026','assets/badges/secret/badge-secret-celestial-horse-2026.png'],
+          round_clock_clocked_out:['Clocked Out','assets/badges/secret/badge-secret-shop-oround-the-clock-clocked-out.png']
+        };
+        const earnedSecrets=timeSecrets.map(function(a){return secrets[a.secret_code];}).filter(Boolean);
+        if(earnedSecrets.length){
+          const section=doc.createElement('section');section.id='pj-earned-time-secrets';section.className='badge-category';
+          const title=doc.createElement('h2');title.textContent='Secret Badges';section.appendChild(title);
+          const grid=doc.createElement('div');grid.className='badge-grid';
+          earnedSecrets.forEach(function(info){
+            const card=doc.createElement('div');card.className='badge-card secret';
+            const img=doc.createElement('img');img.className='badge-img';img.src=info[1];img.alt=info[0];
+            const caption=doc.createElement('div');caption.className='badge-name';caption.textContent=info[0];
+            card.appendChild(img);card.appendChild(caption);grid.appendChild(card);
+          });
+          section.appendChild(grid);
+          if(celestialSection)celestialSection.insertAdjacentElement('afterend',section);
+          else doc.body.appendChild(section);
+        }
         // The customer must not see owner catalog statistics or showroom-only instruction panels.
         const stats=doc.querySelector('.stats-bar');
         if(stats)stats.hidden=true;
