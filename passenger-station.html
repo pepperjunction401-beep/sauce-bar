@@ -5077,7 +5077,16 @@ document.addEventListener('click',function(event){
               label.textContent=label.textContent.replace(/20(?:26|27)/g,String(editionYear)); if(month===now.getMonth()+1&&now.getFullYear()===editionYear)
                 label.textContent+=' · Now';
             }
-            const banner=card.querySelector('.celestial-banner-clip');
+            // Generate the ribbon from calendar state, never from the artwork or static HTML.
+            let banner=card.querySelector('.celestial-banner-clip');
+            if(!banner){
+              const face=card.querySelector('.celestial-face.celestial-front');
+              if(face){
+                banner=doc.createElement('div');banner.className='celestial-banner-clip';
+                const ribbon=doc.createElement('div');ribbon.className='celestial-banner';
+                ribbon.textContent='Retired';banner.appendChild(ribbon);face.appendChild(banner);
+              }
+            }
             if(banner)banner.hidden=!card.classList.contains('retired');
           }
         });
