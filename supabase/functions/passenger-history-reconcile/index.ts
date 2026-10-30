@@ -5,6 +5,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { recordPassengerMerchandiseEvidence } from "../_shared/passenger-merchandise-evidence.ts";
+import { discoverUnmappedRailroadOrders } from "../_shared/passenger-square-discovery.ts";
 
 const SQUARE_URL="https://connect.squareup.com/v2";
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -52,10 +53,17 @@ Deno.serve(async(req)=>{
   try {await recordPassengerMerchandiseEvidence(admin,p.id,lines);reconciled++;}
   catch(_){failures++;}
  }
+ let discovery=null;
+ if(failures===0){
+  const location=Deno.env.get("SQUARE_PEPPER_JUNCTION_LOCATION_ID");
+  if(!location) return reply({error:"Square location not configured"},503);
+  try{discovery=await discoverUnmappedRailroadOrders(admin,customerId,square,location)}
+  catch(error){failures++;await admin.from("pj_passenger_history_reconciliation_queue").update({last_error:"Square history discovery failed"}).eq("customer_id",customerId);}
+ }
  if(failures===0){
   await admin.from("pj_passenger_history_reconciliation_queue").update({completed_at:new Date().toISOString(),last_error:null}).eq("customer_id",customerId);
  } else {
   await admin.from("pj_passenger_history_reconciliation_queue").update({last_error:failures+" Square orders not recovered"}).eq("customer_id",customerId);
  }
- return reply({reconciled_orders:reconciled,skipped_orders:skipped,failed_orders:failures,customer_id:customerId});
+ return reply({reconciled_orders:reconciled,skipped_orders:skipped,failed_orders:failures,independent_history:discovery,customer_id:customerId});
 });
