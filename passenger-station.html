@@ -4970,7 +4970,8 @@ document.addEventListener('click',function(event){
       auth.client.from('pj_bottle_coin_award_events').select('coin_code,earned_level').eq('customer_id',user.id),
       auth.client.from('pj_customer_purchase_progress_levels').select('badge_code,earned_level').eq('customer_id',user.id),
       auth.client.rpc('pj_celestial_my_earned_months'),
-      auth.client.rpc('pj_round_clock_my_levels'), auth.client.rpc('pj_my_earned_time_secrets')
+      auth.client.rpc('pj_round_clock_my_levels'), auth.client.rpc('pj_my_earned_time_secrets'),
+      auth.client.rpc('pj_passenger_my_tokens')
     ];
     Promise.all(sections).then(function(results){
       // An optional family may not yet exist in the active Supabase project.
@@ -5005,7 +5006,10 @@ document.addEventListener('click',function(event){
         there_goes_the_house:'mortgage',hot_sauce_over_a_yacht:'boat'};
       const celestialAwards=results[6].error?[]:(results[6].data||[]); let editionYear=2026; const timeSecrets=results[8]&&!results[8].error?(results[8].data||[]):[];
       const roundLevels=new Map((results[7].data||[]).map(function(a){return [a.window_code,Number(a.earned_level)];}));
+      const passengerTokenAssets={day_coach:'token-day-coach.png',parlor_car:'token-parlor-car.png',sleeping_car:'token-sleeping-car.png',dining_car:'token-dining-car.png',private_car:'token-private-car.png',pullman:'token-pullman-patron.png',magnate:'token-railroad-magnate.png'};
+      const passengerAwards=results[9]&&!results[9].error?(results[9].data||[]):[];
       const earnedAssets=new Set();
+      passengerAwards.forEach(function(a){if(passengerTokenAssets[a.token_code])earnedAssets.add(passengerTokenAssets[a.token_code]);});
       foodEarned.forEach(function(slug){earnedAssets.add('badge-food-'+slug+'.png');});
       coins.forEach(function(code){if(coinNames[code])earnedAssets.add('badge-coin-'+coinNames[code]+'-obverse.png');});
       purchase.forEach(function(code){if(purchaseNames[code])earnedAssets.add('badge-purchase-progress-'+purchaseNames[code]+'.png');});
@@ -5029,6 +5033,11 @@ document.addEventListener('click',function(event){
           // Only known award families can be activated. Unknown families remain locked
           // pending their individual governing data integration.
           card.classList.toggle('unearned',!earned);
+          if(card.classList.contains('token-flip-card')){
+            // The token asset is merely presentation; only server-returned awards unlock it.
+            const tag=card.querySelector('.token-new-badge');
+            if(tag)tag.style.display=earned?'':'none';
+          }
           if(!earned)card.setAttribute('aria-disabled','true');
           else card.removeAttribute('aria-disabled');
           card.classList.remove('pj-expanded','pj-flipped','flipped');
