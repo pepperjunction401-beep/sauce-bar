@@ -5009,14 +5009,18 @@ document.addEventListener('click',function(event){
       const passengerTokenAssets={day_coach:'token-day-coach.png',parlor_car:'token-parlor-car.png',sleeping_car:'token-sleeping-car.png',dining_car:'token-dining-car.png',private_car:'token-private-car.png',pullman:'token-pullman-patron.png',magnate:'token-railroad-magnate.png'};
       const passengerAwards=results[9]&&!results[9].error?(results[9].data||[]):[];
       const sessionTokenKey='pj-passenger-token-seen-'+user.id;
+      const sessionNewKey='pj-passenger-token-new-'+user.id;
       const currentTokenCodes=passengerAwards.map(function(a){return a.token_code;});
-      let earlierTokenCodes;
+      let newlyEarnedTokens;
       try {
         const saved=sessionStorage.getItem(sessionTokenKey);
-        earlierTokenCodes=saved===null?new Set(currentTokenCodes):new Set(JSON.parse(saved));
-        sessionStorage.setItem(sessionTokenKey,JSON.stringify(Array.from(new Set([...earlierTokenCodes,...currentTokenCodes]))));
-      } catch(e) { earlierTokenCodes=new Set(currentTokenCodes); }
-      const newlyEarnedTokens=new Set(currentTokenCodes.filter(function(code){return !earlierTokenCodes.has(code);}));
+        const prior=saved===null?new Set(currentTokenCodes):new Set(JSON.parse(saved));
+        const previouslyNew=new Set(JSON.parse(sessionStorage.getItem(sessionNewKey)||'[]'));
+        currentTokenCodes.forEach(function(code){if(!prior.has(code))previouslyNew.add(code);});
+        newlyEarnedTokens=previouslyNew;
+        sessionStorage.setItem(sessionTokenKey,JSON.stringify(Array.from(new Set([...prior,...currentTokenCodes]))));
+        sessionStorage.setItem(sessionNewKey,JSON.stringify(Array.from(previouslyNew)));
+      } catch(e) { newlyEarnedTokens=new Set(); }
       const earnedAssets=new Set();
       passengerAwards.forEach(function(a){if(passengerTokenAssets[a.token_code])earnedAssets.add(passengerTokenAssets[a.token_code]);});
       foodEarned.forEach(function(slug){earnedAssets.add('badge-food-'+slug+'.png');});
