@@ -36,7 +36,7 @@ Deno.serve(async(req)=>{
   if(!result.ok){failures++;continue;}
   const payload=await result.json().catch(()=>({}));
   const order=payload.order;
-  if(!order||order.id!==p.square_order_id||order.state!=="COMPLETED"||
+  if(!order||order.id!==p.square_order_id||!["COMPLETED","OPEN"].includes(order.state)||
      (p.square_location_id&&order.location_id!==p.square_location_id)){failures++;continue;}
   const lines=Array.isArray(order.line_items)?order.line_items:[];
   if(!lines.length){skipped++;continue;}
