@@ -5008,6 +5008,15 @@ document.addEventListener('click',function(event){
       const roundLevels=new Map((results[7].data||[]).map(function(a){return [a.window_code,Number(a.earned_level)];}));
       const passengerTokenAssets={day_coach:'token-day-coach.png',parlor_car:'token-parlor-car.png',sleeping_car:'token-sleeping-car.png',dining_car:'token-dining-car.png',private_car:'token-private-car.png',pullman:'token-pullman-patron.png',magnate:'token-railroad-magnate.png'};
       const passengerAwards=results[9]&&!results[9].error?(results[9].data||[]):[];
+      const sessionTokenKey='pj-passenger-token-seen-'+user.id;
+      const currentTokenCodes=passengerAwards.map(function(a){return a.token_code;});
+      let earlierTokenCodes;
+      try {
+        const saved=sessionStorage.getItem(sessionTokenKey);
+        earlierTokenCodes=saved===null?new Set(currentTokenCodes):new Set(JSON.parse(saved));
+        sessionStorage.setItem(sessionTokenKey,JSON.stringify(Array.from(new Set([...earlierTokenCodes,...currentTokenCodes]))));
+      } catch(e) { earlierTokenCodes=new Set(currentTokenCodes); }
+      const newlyEarnedTokens=new Set(currentTokenCodes.filter(function(code){return !earlierTokenCodes.has(code);}));
       const earnedAssets=new Set();
       passengerAwards.forEach(function(a){if(passengerTokenAssets[a.token_code])earnedAssets.add(passengerTokenAssets[a.token_code]);});
       foodEarned.forEach(function(slug){earnedAssets.add('badge-food-'+slug+'.png');});
@@ -5036,7 +5045,10 @@ document.addEventListener('click',function(event){
           if(card.classList.contains('token-flip-card')){
             // The token asset is merely presentation; only server-returned awards unlock it.
             const tag=card.querySelector('.token-new-badge');
-            if(tag)tag.style.display=earned?'':'none';
+            if(tag){
+              const awardCode=Object.keys(passengerTokenAssets).find(function(code){return passengerTokenAssets[code]===asset;});
+              tag.style.display=earned&&newlyEarnedTokens.has(awardCode)?'':'none';
+            }
           }
           if(!earned)card.setAttribute('aria-disabled','true');
           else card.removeAttribute('aria-disabled');
