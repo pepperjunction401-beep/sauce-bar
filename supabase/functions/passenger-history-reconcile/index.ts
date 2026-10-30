@@ -17,13 +17,22 @@ Deno.serve(async(req)=>{
  const bearer=req.headers.get("Authorization")||"";
  if(bearer!=="Bearer "+key||req.headers.get("apikey")!==key)return reply({error:"Service role required"},403);
  const body=await req.json().catch(()=>({}));
- if(typeof body.customer_id!=="string"||!UUID.test(body.customer_id))return reply({error:"Invalid customer"},400);
  const admin=createClient(url,key,{auth:{persistSession:false}});
- const {data:profile,error:profileError}=await admin.from("customer_profiles").select("id,account_state").eq("id",body.customer_id).maybeSingle();
+ // Queue-driven invocation is automatic after verified account + attached purchase.
+ let customerId=body.customer_id;
+ if(customerId===undefined){
+  const {data:pending,error:queueError}=await admin.from("pj_passenger_history_reconciliation_queue")
+   .select("customer_id").is("completed_at",null).order("requested_at",{ascending:true}).limit(1);
+  if(queueError)return reply({error:"Queue unavailable"},503);
+  if(!pending?.length)return reply({status:"idle",processed:0});
+  customerId=pending[0].customer_id;
+ }
+ if(typeof customerId!=="string"||!UUID.test(customerId))return reply({error:"Invalid customer"},400);
+ const {data:profile,error:profileError}=await admin.from("customer_profiles").select("id,account_state").eq("id",customerId).maybeSingle();
  if(profileError||profile?.account_state!=="verified_matched")return reply({error:"Customer not verified"},403);
  const {data:orders,error:orderError}=await admin.from("purchases")
   .select("id,square_order_id,square_location_id")
-  .eq("customer_id",body.customer_id).eq("purchase_status","completed").eq("import_status","attached")
+  .eq("customer_id",customerId).eq("purchase_status","completed").eq("import_status","attached")
   .order("completed_at",{ascending:true}).limit(51);
  if(orderError)return reply({error:"Purchase lookup failed"},503);
  if((orders||[]).length>50)return reply({error:"More than 50 orders; pagination required before backfill"},409);
@@ -43,5 +52,10 @@ Deno.serve(async(req)=>{
   try {await recordPassengerMerchandiseEvidence(admin,p.id,lines);reconciled++;}
   catch(_){failures++;}
  }
- return reply({reconciled_orders:reconciled,skipped_orders:skipped,failed_orders:failures,customer_id:body.customer_id});
+ if(failures===0){
+  await admin.from("pj_passenger_history_reconciliation_queue").update({completed_at:new Date().toISOString(),last_error:null}).eq("customer_id",customerId);
+ } else {
+  await admin.from("pj_passenger_history_reconciliation_queue").update({last_error:failures+" Square orders not recovered"}).eq("customer_id",customerId);
+ }
+ return reply({reconciled_orders:reconciled,skipped_orders:skipped,failed_orders:failures,customer_id:customerId});
 });
