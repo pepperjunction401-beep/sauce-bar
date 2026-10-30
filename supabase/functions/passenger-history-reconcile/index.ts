@@ -1,0 +1,47 @@
+// Railroad Passenger Class historical evidence reconciliation.
+// Independent of Phase 2 importer and product mapping. Service-role only.
+// Invoke with {"customer_id":"uuid"}; max 50 most recent completed attached orders per run.
+// Idempotent because evidence is keyed by (purchase_id,square_line_uid).
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "npm:@supabase/supabase-js@2";
+import { recordPassengerMerchandiseEvidence } from "../_shared/passenger-merchandise-evidence.ts";
+
+const SQUARE_URL="https://connect.squareup.com/v2";
+const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+function reply(payload:unknown,status=200){return new Response(JSON.stringify(payload),{status,headers:{"content-type":"application/json","cache-control":"no-store"}})}
+Deno.serve(async(req)=>{
+ if(req.method!=="POST")return reply({error:"Method not allowed"},405);
+ const url=Deno.env.get("SUPABASE_URL"),key=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),square=Deno.env.get("SQUARE_PRODUCTION_ACCESS_TOKEN");
+ if(!url||!key||!square)return reply({error:"Not configured"},503);
+ // Explicit service-role caller only, never a customer-facing endpoint.
+ const bearer=req.headers.get("Authorization")||"";
+ if(bearer!=="Bearer "+key||req.headers.get("apikey")!==key)return reply({error:"Service role required"},403);
+ const body=await req.json().catch(()=>({}));
+ if(typeof body.customer_id!=="string"||!UUID.test(body.customer_id))return reply({error:"Invalid customer"},400);
+ const admin=createClient(url,key,{auth:{persistSession:false}});
+ const {data:profile,error:profileError}=await admin.from("customer_profiles").select("id,account_state").eq("id",body.customer_id).maybeSingle();
+ if(profileError||profile?.account_state!=="verified_matched")return reply({error:"Customer not verified"},403);
+ const {data:orders,error:orderError}=await admin.from("purchases")
+  .select("id,square_order_id,square_location_id")
+  .eq("customer_id",body.customer_id).eq("purchase_status","completed").eq("import_status","attached")
+  .order("completed_at",{ascending:true}).limit(51);
+ if(orderError)return reply({error:"Purchase lookup failed"},503);
+ if((orders||[]).length>50)return reply({error:"More than 50 orders; pagination required before backfill"},409);
+ let reconciled=0,skipped=0,failures=0;
+ for(const p of orders||[]){
+  if(!p.square_order_id){skipped++;continue;}
+  const result=await fetch(SQUARE_URL+"/orders/"+encodeURIComponent(p.square_order_id),{
+   headers:{"Authorization":"Bearer "+square,"Square-Version":"2025-10-16"}
+  });
+  if(!result.ok){failures++;continue;}
+  const payload=await result.json().catch(()=>({}));
+  const order=payload.order;
+  if(!order||order.id!==p.square_order_id||order.state!=="COMPLETED"||
+     (p.square_location_id&&order.location_id!==p.square_location_id)){failures++;continue;}
+  const lines=Array.isArray(order.line_items)?order.line_items:[];
+  if(!lines.length){skipped++;continue;}
+  try {await recordPassengerMerchandiseEvidence(admin,p.id,lines);reconciled++;}
+  catch(_){failures++;}
+ }
+ return reply({reconciled_orders:reconciled,skipped_orders:skipped,failed_orders:failures,customer_id:body.customer_id});
+});
