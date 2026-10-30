@@ -988,6 +988,15 @@
           });
       })
       .then(function (data) {
+        // Keep cart intact until the post-payment return confirms this Square order.
+        try {
+          if (data.square_order_id) {
+            sessionStorage.setItem('pj_checkout_pending', JSON.stringify({
+              order_id: data.square_order_id,
+              cart_snapshot: sessionStorage.getItem(CART_KEY)
+            }));
+          }
+        } catch (_) {}
         window.location.assign(data.checkout_url);
         return data;
       })
