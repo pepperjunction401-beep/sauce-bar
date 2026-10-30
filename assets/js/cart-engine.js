@@ -415,6 +415,7 @@
   ];
 
   var CELESTIAL_MONTHS = [
+    { slug: 'capricorn', name: 'Capricorn' },
     { slug: 'aquarius', name: 'Aquarius' },
     { slug: 'pisces', name: 'Pisces' },
     { slug: 'aries', name: 'Aries' },
@@ -425,8 +426,7 @@
     { slug: 'virgo', name: 'Virgo' },
     { slug: 'libra', name: 'Libra' },
     { slug: 'scorpio', name: 'Scorpio' },
-    { slug: 'sagittarius', name: 'Sagittarius' },
-    { slug: 'capricorn', name: 'Capricorn' }
+    { slug: 'sagittarius', name: 'Sagittarius' }
   ];
 
   var MONTH_LABELS = [
@@ -575,7 +575,7 @@
       name: category.name + ' Heat ' + tier.label,
       level: tier.level,
       label: tier.label,
-      image: 'heat/badge-heat-' + category.key + '-l' + tier.level + '.png'
+      image: 'heat/' + (tier.level === 1 ? 'badge-' : 'L' + tier.level + '-badge-') + category.key + '.png'
     };
   }
 
