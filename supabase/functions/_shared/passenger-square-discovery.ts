@@ -25,10 +25,10 @@ export async function discoverUnmappedRailroadOrders(admin:Admin,customerId:stri
     if(!order.id||visited.has(order.id)||order.location_id!==locationId)continue;
     visited.add(order.id);discovered++;
     if(order.state!=="COMPLETED"){skipped++;continue;}
-    const {data:existing,error:existingError}=await admin.from("purchases").select("id")
+    const {data:existing,error:existingError}=await admin.from("purchases").select("id,customer_id")
      .eq("square_order_id",order.id).limit(1);
     if(existingError)throw new Error("Purchase ownership lookup failed");
-    if(existing?.length){skipped++;continue;}
+    if(existing?.some((p:any)=>p.customer_id!==customerId)){skipped++;continue;}
     const parsed=passengerMerchandiseEvidence(order.line_items??[],customerId);
     if(!parsed.length){skipped++;continue;}
     const records=parsed.map((line:any)=>({
