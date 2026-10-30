@@ -14,7 +14,7 @@ create table if not exists public.pj_passenger_unmapped_square_evidence (
 );
 alter table public.pj_passenger_unmapped_square_evidence enable row level security;
 revoke all on public.pj_passenger_unmapped_square_evidence from public,anon,authenticated;
-grant select,insert to service_role on public.pj_passenger_unmapped_square_evidence;
+grant select,insert on public.pj_passenger_unmapped_square_evidence to service_role;
 create trigger pj_passenger_unmapped_immutable
 before update or delete on public.pj_passenger_unmapped_square_evidence
 for each row execute function public.pj_passenger_evidence_immutable();
