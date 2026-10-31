@@ -7,6 +7,7 @@
   // Never display prototype awards or fabricate near-miss progress.
   var earnedBadges = [];
   var nearMissBadges = [];
+  var verifiedOrderLoaded = false;
   var roundNames={early_bird:['Early Bird','badge-shop-oround-the-clock-early-bird.png'],lunch_hour:['Lunch Hour','badge-shop-oround-the-clock-lunch-rush.png'],evening_commute:['Evening Commute','badge-shop-oround-the-clock-evening-commute.png'],late_night:['Late Night','badge-shop-oround-the-clock-late-night.png'],night_owl:['Night Owl','badge-shop-oround-the-clock-night-owl.png']};
   var milestoneNames={10:'Sauce Fiend',25:'Sauce Fanatic',50:'Sauce Addict',100:'Sauce Cra-Cra',250:'Sauce Freak',500:'Sauce Psycho',1000:'Sauce Dementia'};
   var milestoneSlugs={10:'fiend',25:'fanatic',50:'addict',100:'cra-cra',250:'freak',500:'psycho',1000:'dementia'};
@@ -19,6 +20,7 @@
     if (!order) return;
     window.PJAuth.client.rpc('pj_postpay_my_order_awards',{p_square_order_id:order}).then(function(result){
       if(result.error || !result.data || !result.data.verified)return;
+      verifiedOrderLoaded = true;
       earnedBadges=(result.data.awards||[]).map(function(a){
         var title, image;
         if(a.family==='round' && roundNames[a.code]) {
@@ -158,7 +160,7 @@
     }
     if (!earnedBadges.length) {
       var notice = createEl('p', 'pj-award-verification-note',
-        'Your order may have advanced your badges, but transaction-specific awards are not yet available on this page. Visit your Badge Depot to see verified unlocked achievements and progress.');
+        verifiedOrderLoaded ? 'No new badges were unlocked by this order. Your existing achievements remain in the Badge Depot.' : 'Order-specific badge results are not yet verified on this page. Visit your Badge Depot for your unlocked achievements and progress.');
       notice.setAttribute('role', 'status');
       grid.appendChild(notice);
     }
