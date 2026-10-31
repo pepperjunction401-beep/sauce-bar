@@ -7,6 +7,37 @@
   // Never display prototype awards or fabricate near-miss progress.
   var earnedBadges = [];
   var nearMissBadges = [];
+  var roundNames={early_bird:['Early Bird','badge-shop-oround-the-clock-early-bird.png'],lunch_hour:['Lunch Hour','badge-shop-oround-the-clock-lunch-rush.png'],evening_commute:['Evening Commute','badge-shop-oround-the-clock-evening-commute.png'],late_night:['Late Night','badge-shop-oround-the-clock-late-night.png'],night_owl:['Night Owl','badge-shop-oround-the-clock-night-owl.png']};
+  var milestoneNames={10:'Sauce Fiend',25:'Sauce Fanatic',50:'Sauce Addict',100:'Sauce Cra-Cra',250:'Sauce Freak',500:'Sauce Psycho',1000:'Sauce Dementia'};
+  var milestoneSlugs={10:'fiend',25:'fanatic',50:'addict',100:'cra-cra',250:'freak',500:'psycho',1000:'dementia'};
+  function loadVerifiedOrderAwards(user) {
+    if (!user || !window.PJAuth || !window.PJAuth.client) return;
+    var order=sessionStorage.getItem('pj_postpay_confirmed_order');
+    if (!order) {
+      try { var pending=JSON.parse(sessionStorage.getItem('pj_checkout_pending')||'null'); order=pending&&pending.order_id; }catch(_){}
+    }
+    if (!order) return;
+    window.PJAuth.client.rpc('pj_postpay_my_order_awards',{p_square_order_id:order}).then(function(result){
+      if(result.error || !result.data || !result.data.verified)return;
+      earnedBadges=(result.data.awards||[]).map(function(a){
+        var title, image;
+        if(a.family==='round' && roundNames[a.code]) {
+          title=roundNames[a.code][0]; image='assets/badges/shop-oround-the-clock/'+roundNames[a.code][1];
+        } else if(a.family==='milestone' && milestoneNames[a.threshold]) {
+          title=milestoneNames[a.threshold]; image='assets/badges/milestone/badge-milestone-sauce-'+milestoneSlugs[a.threshold]+'-'+a.threshold+'.png';
+        } else return null;
+        return {id:a.family+'-'+(a.code||a.threshold),title:title,label:'Verified purchase achievement',image:image,ribbon:'Badge Earned',frontNote:'Unlocked with your confirmed order',backCopy:'This badge was unlocked through your verified Pepper Junction purchase.'};
+      }).filter(Boolean);
+      renderEarnedBadges();
+      var units=Number(result.data.milestone_progress&&result.data.milestone_progress.units_at_purchase);
+      if(Number.isFinite(units)&&units>=0){
+        var next=[10,25,50,100,250,500,1000].find(function(t){return t>units;});
+        nearMissBadges=next?[{title:milestoneNames[next]+' — Progress',copy:units+' of '+next+' qualifying bottles recorded. '+(next-units)+' more to unlock.',cta:'Browse Hot Sauce & Wing Sauce'}]:[];
+        renderNearMiss();
+      }
+    }).catch(function(){ /* No unverified achievements are shown. */ });
+  }
+
 
   var soundMuted = false;
   var soundAttempted = false;
@@ -176,6 +207,7 @@
     if (!window.PJAuth || !window.PJAuth.enabled) return;
     window.PJAuth.verifiedUser().then(function(user) {
       shell.dataset.customerState = user ? 'signed-in' : 'signed-out';
+      if(user)loadVerifiedOrderAwards(user);
     }).catch(function() { shell.dataset.customerState = 'signed-out'; });
   }
 
