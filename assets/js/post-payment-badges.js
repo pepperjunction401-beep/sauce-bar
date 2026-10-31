@@ -8,6 +8,7 @@
   var earnedBadges = [];
   var nearMissBadges = [];
   var verifiedOrderLoaded = false;
+  var lastRenderedOrder = null;
   var roundNames={early_bird:['Early Bird','badge-shop-oround-the-clock-early-bird.png'],lunch_hour:['Lunch Hour','badge-shop-oround-the-clock-lunch-rush.png'],evening_commute:['Evening Commute','badge-shop-oround-the-clock-evening-commute.png'],late_night:['Late Night','badge-shop-oround-the-clock-late-night.png'],night_owl:['Night Owl','badge-shop-oround-the-clock-night-owl.png']};
   var milestoneNames={10:'Sauce Fiend',25:'Sauce Fanatic',50:'Sauce Addict',100:'Sauce Cra-Cra',250:'Sauce Freak',500:'Sauce Psycho',1000:'Sauce Dementia'};
   var milestoneSlugs={10:'fiend',25:'fanatic',50:'addict',100:'cra-cra',250:'freak',500:'psycho',1000:'dementia'};
@@ -25,8 +26,15 @@
       order=sessionStorage.getItem('pj_postpay_confirmed_order');
     }
     if (!order) return;
+    if (lastRenderedOrder===order) return;
     window.PJAuth.client.rpc('pj_postpay_my_order_awards',{p_square_order_id:order}).then(function(result){
       if(result.error || !result.data || !result.data.verified)return;
+      // An older response must not repaint a newer checkout's results.
+      var latestPending=null;
+      try { latestPending=JSON.parse(sessionStorage.getItem('pj_checkout_pending')||'null'); }catch(_){}
+      var expected=latestPending&&latestPending.order_id || sessionStorage.getItem('pj_postpay_confirmed_order');
+      if(expected!==order)return;
+      lastRenderedOrder=order;
       verifiedOrderLoaded = true;
       earnedBadges=(result.data.awards||[]).map(function(a){
         var title, image;
@@ -181,11 +189,7 @@
       return;
     }
 
-    /*
-      Keep hidden unless current session has a true near-miss.
-      Future rule:
-      show only if under $10 away OR exactly one bottle away.
-    */
+    // Show only server-verified progress. This is not an unlocked award.
     if (!nearMissBadges.length) {
       section.hidden = true;
       return;
@@ -201,7 +205,7 @@
       card.appendChild(createEl('p', null, item.copy));
 
       var link = createEl('a', 'pj-btn pj-btn-primary', item.cta);
-      link.href = 'index.html';
+      link.href = 'main.html';
       link.style.marginTop = '16px';
 
       card.appendChild(link);
