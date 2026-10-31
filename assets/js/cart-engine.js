@@ -991,6 +991,8 @@
         // Keep cart intact until the post-payment return confirms this Square order.
         try {
           if (data.square_order_id) {
+            // A new checkout must never reuse the previous order's badge reveal.
+            sessionStorage.removeItem('pj_postpay_confirmed_order');
             sessionStorage.setItem('pj_checkout_pending', JSON.stringify({
               order_id: data.square_order_id,
               cart_snapshot: sessionStorage.getItem(CART_KEY)
