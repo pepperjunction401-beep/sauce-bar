@@ -13,6 +13,7 @@
    if(!data.confirmed)return;
    // Keep only the confirmed order reference for the authenticated badge reveal.
    sessionStorage.setItem('pj_postpay_confirmed_order',pending.order_id);
+   window.dispatchEvent(new CustomEvent('pj-postpay-order-confirmed',{detail:{orderId:pending.order_id}}));
    var current=sessionStorage.getItem('pj_checkout_pending');
    if(!current)return;
    var latest;try{latest=JSON.parse(current);}catch(_){return;}
