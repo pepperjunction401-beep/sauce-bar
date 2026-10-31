@@ -29,7 +29,8 @@
         return {id:a.family+'-'+(a.code||a.threshold),title:title,label:'Verified purchase achievement',image:image,ribbon:'Badge Earned',frontNote:'Unlocked with your confirmed order',backCopy:'This badge was unlocked through your verified Pepper Junction purchase.'};
       }).filter(Boolean);
       renderEarnedBadges();
-      var units=Number(result.data.milestone_progress&&result.data.milestone_progress.units_at_purchase);
+      var rawUnits=result.data.milestone_progress&&result.data.milestone_progress.units_at_purchase;
+      var units=rawUnits==null?NaN:Number(rawUnits);
       if(Number.isFinite(units)&&units>=0){
         var next=[10,25,50,100,250,500,1000].find(function(t){return t>units;});
         nearMissBadges=next?[{title:milestoneNames[next]+' — Progress',copy:units+' of '+next+' qualifying bottles recorded. '+(next-units)+' more to unlock.',cta:'Browse Hot Sauce & Wing Sauce'}]:[];
@@ -208,6 +209,7 @@
     window.PJAuth.verifiedUser().then(function(user) {
       shell.dataset.customerState = user ? 'signed-in' : 'signed-out';
       if(user)loadVerifiedOrderAwards(user);
+      if(user)window.addEventListener('pj-postpay-order-confirmed',function(){loadVerifiedOrderAwards(user);},{once:true});
     }).catch(function() { shell.dataset.customerState = 'signed-out'; });
   }
 
