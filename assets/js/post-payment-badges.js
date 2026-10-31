@@ -3,80 +3,10 @@
 
   var GOOGLE_REVIEW_URL = 'https://g.page/r/CTI8YAonEJngEBM/review';
 
-  /*
-    FIRST-RUN MOCK DATA.
-    Later this array should be replaced by Square/Supabase return-session data.
-  */
-  var earnedBadges = [
-    {
-      id: 'free-shipping',
-      type: 'major-reward',
-      title: 'Free Shipping',
-      label: 'Purchase Progress',
-      image: 'assets/badges/purchase-progress/free-shipping.png',
-      fallback: 'FS',
-      ribbon: 'Major Reward Earned',
-      frontNote: 'Free shipping pulled into the station.',
-      backTitle: 'Free Shipping Earned',
-      backCopy: 'Congrats! Free shipping is ready for a future ride. This reward will rest in your Depot until you’re ready to use it.',
-      meta: 'Saved reward · Future visit eligible',
-      major: true,
-      sound: true
-    },
-    {
-      id: 'loyalty-bridge',
-      type: 'major-reward',
-      title: 'Loyalty Bridge Badge',
-      label: 'Loyalty Token',
-      image: 'assets/badges/loyalty/loyalty-bridge-token.png',
-      fallback: 'LB',
-      ribbon: 'Loyalty Reward Earned',
-      frontNote: 'A future reward is waiting at the crossing.',
-      backTitle: 'Loyalty Token Secured',
-      backCopy: 'Congrats! We can cross this bridge at any future visit. This Loyalty Token will rest in your Depot until you’re ready to redeem.',
-      meta: 'Reward token · Redeem later',
-      major: true,
-      sound: true
-    },
-    {
-      id: 'wing-man',
-      type: 'food-badge',
-      title: 'Wing Man',
-      label: 'Food Category Badge',
-      image: 'assets/badges/food/wing-man.png',
-      fallback: 'WM',
-      ribbon: 'Badge Earned',
-      frontNote: 'You made a proper wing run.',
-      backTitle: 'Wing Man Earned',
-      backCopy: 'You backed the right bird. This badge celebrates a trip that leaned into sauces built for wings, drums, flats, and game-day plates.',
-      meta: 'Earned today · Food category achievement',
-      major: false,
-      sound: false
-    },
-    {
-      id: 'bottle-purchase-coin',
-      type: 'purchase-progress',
-      title: 'Bottle Purchase Coin',
-      label: 'Trip Progress',
-      image: 'assets/badges/purchase-progress/bottle-purchase-coin.png',
-      fallback: 'BP',
-      ribbon: 'Badge Earned',
-      frontNote: 'This trip crossed the bottle-count mark.',
-      backTitle: 'Bottle Count Achievement',
-      backCopy: 'This badge marks the bottles earned during this trip. The cart teased the progress. This is the completed card reveal.',
-      meta: 'Trip achievement · Level-up rule ready',
-      major: false,
-      sound: false
-    }
-  ];
-
-  var nearMissBadges = [
-    {
-      title: 'Badge in Your Grasp',
-      copy: 'Before the chance leaves the station, one more item grabs this achievement.',
-      cta: 'Return to shop before this trip closes'
-    }
-  ];
+  // Transaction-specific awards must come from verified purchase evidence.
+  // Never display prototype awards or fabricate near-miss progress.
+  var earnedBadges = [];
+  var nearMissBadges = [];
 
   var soundMuted = false;
   var soundAttempted = false;
@@ -192,7 +122,13 @@
     });
 
     if (count) {
-      count.textContent = earnedBadges.length + ' Earned';
+      count.textContent = earnedBadges.length ? earnedBadges.length + ' Earned' : 'No verified reveals';
+    }
+    if (!earnedBadges.length) {
+      var notice = createEl('p', 'pj-award-verification-note',
+        'Your order may have advanced your badges, but transaction-specific awards are not yet available on this page. Visit your Badge Depot to see verified unlocked achievements and progress.');
+      notice.setAttribute('role', 'status');
+      grid.appendChild(notice);
     }
   }
 
@@ -234,23 +170,13 @@
 
   function setupCustomerState() {
     var shell = qs('.pj-postpay-shell');
-
-    if (!shell) {
-      return;
-    }
-
-    /*
-      Prototype toggle:
-      Add ?signedIn=1 to preview the signed-in automatic-save state.
-      Default shows signed-out claim/save prompt.
-    */
-    var params = new URLSearchParams(window.location.search);
-
-    if (params.get('signedIn') === '1') {
-      shell.dataset.customerState = 'signed-in';
-    } else {
-      shell.dataset.customerState = 'signed-out';
-    }
+    if (!shell) return;
+    // A URL preview flag is not customer authentication.
+    shell.dataset.customerState = 'signed-out';
+    if (!window.PJAuth || !window.PJAuth.enabled) return;
+    window.PJAuth.verifiedUser().then(function(user) {
+      shell.dataset.customerState = user ? 'signed-in' : 'signed-out';
+    }).catch(function() { shell.dataset.customerState = 'signed-out'; });
   }
 
   function setupSoundToggle() {
