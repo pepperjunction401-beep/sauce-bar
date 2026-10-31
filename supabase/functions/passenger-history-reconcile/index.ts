@@ -1,5 +1,5 @@
 // Railroad Passenger Class historical evidence reconciliation.
-// Independent of Phase 2 importer and product mapping. Service-role only.
+// Independent of Phase 2 importer and product mapping. Modern secret API key only.
 // Invoke with {"customer_id":"uuid"}; max 50 most recent completed attached orders per run.
 // Idempotent because evidence is keyed by (purchase_id,square_line_uid).
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
@@ -12,11 +12,16 @@ const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 function reply(payload:unknown,status=200){return new Response(JSON.stringify(payload),{status,headers:{"content-type":"application/json","cache-control":"no-store"}})}
 Deno.serve(async(req)=>{
  if(req.method!=="POST")return reply({error:"Method not allowed"},405);
- const url=Deno.env.get("SUPABASE_URL"),key=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),square=Deno.env.get("SQUARE_PRODUCTION_ACCESS_TOKEN");
+ const url=Deno.env.get("SUPABASE_URL"),square=Deno.env.get("SQUARE_PRODUCTION_ACCESS_TOKEN");
+ // Modern named secret API key: never interpret it as a JWT or accept bearer auth.
+ let key:string|undefined;
+ try {
+  const keys=JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS")||"{}");
+  key=typeof keys.default==="string" ? keys.default : undefined;
+ } catch { return reply({error:"Secret-key configuration invalid"},503); }
  if(!url||!key||!square)return reply({error:"Not configured"},503);
- // Explicit service-role caller only, never a customer-facing endpoint.
- const bearer=req.headers.get("Authorization")||"";
- if(bearer!=="Bearer "+key||req.headers.get("apikey")!==key)return reply({error:"Service role required"},403);
+ // Internal-only caller, authenticated using the default project secret on apikey.
+ if(req.headers.get("apikey")!==key)return reply({error:"Service authorization required"},403);
  const body=await req.json().catch(()=>({}));
  const admin=createClient(url,key,{auth:{persistSession:false}});
  // Queue-driven invocation is automatic after verified account + attached purchase.
