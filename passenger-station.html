@@ -5033,6 +5033,23 @@ document.addEventListener('click',function(event){
         const level=Number(d.badge_level);
         if(level>=1&&level<=3)earnedAssets.add((level===1?'':'L'+level+'-')+'badge-'+lane+'.png');
       });
+      // Shop O'Round presentation only. Existing Supabase level counts remain authoritative.
+      // A bubble appears at the second achievement, barely overlapping the image corner.
+      function paintRoundBubble(doc,card,count,secret){
+        const prior=card.querySelector('.pj-round-count-bubble');
+        if(prior)prior.remove();
+        if(!Number.isFinite(count)||count<2)return;
+        const target=secret?card:(card.querySelector('.timeslot-img-wrap')||card);
+        const style=doc.defaultView.getComputedStyle(target);
+        if(style.position==='static')target.style.position='relative';
+        target.style.overflow='visible';
+        const bubble=doc.createElement('span');
+        bubble.className='pj-round-count-bubble';
+        bubble.textContent='×'+String(count);
+        bubble.setAttribute('aria-label',count+' achievements');
+        bubble.style.cssText='position:absolute;top:-4px;right:-4px;z-index:15;min-width:28px;height:28px;padding:0 5px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border-radius:999px;background:#9b7837;border:1px solid #edce84;color:#fff;font:700 13px/1 Josefin Sans,Arial,sans-serif;box-shadow:0 2px 6px #0008;pointer-events:none;';
+        target.appendChild(bubble);
+      }
       function paint(){
         const doc=depotFrame&&depotFrame.contentDocument;
         if(!doc||!doc.body){stateNote.textContent='Badge display unavailable.';return;}
@@ -5073,11 +5090,9 @@ document.addEventListener('click',function(event){
             card.classList.toggle('unearned',level<1);
             if(level>0)card.removeAttribute('aria-disabled');
             else card.setAttribute('aria-disabled','true');
-            let levelLabel=card.querySelector('.pj-round-level');
-            if(level>0){
-              if(!levelLabel){levelLabel=doc.createElement('div');levelLabel.className='pj-round-level timeslot-name';card.appendChild(levelLabel);}
-              levelLabel.textContent='Level '+level;
-            }else if(levelLabel)levelLabel.remove();
+            const levelLabel=card.querySelector('.pj-round-level');
+            if(levelLabel)levelLabel.remove(); // Bubble replaces the redundant Level text.
+            paintRoundBubble(doc,card,level,false);
           }
           if(sectionId==='celestial'){
             const group=card.closest('.celestial-grid');
@@ -5147,7 +5162,13 @@ document.addEventListener('click',function(event){
             const card=doc.createElement('div');card.className='badge-card secret';
             const img=doc.createElement('img');img.className='badge-img';img.src=info[1];img.alt=info[0];
             const caption=doc.createElement('div');caption.className='badge-name';caption.textContent=info[0];
-            card.appendChild(img);card.appendChild(caption);grid.appendChild(card);
+            card.appendChild(img);card.appendChild(caption);
+            if(info[0]==='Clocked Out'){
+              const codes=['early_bird','lunch_hour','evening_commute','late_night','night_owl'];
+              const completedSets=Math.min.apply(null,codes.map(function(code){return roundLevels.get(code)||0;}));
+              paintRoundBubble(doc,card,completedSets,true);
+            }
+            grid.appendChild(card);
           });
           section.appendChild(grid);
           if(celestialSection)celestialSection.insertAdjacentElement('afterend',section);
