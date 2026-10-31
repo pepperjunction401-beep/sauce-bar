@@ -42,6 +42,17 @@
           title=roundNames[a.code][0]; image='assets/badges/shop-oround-the-clock/'+roundNames[a.code][1];
         } else if(a.family==='milestone' && milestoneNames[a.threshold]) {
           title=milestoneNames[a.threshold]; image='assets/badges/milestone/badge-milestone-sauce-'+milestoneSlugs[a.threshold]+'-'+a.threshold+'.png';
+        } else if(a.family==='food' && /^[a-z0-9-]+$/.test(a.category||'')) {
+          title=a.title||a.category; image='assets/badges/food/badge-food-'+a.category+'.png';
+        } else if(a.family==='purchase_progress') {
+          var progressAssets={fill_er_up:'fuel',speakeasy:'spirits',sauce_director:'movies',broadcast:'radio',market_run:'groceries',free_shipping:'free-shipping',distance_rider:'taxi',rock_like_a_doc:'doctor',there_goes_the_house:'mortgage',hot_sauce_over_a_yacht:'boat'};
+          if(!progressAssets[a.code])return null;
+          title=a.code.replace(/_/g,' ').replace(/\\b\\w/g,function(ch){return ch.toUpperCase();});
+          image='assets/badges/purchase-progress/badge-purchase-progress-'+progressAssets[a.code]+'.png';
+        } else if(a.family==='celestial' && Number(a.month)>=1 && Number(a.month)<=12) {
+          var months=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+          // Actual edition artwork is selected by the calendar-month badge catalog, not inferred here.
+          return null;
         } else return null;
         return {id:a.family+'-'+(a.code||a.threshold),title:title,label:'Verified purchase achievement',image:image,ribbon:'Badge Earned',frontNote:'Unlocked with your confirmed order',backCopy:'This badge was unlocked through your verified Pepper Junction purchase.'};
       }).filter(Boolean);
