@@ -50,9 +50,10 @@
           title=a.code.replace(/_/g,' ').replace(/\\b\\w/g,function(ch){return ch.toUpperCase();});
           image='assets/badges/purchase-progress/badge-purchase-progress-'+progressAssets[a.code]+'.png';
         } else if(a.family==='celestial' && Number(a.month)>=1 && Number(a.month)<=12) {
-          var months=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-          // Actual edition artwork is selected by the calendar-month badge catalog, not inferred here.
-          return null;
+          var months=['capricorn','aquarius','pisces','aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius'];
+          if(Number(a.year)!==2026)return null; // No verified art mapping for another edition yet.
+          title=months[Number(a.month)-1].replace(/^./,function(ch){return ch.toUpperCase();});
+          image='assets/badges/celestial/badge-celestial-'+months[Number(a.month)-1]+'-2026.png';
         } else return null;
         return {id:a.family+'-'+(a.code||a.threshold),title:title,label:'Verified purchase achievement',image:image,ribbon:'Badge Earned',frontNote:'Unlocked with your confirmed order',backCopy:'This badge was unlocked through your verified Pepper Junction purchase.'};
       }).filter(Boolean);
