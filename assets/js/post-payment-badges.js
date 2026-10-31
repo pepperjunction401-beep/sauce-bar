@@ -13,9 +13,16 @@
   var milestoneSlugs={10:'fiend',25:'fanatic',50:'addict',100:'cra-cra',250:'freak',500:'psycho',1000:'dementia'};
   function loadVerifiedOrderAwards(user) {
     if (!user || !window.PJAuth || !window.PJAuth.client) return;
-    var order=sessionStorage.getItem('pj_postpay_confirmed_order');
-    if (!order) {
-      try { var pending=JSON.parse(sessionStorage.getItem('pj_checkout_pending')||'null'); order=pending&&pending.order_id; }catch(_){}
+    // The current checkout takes precedence over a prior confirmed order.
+    // Never show a previous trip's badges for a newer pending checkout.
+    var order=null;
+    var pending=null;
+    try { pending=JSON.parse(sessionStorage.getItem('pj_checkout_pending')||'null'); }catch(_){}
+    if (pending && typeof pending.order_id==='string') {
+      order=pending.order_id;
+      if (sessionStorage.getItem('pj_postpay_confirmed_order')!==order) return;
+    } else {
+      order=sessionStorage.getItem('pj_postpay_confirmed_order');
     }
     if (!order) return;
     window.PJAuth.client.rpc('pj_postpay_my_order_awards',{p_square_order_id:order}).then(function(result){
