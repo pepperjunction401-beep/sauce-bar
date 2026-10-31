@@ -11,6 +11,8 @@
  }).then(function(r){if(!r.ok)throw Error('Not confirmed');return r.json();})
  .then(function(data){
    if(!data.confirmed)return;
+   // Keep only the confirmed order reference for the authenticated badge reveal.
+   sessionStorage.setItem('pj_postpay_confirmed_order',pending.order_id);
    var current=sessionStorage.getItem('pj_checkout_pending');
    if(!current)return;
    var latest;try{latest=JSON.parse(current);}catch(_){return;}
