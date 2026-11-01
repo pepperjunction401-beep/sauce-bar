@@ -21,6 +21,9 @@
   box-sizing: border-box;
 }
 
+/* Preserve the HTML hidden attribute over button/card display rules. */
+[hidden] { display: none !important; }
+
 html {
   scroll-behavior: smooth;
 }
