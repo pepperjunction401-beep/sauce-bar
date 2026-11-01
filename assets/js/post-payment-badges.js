@@ -3,76 +3,80 @@
 
   var GOOGLE_REVIEW_URL = 'https://g.page/r/CTI8YAonEJngEBM/review';
 
-  // Transaction-specific awards must come from verified purchase evidence.
-  // Never display prototype awards or fabricate near-miss progress.
-  var earnedBadges = [];
-  var nearMissBadges = [];
-  var verifiedOrderLoaded = false;
-  var lastRenderedOrder = null;
-  var roundNames={early_bird:['Early Bird','badge-shop-oround-the-clock-early-bird.png'],lunch_hour:['Lunch Hour','badge-shop-oround-the-clock-lunch-rush.png'],evening_commute:['Evening Commute','badge-shop-oround-the-clock-evening-commute.png'],late_night:['Late Night','badge-shop-oround-the-clock-late-night.png'],night_owl:['Night Owl','badge-shop-oround-the-clock-night-owl.png']};
-  var milestoneNames={10:'Sauce Fiend',25:'Sauce Fanatic',50:'Sauce Addict',100:'Sauce Cra-Cra',250:'Sauce Freak',500:'Sauce Psycho',1000:'Sauce Dementia'};
-  var milestoneSlugs={10:'fiend',25:'fanatic',50:'addict',100:'cra-cra',250:'freak',500:'psycho',1000:'dementia'};
-  function loadVerifiedOrderAwards(user) {
-    if (!user || !window.PJAuth || !window.PJAuth.client) return;
-    // The current checkout takes precedence over a prior confirmed order.
-    // Never show a previous trip's badges for a newer pending checkout.
-    var order=null;
-    var pending=null;
-    try { pending=JSON.parse(sessionStorage.getItem('pj_checkout_pending')||'null'); }catch(_){}
-    if (pending && typeof pending.order_id==='string') {
-      order=pending.order_id;
-      if (sessionStorage.getItem('pj_postpay_confirmed_order')!==order) return;
-    } else {
-      order=sessionStorage.getItem('pj_postpay_confirmed_order');
+  /*
+    FIRST-RUN MOCK DATA.
+    Later this array should be replaced by Square/Supabase return-session data.
+  */
+  var earnedBadges = [
+    {
+      id: 'free-shipping',
+      type: 'major-reward',
+      title: 'Free Shipping',
+      label: 'Purchase Progress',
+      image: 'assets/badges/purchase-progress/free-shipping.png',
+      fallback: 'FS',
+      ribbon: 'Major Reward Earned',
+      frontNote: 'Free shipping pulled into the station.',
+      backTitle: 'Free Shipping Earned',
+      backCopy: 'Congrats! Free shipping is ready for a future ride. This reward will rest in your Depot until you’re ready to use it.',
+      meta: 'Saved reward · Future visit eligible',
+      major: true,
+      sound: true
+    },
+    {
+      id: 'loyalty-bridge',
+      type: 'major-reward',
+      title: 'Loyalty Bridge Badge',
+      label: 'Loyalty Token',
+      image: 'assets/badges/loyalty/loyalty-bridge-token.png',
+      fallback: 'LB',
+      ribbon: 'Loyalty Reward Earned',
+      frontNote: 'A future reward is waiting at the crossing.',
+      backTitle: 'Loyalty Token Secured',
+      backCopy: 'Congrats! We can cross this bridge at any future visit. This Loyalty Token will rest in your Depot until you’re ready to redeem.',
+      meta: 'Reward token · Redeem later',
+      major: true,
+      sound: true
+    },
+    {
+      id: 'wing-man',
+      type: 'food-badge',
+      title: 'Wing Man',
+      label: 'Food Category Badge',
+      image: 'assets/badges/food/wing-man.png',
+      fallback: 'WM',
+      ribbon: 'Badge Earned',
+      frontNote: 'You made a proper wing run.',
+      backTitle: 'Wing Man Earned',
+      backCopy: 'You backed the right bird. This badge celebrates a trip that leaned into sauces built for wings, drums, flats, and game-day plates.',
+      meta: 'Earned today · Food category achievement',
+      major: false,
+      sound: false
+    },
+    {
+      id: 'bottle-purchase-coin',
+      type: 'purchase-progress',
+      title: 'Bottle Purchase Coin',
+      label: 'Trip Progress',
+      image: 'assets/badges/purchase-progress/bottle-purchase-coin.png',
+      fallback: 'BP',
+      ribbon: 'Badge Earned',
+      frontNote: 'This trip crossed the bottle-count mark.',
+      backTitle: 'Bottle Count Achievement',
+      backCopy: 'This badge marks the bottles earned during this trip. The cart teased the progress. This is the completed card reveal.',
+      meta: 'Trip achievement · Level-up rule ready',
+      major: false,
+      sound: false
     }
-    if (!order) return;
-    if (lastRenderedOrder===order) return;
-    window.PJAuth.client.rpc('pj_postpay_my_order_awards',{p_square_order_id:order}).then(function(result){
-      if(result.error || !result.data || !result.data.verified)return;
-      // An older response must not repaint a newer checkout's results.
-      var latestPending=null;
-      try { latestPending=JSON.parse(sessionStorage.getItem('pj_checkout_pending')||'null'); }catch(_){}
-      var expected=latestPending&&latestPending.order_id || sessionStorage.getItem('pj_postpay_confirmed_order');
-      if(expected!==order)return;
-      lastRenderedOrder=order;
-      verifiedOrderLoaded = true;
-      earnedBadges=(result.data.awards||[]).map(function(a){
-        var title, image;
-        if(a.family==='round' && roundNames[a.code]) {
-          title=roundNames[a.code][0]; image='assets/badges/shop-oround-the-clock/'+roundNames[a.code][1];
-        } else if(a.family==='milestone' && milestoneNames[a.threshold]) {
-          title=milestoneNames[a.threshold]; image='assets/badges/milestone/badge-milestone-sauce-'+milestoneSlugs[a.threshold]+'-'+a.threshold+'.png';
-        } else if(a.family==='coin') {
-          var coinAssets={wheat_penny:'penny',buffalo_nickel:'nickel',mercury_dime:'dime',standing_liberty_quarter:'quarter',walking_liberty_half_dollar:'half-dollar',peace_dollar:'peace-dollar'};
-          if(!coinAssets[a.code])return null;
-          title=a.code.replace(/_/g,' ').replace(/\\b\\w/g,function(ch){return ch.toUpperCase();});
-          image='assets/badges/bottle-purchase-coins/badge-coin-'+coinAssets[a.code]+'-obverse.png';
-        } else if(a.family==='heat' && /^heat_identity_(mild|medium|hot|very_hot|super_hot|extreme)_l[123]$/.test(a.code||'')) {
-          var heatMatch=a.code.match(/^heat_identity_(.+)_l([123])$/);
-          var heatLane=heatMatch[1].replace(/_/g,'-');
-          var heatLevel=Number(heatMatch[2]);
-          title=heatLane.replace(/-/g,' ').replace(/\\b\\w/g,function(ch){return ch.toUpperCase();})+' — Level '+heatLevel;
-          image='assets/badges/heat/'+(heatLevel===1?'':'L'+heatLevel+'-')+'badge-'+heatLane+'.png';
-        } else if(a.family==='food' && /^[a-z0-9-]+$/.test(a.category||'')) {
-          title=a.title||a.category; image='assets/badges/food/badge-food-'+a.category+'.png';
-        } else if(a.family==='purchase_progress') {
-          var progressAssets={fill_er_up:'fuel',speakeasy:'spirits',sauce_director:'movies',broadcast:'radio',market_run:'groceries',free_shipping:'free-shipping',distance_rider:'taxi',rock_like_a_doc:'doctor',there_goes_the_house:'mortgage',hot_sauce_over_a_yacht:'boat'};
-          if(!progressAssets[a.code])return null;
-          title=a.code.replace(/_/g,' ').replace(/\\b\\w/g,function(ch){return ch.toUpperCase();});
-          image='assets/badges/purchase-progress/badge-purchase-progress-'+progressAssets[a.code]+'.png';
-        } else if(a.family==='celestial' && Number(a.month)>=1 && Number(a.month)<=12) {
-          var months=['capricorn','aquarius','pisces','aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius'];
-          if(Number(a.year)!==2026)return null; // No verified art mapping for another edition yet.
-          title=months[Number(a.month)-1].replace(/^./,function(ch){return ch.toUpperCase();});
-          image='assets/badges/celestial/badge-celestial-'+months[Number(a.month)-1]+'-2026.png';
-        } else return null;
-        return {id:a.family+'-'+(a.code||a.threshold),title:title,label:'Verified purchase achievement',image:image,ribbon:'Badge Earned',frontNote:'Unlocked with your confirmed order',backCopy:'This badge was unlocked through your verified Pepper Junction purchase.'};
-      }).filter(Boolean);
-      renderEarnedBadges();
-      // Milestone eligibility and progress belong solely to the badge engines.
-    }).catch(function(){ /* No unverified achievements are shown. */ });
-  }
+  ];
 
+  var nearMissBadges = [
+    {
+      title: 'Badge in Your Grasp',
+      copy: 'Before the chance leaves the station, one more item grabs this achievement.',
+      cta: 'Return to shop before this trip closes'
+    }
+  ];
 
   var soundMuted = false;
   var soundAttempted = false;
@@ -188,13 +192,7 @@
     });
 
     if (count) {
-      count.textContent = earnedBadges.length ? earnedBadges.length + ' Earned' : 'No verified reveals';
-    }
-    if (!earnedBadges.length) {
-      var notice = createEl('p', 'pj-award-verification-note',
-        verifiedOrderLoaded ? 'No new badges were unlocked by this order. Your existing achievements remain in the Badge Depot.' : 'Order-specific badge results are not yet verified on this page. Visit your Badge Depot for your unlocked achievements and progress.');
-      notice.setAttribute('role', 'status');
-      grid.appendChild(notice);
+      count.textContent = earnedBadges.length + ' Earned';
     }
   }
 
@@ -206,7 +204,11 @@
       return;
     }
 
-    // Show only server-verified progress. This is not an unlocked award.
+    /*
+      Keep hidden unless current session has a true near-miss.
+      Future rule:
+      show only if under $10 away OR exactly one bottle away.
+    */
     if (!nearMissBadges.length) {
       section.hidden = true;
       return;
@@ -222,7 +224,7 @@
       card.appendChild(createEl('p', null, item.copy));
 
       var link = createEl('a', 'pj-btn pj-btn-primary', item.cta);
-      link.href = 'main.html';
+      link.href = 'index.html';
       link.style.marginTop = '16px';
 
       card.appendChild(link);
@@ -232,15 +234,23 @@
 
   function setupCustomerState() {
     var shell = qs('.pj-postpay-shell');
-    if (!shell) return;
-    // A URL preview flag is not customer authentication.
-    shell.dataset.customerState = 'signed-out';
-    if (!window.PJAuth || !window.PJAuth.enabled) return;
-    window.PJAuth.verifiedUser().then(function(user) {
-      shell.dataset.customerState = user ? 'signed-in' : 'signed-out';
-      if(user)loadVerifiedOrderAwards(user);
-      if(user)window.addEventListener('pj-postpay-order-confirmed',function(){loadVerifiedOrderAwards(user);},{once:true});
-    }).catch(function() { shell.dataset.customerState = 'signed-out'; });
+
+    if (!shell) {
+      return;
+    }
+
+    /*
+      Prototype toggle:
+      Add ?signedIn=1 to preview the signed-in automatic-save state.
+      Default shows signed-out claim/save prompt.
+    */
+    var params = new URLSearchParams(window.location.search);
+
+    if (params.get('signedIn') === '1') {
+      shell.dataset.customerState = 'signed-in';
+    } else {
+      shell.dataset.customerState = 'signed-out';
+    }
   }
 
   function setupSoundToggle() {
