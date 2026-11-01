@@ -46,7 +46,7 @@
           var coinAssets={wheat_penny:'penny',buffalo_nickel:'nickel',mercury_dime:'dime',standing_liberty_quarter:'quarter',walking_liberty_half_dollar:'half-dollar',peace_dollar:'peace-dollar'};
           if(!coinAssets[a.code])return null;
           title=a.code.replace(/_/g,' ').replace(/\\b\\w/g,function(ch){return ch.toUpperCase();});
-          image='assets/badges/bottle-coins/badge-coin-'+coinAssets[a.code]+'-obverse.png';
+          image='assets/badges/bottle-purchase-coins/badge-coin-'+coinAssets[a.code]+'-obverse.png';
         } else if(a.family==='heat' && /^heat_identity_(mild|medium|hot|very_hot|super_hot|extreme)_l[123]$/.test(a.code||'')) {
           var heatMatch=a.code.match(/^heat_identity_(.+)_l([123])$/);
           var heatLane=heatMatch[1].replace(/_/g,'-');
