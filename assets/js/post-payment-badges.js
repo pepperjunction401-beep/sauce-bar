@@ -42,6 +42,12 @@
           title=roundNames[a.code][0]; image='assets/badges/shop-oround-the-clock/'+roundNames[a.code][1];
         } else if(a.family==='milestone' && milestoneNames[a.threshold]) {
           title=milestoneNames[a.threshold]; image='assets/badges/milestone/badge-milestone-sauce-'+milestoneSlugs[a.threshold]+'-'+a.threshold+'.png';
+        } else if(a.family==='heat' && /^heat_identity_(mild|medium|hot|very_hot|super_hot|extreme)_l[123]$/.test(a.code||'')) {
+          var heatMatch=a.code.match(/^heat_identity_(.+)_l([123])$/);
+          var heatLane=heatMatch[1].replace(/_/g,'-');
+          var heatLevel=Number(heatMatch[2]);
+          title=heatLane.replace(/-/g,' ').replace(/\\b\\w/g,function(ch){return ch.toUpperCase();})+' — Level '+heatLevel;
+          image='assets/badges/heat-identity/'+(heatLevel===1?'':'L'+heatLevel+'-')+'badge-'+heatLane+'.png';
         } else if(a.family==='food' && /^[a-z0-9-]+$/.test(a.category||'')) {
           title=a.title||a.category; image='assets/badges/food/badge-food-'+a.category+'.png';
         } else if(a.family==='purchase_progress') {
