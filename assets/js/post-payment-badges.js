@@ -371,6 +371,8 @@
     }, 700);
   }
 
+  window.PJPostPaymentReloadAwards = loadPostPaymentAwards;
+
   document.addEventListener('DOMContentLoaded', function() {
     setupSoundToggle();
     renderEarnedBadges();
