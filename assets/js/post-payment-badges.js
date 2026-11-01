@@ -252,7 +252,6 @@
         type: 'checkout', id: checkoutOrderRef
       });
 
-      if (shell) shell.dataset.customerState = 'signed-in';
       if (data.status === 'pending') {
         setAwardsStatus('This checkout is not yet available as a completed, attached purchase in isolated Testing. Try again after the transaction has been processed.', true);
         return;
@@ -261,6 +260,7 @@
         setAwardsStatus('Verified awards are not available yet. Please try again.', true);
         return;
       }
+      if (shell) shell.dataset.customerState = 'signed-in';
       earnedBadges = data.awards;
       nearMissBadges = data.nearMisses;
       renderEarnedBadges();
