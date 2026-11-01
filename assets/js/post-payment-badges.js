@@ -37,6 +37,7 @@
 
   var soundMuted = false;
   var soundAttempted = false;
+  var awardsRequestSerial = 0;
   var celebrationLoopEndSeconds = 137;
   var celebrationLoopTimer = null;
 
@@ -80,6 +81,7 @@
       img.src = badge.image;
     } else {
       img.hidden = true;
+      img.style.display = 'none';
     }
 
     var placeholder = createEl('div', 'pj-award-placeholder', badge.fallback || 'PJ');
@@ -212,6 +214,7 @@
   }
 
   async function loadPostPaymentAwards() {
+    var currentRequest = ++awardsRequestSerial;
     var shell = qs('.pj-postpay-shell');
     if (shell) shell.dataset.customerState = 'signed-out';
     earnedBadges = [];
@@ -238,6 +241,7 @@
     setAwardsStatus('Checking your completed checkout and new badge awards…', false);
     try {
       var userResponse = await client.auth.getUser();
+      if (currentRequest !== awardsRequestSerial) return;
       if (userResponse.error || !userResponse.data || !userResponse.data.user ||
           userResponse.data.user.is_anonymous === true ||
           !userResponse.data.user.email_confirmed_at) {
@@ -247,6 +251,7 @@
       var response = await client.functions.invoke('post-payment-awards-read', {
         body: { square_order_id: checkoutOrderRef }
       });
+      if (currentRequest !== awardsRequestSerial) return;
       if (response.error) throw response.error;
       var data = projector.projectEventAwards(response.data, {
         type: 'checkout', id: checkoutOrderRef
@@ -274,6 +279,7 @@
         : 'This checkout is verified. No new badges have been recorded for this purchase.', false);
       tryMajorRewardSoundOnce();
     } catch (_) {
+      if (currentRequest !== awardsRequestSerial) return;
       setAwardsStatus('We could not verify this checkout’s badges right now. No awards have been assumed or displayed.', true);
     }
   }
