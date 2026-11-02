@@ -122,7 +122,34 @@
         return n && eventMatches(n.attribution, expectedEvent) &&
           typeof n.title === 'string' && typeof n.description === 'string';
       }).map(function (n) {
-        return { title: cleanText(n.title, 120), copy: cleanText(n.description, 600) };
+        var family = cleanText(n.family, 64);
+        var code = cleanText(n.badge_code, 120);
+        var card = {
+          title: cleanText(n.title, 120),
+          copy: cleanText(n.description, 600),
+          family: familyPattern.test(family) ? family : '',
+          code: /^[a-z0-9_-]{1,120}$/.test(code) ? code : ''
+        };
+        // Meter evidence must be typed, bounded, positive and server-sourced.
+        // Old responses lacking these fields remain text-only, not guessed.
+        if ((family === 'food' || family === 'heat_identity') &&
+            Number.isSafeInteger(n.current_quantity) &&
+            Number.isSafeInteger(n.target_quantity) &&
+            n.target_quantity > 0 && n.target_quantity <= 1000000 &&
+            n.current_quantity >= 0 && n.current_quantity < n.target_quantity &&
+            n.remaining_quantity === n.target_quantity - n.current_quantity) {
+          card.progress = { current: n.current_quantity, target: n.target_quantity, unit: 'bottles' };
+          card.remaining = n.remaining_quantity;
+        } else if (family === 'purchase_progress' &&
+            Number.isSafeInteger(n.current_cents) &&
+            Number.isSafeInteger(n.target_cents) &&
+            n.target_cents > 0 && n.target_cents <= 100000000 &&
+            n.current_cents >= 0 && n.current_cents < n.target_cents &&
+            n.remaining_cents === n.target_cents - n.current_cents) {
+          card.progress = { current: n.current_cents, target: n.target_cents, unit: 'cents' };
+          card.remaining = n.remaining_cents;
+        }
+        return card;
       }) : [];
 
     return { status: 'ready', event: expectedEvent, awards: cards, nearMisses: nearMisses };
