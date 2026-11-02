@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pepper Junction — Isolated Awards Test</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/post-payment-badges.css" />
+  <!-- Approved v0.4 visual-only skin: green backdrop, cream panels, burgundy/gold GO tile -->
+  <link rel="stylesheet" href="assets/css/post-payment-art-deco.css" />
+</head>
+
+<body>
+  <header class="pj-postpay-header">
+    <a class="pj-brand" href="main.html" aria-label="Pepper Junction Home">
+      <img class="pj-brand-logo" src="assets/PJ-logo.png" alt="Pepper Junction" />
+      <span>
+        <strong>Pepper Junction</strong>
+        <small>Badge Awards · Post-Payment</small>
+      </span>
+    </a>
+  </header>
+
+  <main class="pj-postpay-shell" data-customer-state="signed-out">
+<section class="pj-hero-card" aria-labelledby="postpay-title">
+      <p class="pj-eyebrow" id="postpay-checkout-state">Isolated Testing — Not Customer Website</p>
+      <h1 id="postpay-title">Badges Earned</h1>
+      <p class="pj-hero-copy">
+        Isolated Testing account and award evidence only. The Production checkout and customer account are never used here.
+      </p>
+      <div class="pj-hero-actions">
+        <a class="pj-btn pj-btn-primary" href="#badges-earned">See Badges</a>
+        <a class="pj-btn pj-btn-ghost" href="main.html">Return to Shop</a>
+      </div>
+    </section>
+
+
+    <section class="pj-section" aria-label="Awards verification status" aria-live="polite">
+      <p class="pj-eyebrow">Award Verification</p>
+      <p id="postpay-awards-message">Checking for verified checkout awards…</p>
+      <button id="postpay-awards-retry" class="pj-btn pj-btn-ghost" type="button" hidden>Check Again</button>
+    </section>
+    <section class="pj-section" id="postpay-test-auth-panel" hidden aria-label="Isolated testing sign-in">
+      <p class="pj-eyebrow">Isolated Testing Only</p>
+      <h2>Testing Account Sign-In</h2>
+      <p id="postpay-test-auth-status">Checking isolated Testing authentication…</p>
+      <form id="postpay-test-auth-form" autocomplete="on" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:14px">
+        <label>Testing Email
+          <input type="email" name="email" autocomplete="username" required style="display:block;padding:10px;max-width:100%;width:230px">
+        </label>
+        <label>Testing Password
+          <input type="password" name="password" autocomplete="current-password" required style="display:block;padding:10px;max-width:100%;width:230px">
+        </label>
+        <button class="pj-btn pj-btn-primary" type="submit">Sign In to Testing</button>
+      </form>
+      <button id="postpay-test-signout" class="pj-btn pj-btn-ghost" type="button" hidden>Sign Out of Testing</button>
+      <p>Only isolated Testing credentials are accepted. This is not a customer-facing login.</p>
+    </section>
+    <section class="pj-status-card pj-status-signed-in" aria-live="polite">
+      <div>
+        <p class="pj-eyebrow">Badge Depot</p>
+        <h2>Your Badge Depot Is Up to Date</h2>
+        <p>Any new badges shown above were already recorded in your Badge Depot. This page celebrates them; it doesn't create them.</p>
+      </div>
+      <a class="pj-btn pj-btn-primary" href="passenger-station.html">View Badge Depot</a>
+    </section>
+
+    <section class="pj-status-card pj-status-signed-out" aria-live="polite">
+      <div>
+        <p class="pj-eyebrow">Don’t Lose Track</p>
+        <h2>Sign In to Your Collection</h2>
+        <p>
+          Sign in to your Pepper Junction account to view awards verified for this purchase. For security, we never reveal another customer's badge collection.</p>
+      </div>
+      <span class="pj-eyebrow">Use isolated Testing credentials above</span>
+    </section>
+
+    <section class="pj-section" id="badges-earned" aria-labelledby="earned-title">
+      <div class="pj-section-head">
+        <div>
+          <p class="pj-eyebrow">Full Reveal</p>
+          <h2 id="earned-title">Badges Earned</h2>
+          <p>Verified awards appear here. Tap a card to flip and reveal its achievement.</p>
+        </div>
+        <span class="pj-count-pill" id="badge-count">0 Earned</span>
+      </div>
+
+      <div class="pj-earned-grid" id="earned-badge-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="pj-section pj-grasp-section" id="badge-in-your-grasp" aria-labelledby="grasp-title" hidden>
+      <div class="pj-section-head">
+        <div>
+          <p class="pj-eyebrow">Badge in Your Grasp</p>
+          <h2 id="grasp-title">Before the Chance Leaves the Station</h2>
+          <p>Only verified close calls are displayed here — under $10 away or exactly one bottle away.</p>
+        </div>
+      </div>
+      <div class="pj-grasp-grid" id="grasp-grid"></div>
+    </section>
+
+    <section class="pj-review-card" aria-labelledby="review-title">
+      <div>
+        <p class="pj-eyebrow">Google Review</p>
+        <h2 id="review-title">How Was the Ride?</h2>
+        <p>Tell others why they should hop on board for the Pepper Junction experience with a Google review.</p>
+      </div>
+      <a class="pj-btn pj-btn-review" href="https://g.page/r/CTI8YAonEJngEBM/review" target="_blank" rel="noopener">
+        Leave a Google Review
+      </a>
+    </section>
+
+    <nav class="pj-bottom-nav" aria-label="Post-payment navigation">
+      <a class="pj-btn pj-btn-ghost" href="passenger-station.html">Badge Depot</a>
+      <a class="pj-btn pj-btn-ghost" href="pairing-bar.html">Pairing Bar</a>
+      <a class="pj-btn pj-btn-ghost" href="main.html">Back to Shop</a>
+    </nav>
+  </main>
+
+  <button class="pj-sound-toggle" type="button" aria-pressed="false" title="Toggle celebration music">
+    Sound: On
+  </button>
+
+  <audio id="pj-badge-music" preload="auto">
+    <source src="assets/audio/Badge_Awards_Page_Background_Tune.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/post-payment-testing-auth.js"></script>
+  <script src="assets/js/post-payment-awards-read.js"></script>
+  <script src="assets/js/post-payment-awards-art.js"></script>
+  <script src="assets/js/post-payment-badges.js"></script>
+  <script src="assets/js/post-payment-cart-clear.js"></script>
+</body>
+</html>
