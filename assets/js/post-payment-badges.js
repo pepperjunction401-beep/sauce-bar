@@ -300,7 +300,7 @@
       if (title) title.textContent = earnedBadges.length ? 'Badges Earned' : 'Checkout Verified';
       setAwardsStatus(earnedBadges.length
         ? 'These achievements were verified for this checkout.'
-        : 'This checkout is verified. No new badges have been recorded for this purchase.', false);
+        : 'Your checkout is verified. No new badges are recorded for it yet. If processing is still finishing, use Check Again.', earnedBadges.length === 0);
       tryMajorRewardSoundOnce();
     } catch (_) {
       if (currentRequest !== awardsRequestSerial) return;
