@@ -44,27 +44,11 @@
       <p id="postpay-awards-message">Checking for verified checkout awards…</p>
       <button id="postpay-awards-retry" class="pj-btn pj-btn-ghost" type="button" hidden>Check Again</button>
     </section>
-    <section class="pj-section" id="postpay-test-auth-panel" hidden aria-label="Isolated testing sign-in">
-      <p class="pj-eyebrow">Isolated Testing Only</p>
-      <h2>Testing Account Sign-In</h2>
-      <p id="postpay-test-auth-status">Checking isolated Testing authentication…</p>
-      <form id="postpay-test-auth-form" autocomplete="on" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:14px">
-        <label>Testing Email
-          <input type="email" name="email" autocomplete="username" required style="display:block;padding:10px;max-width:100%;width:230px">
-        </label>
-        <label>Testing Password
-          <input type="password" name="password" autocomplete="current-password" required style="display:block;padding:10px;max-width:100%;width:230px">
-        </label>
-        <button class="pj-btn pj-btn-primary" type="submit">Sign In to Testing</button>
-      </form>
-      <button id="postpay-test-signout" class="pj-btn pj-btn-ghost" type="button" hidden>Sign Out of Testing</button>
-      <p>Testing credentials and Testing badge records only. This does not connect to live customer accounts.</p>
-    </section>
     <section class="pj-status-card pj-status-signed-in" aria-live="polite">
       <div>
         <p class="pj-eyebrow">Badge Depot</p>
-        <h2>Added to Your Badge Depot</h2>
-        <p>Verified awards shown here are recorded in your isolated Testing account. This page does not issue badges.</p>
+        <h2>Your Badge Depot Is Up to Date</h2>
+        <p>Any new badges shown above were already recorded in your Badge Depot. This page celebrates them; it doesn't create them.</p>
       </div>
       <a class="pj-btn pj-btn-primary" href="passenger-station.html">View Badge Depot</a>
     </section>
@@ -72,11 +56,11 @@
     <section class="pj-status-card pj-status-signed-out" aria-live="polite">
       <div>
         <p class="pj-eyebrow">Don’t Lose Track</p>
-        <h2>Save Your Badge Collection</h2>
+        <h2>Sign In to Your Collection</h2>
         <p>
-          Sign in to view verified checkout-specific awards. Unverified visitors do not receive historical collection details.</p>
+          Sign in to your Pepper Junction account to view awards verified for this purchase. For security, we never reveal another customer's badge collection.</p>
       </div>
-      <span class="pj-eyebrow">Verified checkout required</span>
+      <a class="pj-btn pj-btn-primary" href="account.html?return=post-payment">Sign In / View My Badges</a>
     </section>
 
     <section class="pj-section" id="badges-earned" aria-labelledby="earned-title">
@@ -130,7 +114,7 @@
   </audio>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="assets/js/post-payment-testing-auth.js"></script>
+  <script src="assets/js/pj-auth.js"></script>
   <script src="assets/js/post-payment-awards-read.js"></script>
   <script src="assets/js/post-payment-awards-art.js"></script>
   <script src="assets/js/post-payment-badges.js"></script>
