@@ -178,7 +178,8 @@
           return;
         }
       }
-      location.assign(auth.destination());
+      // Preserve the checkout reveal after verified customer sign-in.
+      location.assign(from === 'post-payment' ? 'post-payment-badges.html' : auth.destination());
     }
     function normalizeUSPhone(input) {
       if (!input.trim()) return '';
