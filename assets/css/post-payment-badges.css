@@ -642,3 +642,6 @@ h1 {
     animation: none !important;
   }
 }
+
+/* Preserve HTML hidden attribute over any display rules. */
+[hidden] { display: none !important; }
