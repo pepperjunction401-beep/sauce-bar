@@ -34,7 +34,8 @@ export function projectCloseCalls(input) {
     close.push({
       title: category + " Heat — Level " + String(upcoming.badge_level),
       description: "One more eligible " + category + " heat bottle would reach the next recorded Heat Identity threshold on a future purchase.",
-      attribution: event, family: "heat_identity", remaining_quantity: 1
+      attribution: event, family: "heat_identity", badge_code: upcoming.badge_code,
+      current_quantity: total, target_quantity: Number(upcoming.qualifying_quantity), remaining_quantity: 1
     });
   }
 
@@ -60,7 +61,8 @@ export function projectCloseCalls(input) {
       title: String(definition.badge_title || code) + " — Level " + nextLevel,
       description: "One more eligible " + String(definition.food_category || "food category") +
         " bottle would reach the next recorded Food Badge threshold on a future purchase.",
-      attribution: event, family: "food", remaining_quantity: 1
+      attribution: event, family: "food", badge_code: code,
+      current_quantity: total, target_quantity: nextThreshold, remaining_quantity: 1
     });
   }
 
@@ -82,7 +84,9 @@ export function projectCloseCalls(input) {
       title: String(next.badge_title || next.badge_code) + " — Spending Tier",
       description: "This completed checkout was $" + (remainingCents / 100).toFixed(2) +
         " short of the next Purchase Progress tier. A future checkout is a fresh opportunity.",
-      attribution: event, family: "purchase_progress", remaining_cents: remainingCents
+      attribution: event, family: "purchase_progress", badge_code: next.badge_code,
+      current_cents: cents, target_cents: Math.round(Number(next.threshold_amount) * 100),
+      remaining_cents: remainingCents
     });
   }
   // Highest relevance first; no duplicates and no fabricated "nearly earned".
