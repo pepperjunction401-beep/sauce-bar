@@ -114,4 +114,26 @@
       label: 'Celestial · ' + year
     });
   });
+
+  // Read-only previews reuse the same artwork as earned cards.
+  window.PJNearMissArtwork = function(item) {
+    if (!item || typeof item.code !== 'string') return '';
+    var code = item.code, family = item.family;
+    if (family === 'food') {
+      var foodMatch = /^food_([a-z_]+)$/.exec(code);
+      if (!foodMatch || !Object.prototype.hasOwnProperty.call(foodTitles, foodMatch[1])) return '';
+      return art('food', 'badge-food-' + foodMatch[1].replace(/_/g, '-') + '.png');
+    }
+    if (family === 'purchase_progress') {
+      var progressImage = purchaseArt[code];
+      return progressImage ? art('purchase-progress', 'badge-purchase-progress-' + progressImage + '.png') : '';
+    }
+    if (family === 'heat_identity') {
+      var heatMatch = /^heat_identity_(mild|medium|hot|very_hot|super_hot|extreme|inferno)_l([1-3])$/.exec(code);
+      if (!heatMatch) return '';
+      return art('heat', (Number(heatMatch[2]) === 1 ? '' : 'L' + heatMatch[2] + '-') +
+        'badge-' + heatMatch[1].replace(/_/g, '-') + '.png');
+    }
+    return '';
+  };
 })();
