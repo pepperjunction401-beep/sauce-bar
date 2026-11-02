@@ -185,6 +185,16 @@
     nearMissBadges.forEach(function(item) {
       var card = createEl('div', 'pj-grasp-card');
 
+      var artLookup = window.PJNearMissArtwork;
+      var artSrc = typeof artLookup === 'function' ? artLookup(item) : '';
+      if (artSrc) {
+        var artImg = createEl('img', 'pj-grasp-art');
+        artImg.src = artSrc;
+        artImg.alt = item.title + ' badge artwork; not yet earned';
+        artImg.loading = 'lazy';
+        artImg.addEventListener('error', function() { artImg.hidden = true; });
+        card.appendChild(artImg);
+      }
       card.appendChild(createEl('h3', null, item.title));
       card.appendChild(createEl('p', null, item.copy));
 
