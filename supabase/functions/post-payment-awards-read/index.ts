@@ -5,6 +5,7 @@
 // Families lacking reliable checkout linkage are intentionally omitted.
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.95.0";
+import { projectCloseCalls } from "./progress.js";
 
 const allowedOrigins = new Set([
   "https://pepperjunction401.com",
@@ -175,11 +176,47 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    // Read-only contribution evidence and existing definitions.
+    // Never call an award evaluator or reconstruct a new award.
+    const readList = async (table: string, fields: string, options: {
+      customer?: boolean; field?: string; value?: string; active?: boolean;
+    }, limit = 1000) => {
+      let query = admin.from(table).select(fields).limit(limit + 1);
+      if (options.customer) query = query.eq("customer_id", user.id);
+      if (options.field && options.value) query = query.eq(options.field, options.value);
+      if (options.active) query = query.eq("is_active", true);
+      const { data, error } = await query;
+      if (error) throw error;
+      if (!data || data.length > limit) throw Error("Incomplete progress evidence");
+      return data as Record<string, any>[];
+    };
+    const [
+      heatRows, foodRows, heatDefinitions, foodDefinitions,
+      heatEarned, foodLevels, progressEvents, progressDefinitions
+    ] = await Promise.all([
+      readList("pj_heat_purchase_contributions", "purchase_id,heat_category,net_eligible_quantity", { customer: true }),
+      readList("pj_food_purchase_contributions", "purchase_id,badge_code,net_eligible_quantity", { customer: true }),
+      readList("pj_badge_definitions", "badge_code,heat_category,badge_level,qualifying_quantity", { active: true }, 100),
+      readList("pj_food_badge_definitions", "badge_code,food_category,badge_title,items_per_level", { active: true }, 100),
+      readList("pj_customer_badge_awards", "badge_code,award_state,reversed_at", { customer: true }),
+      readList("pj_customer_food_badge_levels", "badge_code,earned_level", { customer: true }),
+      readList("pj_purchase_progress_award_events", "purchase_id,badge_code,qualifying_amount,net_progress",
+        { customer: true, field: "purchase_id", value: purchase.id }, 100),
+      readList("pj_purchase_progress_definitions", "badge_code,badge_title,threshold_amount", { active: true }, 100)
+    ]);
+    const nearMisses = projectCloseCalls({
+      event, purchaseId: purchase.id,
+      heatRows, foodRows, heatDefinitions, foodDefinitions,
+      earnedHeatCodes: new Set(heatEarned.filter(r => r.award_state === "earned" && !r.reversed_at).map(r => r.badge_code)),
+      earnedFoodLevels: new Map(foodLevels.map(r => [r.badge_code, Number(r.earned_level)])),
+      progressEvents, progressDefinitions
+    });
+
     // Intentionally omitted: Passenger Tokens, Milestone, and secret awards.
     // Their current award records do not prove which checkout earned them.
     // No timestamp guessing or eligibility-engine calls are permitted.
     return reply({
-      status: "ready", event, awards, nearMisses: [],
+      status: "ready", event, awards, nearMisses,
       snapshot_at: new Date().toISOString()
     });
   } catch (error) {
