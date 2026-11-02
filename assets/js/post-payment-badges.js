@@ -7,6 +7,7 @@
   var earnedBadges = [];
   var nearMissBadges = [];
   var checkoutOrderRef = captureCheckoutOrderRef();
+  var PRODUCTION_URL = 'https://cdbenwthxhypuuipyjlv.supabase.co';
   var TESTING_URL = 'https://slubpfmpjgoupujptayy.supabase.co';
 
   function validOrderId(id) {
@@ -203,14 +204,32 @@
     if (retry) retry.hidden = !allowRetry;
   }
 
-  function verifiedTestingClient() {
-    // Production and isolated Testing accounts use DIFFERENT JWT issuers.
-    // NEVER forward a Production token to the Testing function.
-    var provider = window.PJPostPaymentTestingAuth || window.PJAuth;
-    var client = provider && provider.client;
-    if (!client || client.supabaseUrl !== TESTING_URL ||
+  function verifiedAwardsContext() {
+    // The customer-facing website uses the SAME Production Auth client as
+    // account.html and Passenger Station. Never trust a browser-supplied UID.
+    var host = window.location.hostname.toLowerCase();
+    var official = host === 'pepperjunction401.com' ||
+      host === 'www.pepperjunction401.com';
+    var testingHost = host === 'pepperjunction401-beep.github.io' ||
+      host === 'localhost' || host === '127.0.0.1';
+    var path = window.location.pathname || '';
+    // An isolated, explicitly named test harness is the ONLY permitted place
+    // to use Testing credentials. Production pages never load that client.
+    if (testingHost && /(?:^|\/)post-payment-badges-testing\.html$/.test(path)) {
+      var isolated = window.PJPostPaymentTestingAuth;
+      var testingClient = isolated && isolated.client;
+      if (testingClient && testingClient.supabaseUrl === TESTING_URL &&
+          testingClient.auth && testingClient.functions) {
+        return { client: testingClient, testing: true };
+      }
+      return null;
+    }
+    if (!official) return null; // GitHub/local previews cannot query Production.
+    var auth = window.PJAuth;
+    var client = auth && auth.client;
+    if (!auth || !auth.enabled || !client || client.supabaseUrl !== PRODUCTION_URL ||
         !client.auth || !client.functions) return null;
-    return client;
+    return { client: client, testing: false };
   }
 
   async function loadPostPaymentAwards() {
@@ -232,12 +251,12 @@
       setAwardsStatus('The awards display is temporarily unavailable.', true);
       return;
     }
-    var client = verifiedTestingClient();
-    if (!client) {
-      setAwardsStatus('Isolated Testing authentication is not connected in this Dev preview. No Production account or badge data has been accessed.', false);
+    var context = verifiedAwardsContext();
+    if (!context) {
+      setAwardsStatus('Secure award verification is unavailable on this preview. Customer accounts are only used on the official website; isolated Testing has its own separate test page.', false);
       return;
     }
-
+    var client = context.client;
     setAwardsStatus('Checking your completed checkout and new badge awards…', false);
     try {
       var userResponse = await client.auth.getUser();
@@ -245,7 +264,9 @@
       if (userResponse.error || !userResponse.data || !userResponse.data.user ||
           userResponse.data.user.is_anonymous === true ||
           !userResponse.data.user.email_confirmed_at) {
-        setAwardsStatus('Sign in with a verified Testing account to retrieve this checkout’s awards.', false);
+        setAwardsStatus(context.testing
+          ? 'Sign in with a verified isolated Testing account to check this purchase.'
+          : 'Sign in to your Pepper Junction account to view awards verified for this checkout.', false);
         return;
       }
       var response = await client.functions.invoke('post-payment-awards-read', {
@@ -258,7 +279,10 @@
       });
 
       if (data.status === 'pending') {
-        setAwardsStatus('This checkout is not yet available as a completed, attached purchase in isolated Testing. Try again after the transaction has been processed.', true);
+        if (shell) shell.dataset.customerState = 'pending';
+        setAwardsStatus(context.testing
+          ? 'This checkout has not been attached in isolated Testing. No award has been claimed.'
+          : 'Your purchase is being confirmed and your badges are being recorded. Use Check Again shortly.', true);
         return;
       }
       if (data.status !== 'ready') {
