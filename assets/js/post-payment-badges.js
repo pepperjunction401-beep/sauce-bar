@@ -188,7 +188,7 @@
       card.appendChild(createEl('h3', null, item.title));
       card.appendChild(createEl('p', null, item.copy));
 
-      var link = createEl('a', 'pj-btn pj-btn-primary', item.cta);
+      var link = createEl('a', 'pj-btn pj-btn-primary', item.cta || 'Explore More Sauces');
       link.href = 'main.html';
       link.style.marginTop = '16px';
 
