@@ -196,6 +196,33 @@
         card.appendChild(artImg);
       }
       card.appendChild(createEl('h3', null, item.title));
+      if (item.progress &&
+          Number.isFinite(item.progress.current) &&
+          Number.isFinite(item.progress.target) &&
+          item.progress.current >= 0 &&
+          item.progress.target > item.progress.current) {
+        var p = item.progress;
+        var percentage = Math.min(100, p.current / p.target * 100);
+        var labelText = p.unit === 'cents'
+          ? '$' + (p.current / 100).toFixed(2) + ' of $' + (p.target / 100).toFixed(2)
+          : p.current + ' of ' + p.target + ' bottles';
+        card.appendChild(createEl('div', 'pj-grasp-meter-label', labelText));
+        var meter = createEl('div', 'pj-grasp-meter');
+        meter.setAttribute('role', 'progressbar');
+        meter.setAttribute('aria-label', item.title + ' progress');
+        meter.setAttribute('aria-valuemin', '0');
+        meter.setAttribute('aria-valuemax', String(p.target));
+        meter.setAttribute('aria-valuenow', String(p.current));
+        meter.setAttribute('aria-valuetext', labelText);
+        var bar = createEl('div', 'pj-grasp-meter-fill');
+        bar.style.width = percentage.toFixed(2) + '%';
+        meter.appendChild(bar);
+        card.appendChild(meter);
+        var remainingText = p.unit === 'cents'
+          ? '$' + (item.remaining / 100).toFixed(2) + ' to go'
+          : item.remaining + (item.remaining === 1 ? ' bottle' : ' bottles') + ' to go';
+        card.appendChild(createEl('div', 'pj-grasp-remaining', remainingText));
+      }
       card.appendChild(createEl('p', null, item.copy));
 
       var link = createEl('a', 'pj-btn pj-btn-primary', item.cta || 'Explore More Sauces');
