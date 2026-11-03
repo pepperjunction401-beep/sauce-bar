@@ -52,7 +52,7 @@ body {
 .pj-hero-card {
   background:
     linear-gradient(90deg,transparent 0%,rgba(243,202,104,.10) 50%,transparent 100%),
-    linear-gradient(145deg,#294B31 0%,#1E3020 72%,#152319 100%);
+    linear-gradient(145deg,#81192C 0%,#750E0D 48%,#490B13 100%);
   border: 2px solid #C49A48;
   outline: 1px solid rgba(243,202,104,.30);
   outline-offset: -10px;
