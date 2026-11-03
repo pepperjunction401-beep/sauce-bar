@@ -689,3 +689,50 @@ h1 {
 @media(max-width:640px) {
   .pj-grasp-art { height: 135px; }
 }
+
+/* Read-only Food Badge level steps, separate from total bottle history.
+   The bar is divided into numbered gold milestone bubbles. */
+.pj-grasp-milestones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  gap: 0;
+  margin: 24px 3px 17px;
+  min-height: 34px;
+}
+.pj-grasp-milestones::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  height: 7px;
+  top: calc(50% - 3.5px);
+  border: 1px solid rgba(243,202,104,.6);
+  border-radius: 6px;
+  background: linear-gradient(to right,
+    #D4A832 0 var(--milestone-progress,0%),
+    rgba(36,6,14,.62) var(--milestone-progress,0%) 100%);
+}
+.pj-grasp-milestone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border: 2px solid #D4A832;
+  border-radius: 50%;
+  background: #4B0B18;
+  color: #F3CA68;
+  box-shadow: 0 3px 8px rgba(10,0,4,.35);
+  font: 700 13px/1 'Josefin Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.pj-grasp-milestone.is-complete {
+  background: linear-gradient(145deg,#FFE0A0,#D4A832);
+  color: #5A0D19;
+}
+.pj-grasp-spend-meter { margin-top: 20px; }
