@@ -196,6 +196,13 @@ h1 {
   opacity: 1;
 }
 .pj-grasp-card .pj-btn.pj-btn-primary {
+  align-self: center;
+  width: auto;
+  max-width: 100%;
+  padding: 9px 13px 8px;
+  font-size: 10px;
+  line-height: 1.25;
+  letter-spacing: .06em;
   background: #F3CA68;
   color: #750E0D;
   border-color: #D6A94F;
