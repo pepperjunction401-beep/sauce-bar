@@ -62,7 +62,10 @@ export function projectCloseCalls(input) {
       description: "One more eligible " + String(definition.food_category || "food category") +
         " bottle would reach the next recorded Food Badge threshold on a future purchase.",
       attribution: event, family: "food", badge_code: code,
-      current_quantity: total, target_quantity: nextThreshold, remaining_quantity: 1
+      current_quantity: total, target_quantity: nextThreshold, remaining_quantity: 1,
+      // Read-only display evidence for the current tier (e.g. bottle 4 of 5).
+      // Badge eligibility remains owned by the existing engine.
+      level_step: step, level_completed: total - (nextThreshold - step)
     });
   }
 
