@@ -1790,3 +1790,77 @@ body {
   .pj-review-quote { font-size: 14px; }
   .pj-review-control { flex: 1 1 auto; text-align: center; }
 }
+
+
+/* Seal the Deal: an independent burgundy-and-gold scroll beside product imagery. */
+.pj-seal-deal-scroll {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  margin: 2px auto 10px;
+  padding: 25px 22px 29px;
+  overflow: hidden;
+  border: 1px solid #b88a3c;
+  border-radius: 14px 14px 19px 19px;
+  background:
+    radial-gradient(ellipse at 28% 18%, rgba(255,219,177,.13), transparent 48%),
+    linear-gradient(130deg, #3f071d 0%, #7a173a 26%, #57102b 54%, #310719 100%);
+  box-shadow: inset 0 2px 5px rgba(255,213,137,.20),
+    inset 0 -12px 18px rgba(14,0,8,.48), 0 12px 25px rgba(0,0,0,.42);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-10px) scaleY(.86);
+  transform-origin: top center;
+  transition: opacity .65s ease, transform .7s cubic-bezier(.19,1,.22,1);
+}
+
+.pj-seal-deal-scroll.is-unfurled {
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
+}
+
+.pj-seal-deal-scroll::before,
+.pj-seal-deal-scroll::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 7px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #684316, #dcb36d 18%, #7a3d26 49%, #e8c783 80%, #5f3718);
+  box-shadow: 0 2px 6px rgba(0,0,0,.45);
+  pointer-events: none;
+}
+.pj-seal-deal-scroll::before { top: 5px; }
+.pj-seal-deal-scroll::after { bottom: 5px; }
+
+.pj-seal-deal-heading {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  line-height: 1.4;
+  font-weight: 700;
+  color: #f2d69a;
+  letter-spacing: .23em;
+  margin-bottom: 13px;
+}
+
+.pj-seal-deal-quote {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(17px, 1.55vw, 21px);
+  line-height: 1.45;
+  color: #f5d68b;
+  text-shadow: 0 2px 5px rgba(12,0,8,.75);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  .pj-seal-deal-scroll { max-width: 440px; }
+}
+@media (max-width: 640px) {
+  .pj-seal-deal-scroll { width: 86%; padding: 24px 18px 28px; }
+  .pj-seal-deal-quote { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pj-seal-deal-scroll { opacity: 1; transform: none; transition: none; }
+}

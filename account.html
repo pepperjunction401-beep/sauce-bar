@@ -178,7 +178,9 @@
           return;
         }
       }
-      // Preserve the checkout reveal after verified customer sign-in.
+      // Preserve the entry point after authenticated identity matching.
+      // A checkout customer returns to the same verified badge reveal;
+      // ordinary sign-ins still enter Passenger Station.
       location.assign(from === 'post-payment' ? 'post-payment-badges.html' : auth.destination());
     }
     function normalizeUSPhone(input) {

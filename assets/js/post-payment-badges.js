@@ -185,7 +185,82 @@
     nearMissBadges.forEach(function(item) {
       var card = createEl('div', 'pj-grasp-card');
 
+      var artLookup = window.PJNearMissArtwork;
+      var artSrc = typeof artLookup === 'function' ? artLookup(item) : '';
+      if (artSrc) {
+        var artImg = createEl('img', 'pj-grasp-art');
+        artImg.src = artSrc;
+        artImg.alt = item.title + ' badge artwork; not yet earned';
+        artImg.loading = 'lazy';
+        artImg.addEventListener('error', function() { artImg.hidden = true; });
+        card.appendChild(artImg);
+      }
       card.appendChild(createEl('h3', null, item.title));
+      if (item.progress &&
+          Number.isFinite(item.progress.current) &&
+          Number.isFinite(item.progress.target) &&
+          item.progress.current >= 0 &&
+          item.progress.target > item.progress.current) {
+        var p = item.progress;
+        var percentage = Math.min(100, p.current / p.target * 100);
+        var tier = item.family === 'food' ? item.levelProgress : null;
+
+        if (tier && Number.isSafeInteger(tier.count) &&
+            tier.count >= 2 && tier.count <= 12 &&
+            Number.isSafeInteger(tier.completed) &&
+            tier.completed >= 0 && tier.completed < tier.count) {
+          // Only show numbered markers when the server provided the level step.
+          // For example, 9/10 bottles becomes 4 completed markers out of 5
+          // on the second badge tier; no overall bottle tally is shown.
+          var milestones = createEl('div', 'pj-grasp-milestones');
+          milestones.setAttribute('role', 'group');
+          milestones.setAttribute('aria-label', item.title + ': ' +
+            tier.completed + ' of ' + tier.count + ' milestones complete');
+          milestones.style.setProperty('--milestone-progress',
+            ((tier.completed / (tier.count - 1)) * 100).toFixed(2) + '%');
+          for (var step = 1; step <= tier.count; step++) {
+            var marker = createEl('span',
+              'pj-grasp-milestone' + (step <= tier.completed ? ' is-complete' : ''),
+              String(step));
+            marker.setAttribute('aria-hidden', 'true');
+            milestones.appendChild(marker);
+          }
+          card.appendChild(milestones);
+        } else if (p.unit === 'cents') {
+          // Sales presentation: never display spent amount or next dollar tier.
+          // The verified progress fraction is used internally to draw the bar.
+          var meter = createEl('div', 'pj-grasp-meter pj-grasp-spend-meter');
+          meter.setAttribute('role', 'progressbar');
+          meter.setAttribute('aria-label', item.title + ' progress');
+          meter.setAttribute('aria-valuemin', '0');
+          meter.setAttribute('aria-valuemax', '100');
+          meter.setAttribute('aria-valuenow', percentage.toFixed(1));
+          meter.setAttribute('aria-valuetext',
+            '$' + (item.remaining / 100).toFixed(2) + ' remaining');
+          var bar = createEl('div', 'pj-grasp-meter-fill');
+          bar.style.width = percentage.toFixed(2) + '%';
+          meter.appendChild(bar);
+          card.appendChild(meter);
+          card.appendChild(createEl('div', 'pj-grasp-remaining',
+            '$' + (item.remaining / 100).toFixed(2) + ' to go'));
+        } else {
+          // Generic fallback for other verified bottle-based badge families.
+          var caption = p.current + ' of ' + p.target + ' bottles';
+          card.appendChild(createEl('div', 'pj-grasp-meter-label', caption));
+          var genericMeter = createEl('div', 'pj-grasp-meter');
+          genericMeter.setAttribute('role', 'progressbar');
+          genericMeter.setAttribute('aria-label', item.title + ' progress');
+          genericMeter.setAttribute('aria-valuemin', '0');
+          genericMeter.setAttribute('aria-valuemax', String(p.target));
+          genericMeter.setAttribute('aria-valuenow', String(p.current));
+          var genericBar = createEl('div', 'pj-grasp-meter-fill');
+          genericBar.style.width = percentage.toFixed(2) + '%';
+          genericMeter.appendChild(genericBar);
+          card.appendChild(genericMeter);
+          card.appendChild(createEl('div', 'pj-grasp-remaining',
+            item.remaining + (item.remaining === 1 ? ' bottle' : ' bottles') + ' to go'));
+        }
+      }
       card.appendChild(createEl('p', null, item.copy));
 
       var link = createEl('a', 'pj-btn pj-btn-primary', item.cta || 'Explore More Sauces');
