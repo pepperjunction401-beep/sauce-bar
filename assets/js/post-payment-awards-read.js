@@ -140,6 +140,14 @@
             n.remaining_quantity === n.target_quantity - n.current_quantity) {
           card.progress = { current: n.current_quantity, target: n.target_quantity, unit: 'bottles' };
           card.remaining = n.remaining_quantity;
+          if (family === 'food' &&
+              Number.isSafeInteger(n.level_step) && n.level_step >= 2 &&
+              n.level_step <= 12 &&
+              Number.isSafeInteger(n.level_completed) &&
+              n.level_completed >= 0 && n.level_completed < n.level_step &&
+              n.level_completed === n.current_quantity - (n.target_quantity - n.level_step)) {
+            card.levelProgress = { count: n.level_step, completed: n.level_completed };
+          }
         } else if (family === 'purchase_progress' &&
             Number.isSafeInteger(n.current_cents) &&
             Number.isSafeInteger(n.target_cents) &&
