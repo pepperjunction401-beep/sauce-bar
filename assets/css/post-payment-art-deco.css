@@ -101,6 +101,8 @@ h1 {
   background:linear-gradient(160deg,#FFF2D9 0%,#F5E6C8 100%);
   border-top:5px solid #750E0D;
 }
+/* Earned-badges section only: gold perimeter and top rail, not burgundy. */
+#badges-earned { border-color: #C49A48; }
 .pj-section-head {border-bottom:1px solid rgba(117,14,13,.25);}
 .pj-count-pill {
   background:#750E0D;
