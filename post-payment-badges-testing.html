@@ -133,6 +133,27 @@
   <script src="assets/js/post-payment-testing-auth.js"></script>
   <script src="assets/js/post-payment-awards-read.js"></script>
   <script src="assets/js/post-payment-awards-art.js"></script>
+  <!-- Explicitly scoped, purchase-free fixture selection for isolated Testing.
+       This never proves a purchase: the endpoint still verifies Testing Auth,
+       matched account ownership, purchase completion, and badge attribution. -->
+  <script>
+    (function () {
+      'use strict';
+      var host = location.hostname.toLowerCase();
+      var eligibleHost = host === 'localhost' || host === '127.0.0.1' ||
+        host === 'pepperjunction401-beep.github.io';
+      var eligiblePage = /(?:^|\/)post-payment-badges-testing\.html$/.test(location.pathname);
+      var testOrder = 'PJ_AWARDS_V3_FIXTURE_20261102';
+      if (!eligibleHost || !eligiblePage ||
+          new URLSearchParams(location.search).get('test_order') !== testOrder) return;
+      try {
+        sessionStorage.removeItem('pj_checkout_pending');
+        sessionStorage.setItem('pj_postpay_order_ref', JSON.stringify({
+          order_id: testOrder, captured_at: Date.now()
+        }));
+      } catch (_) { /* Local storage unavailable; no fallback identity bypass. */ }
+    })();
+  </script>
   <script src="assets/js/post-payment-badges.js"></script>
   <!-- No Production checkout/cart-confirmation script in isolated Testing. -->
 </body>
