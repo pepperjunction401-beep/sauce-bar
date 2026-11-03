@@ -4860,7 +4860,7 @@ document.addEventListener('click',function(event){
 &lt;/script&gt;&lt;/body&gt;
 &lt;/html&gt;
 " title="The Badge Depot"></iframe></section>
-<footer class="station-demo">Badge Depot preview · Awards and loyalty balances shown here are illustrative, not your actual account totals</footer>
+<footer class="station-demo">Your badge and loyalty collection is based on verified account state. Reward exchanges are not active yet.</footer>
 <script>
 (function(){
  const tabs=Array.from(document.querySelectorAll('.station-tab'));
@@ -4972,7 +4972,8 @@ document.addEventListener('click',function(event){
       auth.client.rpc('pj_celestial_my_earned_months'),
       auth.client.rpc('pj_round_clock_my_levels'), auth.client.rpc('pj_my_earned_time_secrets'),
       auth.client.rpc('pj_passenger_my_tokens'),
-      auth.client.rpc('pj_milestone_my_awards')
+      auth.client.rpc('pj_milestone_my_awards'),
+      auth.client.rpc('pj_loyalty_my_collection')
     ];
     Promise.all(sections).then(function(results){
       // An optional family may not yet exist in the active Supabase project.
@@ -5010,6 +5011,13 @@ document.addEventListener('click',function(event){
       const passengerTokenAssets={day_coach:'token-day-coach.png',parlor_car:'token-parlor-car.png',sleeping_car:'token-sleeping-car.png',dining_car:'token-dining-car.png',private_car:'token-private-car.png',pullman:'token-pullman-patron.png',magnate:'token-railroad-magnate.png'};
       const passengerAwards=results[9]&&!results[9].error?(results[9].data||[]):[];
       const milestoneAwards=results[10]&&!results[10].error?(results[10].data||[]):[];
+      // Verified Phase 3 wallet projection only; the client never calculates earnings.
+      const loyaltyResult=results[11];
+      const loyaltyData=loyaltyResult&&!loyaltyResult.error?loyaltyResult.data:null;
+      const loyaltyReady=!!(loyaltyData&&loyaltyData.status==='verified'&&
+        Number.isInteger(loyaltyData.balance)&&loyaltyData.balance>=0&&loyaltyData.balance<=275&&
+        Array.isArray(loyaltyData.tokens)&&loyaltyData.tokens.length===15);
+      if(!loyaltyReady)console.warn('Loyalty collection unavailable or unverified',loyaltyResult&&loyaltyResult.error);
       const milestoneAssets={10:'badge-milestone-sauce-fiend-10.png',25:'badge-milestone-sauce-fanatic-25.png',50:'badge-milestone-sauce-addict-50.png',100:'badge-milestone-sauce-cra-cra-100.png',250:'badge-milestone-sauce-freak-250.png',500:'badge-milestone-sauce-psycho-500.png',1000:'badge-milestone-sauce-dementia-1000.png'};
       const sessionTokenKey='pj-passenger-token-seen-'+user.id;
       const sessionNewKey='pj-passenger-token-new-'+user.id;
@@ -5134,6 +5142,42 @@ document.addEventListener('click',function(event){
             if(banner)banner.hidden=!card.classList.contains('retired');
           }
         });
+        // Loyalty Bridge is a LIVING balance-qualified collection, not a
+        // permanent earned badge. These statuses come only from the authenticated
+        // Phase 3 projection; never from a browser-side credits calculation.
+        const loyaltySection=doc.getElementById('loyalty');
+        if(loyaltySection){
+          const loyaltyCards=Array.from(loyaltySection.querySelectorAll('.coin-flip-card'));
+          const rows=loyaltyReady?new Map(loyaltyData.tokens.map(function(t){
+            return [Number(t.token_number),t];
+          })):new Map();
+          loyaltyCards.forEach(function(card,index){
+            const row=rows.get(index+1);
+            const active=loyaltyReady&&row&&row.balance_qualified===true;
+            card.classList.toggle('unearned',!active);
+            card.classList.remove('flipped','pj-flipped','pj-expanded');
+            card.dataset.pjState='0';
+            if(active)card.removeAttribute('aria-disabled');
+            else card.setAttribute('aria-disabled','true');
+          });
+          // Replace the Command Center's fixed illustrative balance entirely.
+          const customerBar=doc.querySelector('.depot-customer-bar');
+          if(customerBar&&customerBar.children.length>1){
+            customerBar.children[1].textContent=loyaltyReady
+              ? 'PJ Credits: '+loyaltyData.balance+' / 275'
+              : 'PJ Credits: awaiting verified account state';
+          }
+          const oldNote=loyaltySection.querySelector('.pj-loyalty-readonly-state');
+          if(oldNote)oldNote.remove();
+          const note=doc.createElement('p');
+          note.className='pj-loyalty-readonly-state';
+          note.style.cssText='margin:12px 14px;color:#f1d5a2;font:12px/1.5 Josefin Sans,Arial,sans-serif';
+          note.textContent=loyaltyReady
+            ? 'Bridge availability reflects your current verified PJ Credits balance. Reward exchanges are not active yet.'
+            : 'Bridge availability is locked until your verified account and wallet can be confirmed.';
+          const header=loyaltySection.querySelector('.category-header');
+          if(header)header.insertAdjacentElement('afterend',note);
+        }
         // Year navigation preserves the original art with edition-specific earned state.
         const celestialSection=doc.getElementById('celestial');
         if(celestialSection){
