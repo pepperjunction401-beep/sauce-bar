@@ -5,15 +5,18 @@
 (function () {
   'use strict';
   var host = window.location.hostname.toLowerCase();
-  var isStaging = host === 'magnificent-nougat-609a6e.netlify.app';
-  var firstParty = host === 'pepperjunction401.com' ||
-    host === 'www.pepperjunction401.com' ||
-    host === 'localhost' || host === '127.0.0.1' || isStaging;
+  // Explicit environment boundary: local Sauce-Bar-Dev testing uses
+  // isolated Supabase Testing. Live Pepper Junction domains use Production.
+  // Never use Netlify or an external preview to establish customer sessions.
+  var isLocalDev = host === 'localhost' || host === '127.0.0.1';
+  var isLiveDomain = host === 'pepperjunction401.com' ||
+    host === 'www.pepperjunction401.com';
+  var firstParty = isLocalDev || isLiveDomain;
   var api = null;
   if (firstParty && window.supabase && typeof window.supabase.createClient === 'function') {
     api = window.supabase.createClient(
-      isStaging ? 'https://slubpfmpjgoupujptayy.supabase.co' : 'https://cdbenwthxhypuuipyjlv.supabase.co',
-      isStaging ? 'sb_publishable_Yqg6Y8-c2Kf_T6s9D-76WQ_aVqxLyTo' : 'sb_publishable_1VOvjHvVLszMI_Rrb-tfig_Ox_EitKr',
+      isLocalDev ? 'https://slubpfmpjgoupujptayy.supabase.co' : 'https://cdbenwthxhypuuipyjlv.supabase.co',
+      isLocalDev ? 'sb_publishable_Yqg6Y8-c2Kf_T6s9D-76WQ_aVqxLyTo' : 'sb_publishable_1VOvjHvVLszMI_Rrb-tfig_Ox_EitKr',
       { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
     );
   }
