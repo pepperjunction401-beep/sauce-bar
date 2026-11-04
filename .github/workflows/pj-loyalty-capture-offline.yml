@@ -20,3 +20,4 @@ jobs:
         run: | 
           node tools/loyalty-capture/tests/test-capture.mjs
           node tools/loyalty-capture/tests/test-prepare-register.mjs
+          node tools/loyalty-capture/tests/test-loyalty-signin-bridge.mjs
