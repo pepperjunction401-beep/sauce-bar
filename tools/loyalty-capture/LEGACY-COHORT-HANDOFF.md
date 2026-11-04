@@ -24,13 +24,21 @@
 2. Run `node tools/loyalty-capture/square-loyalty-capture.mjs --out=/PRIVATE/CAPTURE` on a private machine.
 3. **As soon as accounts pagination is complete**, `node tools/loyalty-capture/prepare-register.mjs --from=/PRIVATE/CAPTURE --out=/PRIVATE/REGISTER --accounts-only`. Check account count, duplicate identifiers, negative values and archival fingerprints; encrypt an offline backup. Don't have to wait for lifetime event-history download.
 4. Validate a sample against Square Dashboard and confirm the single correct frozen cohort. Account source timestamps and capture date matter: do not replay covered history as earnable PJ credits.
-5. Import private register into a **separately approved** staging loader. A trusted loader has **not** yet been built or deployed; no customer records are currently imported.
+5. Operator-approved Testing-only staging loader now exists at `tools/loyalty-capture/stage-register-testing.mjs`. It accepts the privately prepared `register.json`, only targets isolated Testing `slubpfmpjgoupujptayy`, and calls service-role staging RPCs in batches. Import is not yet performed because the Square program is paused; no real customer records are currently imported.
 6. Owner review/approval of ambiguous identity cases, overlap boundaries, existing PJ balances, and approved 275-point conversion.
-7. Build, test and separately approve one-time idempotent transfer writing through the **existing** PJ Credits ledger, never a second wallet or a new Square loyalty engine. A claim function and historical CNS-only evaluator are **not yet built**.
-8. Only after tests and explicit owner Go Ahead, promote tested Dev through Main and coordinated Production cutover. No Netlify.
+7. One-time transfer function `pj_legacy_loyalty_claim_verified` now exists in isolated Testing and writes a distinct `legacy_square_transfer` event through the **existing** PJ Credits ledger only when `transfers_enabled=true` (currently FALSE). Synthetic rollback tests confirmed balance cap, one ledger event, retries return already claimed, and updated classification shows claimed.
+8. CNS-only nonmember historical earning now uses the **existing** `pj_credit_evaluate_verified_purchase` in Testing with a separately required `history_cutoff_at` and `nonmember_history_enabled` (currently FALSE). Chronological synthetic rollback tests succeeded; no automatic replay trigger was added.
+9. Remaining prelaunch work: reconcile Square capture versus live PJ ledger activity; validate historical purchase ordering/legacy product coverage and customer matching; execute a controlled complete-archive test with real Square LOYALTY_READ permission; coordinate operator-triggered account sign-in transfer; separately approve the ledger cutover switch, history cutoff and any reconciliation exceptions. Once complete and explicitly authorized by owner, promote reviewed Dev to Main / coordinate Production activation. No Netlify.
 
 ## Non-goals / boundaries
 - Does not alter Phase 1/2 identity, Railroad importer, Square webhook, Square payment confirmation, other badge families, or badge Depot.
 - Does not automatically classify people without verified Square links or before a validated cohort exists.
-- Does not grant credits, redeem rewards, reserve unpaid checkout value, generate purchase history, or reactivate the paid Square subscription.
+- Default/installed state does not grant legacy credits, redeem rewards, reserve unpaid checkout value, generate purchase history, or reactivate paid Square Loyalty. The disabled claim worker can award once only after explicit future operator activation and a sealed cohort; it is not wired to automatic sign-in yet.
 - Legacy snapshot 'sealed' means frozen membership evidence, **not** approved launch. Both switches remain off unless explicitly authorized.
+
+## 04 Nov / current Testing verification
+- Staging begin/batch/status: passed synthetic tests, replay idempotence, conflict refusal and account-first seal, all rolled back.
+- Synthetic full legacy transfer: 340 Square points became 275 PJ Credits exactly once; retry was already claimed; synthetic state rolled back. Separate 30-point scenario confirmed claimed status projection.
+- Synthetic nonmember history: inactive gate refused; with temporary activation inside a rollback transaction, two mapped completed history orders earned 5 then 7, duplicate refused, older out-of-order credit held.
+- No permanent synthetic data or credit changes; private browser read privileges remain revoked. Both switches OFF.
+- Important limitation: live Square retrieval and real customer matching remain untested while Square Loyalty is paused. Full end-to-end signup/transfer orchestration remains to be built and separately authorized.
