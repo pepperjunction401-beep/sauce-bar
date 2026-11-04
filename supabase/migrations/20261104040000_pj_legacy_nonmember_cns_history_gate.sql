@@ -90,15 +90,26 @@ begin
     if v_legacy_kind->>'status' is distinct from 'nonmember_cns_only' then
       return jsonb_build_object('result','held','reason','legacy_cohort_classification_not_nonmember');
     end if;
-    -- Historical replay happens only before this customer has a PJ credit
-    -- balance or posted ledger activity. Any overlap requires owner review
-    -- rather than crediting out of chronological order or double-counting.
-    if exists(select 1 from public.pj_credit_ledger l
-      where l.customer_id=v_customer) or exists(
-      select 1 from public.pj_credit_wallets w
-      where w.customer_id=v_customer and w.balance>0
+    -- Earlier already-evaluated history events are permitted, in source
+    -- completion order. Any live earning, correction, exchange, unrelated
+    -- ledger event or out-of-order history blocks the courtesy replay.
+    if exists(
+      select 1 from public.pj_credit_ledger l
+      left join public.purchases prior on prior.id=l.source_purchase_id
+      where l.customer_id=v_customer and (
+        l.event_kind <> 'purchase_earn'
+        or prior.source_channel is distinct from 'history_import'
+        or prior.completed_at is null
+        or (prior.completed_at,prior.id) > (v_p.completed_at,p_purchase_id)
+      )
+    ) or (
+      exists(select 1 from public.pj_credit_wallets w
+        where w.customer_id=v_customer and w.balance>0)
+      and not exists(select 1 from public.pj_credit_ledger l
+        where l.customer_id=v_customer and l.event_kind='purchase_earn')
     ) then
-      return jsonb_build_object('result','held','reason','existing_pj_credit_activity_requires_reconciliation');
+      return jsonb_build_object('result','held',
+        'reason','history_overlaps_live_or_out_of_order_credits');
     end if;
   elsif v_p.source_channel not in ('webhook','signed_in_checkout') then
     return jsonb_build_object('result','held','reason','source_requires_approved_earning_scope');
