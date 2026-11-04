@@ -5165,7 +5165,9 @@ document.addEventListener('click',function(event){
           if(customerBar&&customerBar.children.length>1){
             customerBar.children[1].textContent=loyaltyReady
               ? 'PJ Credits: '+loyaltyData.balance+' / 275'
-              : 'PJ Credits: awaiting verified account state';
+              : (loyaltyData&&loyaltyData.status==='prelaunch_locked'
+                ? 'PJ Credits: Loyalty Bridge launch pending'
+                : 'PJ Credits: awaiting verified account state');
           }
           const oldNote=loyaltySection.querySelector('.pj-loyalty-readonly-state');
           if(oldNote)oldNote.remove();
@@ -5174,7 +5176,9 @@ document.addEventListener('click',function(event){
           note.style.cssText='margin:12px 14px;color:#f1d5a2;font:12px/1.5 Josefin Sans,Arial,sans-serif';
           note.textContent=loyaltyReady
             ? 'Bridge availability reflects your current verified PJ Credits balance. Reward exchanges are not active yet.'
-            : 'Bridge availability is locked until your verified account and wallet can be confirmed.';
+            : (loyaltyData&&loyaltyData.status==='prelaunch_locked'
+              ? 'Loyalty Bridge is awaiting its coordinated launch. Historical member balances are being prepared; tokens and exchanges remain locked.'
+              : 'Bridge availability is locked until your verified account and wallet can be confirmed.');
           const header=loyaltySection.querySelector('.category-header');
           if(header)header.insertAdjacentElement('afterend',note);
         }
