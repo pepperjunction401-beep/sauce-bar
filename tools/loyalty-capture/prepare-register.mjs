@@ -16,16 +16,19 @@ if(sourceDir===outputDir)die('Input and output directories must differ.');
 const read=async p=>JSON.parse(await fs.readFile(p,'utf8'));
 const sha=thing=>crypto.createHash('sha256').update(thing).digest('hex');
 const integer=n=>typeof n==='number'&&Number.isSafeInteger(n);
+const accountsOnly=args['accounts-only']==='true';
 const write=async(p,value)=>fs.writeFile(p,JSON.stringify(value,null,2),{flag:'wx',mode:0o600});
 
 async function main(){
  const manifest=await read(path.join(sourceDir,'manifest.json'));
- if(manifest.schema!==1||manifest.status!=='captured'||!manifest.programId)
+ if(manifest.schema!==1||!manifest.programId||(!accountsOnly&&manifest.status!=='captured'))
    die('Square capture manifest is missing or not complete');
  const all={};
  const hashes=[];
+ let accountsFinishedAt=null;
  for(const [stream,key] of Object.entries({accounts:'loyalty_accounts',events:'events',rewards:'rewards'})){
   const state=manifest.streams?.[stream];
+  if(accountsOnly && stream!=='accounts' && !state?.complete){ all[stream]=[]; continue; }
   if(!state?.complete||!Number.isSafeInteger(state.pages)||state.pages<1)
    die(stream+': incomplete capture');
   const entries=[];
@@ -35,6 +38,7 @@ async function main(){
    const file=path.join(sourceDir,stream,String(index).padStart(6,'0')+'.json');
    const original=await fs.readFile(file,'utf8');
    const payload=JSON.parse(original);
+   if(stream==='accounts')accountsFinishedAt=payload.receivedAt??null;
    if(payload.page!==index||payload.stream!==stream||
        payload.requestedCursor!==expectedCursor)
       die(stream+': capture page checkpoint mismatch at '+index);
@@ -80,15 +84,18 @@ async function main(){
   squareProgramId:manifest.programId,
   squareApiVersion:manifest.apiVersion,
   captureStartedAt:manifest.startedAt,
-  captureFinishedAt:manifest.finishedAt??null,
+  captureFinishedAt:manifest.finishedAt??accountsFinishedAt,
   archiveFingerprintSha256:fingerprint,
   expectedAccounts:members.length,
   observedEvents:all.events.length,
   observedRewards:all.rewards.length,
-  accountsComplete:true,eventsComplete:true,rewardsComplete:true,
+  accountsComplete:true,
+  eventsComplete:!!manifest.streams?.events?.complete,
+  rewardsComplete:!!manifest.streams?.rewards?.complete,
   unresolvedCount:unresolved.length,
   canSeal:unresolved.length===0&&members.length>0,
   conversionCap:275,
+  priority:'captured outstanding balances; event and reward history optional for this register',
   creditsTransferred:0,
   safeguard:'UNCLAIMED SNAPSHOT: no PJ Credits wallet, ledger, or purchase events modified'
  };
