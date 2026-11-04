@@ -1,0 +1,20 @@
+name: PJ Loyalty capture offline tests
+on:
+  push:
+    branches: [Sauce-Bar-Dev]
+    paths:
+      - 'tools/loyalty-capture/**'
+      - '.github/workflows/pj-loyalty-capture-offline.yml'
+jobs:
+  offline-capture-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run offline Square mock tests
+        run: node tools/loyalty-capture/tests/test-capture.mjs
