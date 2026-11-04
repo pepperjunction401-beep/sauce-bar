@@ -34,8 +34,8 @@ function setup(){
  fs.writeFileSync(path.join(folder,'manifest.json'),JSON.stringify(manifest));
  return data;
 }
-function run(where=output){
- return spawnSync(process.execPath,[prepare,'--from='+folder,'--out='+where],
+function run(where=output,accountsOnly=false){
+ return spawnSync(process.execPath,[prepare,'--from='+folder,'--out='+where,...(accountsOnly?['--accounts-only']:[])],
   {encoding:'utf8',timeout:12000});
 }
 try {
@@ -71,7 +71,26 @@ try {
  assert.equal(review.summary.canSeal,false);
  assert.equal(review.summary.unresolvedCount,1);
  assert.equal(review.summary.creditsTransferred,0);
- console.log('PASS register: frozen balances, 275 cap, unique IDs, unresolved negatives, no wallet writes');
+ // Account balance snapshot may finish before the optional event/reward streams.
+ page.squareResponse.loyalty_accounts[1].balance=0;
+ fs.writeFileSync(f,JSON.stringify(page));
+ const manifestFile=path.join(folder,'manifest.json');
+ const partial=JSON.parse(fs.readFileSync(manifestFile,'utf8'));
+ partial.status='capturing';
+ partial.finishedAt=undefined;
+ partial.streams.events.complete=false;
+ partial.streams.rewards.complete=false;
+ fs.writeFileSync(manifestFile,JSON.stringify(partial));
+ const accountsOnlyPath=path.join(temp,'account-priority');
+ const prioritized=run(accountsOnlyPath,true);
+ assert.equal(prioritized.status,0,prioritized.stderr);
+ const staged=JSON.parse(fs.readFileSync(path.join(accountsOnlyPath,'register.json'),'utf8'));
+ assert.equal(staged.summary.canSeal,true);
+ assert.equal(staged.summary.accountsComplete,true);
+ assert.equal(staged.summary.eventsComplete,false);
+ assert.equal(staged.summary.rewardsComplete,false);
+ assert.equal(staged.members[0].outstandingPoints,280);
+ console.log('PASS register: frozen balances, 275 cap, unique IDs, negatives held, accounts-first staging, no wallet writes');
 }finally{
  fs.rmSync(temp,{recursive:true,force:true});
 }
