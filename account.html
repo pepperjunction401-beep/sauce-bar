@@ -178,6 +178,26 @@
           return;
         }
       }
+      // PJ Loyalty Bridge: the server checks only the already authenticated
+      // and Phase 1-verified identity. With the owner launch gate OFF, this
+      // returns a pending status and cannot award any legacy credits.
+      // Optional loyalty status must never prevent account sign-in or alter
+      // existing identity matching, Railroad, or post-payment navigation.
+      if (api && auth) {
+        try {
+          const verifiedCustomer = await auth.verifiedUser();
+          if (verifiedCustomer) {
+            const onboarding = await api.rpc('pj_loyalty_my_onboarding');
+            if (onboarding.error) {
+              // Production may not have this Dev-only RPC until owner Go Ahead.
+              // Do not expose internal account or Square details to clients.
+              console.warn('Loyalty onboarding unavailable; customer sign-in preserved.');
+            }
+          }
+        } catch (_) {
+          console.warn('Loyalty onboarding deferred; customer sign-in preserved.');
+        }
+      }
       // Preserve the entry point after authenticated identity matching.
       // A checkout customer returns to the same verified badge reveal;
       // ordinary sign-ins still enter Passenger Station.
