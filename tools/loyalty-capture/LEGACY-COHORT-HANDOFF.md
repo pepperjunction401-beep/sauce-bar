@@ -42,3 +42,14 @@
 - Synthetic nonmember history: inactive gate refused; with temporary activation inside a rollback transaction, two mapped completed history orders earned 5 then 7, duplicate refused, older out-of-order credit held.
 - No permanent synthetic data or credit changes; private browser read privileges remain revoked. Both switches OFF.
 - Important limitation: live Square retrieval and real customer matching remain untested while Square Loyalty is paused. Full end-to-end signup/transfer orchestration remains to be built and separately authorized.
+
+## 04 Nov — authenticated sign-in and exchange preparation (Dev / isolated Testing only)
+
+- `pj_loyalty_my_onboarding()`: authenticated-only, security-definer handoff validates `auth.uid()` against existing `customer_profiles.account_state='verified_matched'`. Before a sealed snapshot it returns pending without awarding. After owner activation, only the verified customer's existing one-time transfer worker may be invoked. Nonmember historical earning remains a separate controlled replay, never an automatic sign-in replay.
+- `account.html` in Sauce-Bar-Dev calls onboarding after existing Phase 1 identity matching and before the preserved destination redirect; errors do not block sign-in. No browser service-role key or customer-controlled IDs.
+- New independent `pj_loyalty_bridge_activation` defaults `display_enabled=false` and `exchange_enabled=false`. No activation performed.
+- `pj_loyalty_my_collection()` now returns `prelaunch_locked` while the bridge display gate is disabled; all 15 Bridge token cards remain locked. The Depot wording distinguishes prelaunch from unverified identity.
+- `pj_loyalty_my_exchange_quote(token_number)` uses server-side verified identity, live wallet balance and canonical 15-token registry; it is a **read-only qualification preview**. It always returns `exchange_possible=false`, never debits credits or issues products/discounts.
+- Synthetic transaction tests (rolled back) verified unauthenticated rejection, verified-user prelaunch pending status, locked Depot, disabled exchange quote, as well as an intentionally simulated fully open 275-credit state returning qualifying 225/50-credit quote data with no award.
+- Remaining: approved reward-delivery integration and payment/order binding for one-token-per-transaction exchange; idempotent redeem/fulfillment transaction and rollback/reconciliation tests; owner approval of launch switches. **Do not** build unpaid-cart or payment-link point reservations.
+- Browser test: `tools/loyalty-capture/tests/test-loyalty-signin-bridge.mjs`; GitHub Actions runs capture/register/onboarding regression checks. No Main merge or Production changes.
