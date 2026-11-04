@@ -17,4 +17,6 @@ jobs:
         with:
           node-version: '22'
       - name: Run offline Square mock tests
-        run: node tools/loyalty-capture/tests/test-capture.mjs
+        run: | 
+          node tools/loyalty-capture/tests/test-capture.mjs
+          node tools/loyalty-capture/tests/test-prepare-register.mjs
