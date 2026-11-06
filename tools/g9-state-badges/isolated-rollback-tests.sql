@@ -6,7 +6,7 @@ do $test$
 declare
  v_cust uuid;
  v_a uuid:=gen_random_uuid(); v_b uuid:=gen_random_uuid();
- v_old uuid:=gen_random_uuid(); v_late uuid:=gen_random_uuid();
+ v_old uuid:=gen_random_uuid(); v_late uuid:=gen_random_uuid(); v_attach uuid:=gen_random_uuid();
  v_nj uuid:=gen_random_uuid(); v_ny uuid:=gen_random_uuid(); v_pa uuid:=gen_random_uuid();
  v_fail uuid:=gen_random_uuid(); v_enqueue uuid:=gen_random_uuid();
  v_r jsonb:='{}'::jsonb;
@@ -73,6 +73,30 @@ begin
   if v_n<>1 then raise exception 'late destination award missing'; end if;
   v_r:=v_r||jsonb_build_object('late_destination','PASS');
 
+  -- Purchase arriving before the upstream attachment: it must only credit
+  -- after Phase 1/2 attach it to the verified PJ customer.
+  insert into public.purchases(id,customer_id,square_order_id,purchase_status,
+    import_status,award_status,source_channel,total_amount,currency_code,completed_at,
+    destination_region,destination_country_code)
+  values (v_attach,null,'g9-synthetic-'||v_attach,'completed','imported','blocked',
+    'webhook',10,'USD','2026-10-10 19:00+00','CT','US');
+  perform public.pj_state_process_queue(30);
+  select status into v_status from public.pj_state_evaluation_queue where purchase_id=v_attach;
+  if v_status<>'held' then raise exception 'unattached purchase must be held, got %',v_status; end if;
+  update public.purchases
+    set customer_id=v_cust,import_status='attached' where id=v_attach;
+  perform public.pj_state_process_queue(30);
+  select count(*) into v_n from public.pj_state_purchase_credits where purchase_id=v_attach and state_code='CT';
+  if v_n<>1 then raise exception 'late attachment not credited'; end if;
+  v_r:=v_r||jsonb_build_object('late_verified_attachment','PASS');
+
+  -- No automated State Badge deduction when Square records a refund.
+  update public.purchases set purchase_status='refunded' where id=v_b;
+  perform public.pj_state_process_queue(30);
+  select count(*) into v_n from public.pj_state_purchase_credits where purchase_id=v_b;
+  if v_n<>1 then raise exception 'refund improperly reversed State credit'; end if;
+  v_r:=v_r||jsonb_build_object('owner_only_refund_changes','PASS');
+
   -- Complete the three-state Middle Atlantic division.
   insert into public.purchases(id,customer_id,square_order_id,purchase_status,
     import_status,award_status,source_channel,total_amount,currency_code,completed_at,
@@ -135,9 +159,9 @@ begin
 
   -- Guard against an over-credit from this entire synthetic set.
   select count(*) into v_n from public.pj_state_purchase_credits
-    where purchase_id=any(array[v_a,v_b,v_old,v_late,v_nj,v_ny,v_pa,v_fail,v_enqueue]);
-  if v_n<>8 then raise exception 'expected eight credits; got %',v_n; end if;
-  v_r:=v_r||jsonb_build_object('total_credits','8 / 8','test_mode','rollback_only');
+    where purchase_id=any(array[v_a,v_b,v_old,v_late,v_attach,v_nj,v_ny,v_pa,v_fail,v_enqueue]);
+  if v_n<>9 then raise exception 'expected nine credits; got %',v_n; end if;
+  v_r:=v_r||jsonb_build_object('total_credits','9 / 9','test_mode','rollback_only');
 
   -- Roll back ALL synthetic changes while preserving an in-session report.
   raise exception using errcode='PZ001',message='synthetic test rollback';
