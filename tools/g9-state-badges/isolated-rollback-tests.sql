@@ -118,8 +118,7 @@ begin
   v_r:=v_r||jsonb_build_object('worker_failure_and_retry','PASS');
 
   -- Even if the queue INSERT throws, its trigger must not abort the purchase.
-  alter table public.pj_state_evaluation_queue add constraint g9_synthetic_queue_failure
-    check(purchase_id<>v_enqueue) not valid;
+  execute format('alter table public.pj_state_evaluation_queue add constraint g9_synthetic_queue_failure check(purchase_id <> %L::uuid) not valid',v_enqueue);
   insert into public.purchases(id,customer_id,square_order_id,purchase_status,
     import_status,award_status,source_channel,total_amount,currency_code,completed_at,
     destination_region,destination_country_code)
