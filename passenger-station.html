@@ -5033,7 +5033,8 @@ document.addEventListener('click',function(event){
       auth.client.rpc('pj_round_clock_my_levels'), auth.client.rpc('pj_my_earned_time_secrets'),
       auth.client.rpc('pj_passenger_my_tokens'),
       auth.client.rpc('pj_milestone_my_awards'),
-      auth.client.rpc('pj_loyalty_my_collection')
+      auth.client.rpc('pj_loyalty_my_collection'),
+      auth.client.rpc('pj_state_my_collection')
     ];
     Promise.all(sections).then(function(results){
       // An optional family may not yet exist in the active Supabase project.
@@ -5071,6 +5072,26 @@ document.addEventListener('click',function(event){
       const passengerTokenAssets={day_coach:'token-day-coach.png',parlor_car:'token-parlor-car.png',sleeping_car:'token-sleeping-car.png',dining_car:'token-dining-car.png',private_car:'token-private-car.png',pullman:'token-pullman-patron.png',magnate:'token-railroad-magnate.png'};
       const passengerAwards=results[9]&&!results[9].error?(results[9].data||[]):[];
       const milestoneAwards=results[10]&&!results[10].error?(results[10].data||[]):[];
+      // G9: authenticated read-only State projection; no browser award evaluation.
+      // Missing projection leaves State cards locked, without affecting other families.
+      const stateResult=results[12];
+      const stateCollection=stateResult&&!stateResult.error?stateResult.data:null;
+      const stateReady=!!(stateCollection&&stateCollection.status==='verified'&&
+        Array.isArray(stateCollection.states)&&Array.isArray(stateCollection.earned_divisions));
+      if(!stateReady)console.warn('G9 State collection unavailable or unverified',stateResult&&stateResult.error);
+      const stateLevels=new Map();
+      if(stateReady)stateCollection.states.forEach(function(row){
+        const code=typeof row.state_code==='string'?row.state_code.toUpperCase():'';
+        const level=Number(row.level);
+        if(/^[A-Z]{2}$/.test(code)&&Number.isSafeInteger(level)&&level>0&&
+           typeof row.art_path==='string'&&/^assets\/badges\/states\/badges-states-[a-z-]+\.png$/.test(row.art_path)){
+          stateLevels.set(row.art_path.split('/').pop(),level);
+        }
+      });
+      const earnedStateDivisions=stateReady?stateCollection.earned_divisions.filter(function(row){
+        return typeof row.division_code==='string'&&/^[a-z_]+$/.test(row.division_code)&&
+               typeof row.division_name==='string'&&row.division_name.length>0&&row.division_name.length<=80;
+      }):[];
       // Verified Phase 3 wallet projection only; the client never calculates earnings.
       const loyaltyResult=results[11];
       const loyaltyData=loyaltyResult&&!loyaltyResult.error?loyaltyResult.data:null;
@@ -5149,6 +5170,19 @@ document.addEventListener('click',function(event){
           card.dataset.pjState='0';
           if(sectionId==='secret'||card.classList.contains('secret')){
             card.hidden=true; // no secret hints or placeholders before verified earned state
+          }
+          if(sectionId==='states'){
+            const level=stateReady?(stateLevels.get(asset)||0):0;
+            card.classList.toggle('unearned',level<1);
+            if(level>0)card.removeAttribute('aria-disabled');
+            else card.setAttribute('aria-disabled','true');
+            const levelLabel=card.querySelector('.coin-level');
+            if(levelLabel){
+              levelLabel.hidden=level<1;
+              if(level>0)levelLabel.textContent='Lvl '+String(level);
+            }
+            const unlockHint=card.querySelector('.depot-unlock');
+            if(unlockHint)unlockHint.hidden=level>0;
           }
           if(sectionId==='shop-oround-the-clock'){
             const windowByAsset={
@@ -5285,6 +5319,37 @@ document.addEventListener('click',function(event){
           section.appendChild(grid);
           if(celestialSection)celestialSection.insertAdjacentElement('afterend',section);
           else doc.body.appendChild(section);
+        }
+        // G9 secrets: show ONLY division awards returned by the authenticated
+        // backend. Artwork is not yet available; use a text-only earned card.
+        const priorStateSecrets=doc.getElementById('pj-earned-state-divisions');
+        if(priorStateSecrets)priorStateSecrets.remove();
+        if(earnedStateDivisions.length){
+          const stateSection=doc.getElementById('states');
+          if(stateSection){
+            const section=doc.createElement('section');
+            section.id='pj-earned-state-divisions';
+            section.className='badge-category';
+            const heading=doc.createElement('h2');
+            heading.textContent='Earned State Division Secrets';
+            heading.style.cssText='font:700 19px Josefin Sans,Arial,sans-serif;color:#F3CA68;margin:12px 0 20px';
+            section.appendChild(heading);
+            const grid=doc.createElement('div');grid.className='badge-grid';
+            earnedStateDivisions.forEach(function(award){
+              const card=doc.createElement('div');card.className='badge-card secret';
+              card.style.cssText='padding:24px;text-align:center;cursor:default';
+              const icon=doc.createElement('div');
+              icon.textContent='★';
+              icon.setAttribute('aria-hidden','true');
+              icon.style.cssText='font-size:34px;color:#F3CA68;margin-bottom:14px';
+              const title=doc.createElement('div');
+              title.textContent=award.division_name+' — Division Complete';
+              title.style.cssText='font:700 15px Josefin Sans,Arial,sans-serif;color:#F5E6C8';
+              card.appendChild(icon);card.appendChild(title);grid.appendChild(card);
+            });
+            section.appendChild(grid);
+            stateSection.insertAdjacentElement('afterend',section);
+          }
         }
         // The customer must not see owner catalog statistics or showroom-only instruction panels.
         const stats=doc.querySelector('.stats-bar');
