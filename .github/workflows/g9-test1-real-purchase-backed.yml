@@ -1,0 +1,26 @@
+name: G9 Test 1 real Testing purchase-backed flow
+on:
+  push:
+    branches: [Sauce-Bar-Dev]
+    paths:
+      - '.github/workflows/g9-test1-real-purchase-backed.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-testing-purchase:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      G9_TEST1_OPERATOR_ACK: AUTHORIZED_ISOLATED_TEST_WITH_MANUAL_CLEANUP
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned isolated testing packages
+        run: npm install --no-save --no-package-lock playwright@1.57.0 @supabase/supabase-js@2.77.0
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Real isolated Testing G9 checkout-to-Depot browser verification
+        run: node tools/g9-state-badges/post-payment/verify-real-purchase-backed.mjs
