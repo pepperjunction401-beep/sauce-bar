@@ -21,7 +21,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Install TypeScript for in-memory Edge source regression
-        run: npm install --no-save --no-package-lock typescript@5.9.3
+      - name: Install isolated test dependencies
+        run: npm install --no-save --no-package-lock typescript@5.9.3 playwright@1.57.0
       - name: Test actual post-payment Edge source with isolated data fixtures
         run: node tools/g9-state-badges/post-payment/verify-server-g9.mjs
+      - name: Install isolated Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Test real Dev checkout presentation with synthetic verified responses
+        run: node tools/g9-state-badges/post-payment/verify-postpayment-browser.mjs
