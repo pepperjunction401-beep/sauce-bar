@@ -1,0 +1,21 @@
+name: G9 Test 5 isolated deployed HTTP security probes
+on:
+  push:
+    branches: [Sauce-Bar-Dev]
+    paths:
+      - 'tools/g9-state-badges/tests/verify-test5-deployed-http.mjs'
+      - '.github/workflows/g9-test5-security-probes.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  read-only-security-probes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Probe only deployed isolated Testing security gates
+        run: node tools/g9-state-badges/tests/verify-test5-deployed-http.mjs
