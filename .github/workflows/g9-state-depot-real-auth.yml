@@ -1,9 +1,6 @@
 name: G9 Testing-only real-auth Depot browser verification
 # One-time runtime-generated test account in isolated Supabase Testing
 on:
-  push:
-    branches: [Sauce-Bar-Dev]
-    paths: ['.github/workflows/g9-state-depot-real-auth.yml']
   workflow_dispatch:
 permissions:
   contents: read
