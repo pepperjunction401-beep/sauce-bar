@@ -11,6 +11,9 @@ import { resolve, extname, sep } from 'node:path';
 import { createClient } from '@supabase/supabase-js';
 import { chromium } from 'playwright';
 
+if(process.env.G9_AUTH_FIXTURE_OPERATOR_ACK!=='YES_ISOLATED_FIXTURE_AND_CLEANUP'){
+  throw Error('G9 real-auth test requires explicit one-time Testing fixture setup and manual cleanup; refusing to create an Auth user');
+}
 const TESTING='slubpfmpjgoupujptayy';
 const host='https://'+TESTING+'.supabase.co';
 const root=process.cwd();
