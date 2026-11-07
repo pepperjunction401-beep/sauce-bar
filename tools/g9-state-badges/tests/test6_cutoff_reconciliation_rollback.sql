@@ -73,7 +73,7 @@ begin
   if (v_pre is null or (timestamptz '2026-10-08 03:59:59+00' at time zone 'America/New_York')::date<>date '2026-10-07'
       or (timestamptz '2026-10-08 04:00:00+00' at time zone 'America/New_York')::date<>date '2026-10-08'
       or public.pj_state_evaluate_purchase(v_pre)<>'excluded_pre_cutoff'
-      or exists(select 1 from public.pj_state_purchase_credits where purchase_id=v_pre)
+      or exists(select 1 from public.pj_state_purchase_credits where purchase_id=v_pre))
   then raise exception 'G9 2026-10-08 Rhode Island midnight boundary failed';end if;
   v_rows:=v_rows||jsonb_build_object('oct8_RI_local_midnight_cutoff','PASS');
 
