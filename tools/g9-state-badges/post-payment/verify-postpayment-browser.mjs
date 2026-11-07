@@ -24,6 +24,7 @@ const event={type:'checkout',id:order};
 const state={
   family:'state_entry',code:'RI',title:'Rhode Island',level:5,
   label:'State Entry Badge',image:'assets/badges/states/badges-states-rhode-island.png',
+  frontNote:'State Entry · Level 5',
   attribution:event,description:'Your completed purchase advanced this State Entry Badge to Level 5.'
 };
 const secret={
