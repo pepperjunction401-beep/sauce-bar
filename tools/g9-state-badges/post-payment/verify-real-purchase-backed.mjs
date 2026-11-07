@@ -25,16 +25,16 @@ if(!m||!authSource.includes(TESTING)||!testAuthSource.includes(TESTING))throw Er
 const publishable=m[1];
 const email='g9-test1-'+randomUUID()+'@pepperjunction401.com';
 const password='G9!'+randomBytes(28).toString('base64url');
-const order='G9_TEST1_'+randomUUID().replaceAll('-','');
 const supabase=createClient(apiHost,publishable,{auth:{
   persistSession:false,autoRefreshToken:false,detectSessionInUrl:false
 }});
 console.log('TEST TARGET: isolated Supabase '+TESTING+' / GitHub Sauce-Bar-Dev; NO Square, Main, Production');
 console.log('TEST EMAIL (disposable): '+email);
-console.log('TEST SQUARE ORDER REFERENCE (synthetic, never sent to Square): '+order);
 const {data:signup,error:signupError}=await supabase.auth.signUp({email,password});
 if(signupError || !signup?.user?.id)throw Error('Unable to create disposable Testing user: '+String(signupError?.message||'unknown'));
 const fixtureId=signup.user.id;
+const order='G9_TEST1_'+fixtureId.replaceAll('-','');
+console.log('TEST SQUARE ORDER REFERENCE (synthetic, never sent to Square): '+order);
 console.log('TEST USER ID: '+fixtureId);
 console.log('TEST FIXTURE STEP A REQUIRED: confirm ONLY this Testing Auth email and mark ONLY this customer profile verified_matched.');
 console.log('PASSWORD NEVER LOGGED. Do not insert a purchase until the initial pending response is confirmed.');
