@@ -4,6 +4,7 @@ on:
     branches: [Sauce-Bar-Dev]
     paths:
       - '.github/workflows/g9-test1-real-purchase-backed.yml'
+      - 'tools/g9-state-badges/post-payment/verify-real-purchase-backed.mjs'
   workflow_dispatch:
 permissions:
   contents: read
