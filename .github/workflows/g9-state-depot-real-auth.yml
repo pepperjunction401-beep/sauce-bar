@@ -1,0 +1,20 @@
+name: G9 Testing-only real-auth Depot browser verification
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-auth-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install test-only packages
+        run: npm install --no-save --no-package-lock playwright@1.57.0 @supabase/supabase-js@2.77.0
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Exercise real Testing authentication and verified State Depot
+        run: node tools/g9-state-badges/browser/verify-authenticated-depot.mjs
