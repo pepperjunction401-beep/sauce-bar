@@ -83,10 +83,10 @@ new Function('Deno','createClient','projectCloseCalls',javascript.outputText)(
  }),()=>[]
 );
 assert.equal(typeof handler,'function');
-async function call({order=ORDER1,token='owner',origin='http://localhost:8376',method='POST'}={}){
+async function call({order=ORDER1,token='owner',origin='http://localhost:8376',method='POST',payload=null}={}){
  const response=await handler(new Request('http://localhost/functions/v1/post-payment-awards-read',{
   method,headers:{Origin:origin,'Content-Type':'application/json',Authorization:'Bearer '+token},
-  ...(method==='POST'?{body:JSON.stringify({square_order_id:order})}:{})
+  ...(method==='POST'?{body:JSON.stringify(payload??{square_order_id:order})}:{})
  }));
  return {http:response.status,body:await response.json(),headers:response.headers};
 }
@@ -153,5 +153,36 @@ await test('no queue credit evidence remains pending; no invented State award',a
  fixture.pj_state_purchase_credits=[];
  fixture.pj_state_evaluation_queue=[];
  const r=await call();assert.equal(r.body.state_processing,'pending');assert.equal(r.body.awards.length,0);
+});
+await test('TEST 5: forged customer_id in body cannot override bearer ownership',async()=>{
+ const r=await call({token:'other',payload:{square_order_id:ORDER1,customer_id:OWNER}});
+ assert.equal(r.http,200);assert.equal(r.body.status,'pending');
+ assert.deepEqual(r.body.awards,[]);
+ assert.ok(!reads.some(q=>q.table==='pj_state_purchase_credits'),'must not enumerate awards for unauthorized order');
+});
+await test('TEST 5: verified Auth user with unmatched profile cannot read checkout',async()=>{
+ fixture.customer_profiles[0].account_state='verified_unmatched';
+ const r=await call();
+ assert.equal(r.http,403);assert.deepEqual(r.body,{error:'Verified customer account required'});
+ assert.ok(!reads.some(q=>q.table==='purchases'),'reject before querying customer purchase');
+});
+await test('TEST 5: completed but unattached purchase never reveals awards',async()=>{
+ fixture.purchases[0].import_status='unattached';
+ const r=await call();assert.equal(r.body.status,'pending');
+ assert.equal(r.body.awards.length,0);assert.equal(r.body.state_processing,undefined);
+});
+await test('TEST 5: malformed order forms rejected with HTTP 400 before reads',async()=>{
+ for(const order of ['short','../secret','G9ORDER!INVALID','x'.repeat(81),'']){
+  const r=await call({order});
+  assert.equal(r.http,400,order);assert.equal(r.body.error,'Invalid Square order reference');
+ }
+ assert.equal(reads.length,0);
+});
+await test('TEST 5: body customer ownership and secret attribution stay scoped across customers',async()=>{
+ fixture.pj_state_secret_awards.push({source_purchase_id:P1,customer_id:OWNER,division_code:'new_england'});
+ const r=await call({token:'other',payload:{square_order_id:ORDER1,customer_id:OWNER,
+  source_purchase_id:P1,division_code:'new_england'}});
+ assert.equal(r.body.status,'pending');assert.equal(r.body.awards.length,0);
+ assert.ok(!JSON.stringify(r.body).includes('New England'));
 });
 console.log('\nG9 server checkout projection: '+results.length+'/'+results.length+' passed; no external requests or writes.');
