@@ -1,0 +1,27 @@
+name: G9 isolated post-payment Edge regression
+on:
+  push:
+    branches: [Sauce-Bar-Dev]
+    paths:
+      - 'supabase/functions/post-payment-awards-read/**'
+      - 'assets/js/post-payment-badges.js'
+      - 'assets/js/post-payment-awards-read.js'
+      - 'assets/js/post-payment-awards-art.js'
+      - 'tools/g9-state-badges/post-payment/**'
+      - '.github/workflows/g9-post-payment-regression.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  g9-post-payment:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install TypeScript for in-memory Edge source regression
+        run: npm install --no-save --no-package-lock typescript@5.9.3
+      - name: Test actual post-payment Edge source with isolated data fixtures
+        run: node tools/g9-state-badges/post-payment/verify-server-g9.mjs
