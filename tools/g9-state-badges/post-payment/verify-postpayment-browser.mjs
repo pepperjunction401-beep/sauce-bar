@@ -101,6 +101,35 @@ try{
    assert.match(await p.locator('#earned-badge-grid').textContent(),/Rhode Island/);
   }
  });
+ await test('TEST 3: worker failed and delayed through multiple checks, then recovered without duplicate cards',{
+  replies:[
+    {status:'ready',event,awards:[heat],nearMisses:[],state_processing:'pending'},
+    {status:'ready',event,awards:[heat],nearMisses:[],state_processing:'pending'},
+    {status:'ready',event,awards:[heat],nearMisses:[],state_processing:'pending'},
+    {status:'ready',event,awards:[heat,state],nearMisses:[],state_processing:'complete'},
+    {status:'ready',event,awards:[heat,state],nearMisses:[],state_processing:'complete'}
+  ],
+  verify:async p=>{
+    const retry=p.locator('#postpay-awards-retry');
+    const cards=p.locator('.pj-award-card');
+    for(let i=0;i<3;i++){
+      assert.equal(await cards.count(),1,'Heat earned badge remains through pending retries');
+      assert.match(await p.locator('#earned-badge-grid').textContent(),/Heat Identity Mild/);
+      assert.doesNotMatch(await p.locator('#earned-badge-grid').textContent(),/Rhode Island/);
+      assert.equal(await retry.isVisible(),true);
+      await retry.click();
+      await p.waitForFunction((expected)=>window.__g9MockRequestCount()>=expected,i+2);
+    }
+    assert.equal(await cards.count(),2,'State award appears exactly once after completion');
+    assert.match(await p.locator('#earned-badge-grid').textContent(),/Rhode Island/);
+    assert.equal(await retry.isVisible(),false,'No State retry after complete');
+    // A browser refresh queries the server again without creating/duplicating awards.
+    await p.reload({waitUntil:'domcontentloaded'});
+    await p.waitForFunction(()=>document.querySelectorAll('.pj-award-card').length===2);
+    assert.equal(await p.locator('.pj-award-card').count(),2,'No duplicate cards on refresh');
+    assert.equal(await retry.isVisible(),false);
+  }
+ });
  await test('earned-only division completion secret is presented with no invented art',{
   replies:[{status:'ready',event,awards:[state,secret],nearMisses:[],state_processing:'complete'}],
   verify:async p=>{
