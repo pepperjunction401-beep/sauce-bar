@@ -1,4 +1,5 @@
 name: G9 Testing-only real-auth Depot browser verification
+# One-time runtime-generated test account in isolated Supabase Testing
 on:
   push:
     branches: [Sauce-Bar-Dev]
