@@ -1,9 +1,11 @@
 name: G9 Test 3 isolated real worker recovery browser
 on:
-  push:
-    branches: [Sauce-Bar-Dev]
-    paths: ['.github/workflows/g9-test3-real-worker-browser.yml']
   workflow_dispatch:
+    inputs:
+      operator_ack:
+        description: 'Supervised isolated Testing-only fixture and cleanup acknowledgment'
+        required: true
+        type: string
 permissions:
   contents: read
 jobs:
@@ -11,7 +13,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
-      G9_TEST3_ACK: SUPERVISED_TESTING_ONLY_CLEANUP
+      G9_TEST3_ACK: ${{ inputs.operator_ack }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
