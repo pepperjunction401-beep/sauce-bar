@@ -1,0 +1,25 @@
+name: G9 State Depot isolated browser regression
+on:
+  push:
+    branches: [Sauce-Bar-Dev]
+    paths:
+      - 'tools/g9-state-badges/browser/**'
+      - '.github/workflows/g9-state-depot-browser.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated browser test dependency
+        run: npm install --no-save --no-package-lock playwright@1.57.0
+      - name: Install Chromium headless dependencies
+        run: npx playwright install --with-deps chromium
+      - name: Run isolated browser test on real Dev page
+        run: node tools/g9-state-badges/browser/verify-depot.mjs
