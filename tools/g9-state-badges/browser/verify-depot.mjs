@@ -153,6 +153,56 @@ try{
      assert.equal(await frame.locator('#pj-earned-state-divisions').count(),0);
    }
  });
+
+ // G9 Test 2: all 50 award assets, real Depot cards, and exactly nine
+ // earned-only division secret presentations (synthetic response; no production).
+ const allStates=[["AL","Alabama"],["AK","Alaska"],["AZ","Arizona"],["AR","Arkansas"],["CA","California"],["CO","Colorado"],["CT","Connecticut"],["DE","Delaware"],["FL","Florida"],["GA","Georgia"],["HI","Hawaii"],["ID","Idaho"],["IL","Illinois"],["IN","Indiana"],["IA","Iowa"],["KS","Kansas"],["KY","Kentucky"],["LA","Louisiana"],["ME","Maine"],["MD","Maryland"],["MA","Massachusetts"],["MI","Michigan"],["MN","Minnesota"],["MS","Mississippi"],["MO","Missouri"],["MT","Montana"],["NE","Nebraska"],["NV","Nevada"],["NH","New Hampshire"],["NJ","New Jersey"],["NM","New Mexico"],["NY","New York"],["NC","North Carolina"],["ND","North Dakota"],["OH","Ohio"],["OK","Oklahoma"],["OR","Oregon"],["PA","Pennsylvania"],["RI","Rhode Island"],["SC","South Carolina"],["SD","South Dakota"],["TN","Tennessee"],["TX","Texas"],["UT","Utah"],["VT","Vermont"],["VA","Virginia"],["WA","Washington"],["WV","West Virginia"],["WI","Wisconsin"],["WY","Wyoming"]];
+ const allDivisions=[["new_england","New England"],["middle_atlantic","Middle Atlantic"],["east_north_central","East North Central"],["west_north_central","West North Central"],["south_atlantic","South Atlantic"],["east_south_central","East South Central"],["west_south_central","West South Central"],["mountain","Mountain"],["pacific","Pacific"]];
+ const fullCollection={
+   status:'verified',
+   states:allStates.map(([code,name])=>({
+     state_code:code,level:code==='RI'?12:1,
+     art_path:'assets/badges/states/badges-states-'+
+       (code==='TN'?'tennesee':name.toLowerCase().replaceAll(' ','-'))+'.png'
+   })),
+   earned_divisions:allDivisions.map(([code,name])=>({
+     division_code:code,division_name:name,earned_at:'2026-11-07T12:00:00Z'
+   }))
+ };
+ await runCase('TEST 2: all 50 earned State cards, RI Level 12 and nine earned division secrets',{
+   projection:fullCollection,
+   check:async({frame,cards})=>{
+     const actualNames=await cards.locator('.coin-badge-name').allTextContents();
+     assert.deepEqual(actualNames.map(x=>x.trim()).sort(),
+       allStates.map(x=>x[1]).sort(),'complete distinct 50-State card names');
+     assert.equal(await cards.evaluateAll(xs=>xs.filter(x=>x.classList.contains('unearned')).length),0);
+     for(const [code,name] of allStates){
+       const card=cardByName(frame,name);
+       assert.equal(await card.count(),1,code+' card count');
+       const expectedLevel=code==='RI'?'Lvl 12':'Lvl 1';
+       assert.equal((await card.locator('.coin-level').textContent()).trim(),expectedLevel,code+' level');
+       assert.equal(await card.locator('.coin-level').isVisible(),true,code+' level visible');
+       assert.equal(await card.locator('.depot-unlock').isVisible(),false,code+' unlock hint hidden');
+       const src=await card.locator('img.coin-img').first().getAttribute('src');
+       const expectedName=code==='TN'?'tennesee':name.toLowerCase().replaceAll(' ','-');
+       assert.ok(src.endsWith('/assets/badges/states/badges-states-'+expectedName+'.png'),code+' artwork path');
+     }
+     const secretSection=frame.locator('#pj-earned-state-divisions');
+     assert.equal(await secretSection.count(),1);
+     assert.equal(await secretSection.locator('.badge-card.secret').count(),9);
+     const secretText=await secretSection.textContent();
+     for(const [,name] of allDivisions)
+       assert.ok(secretText.includes(name+' — Division Complete'),'earned division '+name);
+   }
+ });
+ await runCase('TEST 2: one earned State but zero secrets never discloses unearned divisions',{
+   projection:{...baseCollection,states:[fullCollection.states.find(x=>x.state_code==='RI')],earned_divisions:[]},
+   check:async({frame,cards})=>{
+     assert.equal(await cards.evaluateAll(xs=>xs.filter(x=>x.classList.contains('unearned')).length),49);
+     assert.equal((await cardByName(frame,'Rhode Island').locator('.coin-level').textContent()).trim(),'Lvl 12');
+     assert.equal(await frame.locator('#pj-earned-state-divisions').count(),0);
+   }
+ });
  await runCase('no signed-in session: redirected to first-party account sign-in',{session:false});
 } finally{
  if(browser)await browser.close();
