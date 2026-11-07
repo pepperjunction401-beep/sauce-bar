@@ -5362,8 +5362,20 @@ document.addEventListener('click',function(event){
         if(depotFrame)depotFrame.hidden=false;
         if(depotFrame)depotFrame.style.height=Math.max(doc.body.scrollHeight,750)+'px';
       }
-      if(depotFrame&&depotFrame.contentDocument&&depotFrame.contentDocument.readyState==='complete')paint();
-      else if(depotFrame)depotFrame.addEventListener('load',paint,{once:true});
+      // The iframe first exposes about:blank with readyState='complete', before
+      // its srcdoc State cards exist. Painting that blank document falsely marks
+      // the collection loaded and leaves preview-awarded cards unlocked.
+      // Wait for the actual Depot DOM; remain hidden until the card grid exists.
+      function paintWhenDepotReady(){
+        const doc=depotFrame&&depotFrame.contentDocument;
+        if(!doc || !doc.querySelector('#states .coin-flip-card'))return;
+        if(depotFrame)depotFrame.removeEventListener('load',paintWhenDepotReady);
+        paint();
+      }
+      if(depotFrame){
+        depotFrame.addEventListener('load',paintWhenDepotReady);
+        paintWhenDepotReady();
+      }
     }).catch(function(error){
       console.error('Depot integration unavailable',error);
       stateNote.textContent='Your badge collection could not be loaded.';
