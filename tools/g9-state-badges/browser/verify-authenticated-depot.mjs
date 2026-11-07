@@ -18,7 +18,7 @@ const authSource=readFileSync(resolve(root,'assets/js/pj-auth.js'),'utf8');
 const m=authSource.match(/isLocalDev\s*\?\s*'(sb_publishable_[^']+)'/);
 if(!m || !authSource.includes(TESTING)) throw Error('Testing-only publishable key/host contract changed');
 const publishable=m[1];
-const email='g9-browser-'+randomUUID()+'@example.com';
+const email='g9-browser-'+randomUUID()+'@pepperjunction401.com';
 const password='G9!'+randomBytes(24).toString('base64url');
 const adminless=createClient(host,publishable,{
   auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}
