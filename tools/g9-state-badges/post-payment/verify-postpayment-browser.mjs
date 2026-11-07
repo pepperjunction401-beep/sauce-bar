@@ -52,14 +52,18 @@ async function test(title,{authenticated=true,checkout=true,replies=[],verify}){
   });
   await page.addInitScript(({order,authenticated,checkout,responseList})=>{
    if(checkout)sessionStorage.setItem('pj_checkout_pending',JSON.stringify({order_id:order,cart_snapshot:'fixture-only'}));
-   let index=0;
+   let index=Number(sessionStorage.getItem('__g9_mock_index')||'0');
    const client={
      supabaseUrl:'https://slubpfmpjgoupujptayy.supabase.co',
      auth:{
        getUser:async()=>({data:{user:authenticated?{id:'test-user',email_confirmed_at:'2026-11-06T00:00:00Z',is_anonymous:false}:null},error:null}),
        signInWithPassword:async()=>({error:null}),signOut:async()=>({error:null})
      },
-     functions:{invoke:async()=>({data:responseList[Math.min(index++,responseList.length-1)],error:null})}
+     functions:{invoke:async()=>{
+       const result=responseList[Math.min(index++,responseList.length-1)];
+       sessionStorage.setItem('__g9_mock_index',String(index));
+       return {data:result,error:null};
+     }}
    };
    window.supabase={createClient:()=>client};
    window.__g9MockRequestCount=()=>index;
