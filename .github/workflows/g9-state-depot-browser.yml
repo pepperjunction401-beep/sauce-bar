@@ -4,6 +4,7 @@ on:
     branches: [Sauce-Bar-Dev]
     paths:
       - 'tools/g9-state-badges/browser/**'
+      - 'passenger-station.html'
       - '.github/workflows/g9-state-depot-browser.yml'
   workflow_dispatch:
 permissions:
