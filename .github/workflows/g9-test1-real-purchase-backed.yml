@@ -1,11 +1,11 @@
 name: G9 Test 1 real Testing purchase-backed flow
 on:
-  push:
-    branches: [Sauce-Bar-Dev]
-    paths:
-      - '.github/workflows/g9-test1-real-purchase-backed.yml'
-      - 'tools/g9-state-badges/post-payment/verify-real-purchase-backed.mjs'
   workflow_dispatch:
+    inputs:
+      operator_ack:
+        description: 'Supervised Testing-only fixture setup and guaranteed cleanup acknowledgment'
+        required: true
+        type: string
 permissions:
   contents: read
 jobs:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
-      G9_TEST1_OPERATOR_ACK: AUTHORIZED_ISOLATED_TEST_WITH_MANUAL_CLEANUP
+      G9_TEST1_OPERATOR_ACK: ${{ inputs.operator_ack }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
