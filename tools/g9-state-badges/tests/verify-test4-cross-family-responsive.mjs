@@ -182,11 +182,11 @@ try{
    await page.goto(origin+'/account.html?return=post-payment',{waitUntil:'domcontentloaded'});
    await page.getByRole('button',{name:'Continue to Passenger Station'}).click();
    await page.waitForURL(/post-payment-badges\.html/,{timeout:15000});
-   assert.ok(page.url().endsWith('/post-payment-badges.html'));
+   assert.ok(new URL(page.url()).pathname.endsWith('/post-payment-badges.html'), 'Post-payment return pathname');
    await page.goto(origin+'/account.html?return=station',{waitUntil:'domcontentloaded'});
    await page.getByRole('button',{name:'Continue to Passenger Station'}).click();
    await page.waitForURL(/passenger-station\.html/,{timeout:15000});
-   assert.ok(page.url().endsWith('/passenger-station.html'));
+   assert.ok(new URL(page.url()).pathname.endsWith('/passenger-station.html'), 'Station navigation pathname, ignoring its section hash');
   }finally{await context.close()}
  });
  for(const [name,confirmed,edited] of [['unconfirmed payment retains cart',false,false],
