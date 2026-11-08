@@ -5143,6 +5143,35 @@ document.addEventListener('click',function(event){
         bubble.style.cssText='position:absolute;top:-4px;right:-4px;z-index:15;min-width:28px;height:28px;padding:0 5px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border-radius:999px;background:#9b7837;border:1px solid #edce84;color:#fff;font:700 13px/1 Josefin Sans,Arial,sans-serif;box-shadow:0 2px 6px #0008;pointer-events:none;';
         target.appendChild(bubble);
       }
+      // G9 presentation only: levels come exclusively from pj_state_my_collection().
+      // Shop O'Round-style bubble with Roman numerals (I, II, III, IV, V...).
+      // This function never increments levels or awards a badge.
+      function stateLevelRoman(level){
+        const numerals=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],
+          [90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+        let remaining=level,roman='';
+        for(const [value,glyph] of numerals){
+          while(remaining>=value){roman+=glyph;remaining-=value;}
+        }
+        return roman;
+      }
+      function paintStateLevelBubble(doc,card,level){
+        card.querySelectorAll('.pj-state-level-bubble').forEach(function(b){b.remove();});
+        if(!Number.isSafeInteger(level)||level<1)return;
+        const target=card.querySelector('.coin-front .coin-img-wrap');
+        if(!target)return;
+        target.style.overflow='visible';
+        const bubble=doc.createElement('span');
+        bubble.className='pj-state-level-bubble';
+        // Standard Roman numerals are defined through 3,999; preserve a
+        // readable numeric count rather than fabricate symbols above that.
+        bubble.textContent=level<=3999?stateLevelRoman(level):String(level);
+        bubble.setAttribute('role','img');
+        bubble.setAttribute('aria-label','State Badge level '+String(level));
+        bubble.title='Level '+String(level);
+        bubble.style.cssText='position:absolute;top:-4px;right:-4px;z-index:60;min-width:32px;height:32px;padding:0 7px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border-radius:999px;background:#9b7837;border:1px solid #edce84;color:#fff;font:700 13px/1 Josefin Sans,Arial,sans-serif;box-shadow:0 2px 6px #0008;pointer-events:none;';
+        target.appendChild(bubble);
+      }
       function paint(){
         const doc=depotFrame&&depotFrame.contentDocument;
         if(!doc||!doc.body){stateNote.textContent='Badge display unavailable.';return;}
@@ -5176,11 +5205,11 @@ document.addEventListener('click',function(event){
             card.classList.toggle('unearned',level<1);
             if(level>0)card.removeAttribute('aria-disabled');
             else card.setAttribute('aria-disabled','true');
+            // Replace the tiny State-only label with an earned-only upper-right bubble.
+            // Other badge families retain their existing level presentations.
             const levelLabel=card.querySelector('.coin-level');
-            if(levelLabel){
-              levelLabel.hidden=level<1;
-              if(level>0)levelLabel.textContent='Lvl '+String(level);
-            }
+            if(levelLabel)levelLabel.hidden=true;
+            paintStateLevelBubble(doc,card,level);
             const unlockHint=card.querySelector('.depot-unlock');
             if(unlockHint)unlockHint.hidden=level>0;
           }
