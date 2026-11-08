@@ -109,8 +109,10 @@ try{
      assert.equal(await ri.count(),1);
      assert.equal(await ct.count(),1);
      assert.equal(await ri.evaluate(el=>el.classList.contains('unearned')),false);
-     assert.equal((await ri.locator('.coin-level').textContent()).trim(),'Lvl 5');
-     assert.equal(await ri.locator('.coin-level').isVisible(),true);
+     assert.equal(await ri.locator('.coin-level').isVisible(),false,'tiny State level label replaced');
+     assert.equal((await ri.locator('.pj-state-level-bubble').textContent()).trim(),'V','RI Level 5 uses Roman numeral V');
+     assert.equal(await ri.locator('.pj-state-level-bubble').getAttribute('aria-label'),'State Badge level 5');
+     assert.equal(await ct.locator('.pj-state-level-bubble').count(),0,'locked state has no bubble');
      assert.equal(await ri.locator('.depot-unlock').isVisible(),false);
      assert.equal(await ct.evaluate(el=>el.classList.contains('unearned')),true);
      assert.equal(await ct.locator('.coin-level').isVisible(),false);
@@ -143,6 +145,7 @@ try{
      assert.equal(locked,50);
      assert.equal(await frame.locator('#pj-earned-state-divisions').count(),0);
      assert.equal(await cardByName(frame,'Rhode Island').locator('.coin-level').isVisible(),false);
+     assert.equal(await frame.locator('#states .pj-state-level-bubble').count(),0,'unverified state has zero bubbles');
    }
  });
  await runCase('State RPC unavailable: State cards fail closed; Depot still opens',{
@@ -180,8 +183,9 @@ try{
        const card=cardByName(frame,name);
        assert.equal(await card.count(),1,code+' card count');
        const expectedLevel=code==='RI'?'Lvl 12':'Lvl 1';
-       assert.equal((await card.locator('.coin-level').textContent()).trim(),expectedLevel,code+' level');
-       assert.equal(await card.locator('.coin-level').isVisible(),true,code+' level visible');
+       assert.equal(await card.locator('.coin-level').isVisible(),false,code+' obsolete tiny label hidden');
+       assert.equal((await card.locator('.pj-state-level-bubble').textContent()).trim(),code==='RI'?'XII':'I',code+' Roman numeral from backend level');
+       assert.equal(await card.locator('.pj-state-level-bubble').getAttribute('aria-label'),'State Badge level '+(code==='RI'?12:1),code+' accessible numeric level');
        assert.equal(await card.locator('.depot-unlock').isVisible(),false,code+' unlock hint hidden');
        const src=await card.locator('img.coin-img').first().getAttribute('src');
        const expectedName=code==='TN'?'tennesee':name.toLowerCase().replaceAll(' ','-');
@@ -199,7 +203,8 @@ try{
    projection:{...baseCollection,states:[fullCollection.states.find(x=>x.state_code==='RI')],earned_divisions:[]},
    check:async({frame,cards})=>{
      assert.equal(await cards.evaluateAll(xs=>xs.filter(x=>x.classList.contains('unearned')).length),49);
-     assert.equal((await cardByName(frame,'Rhode Island').locator('.coin-level').textContent()).trim(),'Lvl 12');
+     assert.equal((await cardByName(frame,'Rhode Island').locator('.pj-state-level-bubble').textContent()).trim(),'XII');
+     assert.equal(await frame.locator('#states .pj-state-level-bubble').count(),1,'only earned RI has bubble');
      assert.equal(await frame.locator('#pj-earned-state-divisions').count(),0);
    }
  });
