@@ -212,11 +212,86 @@ Deno.serve(async (req: Request) => {
       progressEvents, progressDefinitions
     });
 
-    // Intentionally omitted: Passenger Tokens, Milestone, and secret awards.
+    // G9 State Entry: purchase-keyed award evidence already exists in the
+    // established Badge Engine. This reader NEVER invokes G9 evaluators,
+    // re-runs Square checks, guesses attribution, or writes an award.
+    const [stateCredits, stateSecrets, stateQueueResponse] = await Promise.all([
+      read("pj_state_purchase_credits", "state_code,awarded_level", "purchase_id", purchase.id),
+      read("pj_state_secret_awards", "division_code,source_purchase_id", "source_purchase_id", purchase.id),
+      admin.from("pj_state_evaluation_queue")
+        .select("status").eq("purchase_id", purchase.id).maybeSingle()
+    ]);
+    if (stateQueueResponse.error) throw stateQueueResponse.error;
+    if (stateCredits.length > 1) throw Error("Multiple State credits for one purchase");
+
+    if (stateCredits.length) {
+      const credit = stateCredits[0];
+      const level = Number(credit.awarded_level);
+      if (typeof credit.state_code !== "string" ||
+          !Number.isSafeInteger(level) || level < 1) {
+        throw Error("Invalid State award evidence");
+      }
+      const { data: state, error: stateError } = await admin.from("pj_state_registry")
+        .select("state_code,state_name,art_path")
+        .eq("state_code", credit.state_code).maybeSingle();
+      if (stateError || !state || !/^assets\/badges\/states\/badges-states-[a-z-]+\.png$/.test(state.art_path)) {
+        throw Error("State registry evidence unavailable");
+      }
+      awards.push({
+        family: "state_entry", code: state.state_code,
+        title: state.state_name, level,
+        label: "State Entry Badge",
+        ribbon: level === 1 ? "State Badge Earned" : "State Badge Leveled Up",
+        frontNote: "State Entry · Level " + level,
+        description: level === 1 ?
+          "Your completed purchase unlocked this State Entry Badge." :
+          "Your completed purchase advanced this State Entry Badge to Level " + level + ".",
+        meta: "State Entry · Level " + level,
+        image: state.art_path,
+        attribution: event, major: false, sound: false
+      });
+    }
+
+    // Only already-earned secrets explicitly attributed to this checkout may
+    // appear. Never query division completion or disclose unearned secret art.
+    const secretCodes = new Set<string>();
+    for (const earned of stateSecrets) {
+      const code = earned.division_code;
+      if (typeof code !== "string" || secretCodes.has(code) || !stateCredits.length) {
+        throw Error("Malformed G9 division-secret attribution");
+      }
+      secretCodes.add(code);
+      const { data: division, error: divisionError } = await admin
+        .from("pj_state_divisions").select("division_name")
+        .eq("division_code", code).maybeSingle();
+      if (divisionError || !division || typeof division.division_name !== "string") {
+        throw Error("Earned division definition unavailable");
+      }
+      awards.push({
+        family: "state_division_secret", code,
+        title: division.division_name + " · Division Complete",
+        label: "State Division Secret",
+        ribbon: "Secret Badge Earned",
+        description: "Your completed purchase earned this division-completion secret.",
+        fallback: "★",
+        attribution: event, major: false, sound: false
+      });
+    }
+
+    // G9 runs asynchronously. A completed purchase may precede G9's worker
+    // and must never be misrepresented as final when State evaluation has
+    // not completed. The only readiness evidence is the G9 queue/credit,
+    // not an independent rule evaluation by this presenter.
+    const stateQueue = stateQueueResponse.data;
+    const stateProcessing = stateCredits.length || stateQueue?.status === "done"
+      ? "complete" : "pending";
+
+    // Intentionally omitted: Passenger Tokens, Milestone, and NON-G9 secrets.
     // Their current award records do not prove which checkout earned them.
     // No timestamp guessing or eligibility-engine calls are permitted.
     return reply({
       status: "ready", event, awards, nearMisses,
+      state_processing: stateProcessing,
       snapshot_at: new Date().toISOString()
     });
   } catch (error) {
