@@ -369,10 +369,6 @@
       nearMissBadges = data.nearMisses;
       renderEarnedBadges();
       renderNearMiss();
-      var eyebrow = qs('#postpay-checkout-state');
-      if (eyebrow) eyebrow.textContent = 'Order Confirmed';
-      var title = qs('#postpay-title');
-      if (title) title.textContent = earnedBadges.length ? 'Badges Earned' : 'Checkout Verified';
       // G9 runs asynchronously after the accepted purchase. Preserve any
       // other earned awards already shown while allowing a manual recheck
       // until its authoritative queue/credit evidence is complete.
