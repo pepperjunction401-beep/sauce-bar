@@ -373,9 +373,23 @@
       if (eyebrow) eyebrow.textContent = 'Order Confirmed';
       var title = qs('#postpay-title');
       if (title) title.textContent = earnedBadges.length ? 'Badges Earned' : 'Checkout Verified';
-      setAwardsStatus(earnedBadges.length
-        ? 'These achievements were verified for this checkout.'
-        : 'Your checkout is verified. No new badges are recorded for it yet. If processing is still finishing, use Check Again.', earnedBadges.length === 0);
+      // G9 runs asynchronously after the accepted purchase. Preserve any
+      // other earned awards already shown while allowing a manual recheck
+      // until its authoritative queue/credit evidence is complete.
+      var stateProcessingPending = response.data &&
+        response.data.state_processing === 'pending';
+      var eyebrow = qs('#postpay-checkout-state');
+      if (eyebrow) eyebrow.textContent = 'Order Confirmed';
+      var title = qs('#postpay-title');
+      if (title) title.textContent = earnedBadges.length ? 'Badges Earned' : 'Checkout Verified';
+      setAwardsStatus(stateProcessingPending
+        ? (earnedBadges.length
+            ? 'These achievements are verified for this checkout. State Badge processing is still finishing; use Check Again to update the display.'
+            : 'Your checkout is verified. State Badge processing is still finishing; use Check Again to see any newly recorded achievements.')
+        : (earnedBadges.length
+            ? 'These achievements were verified for this checkout.'
+            : 'Your checkout is verified. No new badges are recorded for it yet. If processing is still finishing, use Check Again.'),
+        stateProcessingPending || earnedBadges.length === 0);
       tryMajorRewardSoundOnce();
     } catch (_) {
       if (currentRequest !== awardsRequestSerial) return;
