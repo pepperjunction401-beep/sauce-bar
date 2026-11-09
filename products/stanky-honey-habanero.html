@@ -24,30 +24,6 @@
   <link rel="stylesheet" href="../assets/css/pj-product.css">
   <link rel="stylesheet" href="../assets/css/cart.css">
 
-  <!-- This page only: keep local RI delivery guidance visible while scrolling. -->
-  <style>
-    body { padding-bottom: 88px; }
-    #delivery-callout {
-      position: fixed;
-      left: 50%;
-      bottom: max(12px, env(safe-area-inset-bottom));
-      transform: translateX(-50%);
-      box-sizing: border-box;
-      width: calc(100% - 32px);
-      max-width: 780px;
-      margin: 0;
-      z-index: 90;
-      background: #292116;
-      border: 1px solid rgba(212,168,50,.75);
-      box-shadow: 0 8px 28px rgba(0,0,0,.55);
-    }
-    @media (max-width: 640px) {
-      body { padding-bottom: 110px; }
-      #delivery-callout { bottom: max(8px, env(safe-area-inset-bottom)); width: calc(100% - 16px); padding: 12px; }
-      #delivery-callout .delivery-text { font-size: 10px; letter-spacing: .08em; line-height: 1.45; }
-    }
-  </style>
-
   <!-- ── SCHEMA.ORG — product structured data, values injected from JSON ── -->
   <script type="application/ld+json" id="product-schema">
   {
@@ -749,9 +725,6 @@
 
   /* ── DELIVERY MODAL ── */
   var callout  = document.getElementById('delivery-callout');
-  // Move the delivery reminder outside the chalkboard layout so fixed positioning
-  // anchors to the viewport rather than any transformed ancestor.
-  if (callout) document.body.appendChild(callout);
   var modal    = document.getElementById('delivery-modal');
   var closeBtn = document.getElementById('modal-close');
 
