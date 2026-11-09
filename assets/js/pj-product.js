@@ -1074,6 +1074,22 @@
 
 })();
 
+/* Shared local RI delivery reminder — place existing callout at body level.
+ * Keeps fixed positioning viewport-relative while each page retains its own modal handler.
+ * Moving the same node preserves its listeners and commercial stock visibility. */
+(function () {
+  'use strict';
+  function mountDeliveryCallout() {
+    var callout = document.getElementById('delivery-callout');
+    if (callout && callout.parentNode !== document.body) document.body.appendChild(callout);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountDeliveryCallout, { once: true });
+  } else {
+    mountDeliveryCallout();
+  }
+})();
+
 /* Shared original-vector Art Deco hero lettering, loaded once for every product page. */
 (function(){
  function loadPJDeco(){if(document.getElementById('pj-deco-loader'))return;const s=document.createElement('script');s.id='pj-deco-loader';s.src='../assets/js/pj-deco-lettering.js';s.defer=true;document.head.appendChild(s)}
