@@ -20,7 +20,9 @@ function render(node){
  const holder=document.createElement('span');holder.className='pj-deco-render';holder.setAttribute('aria-hidden','true');
  const normalized=label.toUpperCase().replace(/\s+/g,' ').trim();
  const forcedLines=normalized==='SLAP YA MAMA HOT SAUCE'
-   ? ['SLAP YA MAMA','HOT SAUCE'] : [normalized];
+   ? ['SLAP YA MAMA','HOT SAUCE']
+   : normalized==='HONEY MANGO HABANERO'
+   ? ['HONEY MANGO','HABANERO'] : [normalized];
  forcedLines.forEach((line,index)=>{
    const row=document.createElement('span');row.className='pj-deco-title-row';
    line.split(/(\s+)/).forEach(word=>{
