@@ -861,28 +861,6 @@ body {
   transition: background 0.2s;
 }
 
-/* Shared product-page local delivery reminder: always visible above the viewport bottom. */
-body:has(#delivery-callout) { padding-bottom: 88px; }
-#delivery-callout {
-  position: fixed;
-  left: 50%;
-  bottom: max(12px, env(safe-area-inset-bottom));
-  transform: translateX(-50%);
-  box-sizing: border-box;
-  width: calc(100% - 32px);
-  max-width: 780px;
-  margin: 0;
-  z-index: 90;
-  background: #292116;
-  border: 1px solid rgba(212,168,50,.75);
-  box-shadow: 0 8px 28px rgba(0,0,0,.55);
-}
-@media (max-width: 640px) {
-  body:has(#delivery-callout) { padding-bottom: 110px; }
-  #delivery-callout { bottom: max(8px, env(safe-area-inset-bottom)); width: calc(100% - 16px); padding: 12px; }
-  #delivery-callout .delivery-text { font-size: 10px; letter-spacing: .08em; line-height: 1.45; }
-}
-
 .delivery-callout:hover { background: rgba(212,168,50,0.15); }
 .delivery-icon { font-size: 18px; flex-shrink: 0; }
 
