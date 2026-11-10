@@ -23,6 +23,13 @@
   <!-- ── PRODUCT PAGE STYLESHEET ── -->
   <link rel="stylesheet" href="../assets/css/pj-product.css">
   <link rel="stylesheet" href="../assets/css/cart.css">
+  <!-- Honey Mango Habanero only: enforce a break in older cached Deco lettering. -->
+  <style>
+    .product-hero-name .pj-deco-title-row:only-child > .pj-deco-word:last-child {
+      flex-basis: 100%;
+      justify-content: center;
+    }
+  </style>
 
   <!-- ── SCHEMA.ORG — product structured data, values injected from JSON ── -->
   <script type="application/ld+json" id="product-schema">
