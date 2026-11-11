@@ -27,9 +27,10 @@
   <!-- Match the established Stanky hero word-wrap approach; page-scoped. -->
   <style>
     /* Preserve existing hero architecture; keep Smoked Cheddar together; begin the second row at Pretzels. */
-    .product-hero-name .pj-deco-title-row:only-child > .pj-deco-word:nth-child(5) {
+    .product-hero-name .pj-deco-title-row:only-child > .pj-deco-space:nth-child(4) {
       flex-basis: 100%;
-      justify-content: center;
+      width: 0;
+      height: 0;
     }
     .product-hero-name:has(.pj-deco-render) {
       max-width: min(94vw, 1000px);
