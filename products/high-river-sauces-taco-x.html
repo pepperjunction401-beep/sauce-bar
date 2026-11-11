@@ -32,6 +32,19 @@
     #delivery-callout:hover { background: rgba(212,168,50,0.09); }
   </style>
 
+  <!-- Page-local decorative hero title: deliberate two-line word break. -->
+  <style>
+    .product-hero-name .pj-deco-title-row:only-child > .pj-deco-space:nth-child(6) {
+      flex-basis: 100%;
+      width: 0;
+      height: 0;
+    }
+    .product-hero-name:has(.pj-deco-render) {
+      max-width: min(94vw, 1000px);
+      font-size: clamp(18px, 3.0vw, 42px);
+    }
+  </style>
+
   <!-- ── SCHEMA.ORG — product structured data, values injected from JSON ── -->
   <script type="application/ld+json" id="product-schema">
   {
@@ -117,7 +130,7 @@
 <!-- ═══ HERO BANNER ═════════════════════════════════════════════ -->
 <div class="product-hero">
   <div class="product-hero-eyebrow">High River Sauces · Hot Sauce · Mexican</div>
-  <div class="product-hero-name">Taco X</div>
+  <div class="product-hero-name">High River Sauces Taco X</div>
   <div class="product-hero-sub"><span id="hero-sub"></span> · <span id="hero-size"></span> · <span id="hero-price"></span></div>
 </div>
 
