@@ -24,21 +24,16 @@
   <link rel="stylesheet" href="../assets/css/pj-product.css">
   <link rel="stylesheet" href="../assets/css/cart.css">
 
-  <!-- Spicy Pretzels hero title fit: page-scoped only; shared styling unchanged. -->
+  <!-- Match the established Stanky hero word-wrap approach; page-scoped. -->
   <style>
-    .product-hero .product-hero-name,
-    .product-hero .product-hero-name:has(.pj-deco-render) {
-      max-width: min(62vw, 700px);
-      font-size: clamp(22px, 3vw, 42px);
-      line-height: 1.12;
-      text-wrap: balance;
+    /* Preserve existing hero architecture; split decorative words into balanced rows. */
+    .product-hero-name .pj-deco-title-row:only-child > .pj-deco-word:nth-child(3) {
+      flex-basis: 100%;
+      justify-content: center;
     }
-    @media (max-width: 650px) {
-      .product-hero .product-hero-name,
-      .product-hero .product-hero-name:has(.pj-deco-render) {
-        max-width: calc(100vw - 48px);
-        font-size: clamp(21px, 5vw, 30px);
-      }
+    .product-hero-name:has(.pj-deco-render) {
+      max-width: min(94vw, 1000px);
+      font-size: clamp(20px, 3.2vw, 46px);
     }
   </style>
 
