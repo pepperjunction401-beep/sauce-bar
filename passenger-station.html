@@ -2114,6 +2114,68 @@ body {
 #shop-oround-the-clock .timeslot-card .depot-unlock,
 #milestone .timeslot-card .depot-unlock { margin-top: auto; }
 &lt;/style&gt;
+&lt;style id=&quot;pj-mobile-seven-column-depot-v1&quot;&gt;
+/* Portrait-scale Badge Depot presentation only. Grid membership, card content,
+   award projections, and click/flip behavior remain untouched. */
+@media (max-width: 640px) {
+  .page-body &gt; .badge-category {
+    min-width: 0;
+  }
+  /* Each existing grid is its own native horizontal swipe lane. Explicit seven
+     columns preserve the desktop family order and wrap at 7 into further rows.
+     The nine State division grids remain nine independent lanes. */
+  .page-body .badge-category .badge-grid,
+  .page-body .badge-category .token-grid,
+  .page-body .badge-category .celestial-grid,
+  .page-body .badge-category .coin-grid {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    grid-template-columns: repeat(7, 158px);
+    grid-auto-flow: row;
+    justify-content: start;
+    overflow-x: auto;
+    overflow-y: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 10px;
+    padding: 24px 12px 28px;
+    scrollbar-width: thin;
+    scrollbar-color: #b88939 transparent;
+  }
+  .page-body .badge-category .badge-grid &gt; *,
+  .page-body .badge-category .token-grid &gt; *,
+  .page-body .badge-category .celestial-grid &gt; *,
+  .page-body .badge-category .coin-grid &gt; * {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  /* A collection containing fewer than seven cards must end at its last
+     real card, without reserving empty columns to the right. The standard
+     seven-column wrapping remains unchanged for larger collections. */
+  .page-body .badge-category :is(.badge-grid, .token-grid, .celestial-grid, .coin-grid):has(> :nth-child(1):last-child) {
+    grid-template-columns: repeat(1, 158px);
+  }
+  .page-body .badge-category :is(.badge-grid, .token-grid, .celestial-grid, .coin-grid):has(> :nth-child(2):last-child) {
+    grid-template-columns: repeat(2, 158px);
+  }
+  .page-body .badge-category :is(.badge-grid, .token-grid, .celestial-grid, .coin-grid):has(> :nth-child(3):last-child) {
+    grid-template-columns: repeat(3, 158px);
+  }
+  .page-body .badge-category :is(.badge-grid, .token-grid, .celestial-grid, .coin-grid):has(> :nth-child(4):last-child) {
+    grid-template-columns: repeat(4, 158px);
+  }
+  .page-body .badge-category :is(.badge-grid, .token-grid, .celestial-grid, .coin-grid):has(> :nth-child(5):last-child) {
+    grid-template-columns: repeat(5, 158px);
+  }
+  .page-body .badge-category :is(.badge-grid, .token-grid, .celestial-grid, .coin-grid):has(> :nth-child(6):last-child) {
+    grid-template-columns: repeat(6, 158px);
+  }
+}
+&lt;/style&gt;
 &lt;style&gt;
 /* Passenger Station v0.4 — quiet return-to-category-navigation link. */
 .badge-category .category-header{position:relative;flex-wrap:wrap}
