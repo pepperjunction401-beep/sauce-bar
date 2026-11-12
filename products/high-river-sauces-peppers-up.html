@@ -24,6 +24,27 @@
   <link rel="stylesheet" href="../assets/css/pj-product.css">
   <link rel="stylesheet" href="../assets/css/cart.css">
 
+  <!-- Local RI delivery temporarily frozen pending Square checkout support; page-specific only. -->
+  <style>
+    #delivery-callout { pointer-events: none; cursor: default; }
+    #delivery-callout .delivery-text { color: #443322; text-shadow: none; }
+    #delivery-callout .delivery-arrow { color: #443322; opacity: 0.55; }
+    #delivery-callout:hover { background: rgba(212,168,50,0.09); }
+  </style>
+
+  <!-- Page-local decorative hero title: deliberate two-line word break. -->
+  <style>
+    .product-hero-name .pj-deco-title-row:only-child > .pj-deco-space:nth-child(6) {
+      flex-basis: 100%;
+      width: 0;
+      height: 0;
+    }
+    .product-hero-name:has(.pj-deco-render) {
+      max-width: min(94vw, 1000px);
+      font-size: clamp(18px, 3.0vw, 42px);
+    }
+  </style>
+
   <!-- ── SCHEMA.ORG — product structured data, values injected from JSON ── -->
   <script type="application/ld+json" id="product-schema">
   {
@@ -109,7 +130,7 @@
 <!-- ═══ HERO BANNER ═════════════════════════════════════════════ -->
 <div class="product-hero">
   <div class="product-hero-eyebrow">High River Sauces · Hot Sauce · Fruit</div>
-  <div class="product-hero-name">Peppers Up</div>
+  <div class="product-hero-name">High River Sauces Peppers Up</div>
   <div class="product-hero-sub"><span id="hero-sub"></span> · <span id="hero-size"></span> · <span id="hero-price"></span></div>
 </div>
 
@@ -354,7 +375,7 @@
           </div>
 
           <!-- Local Delivery Callout -->
-          <div class="delivery-callout" id="delivery-callout" role="button" tabindex="0">
+          <div class="delivery-callout" id="delivery-callout" aria-disabled="true">
             <span class="delivery-icon">🚂</span>
             <span class="delivery-text">Ordering for local RI delivery? Tap here first — Square buries the option.</span>
             <span class="delivery-arrow">›</span>
@@ -851,7 +872,7 @@
   function openModal()  { modal.classList.add('open'); }
   function closeModal() { modal.classList.remove('open'); }
 
-  if (callout)  { callout.addEventListener('click', openModal); }
+  /* Local RI delivery callout frozen pending Square checkout support. */
   if (closeBtn) { closeBtn.addEventListener('click', closeModal); }
   if (modal)    { modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); }); }
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
