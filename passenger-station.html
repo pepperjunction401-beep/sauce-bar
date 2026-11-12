@@ -2115,6 +2115,46 @@ body {
 #shop-oround-the-clock .timeslot-card .depot-unlock,
 #milestone .timeslot-card .depot-unlock { margin-top: auto; }
 &lt;/style&gt;
+&lt;style id=&quot;pj-mobile-seven-column-depot-v1&quot;&gt;
+/* Portrait-scale Badge Depot presentation only. Grid membership, card content,
+   award projections, and click/flip behavior remain untouched. */
+@media (max-width: 640px) {
+  .page-body &gt; .badge-category {
+    min-width: 0;
+  }
+  /* Each existing grid is its own native horizontal swipe lane. Explicit seven
+     columns preserve the desktop family order and wrap at 7 into further rows.
+     The nine State division grids remain nine independent lanes. */
+  .page-body .badge-category .badge-grid,
+  .page-body .badge-category .token-grid,
+  .page-body .badge-category .celestial-grid,
+  .page-body .badge-category .coin-grid {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    grid-template-columns: repeat(7, 158px);
+    grid-auto-flow: row;
+    justify-content: start;
+    overflow-x: auto;
+    overflow-y: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 10px;
+    padding: 24px 12px 28px;
+    scrollbar-width: thin;
+    scrollbar-color: #b88939 transparent;
+  }
+  .page-body .badge-category .badge-grid &gt; *,
+  .page-body .badge-category .token-grid &gt; *,
+  .page-body .badge-category .celestial-grid &gt; *,
+  .page-body .badge-category .coin-grid &gt; * {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+}
+&lt;/style&gt;
 &lt;style&gt;
 /* Passenger Station v0.4 — quiet return-to-category-navigation link. */
 .badge-category .category-header{position:relative;flex-wrap:wrap}
