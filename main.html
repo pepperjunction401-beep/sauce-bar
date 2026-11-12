@@ -966,7 +966,21 @@
       .hero-headline { font-size: clamp(15px, 4.2vw, 24px); line-height: 1.15; white-space: normal; margin-bottom: 4px; }
       .hero-sub { font-size: clamp(10px, 2.7vw, 14px); line-height: 1.25; white-space: normal; }
       .panels-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      .header-nav { display: none; }
+      /* Portrait navigation: retain the existing links without altering desktop/landscape. */
+      .site-header { flex-direction: column; align-items: stretch; gap: 14px; }
+      .header-logo { align-self: center; }
+      .header-nav {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px 18px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(184,137,57,0.3);
+      }
+      .header-nav a { font-size: 10px; letter-spacing: 0.13em; opacity: 0.9; }
+      .header-nav .nav-cta { padding: 6px 10px; }
       .dispatch-body { padding: 24px 20px; }
       .site-footer { padding: 20px; }
     }
