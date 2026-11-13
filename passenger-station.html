@@ -1895,6 +1895,21 @@ try{if(window.parent!==window)window.parent.document.addEventListener('keydown',
 
     }
 
+    /* Diagnostic T2 — touch-only front-face suppression on reverse.
+       Safari may continue painting the obverse during 3D rotation.
+       Preserve the existing 180-degree flip and the full reverse face.
+       This deliberately hides the obverse only in the flipped state;
+       it is a diagnostic, not a change to the award or tap engine. */
+    @media (hover: none) and (pointer: coarse) {
+      .token-flip-card.pj-flipped .token-face.token-front,
+      .celestial-flip-card.pj-flipped .celestial-face.celestial-front,
+      .coin-flip-card.pj-flipped .coin-face.coin-front {
+        visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
+    }
+
     /* ── CLICK 2 — FLIPPED STATE ── */
     .token-flip-card.pj-flipped .token-flip-inner,
     .celestial-flip-card.pj-flipped .celestial-flip-inner,
