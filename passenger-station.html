@@ -840,10 +840,13 @@ try{if(window.parent!==window)window.parent.document.addEventListener('keydown',
       transition: transform 0.3s ease;
     }
 
+    /* Diagnostic T1: desktop mouse hover only; touch uses pj-expanded state. */
+    @media (hover: hover) and (pointer: fine) {
     .badge-card:hover .badge-img {
       transform: scale(2);
       position: relative;
       z-index: 50;
+    }
     }
 
     .badge-placeholder {
@@ -1824,6 +1827,8 @@ try{if(window.parent!==window)window.parent.document.addEventListener('keydown',
       overflow: visible;
     }
 
+    /* Diagnostic T1: hover enlargement stays desktop-only; tap logic unchanged. */
+    @media (hover: hover) and (pointer: fine) {
     /* On hover raise the entire card above siblings to prevent clipping */
     .token-flip-card:not(.pj-expanded):not(.pj-flipped):hover,
     .celestial-flip-card:not(.pj-expanded):not(.pj-flipped):hover,
@@ -1843,6 +1848,8 @@ try{if(window.parent!==window)window.parent.document.addEventListener('keydown',
       transform: scale(2);
       transform-origin: center center;
       z-index: 50;
+    }
+
     }
 
     /* CLICK 1 — card remains original size */
@@ -1878,11 +1885,14 @@ try{if(window.parent!==window)window.parent.document.addEventListener('keydown',
       transform: none;
     }
 
+    @media (hover: hover) and (pointer: fine) {
     /* Coins hover at 1.5x — already naturally larger than other badges */
     .coin-flip-card:not(.pj-expanded):not(.pj-flipped):hover .coin-img {
       transform: scale(1.5);
       transform-origin: center center;
       z-index: 50;
+    }
+
     }
 
     /* ── CLICK 2 — FLIPPED STATE ── */
