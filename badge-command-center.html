@@ -278,10 +278,13 @@
       transition: transform 0.3s ease;
     }
 
+    /* BCC mobile parity T1: desktop pointer hover only; touch uses pj-expanded. */
+    @media (hover: hover) and (pointer: fine) {
     .badge-card:hover .badge-img {
       transform: scale(2);
       position: relative;
       z-index: 50;
+    }
     }
 
     .badge-placeholder {
@@ -1239,6 +1242,8 @@
       overflow: visible;
     }
 
+    /* BCC mobile parity T1: keep hover enlargement on fine-pointer devices. */
+    @media (hover: hover) and (pointer: fine) {
     /* On hover raise the entire card above siblings to prevent clipping */
     .token-flip-card:not(.pj-expanded):not(.pj-flipped):hover,
     .celestial-flip-card:not(.pj-expanded):not(.pj-flipped):hover,
@@ -1258,6 +1263,8 @@
       transform: scale(2);
       transform-origin: center center;
       z-index: 50;
+    }
+
     }
 
     /* CLICK 1 — card remains original size */
@@ -1293,11 +1300,26 @@
       transform: none;
     }
 
+    @media (hover: hover) and (pointer: fine) {
     /* Coins hover at 1.5x — already naturally larger than other badges */
     .coin-flip-card:not(.pj-expanded):not(.pj-flipped):hover .coin-img {
       transform: scale(1.5);
       transform-origin: center center;
       z-index: 50;
+    }
+
+    }
+
+    /* BCC mobile parity T2: hide obverse face once reversible badge is flipped.
+       Keep reverse artwork, 3D rotation and desktop behavior unchanged. */
+    @media (hover: none) and (pointer: coarse) {
+      .token-flip-card.pj-flipped .token-face.token-front,
+      .celestial-flip-card.pj-flipped .celestial-face.celestial-front,
+      .coin-flip-card.pj-flipped .coin-face.coin-front {
+        visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
     }
 
     /* ── CLICK 2 — FLIPPED STATE ── */
