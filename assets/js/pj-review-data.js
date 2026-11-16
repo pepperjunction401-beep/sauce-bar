@@ -74,7 +74,19 @@
   // Q11 must use the dedicated, owner-approved CNS field. Descriptive notes are not options.
   getFlavorOptions:function(product){return product&&product.reviewFlavorOptions?product.reviewFlavorOptions.slice():[];},
   getHowItHits:function(){return uniqueColumn('How it Hits');},
-  getHeatFinish:function(){return uniqueColumn('Heat Finish');},
+  // Governed Heat Finish display order, using only values present in the current CNS.
+  // New CNS values remain available without requiring individual product edits.
+  getHeatFinish:function(){
+   var approved=uniqueColumn('Heat Finish');
+   var order=['Mutual Split','Thanks for Stopping By','No Hard Feelings','Stays for Coffee','Escorted Out','Say Goodnight'];
+   return approved.sort(function(a,b){
+    var ai=order.indexOf(a),bi=order.indexOf(b);
+    if(ai===-1&&bi===-1)return a.localeCompare(b);
+    if(ai===-1)return 1;
+    if(bi===-1)return -1;
+    return ai-bi;
+   });
+  },
   getSession:async function(){
    var user=auth&&auth.enabled?await auth.verifiedUser():null;
    return {signedIn:!!user,firstName:user?(user.user_metadata&&user.user_metadata.first_name||'Passenger'):null,passengerClass:null};
