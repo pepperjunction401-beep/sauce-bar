@@ -384,9 +384,10 @@
       card.id = 'card-' + q.id;
       card.dataset.qid = q.id;
 
+      // Retain the railroad theme without numbering questionnaire questions.
       var stop = document.createElement('p');
       stop.className = 'pjr-q-stop';
-      stop.textContent = 'Train Stop ' + (idx + 1) + ' of ' + QUESTIONS.length;
+      stop.textContent = 'Train Stop';
       card.appendChild(stop);
 
       var h = document.createElement('h3');
