@@ -84,8 +84,50 @@ Deno.serve(async req=>{
  const request=await req.json().catch(()=>null);
  if(!request||typeof request!=="object")return reply({error:"INVALID_REQUEST"},400);
  const action=request.action;
+ // Board and Yard are customer-scoped reads; never use caller-supplied customer IDs.
+ if(action==="board"){
+  const {data,error}=await admin.rpc("pj_review_board_for_customer",{p_customer_id:user.id});
+  if(error)return reply({error:"BOARD_UNAVAILABLE"},503);
+  return reply({products:data||[]});
+ }
+ if(action==="yard"){
+  const {data:reviews,error}=await admin.from("pj_review_submissions")
+    .select("id,product_slug_snapshot,submitted_at,moderation_status,q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q16,q17,q14_original,q15_original")
+    .eq("customer_id",user.id).order("submitted_at",{ascending:false});
+  if(error)return reply({error:"YARD_UNAVAILABLE"},503);
+  const {data:notes,error:noteError}=await admin.from("pj_review_private_notes")
+    .select("review_id,food_notes,tasting_notes").eq("customer_id",user.id);
+  if(noteError)return reply({error:"YARD_UNAVAILABLE"},503);
+  const {data:ratings,error:ratingError}=await admin.from("pj_review_personal_ratings")
+    .select("product_slug,rating").eq("customer_id",user.id);
+  if(ratingError)return reply({error:"YARD_UNAVAILABLE"},503);
+  const noteByReview=new Map((notes||[]).map(x=>[x.review_id,x]));
+  const ratingsBySlug=new Map((ratings||[]).map(x=>[x.product_slug,x.rating]));
+  return reply({reviews:(reviews||[]).map(r=>({
+   id:r.id,slug:r.product_slug_snapshot,submittedAt:r.submitted_at,
+   moderationStatus:r.moderation_status,
+   answers:{q1:r.q1,q2:r.q2,q3:r.q3,q4:r.q4,q5:r.q5,q6:r.q6,
+    q7:r.q7,q8:r.q8,q9:r.q9,q10:r.q10,q11:r.q11,q12:r.q12,q13:r.q13,
+    q16:r.q16,q17:r.q17,q14:r.q14_original,q15:r.q15_original},
+   privateFood:noteByReview.get(r.id)?.food_notes??r.q14_original,
+   privateLove:noteByReview.get(r.id)?.tasting_notes??r.q15_original,
+   personalRating:ratingsBySlug.get(r.product_slug_snapshot)??null
+  }))});
+ }
  const slug=typeof request.slug==="string"?request.slug:typeof request.productSlug==="string"?request.productSlug:"";
  if(!slug||slug.length>180||!/^[a-z0-9][a-z0-9-]*$/.test(slug))return reply({error:"INVALID_PRODUCT"},400);
+ if(action==="notes-save"){
+  if(typeof request.food!=="string"||typeof request.love!=="string"||
+     request.food.length>2000||request.love.length>2000)return reply({error:"INVALID_PRIVATE_NOTES"},400);
+  const {data:product,error:productError}=await admin.from("pj_products")
+    .select("id").eq("cns_slug",slug).maybeSingle();
+  if(productError||!product)return reply({error:"UNKNOWN_PRODUCT"},404);
+  const {data,error}=await admin.from("pj_review_private_notes")
+    .update({food_notes:request.food,tasting_notes:request.love,updated_at:new Date().toISOString()})
+    .eq("customer_id",user.id).eq("product_id",product.id).select("review_id");
+  return error?reply({error:"NOTES_UNAVAILABLE"},503):
+    !data?.length?reply({error:"REVIEW_NOT_FOUND"},404):reply({ok:true});
+ }
  if(action==="rating-read"){
   const {data,error}=await admin.from("pj_review_personal_ratings").select("rating")
    .eq("customer_id",user.id).eq("product_slug",slug).maybeSingle();
