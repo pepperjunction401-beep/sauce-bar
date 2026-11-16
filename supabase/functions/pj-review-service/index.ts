@@ -9,15 +9,9 @@ const DEV_PROJECT="slubpfmpjgoupujptayy";
 const DEV_CNS="https://raw.githubusercontent.com/pepperjunction401-beep/sauce-bar/Sauce-Bar-Dev/data/Database_Pepper_Junction.json";
 const LIVE_CNS="https://pepperjunction401.com/data/Database_Pepper_Junction.json";
 const HEAT=["Mild","Medium","Hot","Very Hot","Super Hot","Extreme","Inferno"];
-const SCORING=[
-  ["Flavor/heat duo favors out of the bottle, hands down.","Flavor/heat duo favors out of the bottle by an edge.","Flavor/heat duo is balanced."],
-  ["Flavor beats the heat.","Heat beats the flavor.","Thelma and Louise — they end together."],
-  ["They didn't lie.","Like my girlfriend's expectation of me, it fell way short.","It brought the heat like Tony Soprano."],
-  ["Bright, like staring at the sun.","Like my dad used to say: not too bright, good kid though.","Like a great living-room lamp, it's just right."],
-  ["Did I put hot sauce on this?","They played well together.","Like Mike Tyson, the sauce was overpowering."],
-  ["Did I put hot sauce on this?","They played well together.","Like Mike Tyson, the heat was overpowering."]
-];
-const FAVORITE=[2,2,0,2,1,1];
+// Six immutable review answers: three discrete score levels per question.
+const Q1_OPTIONS=["Weak","Comparable","Equal"];
+const FIVE_POSITION_POINTS=[1,2,3,2,1];
 const LANE=[
  "Yes — this was right where I like it.",
  "A little hotter than my usual lane, but manageable.",
@@ -44,10 +38,15 @@ function uniqueColumn(records:Record<string,unknown>[],column:string):string[]{
 }
 function validAnswers(a:Record<string,unknown>,p:Record<string,unknown>,catalog:Record<string,unknown>[]){
  let points=0;
- for(let i=0;i<6;i++){
-  const chosen=a["q"+(i+1)];
-  if(typeof chosen!=="string"||!SCORING[i].includes(chosen))return null;
-  points+=chosen===SCORING[i][FAVORITE[i]]?2:1;
+ const q1=a.q1;
+ if(typeof q1!=="string"||!Q1_OPTIONS.includes(q1))return null;
+ points+=Q1_OPTIONS.indexOf(q1)+1;
+ // The five-position judge sliders preserve all five ordered judgments.
+ // Only positions 0..4 are accepted; the middle is the 3-point favorable answer.
+ for(let i=2;i<=6;i++){
+  const chosen=a["q"+i];
+  if(typeof chosen!=="string"||!(/^[0-4]$/).test(chosen))return null;
+  points+=FIVE_POSITION_POINTS[Number(chosen)];
  }
  const heatCategory=p["Heat Category"];
  const hi=HEAT.indexOf(typeof heatCategory==="string"?heatCategory:"");
