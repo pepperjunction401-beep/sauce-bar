@@ -27,8 +27,8 @@
     <!--
       DATA NOTE:
       All customer, eligibility, submission, and personal-rating data
-      comes from assets/js/pj-review-data.js (mock layer, shaped to
-      the future Supabase contract). This page is an interface only:
+      comes from the authenticated assets/js/pj-review-data.js adapter.
+      This page is an interface only:
       it never decides eligibility, verified purchases, moderation,
       People's Choice aggregates, or badge progress.
     -->
@@ -52,10 +52,32 @@
       <a class="pjr-btn pjr-btn-primary" href="main.html">Back to the Shop</a>
     </section>
 
-    <!-- Review context introduction — shown on every review page -->
-    <section class="pjr-card pjr-intro" id="pjr-intro" hidden>
-      <p class="pjr-eyebrow">How Reviews Work</p>
-      <p class="pjr-intro-copy">Pepper Junction built its review system to separate personal taste from product truth. Your private rating is your own logbook &mdash; a place to remember what you liked, what you didn&rsquo;t, what worked for your food, and what you may want to buy again. The public review works differently. When you review a product for other passengers, we ask you to judge whether it delivered what it promised: did the advertised flavors show up, was the heat level honest, did the flavor hold up on food, and did the sauce behave the way its description said it would? You may personally dislike garlic, smoke, vinegar, fruit, or extreme heat &mdash; and that is completely fair. But a sauce should not be punished publicly for being exactly what it claimed to be. Pepper Junction reviews are designed to make product feedback more honest, more useful, and more fair.</p>
+    <!-- Notice — visible for every valid product -->
+    <section class="pjr-card pjr-intro pjr-notice" id="pjr-intro" hidden>
+      <p class="pjr-eyebrow">Before You Begin · One Ticket, One Review</p>
+      <h2>One Chance to Judge</h2>
+      <p class="pjr-intro-copy">You get one opportunity to judge each product. Once submitted, your six People's Choice scoring answers are permanently locked and cannot be changed for the foreseeable future. Your private Personal Rating and personal notes are different: you can revisit and update them as your experience evolves.</p>
+    </section>
+
+    <!-- Questionnaire -->
+    <div id="pjr-quiz" hidden>
+      <section class="pjr-card pjr-quiz-head">
+        <div>
+          <p class="pjr-eyebrow">People's Choice · Public Judging</p>
+          <h2 class="pjr-section-title">The Judge's Bench</h2>
+          <p>Personal preferences take a back seat here. Judge whether the product delivers what it promises: its flavor, heat, balance, and performance on food. These six scoring answers are permanent after submission; your written Passenger Review follows them.</p>
+        </div>
+        <span class="pjr-count-pill" id="pjr-progress">0 of 17 Answered</span>
+      </section>
+
+      <div id="pjr-judge-questions"></div>
+    </div>
+
+    <!-- Personal Logbook is accessible to any signed-in customer, even without review eligibility. -->
+    <section class="pjr-card pjr-logbook-intro" id="pjr-logbook-intro" hidden>
+      <p class="pjr-eyebrow">Your Personal Logbook</p>
+      <h2>Your Personal Logbook</h2>
+      <p>This one's all yours. Your private rating and personal notes reflect your own tastes and experiences, and can be updated as often as you'd like. They never change the People's Choice Rating.</p>
     </section>
 
     <!-- Personal rating slider — any signed-in customer, any product -->
@@ -78,17 +100,14 @@
       <p class="pjr-slider-saved" id="pjr-slider-saved">Saved to your logbook</p>
     </section>
 
-    <!-- Questionnaire -->
-    <div id="pjr-quiz" hidden>
-      <section class="pjr-card pjr-quiz-head">
-        <div>
-          <p class="pjr-eyebrow">All Aboard</p>
-          <h2 class="pjr-section-title">Tell Other Passengers</h2>
-          <p>Every stop below needs an answer before your review rolls out. Two quick written notes at the end — the rest is a tap.</p>
-        </div>
-        <span class="pjr-count-pill" id="pjr-progress">0 of 17 Answered</span>
-      </section>
 
+    <!-- Remaining required non-scoring questionnaire answers. -->
+    <div id="pjr-remaining" hidden>
+      <section class="pjr-card pjr-remaining-head">
+        <p class="pjr-eyebrow">Your Experience · The Details</p>
+        <h2>Tell Us More</h2>
+        <p>Help us understand how you experienced this product. These remaining answers do not add points to People's Choice.</p>
+      </section>
       <div id="pjr-questions"></div>
 
       <div class="pjr-submit-wrap">
@@ -158,6 +177,7 @@
 
     /* ── PERSONAL RATING SLIDER — any signed-in customer ── */
     if (session.signedIn) {
+      show('pjr-logbook-intro');
       show('pjr-slider-card');
       var slider = document.getElementById('pjr-slider');
       var readout = document.getElementById('pjr-slider-value');
@@ -217,70 +237,34 @@
     var flavorOpts = D.getFlavorOptions(product);
 
     var QUESTIONS = [
-      { id: 'q1', type: 'single', stacked: true,
-        prompt: "How does the sauce's flavor and heat on food stand up in comparison to straight out of the bottle?",
-        options: [
-          'Flavor/heat duo favors out of the bottle, hands down.',
-          'Flavor/heat duo favors out of the bottle by an edge.',
-          'Flavor/heat duo is balanced.'
-        ] },
-      { id: 'q2', type: 'single', stacked: true,
-        prompt: 'How does the balance between flavor and heat feel?',
-        options: [
-          'Flavor beats the heat.',
-          'Heat beats the flavor.',
-          'Thelma and Louise — they end together.'
-        ] },
-      { id: 'q3', type: 'single', stacked: true,
-        prompt: 'Is the heat as advertised?',
-        options: [
-          "They didn't lie.",
-          "Like my girlfriend's expectation of me, it fell way short.",
-          'It brought the heat like Tony Soprano.'
-        ] },
-      { id: 'q4', type: 'single', stacked: true,
-        prompt: 'How bright are the advertised flavors straight out of the bottle?',
-        options: [
-          'Bright, like staring at the sun.',
-          'Like my dad used to say: not too bright, good kid though.',
-          "Like a great living-room lamp, it's just right."
-        ] },
-      { id: 'q5', type: 'single', stacked: true,
-        prompt: "How did the sauce's flavor perform on food?",
-        options: [
-          'Did I put hot sauce on this?',
-          'They played well together.',
-          'Like Mike Tyson, the sauce was overpowering.'
-        ] },
-      { id: 'q6', type: 'single', stacked: true,
-        prompt: "How did the sauce's heat perform on food?",
-        options: [
-          'Did I put hot sauce on this?',
-          'They played well together.',
-          'Like Mike Tyson, the heat was overpowering.'
-        ] },
+      { id: 'q1', type: 'slider', prompt: "When used on food, how much of the sauce's original body of flavor and heat comes through compared with tasting it straight from the bottle?",
+        marks: ['Weak','Comparable','Equal'], values: ['Weak','Comparable','Equal'], points: [1,2,3] },
+      { id: 'q2', type: 'slider', prompt: 'How does the balance between flavor and heat feel?',
+        marks: ['Mostly Flavor','', 'Balanced','', 'Mostly Heat'], values: ['0','1','2','3','4'], points: [1,2,3,2,1] },
+      { id: 'q3', type: 'slider', prompt: 'Is the heat as advertised?',
+        hint: "Set your personal heat preference aside. Evaluate whether the sauce delivers the level of heat you'd expect from the peppers used to make it.",
+        marks: ['Fell Short','', 'As Expected','', 'Over the Top'], values: ['0','1','2','3','4'], points: [1,2,3,2,1] },
+      { id: 'q4', type: 'slider', prompt: 'How bright are the advertised flavors straight out of the bottle?',
+        marks: ['Dim','', 'Bright','', 'Blast'], values: ['0','1','2','3','4'], points: [1,2,3,2,1] },
+      { id: 'q5', type: 'slider', prompt: "How did the sauce's flavor perform on food?",
+        marks: ['What Sauce?','', 'Epic','', 'What Food?'], values: ['0','1','2','3','4'], points: [1,2,3,2,1] },
+      { id: 'q6', type: 'slider', prompt: "How did the sauce's heat perform on food?",
+        marks: ['What Sauce?','', 'Epic','', 'What Food?'], values: ['0','1','2','3','4'], points: [1,2,3,2,1] },
       { id: 'q7', type: 'single',
-        prompt: 'How would you rate the heat?',
-        options: heatOpts },
+        prompt: 'How would you rate the heat?', options: heatOpts },
       { id: 'q8', type: 'single',
-        prompt: 'Would you purchase it again?',
-        options: ['Yes', 'No'] },
+        prompt: 'Would you purchase it again?', options: ['Yes', 'No'] },
       { id: 'q9', type: 'single',
-        prompt: 'Would you purchase it for someone else?',
-        options: ['Yes', 'No'] },
-      { id: 'q10', type: 'select',
-        prompt: 'What food style best matches how you used it?',
-        options: D.getFoodStyles() },
+        prompt: 'Would you purchase this as a gift for someone?', options: ['Yes', 'No'] },
+      { id: 'q10', type: 'single',
+        prompt: 'What food style best matches how you used it?', options: D.getFoodStyles() },
       { id: 'q11', type: 'multi', max: 3,
         prompt: 'Which flavors stood out to you the most?',
-        hint: 'Select up to three.',
-        options: flavorOpts },
+        hint: 'Select up to three.', options: flavorOpts },
       { id: 'q12', type: 'single',
-        prompt: 'How did the heat hit?',
-        options: D.getHowItHits() },
+        prompt: 'How did the heat hit?', options: D.getHowItHits() },
       { id: 'q13', type: 'single',
-        prompt: 'How did the heat finish?',
-        options: D.getHeatFinish() },
+        prompt: 'How did the heat finish?', options: D.getHeatFinish() },
       { id: 'q16', type: 'single', stacked: true,
         prompt: "Was this sauce's heat level in your lane?",
         options: [
@@ -289,14 +273,15 @@
           'No — this was hotter than I normally enjoy.',
           'No — this was milder than I normally enjoy.'
         ] },
-      { id: 'q17', type: 'scale5',
+      { id: 'q17', type: 'slider',
         prompt: "How accurate was Pepper Junction's description of this item?",
         hint: "1 — Pepper Junction shouldn't quit its day job · 5 — Pepper Junction is a sauce sommelier.",
-        labels: ['Way off', 'A little off', 'Mostly accurate', 'Very accurate', 'Nailed it'] },
+        marks: ['1','2','3','4','5'], values: [1,2,3,4,5],
+        descriptions: ['Way off', 'A little off', 'Mostly accurate', 'Very accurate', 'Nailed it'] },
       { id: 'q14', type: 'text', limit: 200,
-        prompt: 'What food do you love it on?' },
+        prompt: 'What food do you love ' + product.name + ' on?' },
       { id: 'q15', type: 'text', limit: 200,
-        prompt: 'What do you love about this sauce?' }
+        prompt: 'What do you love about ' + product.name + '?' }
     ];
 
     /* Answers — field-level by design: each answer is its own field so
@@ -339,6 +324,7 @@
 
     /* ── RENDER QUESTIONS ── */
     var qWrap = document.getElementById('pjr-questions');
+    var judgeWrap = document.getElementById('pjr-judge-questions');
 
     QUESTIONS.forEach(function (q, idx) {
       var card = document.createElement('section');
@@ -361,6 +347,66 @@
         hint.className = 'pjr-q-hint';
         hint.textContent = q.hint;
         card.appendChild(hint);
+      }
+
+      if (q.type === 'slider') {
+        // An untouched center thumb is not a response: the passenger must interact.
+        var rangeWrap = document.createElement('div');
+        rangeWrap.className = 'pjr-question-range-wrap';
+        var range = document.createElement('input');
+        range.type = 'range';
+        range.className = 'pjr-question-range';
+        range.min = '0';
+        range.max = String(q.values.length - 1);
+        range.step = '1';
+        range.value = String(Math.floor((q.values.length - 1) / 2));
+        range.setAttribute('aria-label', q.prompt);
+        range.setAttribute('aria-valuetext', 'No answer selected');
+
+        var ticks = document.createElement('div');
+        ticks.className = 'pjr-question-ticks';
+        ticks.setAttribute('aria-hidden', 'true');
+        q.values.forEach(function () {
+          var tick = document.createElement('span');
+          tick.className = 'pjr-question-tick';
+          ticks.appendChild(tick);
+        });
+
+        var markRow = document.createElement('div');
+        markRow.className = 'pjr-question-marks';
+        markRow.setAttribute('aria-hidden', 'true');
+        q.marks.forEach(function (mark) {
+          var el = document.createElement('span');
+          el.className = 'pjr-question-mark';
+          el.textContent = mark;
+          markRow.appendChild(el);
+        });
+        var output = document.createElement('p');
+        output.className = 'pjr-range-choice';
+        output.setAttribute('aria-live', 'polite');
+        output.textContent = 'Move or tap the slider to answer.';
+
+        function selectValue() {
+          var index = Number(range.value);
+          if (!Number.isInteger(index) || index < 0 || index >= q.values.length) return;
+          answers[q.id] = q.values[index];
+          var word = q.marks[index] || ('Position ' + (index + 1) + ' of ' + q.values.length);
+          var detail = q.descriptions ? ' · ' + q.descriptions[index] : '';
+          var score = q.points ? ' · ' + q.points[index] + (q.points[index] === 1 ? ' point' : ' points') : '';
+          range.setAttribute('aria-valuetext', word + detail + score);
+          output.textContent = word + detail + score;
+          clearMissed(card);
+          updateProgress();
+        }
+        range.addEventListener('input', selectValue);
+        range.addEventListener('change', selectValue);
+        // Clicking the center thumb is a real selection even when its value does not move.
+        range.addEventListener('pointerup', selectValue);
+        rangeWrap.appendChild(range);
+        rangeWrap.appendChild(ticks);
+        rangeWrap.appendChild(markRow);
+        rangeWrap.appendChild(output);
+        card.appendChild(rangeWrap);
       }
 
       if (q.type === 'single' || q.type === 'multi') {
@@ -442,41 +488,6 @@
         card.appendChild(sel);
       }
 
-      if (q.type === 'scale5') {
-        var opts5 = document.createElement('div');
-        opts5.className = 'pjr-options scale5';
-        opts5.setAttribute('role', 'group');
-        opts5.setAttribute('aria-label', q.prompt);
-        var caption = document.createElement('p');
-        caption.className = 'pjr-scale-caption';
-        caption.textContent = '';
-        for (var n = 1; n <= 5; n++) {
-          (function (n) {
-            var b = document.createElement('button');
-            b.type = 'button';
-            b.className = 'pjr-bubble';
-            b.textContent = String(n);
-            b.setAttribute('aria-label', n + ' — ' + q.labels[n - 1]);
-            b.setAttribute('aria-pressed', 'false');
-            b.addEventListener('click', function () {
-              opts5.querySelectorAll('.pjr-bubble').forEach(function (x) {
-                x.classList.remove('selected');
-                x.setAttribute('aria-pressed', 'false');
-              });
-              b.classList.add('selected');
-              b.setAttribute('aria-pressed', 'true');
-              answers[q.id] = n;
-              caption.textContent = n + ' · ' + q.labels[n - 1];
-              clearMissed(card);
-              updateProgress();
-            });
-            opts5.appendChild(b);
-          })(n);
-        }
-        card.appendChild(opts5);
-        card.appendChild(caption);
-      }
-
       if (q.type === 'text') {
         var ta = document.createElement('textarea');
         ta.className = 'pjr-textarea';
@@ -501,7 +512,7 @@
       miss.textContent = 'Looks like you skipped a stop';
       card.appendChild(miss);
 
-      qWrap.appendChild(card);
+      (q.id === 'q15' || /^q[1-6]$/.test(q.id) ? judgeWrap : qWrap).appendChild(card);
     });
 
     /* ── VALIDATION + SUBMIT ── */
@@ -543,6 +554,7 @@
       D.submitReview(payload).then(function () {
         submitted = true;
         hide('pjr-quiz');
+        hide('pjr-remaining');
         show('pjr-state-submitted');
         document.getElementById('pjr-state-submitted')
           .scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
@@ -568,6 +580,7 @@
         return;
       } else {
         show('pjr-quiz');
+        show('pjr-remaining');
         updateProgress();
       }
     }).catch(function() {
@@ -580,7 +593,7 @@
     var panel = document.getElementById('pjr-no-product');
     panel.querySelector('h2').textContent = 'Review Service Unavailable';
     panel.querySelector('p:not(.pjr-eyebrow)').textContent =
-      'Product information could not be loaded from the current Pepper Junction catalog. Please try again later.';
+      'Product information could not be loaded from the current Pepper Junction CNS. Please try again later.';
     panel.hidden = false;
   });
   </script>
