@@ -79,7 +79,7 @@
             <small id="phone-help">Adding your phone number helps us locate past purchases made through our website and at our pop-ups, and identify your existing loyalty membership. Once those purchases are verified, Pepper Junction can use your purchase history to award eligible badges and Pepper Junction Loyalty Points. You can create an account without a phone number, but we will not be able to recover your previous purchases.</small>
           </div>
           <div class="account-notice">After you verify your account, Pepper Junction will check for safely matchable Square purchase history. No match? Your account is still yours, and you're ready for future purchases.</div>
-          <div class="account-human-check" role="group" aria-label="Registration security verification">
+          <div class="account-human-check" role="group" hidden aria-label="Registration security verification">
             <p>Security verification</p>
             <div id="captcha-create"></div>
             <div id="captcha-create-status" class="account-human-status" role="status" aria-live="polite"></div>
@@ -101,7 +101,7 @@
               <button type="button" class="account-password-toggle" data-password-target="signin-password" aria-label="Show password" aria-pressed="false" title="Show password"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
             </div>
           </div>
-          <div class="account-human-check" role="group" aria-label="Sign-in security verification">
+          <div class="account-human-check" role="group" hidden aria-label="Sign-in security verification">
             <p>Security verification</p>
             <div id="captcha-signin"></div>
             <div id="captcha-signin-status" class="account-human-status" role="status" aria-live="polite"></div>
@@ -155,12 +155,11 @@
     }
     function renderHumanCheck(mode) {
       if (!humanChecks[mode]) return;
-      if (!turnstileSiteKey) {
-        humanStatus(mode, 'Account verification is not configured on this host.');
-        return;
-      }
+      if (!turnstileSiteKey) return;
       if (!turnstileReady || !window.turnstile || humanChecks[mode].id !== null) return;
       const state = humanChecks[mode];
+      const wrapper = byId('captcha-'+mode).closest('.account-human-check');
+      if (wrapper) wrapper.hidden = false;
       state.id = window.turnstile.render('#captcha-'+mode, {
         sitekey:turnstileSiteKey, theme:'light', size:'flexible',
         callback:function(token){state.token=token;humanStatus(mode,'Verification complete.');},
@@ -172,6 +171,16 @@
       turnstileReady = true;
       renderHumanCheck(byId('panel-create').hidden ? 'signin' : 'create');
     };
+    // Only load Cloudflare when the host's PUBLIC sitekey is provisioned.
+    if (turnstileSiteKey) {
+      const challengeScript = document.createElement('script');
+      challengeScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=PJTurnstileReady';
+      challengeScript.async = true;
+      challengeScript.onerror = function(){
+        humanStatus(byId('panel-create').hidden ? 'signin' : 'create', 'Security verification could not load. Please retry.');
+      };
+      document.head.appendChild(challengeScript);
+    }
     function humanToken(mode) {
       if (!turnstileSiteKey) throw new Error('Account security verification is temporarily unavailable. Please try again later.');
       if (!turnstileReady || !window.turnstile) throw new Error('Security verification could not load. Check your connection and reload the page.');
@@ -293,7 +302,7 @@
         pendingPhone = normalizeUSPhone(byId('create-phone').value);
         const signup = await api.auth.signUp({
           email:byId('create-email').value.trim(),password:byId('create-password').value,
-          options:{ data:{full_name:name,pending_phone:pendingPhone||null}, emailRedirectTo:new URL('account.html?verified=1' + (from === 'review' ? '&return=review' + (params.get('product') ? '&product=' + encodeURIComponent(params.get('product')) : '') : ''),location.href).href, captchaToken:humanToken('create') }
+          options:{ data:{full_name:name,pending_phone:pendingPhone||null}, emailRedirectTo:new URL('account.html?verified=1' + (from === 'review' ? '&return=review' + (params.get('product') ? '&product=' + encodeURIComponent(params.get('product')) : '') : ''),location.href).href, ...(turnstileSiteKey ? {captchaToken:humanToken('create')} : {}) }
         });
         if (signup.error) throw signup.error;
         if (signup.data && signup.data.session && await auth.verifiedUser()) {
@@ -308,7 +317,7 @@
       e.preventDefault();
       if (!api) return;
       submitAction(async () => {
-        const r=await api.auth.signInWithPassword({email:byId('signin-email').value.trim(),password:byId('signin-password').value,options:{captchaToken:humanToken('signin')}});
+        const r=await api.auth.signInWithPassword({email:byId('signin-email').value.trim(),password:byId('signin-password').value,...(turnstileSiteKey ? {options:{captchaToken:humanToken('signin')}} : {})});
         if (r.error) throw r.error;
         if (!await auth.verifiedUser()) {await api.auth.signOut({scope:'local'});throw new Error('Please verify your email before entering Passenger Station.');}
         const u=await auth.verifiedUser();
@@ -321,7 +330,7 @@
       submitAction(async () => {
         const email=byId('signin-email').value.trim();
         if (!email) throw new Error('Enter your email in the Sign In field first.');
-        const r=await api.auth.resetPasswordForEmail(email,{redirectTo:new URL('account.html?reset=1',location.href).href,captchaToken:humanToken('signin')});
+        const r=await api.auth.resetPasswordForEmail(email,{redirectTo:new URL('account.html?reset=1',location.href).href,...(turnstileSiteKey ? {captchaToken:humanToken('signin')} : {})});
         if (r.error) throw r.error;
         message('If an account exists for this email, password reset instructions will be sent.');
       }, 'signin');
@@ -364,6 +373,5 @@
     }
   })();
   </script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=PJTurnstileReady" defer></script>
 </body>
 </html>
