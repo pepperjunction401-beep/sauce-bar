@@ -714,30 +714,30 @@ body {
 .pjr-quiz-head,
 .pjr-logbook-intro,
 .pjr-remaining-head {
-  background: var(--pj-cream-warm);
-  color: var(--pj-green-deep);
-  border: 1px solid rgba(30,48,32,0.28);
-  box-shadow: 0 12px 26px rgba(30,48,32,0.09);
+  background: #672019;
+  color: var(--pj-brass-bright);
+  border: 2px solid var(--pj-brass);
+  box-shadow: 0 12px 26px rgba(48,16,12,0.19);
 }
 .pjr-notice h2,
 .pjr-quiz-head h2,
 .pjr-logbook-intro h2,
 .pjr-remaining-head h2 {
   font-family: 'Playfair Display', serif;
-  color: var(--pj-green-deep);
+  color: #F4CB66;
 }
 .pjr-notice .pjr-eyebrow,
 .pjr-quiz-head .pjr-eyebrow,
 .pjr-logbook-intro .pjr-eyebrow,
 .pjr-remaining-head .pjr-eyebrow {
-  color: var(--pj-crimson);
+  color: #F4CB66;
   opacity: 1;
 }
 .pjr-notice .pjr-intro-copy,
 .pjr-quiz-head p,
 .pjr-logbook-intro p:not(.pjr-eyebrow),
 .pjr-remaining-head p:not(.pjr-eyebrow) {
-  color: var(--pj-green-deep);
+  color: #F4CB66;
   opacity: 1;
 }
 .pjr-logbook-intro,
@@ -754,9 +754,9 @@ body {
   font: 14px/1.7 'Libre Baskerville', serif;
 }
 .pjr-count-pill {
-  color: var(--pj-green-deep);
-  background: rgba(184,137,57,0.13);
-  border-color: var(--pj-brass);
+  color: #F4CB66;
+  background: rgba(0,0,0,0.18);
+  border-color: var(--pj-brass-bright);
 }
 .pjr-credit-note {
   color: var(--pj-green-deep);
