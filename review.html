@@ -148,13 +148,16 @@
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/pj-auth.js"></script>
   <script src="assets/js/pj-review-data.js"></script>
   <script>
-  (function () {
+  (async function () {
     'use strict';
 
     var D = window.PJReviewData;
-    if (!D) return;
+    if (!D) throw new Error('REVIEW_ADAPTER_UNAVAILABLE');
+    await D.loadCatalog();
 
     function getParam(name) {
       var m = new RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
@@ -163,8 +166,7 @@
 
     var slug = getParam('product') || '';
     var product = D.getProduct(slug);
-    var state = D.getState();
-    var session = D.getSession();
+    var session = await D.getSession();
 
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -174,7 +176,6 @@
     /* ── PRODUCT HERO ── */
     if (!product) {
       show('pjr-no-product');
-      D.mountStateSwitcher();
       return;
     }
 
@@ -222,23 +223,29 @@
 
       function fmt(n) { return (Math.round(n * 100) / 100).toFixed(2); }
 
-      var existing = D.getPersonalRating(slug);
-      if (existing !== null && !isNaN(existing)) {
-        slider.value = existing;
-        readout.textContent = fmt(existing);
-      }
+      D.getPersonalRating(slug).then(function(existing) {
+        if (existing !== null && !isNaN(existing)) {
+          slider.value = existing;
+          readout.textContent = fmt(existing);
+        }
+      }).catch(function() {
+        savedMsg.textContent = 'Rating unavailable'; savedMsg.classList.add('show');
+      });
 
       slider.addEventListener('input', function () {
         readout.textContent = fmt(parseFloat(slider.value));
       });
 
       slider.addEventListener('change', function () {
-        var ok = D.savePersonalRating(slug, parseFloat(slider.value));
-        if (ok) {
+        savedMsg.classList.remove('show');
+        D.savePersonalRating(slug, parseFloat(slider.value)).then(function(ok) {
+          savedMsg.textContent = ok ? 'Saved to your logbook' : 'Unable to save rating';
           savedMsg.classList.add('show');
           if (savedTimer) clearTimeout(savedTimer);
-          savedTimer = setTimeout(function () { savedMsg.classList.remove('show'); }, 1800);
-        }
+          savedTimer = setTimeout(function () { savedMsg.classList.remove('show'); }, 2500);
+        }).catch(function() {
+          savedMsg.textContent = 'Unable to save rating'; savedMsg.classList.add('show');
+        });
       });
     }
 
@@ -335,9 +342,8 @@
     var answers = {};
     var submitted = false;
 
-    var required = QUESTIONS.filter(function (q) {
-      return !(q.type === 'multi' && q.options.length === 0);
-    });
+    // Missing approved CNS choices must never silently waive questionnaire questions.
+    var required = QUESTIONS.slice();
 
     function answeredCount() {
       return required.filter(function (q) { return isAnswered(q); }).length;
@@ -398,7 +404,7 @@
         if (q.options.length === 0) {
           var none = document.createElement('p');
           none.className = 'pjr-q-hint';
-          none.textContent = 'No options listed for this item — this stop rides free.';
+          none.textContent = 'This question is awaiting approved CNS options. Review submission is not available yet.';
           card.appendChild(none);
         } else {
           var opts = document.createElement('div');
@@ -537,6 +543,10 @@
 
     /* ── VALIDATION + SUBMIT ── */
     var submitBtn = document.getElementById('pjr-submit');
+    if (!heatOpts.length || !flavorOpts.length) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Review Options Pending';
+    }
 
     submitBtn.addEventListener('click', function () {
       if (submitted) return;
@@ -593,17 +603,24 @@
         show('pjr-state-reviewed');
       } else if (!e.eligible) {
         show('pjr-state-notpurchased');
-      } else if (state === 'SUBMITTED') {
-        show('pjr-state-submitted');
       } else {
         show('pjr-quiz');
         updateProgress();
       }
+    }).catch(function() {
+      var err = document.getElementById('pjr-state-error');
+      err.querySelector('h2').textContent = 'Review Service Unavailable';
+      err.querySelector('p:not(.pjr-eyebrow)').textContent =
+        'Review eligibility could not be checked. Please return to the Review Board and try again.';
+      show('pjr-state-error');
     });
-
-    /* Dev switcher — build phase only, removed before launch */
-    D.mountStateSwitcher();
-  })();
+  })().catch(function() {
+    var panel = document.getElementById('pjr-no-product');
+    panel.querySelector('h2').textContent = 'Review Service Unavailable';
+    panel.querySelector('p:not(.pjr-eyebrow)').textContent =
+      'Product information could not be loaded from the current Pepper Junction catalog. Please try again later.';
+    panel.hidden = false;
+  });
   </script>
 </body>
 </html>
