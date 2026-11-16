@@ -29,6 +29,10 @@
     .account-feedback{font-family:'Libre Baskerville',serif;font-size:13px;line-height:1.6;color:var(--pj-cream-warm);padding:13px;border:1px solid rgba(212,168,50,.4)}
     .account-back{display:inline-block;margin-top:24px;color:var(--pj-brass-bright);font-size:12px;text-decoration:underline}
     .account-muted{font-size:12px;line-height:1.7;color:var(--pj-chalk-muted)}
+    .account-human-check{border:1px solid rgba(184,137,57,.4);padding:14px 15px;background:rgba(0,0,0,.18)}
+    .account-human-check p{font-weight:700;font-size:12px;letter-spacing:.04em;margin:0 0 10px}
+    .account-human-check small{display:block;font-family:'Libre Baskerville',serif;font-size:11px;line-height:1.5;color:var(--pj-chalk-muted);margin-top:8px}
+    .account-human-status{font-size:12px;line-height:1.5;color:var(--pj-cream-warm)}
     [hidden]{display:none!important}
     @media(max-width:480px){.account-shell{padding-top:24px}.account-panel{padding:22px 18px}.account-tab{font-size:10px;letter-spacing:.06em}}
     .account-password-wrap{position:relative}
@@ -75,6 +79,12 @@
             <small id="phone-help">Adding your phone number helps us locate past purchases made through our website and at our pop-ups, and identify your existing loyalty membership. Once those purchases are verified, Pepper Junction can use your purchase history to award eligible badges and Pepper Junction Loyalty Points. You can create an account without a phone number, but we will not be able to recover your previous purchases.</small>
           </div>
           <div class="account-notice">After you verify your account, Pepper Junction will check for safely matchable Square purchase history. No match? Your account is still yours, and you're ready for future purchases.</div>
+          <div class="account-human-check" role="group" hidden aria-label="Registration security verification">
+            <p>Security verification</p>
+            <div id="captcha-create"></div>
+            <div id="captcha-create-status" class="account-human-status" role="status" aria-live="polite"></div>
+            <small>Protects Pepper Junction customers from automated account registrations.</small>
+          </div>
           <button class="account-submit" type="submit">Create My Account</button>
         </form>
       </section>
@@ -90,6 +100,12 @@
             <input id="signin-password" type="password" autocomplete="current-password" placeholder="Your password" required>
               <button type="button" class="account-password-toggle" data-password-target="signin-password" aria-label="Show password" aria-pressed="false" title="Show password"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
             </div>
+          </div>
+          <div class="account-human-check" role="group" hidden aria-label="Sign-in security verification">
+            <p>Security verification</p>
+            <div id="captcha-signin"></div>
+            <div id="captcha-signin-status" class="account-human-status" role="status" aria-live="polite"></div>
+            <small>This check also protects password recovery.</small>
           </div>
           <button class="account-submit" type="submit">Sign In</button>
           <button class="account-submit" type="button" id="reset-password" style="background:transparent;color:var(--pj-brass-bright)">Send Password Reset Email</button>
@@ -122,6 +138,62 @@
     const api = auth && auth.client;
     const byId = id => document.getElementById(id);
     const feedback = byId('account-feedback');
+    // Security boundary: Supabase MUST validate Turnstile tokens server-side.
+    // Localhost uses Cloudflare's PUBLIC testing sitekey (never accepted by
+    // Production Turnstile secrets). Set a real PUBLIC live sitekey only
+    // after Testing passes and before an owner-approved Main promotion.
+    // NEVER place the secret key in this HTML or in the GitHub repository.
+    const isLocalTesting = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    const liveTurnstileSiteKey = ''; // Activation gate: real live sitekey is pending owner provisioning.
+    const turnstileSiteKey = isLocalTesting ? '1x00000000000000000000AA' : liveTurnstileSiteKey;
+    const humanChecks = {create:{id:null,token:''},signin:{id:null,token:''}};
+    let turnstileReady = false;
+    function humanStatus(mode, t) {
+      const target = byId('captcha-'+mode+'-status');
+      if (target) target.textContent = t;
+    }
+    function renderHumanCheck(mode) {
+      if (!humanChecks[mode]) return;
+      if (!turnstileSiteKey) return;
+      if (!turnstileReady || !window.turnstile || humanChecks[mode].id !== null) return;
+      const state = humanChecks[mode];
+      const wrapper = byId('captcha-'+mode).closest('.account-human-check');
+      if (wrapper) wrapper.hidden = false;
+      state.id = window.turnstile.render('#captcha-'+mode, {
+        sitekey:turnstileSiteKey, theme:'light', size:'flexible',
+        callback:function(token){state.token=token;humanStatus(mode,'Verification complete.');},
+        'expired-callback':function(){state.token='';humanStatus(mode,'Verification expired. Please complete it again.');},
+        'error-callback':function(){state.token='';humanStatus(mode,'Security check could not complete. Please retry or reload.');}
+      });
+    }
+    window.PJTurnstileReady = function(){
+      turnstileReady = true;
+      renderHumanCheck(byId('panel-create').hidden ? 'signin' : 'create');
+    };
+    // Only load Cloudflare when the host's PUBLIC sitekey is provisioned.
+    if (turnstileSiteKey) {
+      const challengeScript = document.createElement('script');
+      challengeScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=PJTurnstileReady';
+      challengeScript.async = true;
+      challengeScript.onerror = function(){
+        humanStatus(byId('panel-create').hidden ? 'signin' : 'create', 'Security verification could not load. Please retry.');
+      };
+      document.head.appendChild(challengeScript);
+    }
+    function humanToken(mode) {
+      if (!turnstileSiteKey) throw new Error('Account security verification is temporarily unavailable. Please try again later.');
+      if (!turnstileReady || !window.turnstile) throw new Error('Security verification could not load. Check your connection and reload the page.');
+      const state = humanChecks[mode];
+      if (!state || !state.token) throw new Error('Please complete the security verification before continuing.');
+      return state.token;
+    }
+    function resetHumanCheck(mode) {
+      const state=humanChecks[mode];
+      if (!state) return;
+      state.token='';
+      if (state.id!==null && window.turnstile) window.turnstile.reset(state.id);
+      humanStatus(mode,'');
+    }
     let pendingPhone = '';
     let busy = false;
     const params = new URLSearchParams(location.search);
@@ -139,6 +211,7 @@
       byId('panel-create').hidden = !creating;
       byId('panel-signin').hidden = creating;
       feedback.hidden = true;
+      renderHumanCheck(creating ? 'create' : 'signin');
     }
     byId('tab-create').addEventListener('click', () => show('create'));
     byId('tab-signin').addEventListener('click', () => show('signin'));
@@ -190,14 +263,14 @@
       if (digits.length === 11 && digits[0] === '1') return '+'+digits;
       throw new Error('Enter a valid US phone number or leave the optional field empty.');
     }
-    async function submitAction(fn) {
+    async function submitAction(fn, challengeMode) {
       if (busy) return;
       busy = true;
       feedback.hidden = true;
       document.querySelectorAll('.account-submit').forEach(b => b.disabled=true);
       try { await fn(); }
       catch (err) { message(err && err.message ? err.message : 'Something went wrong. Please try again.'); }
-      finally { busy=false; document.querySelectorAll('.account-submit').forEach(b => b.disabled=false); }
+      finally { if (challengeMode) resetHumanCheck(challengeMode); busy=false; document.querySelectorAll('.account-submit').forEach(b => b.disabled=false); }
     }
     byId('create-form').addEventListener('submit', e => {
       e.preventDefault();
@@ -208,7 +281,7 @@
         pendingPhone = normalizeUSPhone(byId('create-phone').value);
         const signup = await api.auth.signUp({
           email:byId('create-email').value.trim(),password:byId('create-password').value,
-          options:{ data:{full_name:name,pending_phone:pendingPhone||null}, emailRedirectTo:new URL('account.html?verified=1' + (from === 'review' ? '&return=review' + (params.get('product') ? '&product=' + encodeURIComponent(params.get('product')) : '') : ''),location.href).href }
+          options:{ data:{full_name:name,pending_phone:pendingPhone||null}, emailRedirectTo:new URL('account.html?verified=1' + (from === 'review' ? '&return=review' + (params.get('product') ? '&product=' + encodeURIComponent(params.get('product')) : '') : ''),location.href).href, ...(turnstileSiteKey ? {captchaToken:humanToken('create')} : {}) }
         });
         if (signup.error) throw signup.error;
         if (signup.data && signup.data.session && await auth.verifiedUser()) {
@@ -217,29 +290,29 @@
         } else {
           message('Check your email to verify your account. After verification, return here to sign in. Your phone number is used for historical purchase matching.');
         }
-      });
+      }, 'create');
     });
     byId('signin-form').addEventListener('submit', e => {
       e.preventDefault();
       if (!api) return;
       submitAction(async () => {
-        const r=await api.auth.signInWithPassword({email:byId('signin-email').value.trim(),password:byId('signin-password').value});
+        const r=await api.auth.signInWithPassword({email:byId('signin-email').value.trim(),password:byId('signin-password').value,...(turnstileSiteKey ? {options:{captchaToken:humanToken('signin')}} : {})});
         if (r.error) throw r.error;
         if (!await auth.verifiedUser()) {await api.auth.signOut({scope:'local'});throw new Error('Please verify your email before entering Passenger Station.');}
         const u=await auth.verifiedUser();
         await syncDisplayName(u);
         await goStation();
-      });
+      }, 'signin');
     });
     byId('reset-password').addEventListener('click', () => {
       if (!api) return;
       submitAction(async () => {
         const email=byId('signin-email').value.trim();
         if (!email) throw new Error('Enter your email in the Sign In field first.');
-        const r=await api.auth.resetPasswordForEmail(email,{redirectTo:new URL('account.html?reset=1',location.href).href});
+        const r=await api.auth.resetPasswordForEmail(email,{redirectTo:new URL('account.html?reset=1',location.href).href,...(turnstileSiteKey ? {captchaToken:humanToken('signin')} : {})});
         if (r.error) throw r.error;
         message('If an account exists for this email, password reset instructions will be sent.');
-      });
+      }, 'signin');
     });
     if (!api) {
       byId('account-preview').hidden=false;
