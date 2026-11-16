@@ -144,7 +144,7 @@
     // after Testing passes and before an owner-approved Main promotion.
     // NEVER place the secret key in this HTML or in the GitHub repository.
     const isLocalTesting = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-    const liveTurnstileSiteKey = ''; // Activation gate: real live sitekey is pending owner provisioning.
+    const liveTurnstileSiteKey = '0x4AAAAAAGD11_ZONaM-XZEq'; // Public Cloudflare Turnstile sitekey for the two Pepper Junction live hostnames.
     const turnstileSiteKey = isLocalTesting ? '1x00000000000000000000AA' : liveTurnstileSiteKey;
     const humanChecks = {create:{id:null,token:''},signin:{id:null,token:''}};
     let turnstileReady = false;
