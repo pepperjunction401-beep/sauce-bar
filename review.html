@@ -56,7 +56,7 @@
     <section class="pjr-card pjr-intro pjr-notice" id="pjr-intro" hidden>
       <p class="pjr-eyebrow">Before You Begin · One Ticket, One Review</p>
       <h2>One Chance to Judge</h2>
-      <p class="pjr-intro-copy">You get one opportunity to judge each product. Once submitted, your six People's Choice scoring answers are permanently locked and cannot be changed for the foreseeable future. Your private Personal Rating and personal notes are different: you can revisit and update them as your experience evolves.</p>
+      <p class="pjr-intro-copy">You have one opportunity to submit your public Passenger Review for each product. Once submitted, your questionnaire answers cannot be changed. Your private Personal Rating and personal notes are separate and may be updated as your experience evolves.</p>
     </section>
 
     <!-- Questionnaire -->
@@ -65,7 +65,7 @@
         <div>
           <p class="pjr-eyebrow">People's Choice · Public Judging</p>
           <h2 class="pjr-section-title">The Judge's Bench</h2>
-          <p>Personal preferences take a back seat here. Judge whether the product delivers what it promises: its flavor, heat, balance, and performance on food. These six scoring answers are permanent after submission; your written Passenger Review follows them.</p>
+          <p>Personal preferences take a back seat here. Judge whether the product delivers what it promises: its flavor, heat, balance, and performance on food. Your judging answers are final after submission; your written Passenger Review follows them.</p>
         </div>
         <span class="pjr-count-pill" id="pjr-progress">0 of 17 Answered</span>
       </section>
@@ -106,7 +106,7 @@
       <section class="pjr-card pjr-remaining-head">
         <p class="pjr-eyebrow">Your Experience · The Details</p>
         <h2>Tell Us More</h2>
-        <p>Help us understand how you experienced this product. These remaining answers do not add points to People's Choice.</p>
+        <p>Help us understand your experience with the product in greater detail.</p>
       </section>
       <div id="pjr-questions"></div>
 
@@ -238,18 +238,18 @@
 
     var QUESTIONS = [
       { id: 'q1', type: 'slider', prompt: "When used on food, how much of the sauce's original body of flavor and heat comes through compared with tasting it straight from the bottle?",
-        marks: ['Weak','Comparable','Equal'], values: ['Weak','Comparable','Equal'], points: [1,2,3] },
+        marks: ['Weak','Comparable','Equal'], values: ['Weak','Comparable','Equal'] },
       { id: 'q2', type: 'slider', prompt: 'How does the balance between flavor and heat feel?',
-        marks: ['Mostly Flavor','', 'Balanced','', 'Mostly Heat'], values: ['0','1','2','3','4'], points: [1,2,3,2,1] },
+        marks: ['Mostly Flavor','', 'Balanced','', 'Mostly Heat'], values: ['0','1','2','3','4'] },
       { id: 'q3', type: 'slider', prompt: 'Is the heat as advertised?',
         hint: "Set your personal heat preference aside. Evaluate whether the sauce delivers the level of heat you'd expect from the peppers used to make it.",
-        marks: ['Fell Short','', 'As Expected','', 'Over the Top'], values: ['0','1','2','3','4'], points: [1,2,3,2,1] },
+        marks: ['Fell Short','', 'As Expected','', 'Over the Top'], values: ['0','1','2','3','4'] },
       { id: 'q4', type: 'slider', prompt: 'How bright are the advertised flavors straight out of the bottle?',
-        marks: ['Dim','', 'Bright','', 'Blast'], values: ['0','1','2','3','4'], points: [1,2,3,2,1] },
+        marks: ['Dim','', 'Bright','', 'Blast'], values: ['0','1','2','3','4'] },
       { id: 'q5', type: 'slider', prompt: "How did the sauce's flavor perform on food?",
-        marks: ['What Sauce?','', 'Epic','', 'What Food?'], values: ['0','1','2','3','4'], points: [1,2,3,2,1] },
+        marks: ['What Sauce?','', 'Epic','', 'What Food?'], values: ['0','1','2','3','4'] },
       { id: 'q6', type: 'slider', prompt: "How did the sauce's heat perform on food?",
-        marks: ['What Sauce?','', 'Epic','', 'What Food?'], values: ['0','1','2','3','4'], points: [1,2,3,2,1] },
+        marks: ['What Sauce?','', 'Epic','', 'What Food?'], values: ['0','1','2','3','4'] },
       { id: 'q7', type: 'single',
         prompt: 'How would you rate the heat?', options: heatOpts },
       { id: 'q8', type: 'single',
@@ -335,7 +335,9 @@
       // Retain the railroad theme without numbering questionnaire questions.
       var stop = document.createElement('p');
       stop.className = 'pjr-q-stop';
-      stop.textContent = 'Train Stop';
+      // Number the visible sequence, not the permanent database field IDs.
+      var displayNumber = q.id === 'q15' ? 7 : (idx >= 6 ? idx + 2 : idx + 1);
+      stop.textContent = 'Train Stop ' + displayNumber + ' of ' + QUESTIONS.length;
       card.appendChild(stop);
 
       var h = document.createElement('h3');
@@ -392,9 +394,9 @@
           answers[q.id] = q.values[index];
           var word = q.marks[index] || ('Position ' + (index + 1) + ' of ' + q.values.length);
           var detail = q.descriptions ? ' · ' + q.descriptions[index] : '';
-          var score = q.points ? ' · ' + q.points[index] + (q.points[index] === 1 ? ' point' : ' points') : '';
-          range.setAttribute('aria-valuetext', word + detail + score);
-          output.textContent = word + detail + score;
+          // Browser displays descriptive responses only; server owns scoring.
+          range.setAttribute('aria-valuetext', word + detail);
+          output.textContent = word + detail;
           clearMissed(card);
           updateProgress();
         }
