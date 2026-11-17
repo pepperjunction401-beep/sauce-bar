@@ -1,7 +1,8 @@
 /* Pepper Junction — live Passenger Station Review Board presentation adapter.
- * The approved Board artwork and 66-product row ordering remain in passenger-station.html.
+ * The approved Board artwork and 68-product row ordering remain in passenger-station.html.
  * Purchase eligibility and review status come solely from pj-review-service.
- * No demo awards, prize selection, badge decisions, or Square imports.
+ * Authoritative achievements and protected reward selections come from Supabase Testing.
+ * No demo awards, client-side prize decisions, redemption, or Square imports.
  */
 (function(){
   'use strict';
@@ -63,7 +64,7 @@
       var banner=doc.querySelector('.banner');
       if(banner)banner.textContent='Verified purchases unlock your products. Review submissions are subject to approval.';
       var footnote=doc.querySelector('.footnote');
-      if(footnote)footnote.textContent='Purchase and review states are verified. No complimentary products, badges, or row rewards are issued by this display.';
+      if(footnote)footnote.textContent='Verified purchases and submitted questionnaires determine your progress. Row prizes are protected until Square confirms a qualifying redemption order.';
       var unlocked=0,submitted=0,approved=0,focused=null;
       manifest.products.forEach(function(product,index){
         var card=cards[index],item=state.get(product.slug);
@@ -148,15 +149,71 @@
         );
         var heading=row.querySelector('.heading h2');
         if(heading)heading.textContent='Collection Row '+(index+1);
-        // The selection/redemption controls remain deliberately disabled.
         row.querySelectorAll('.prize-choice').forEach(function(el){el.remove();});
+        var headingEl=row.querySelector('.heading');
+        if(headingEl){
+          headingEl.querySelectorAll('.pj-live-reward-state').forEach(function(el){el.remove();});
+          if(stateRow.achieved){
+            var note=doc.createElement('div');
+            note.className='reward-status pj-live-reward-state';
+            if(stateRow.entitlementStatus==='redeemed'){
+              note.textContent='Complimentary product redeemed · row achievement permanently earned';
+            }else if(stateRow.entitlementStatus==='selected'){
+              var chosen=manifest.products.find(function(p){return p.slug===stateRow.selectedProductSlug;});
+              note.textContent='Complimentary selection saved: '+(chosen?chosen.name:'Your selected product')+
+                ' · Redemption available with a future paid order';
+            }else if(stateRow.entitlementStatus==='available'){
+              note.textContent='Achievement earned · choose one available item from this row';
+            }else{
+              note.textContent='Achievement earned · awaiting entitlement verification';
+            }
+            headingEl.appendChild(note);
+          }
+        }
+        var canSelect=stateRow.achieved===true &&
+          (stateRow.entitlementStatus==='available'||stateRow.entitlementStatus==='selected');
+        var options=new Set(Array.isArray(stateRow.rewardEligibleSlugs)?stateRow.rewardEligibleSlugs:[]);
+        if(canSelect){
+          manifest.products.slice(index*8,index*8+8).forEach(function(product,offset){
+            if(!options.has(product.slug))return;
+            var card=cards[index*8+offset];
+            if(!card)return;
+            var stripe=doc.createElement('div');
+            stripe.className='prize-choice pj-live-prize-choice';
+            var button=doc.createElement('button');
+            button.type='button';
+            button.textContent=stateRow.selectedProductSlug===product.slug?'Selected ✓':'Select One';
+            if(stateRow.selectedProductSlug===product.slug)button.disabled=true;
+            button.addEventListener('click',function(){
+              if(button.disabled)return;
+              button.disabled=true;
+              button.textContent='Saving selection…';
+              client.selectReviewReward(index+1,product.slug).then(function(){
+                // Re-read saved, server-authoritative state; do not trust local selection.
+                location.reload();
+              }).catch(function(error){
+                button.disabled=false;
+                button.textContent='Select One';
+                var note=row.querySelector('.pj-live-reward-state');
+                if(note)note.textContent='Unable to save reward choice. Please check availability and try again.';
+                console.warn('Reward selection unavailable',error);
+              });
+            });
+            stripe.appendChild(button);
+            card.insertBefore(stripe,card.querySelector('.copy'));
+          });
+          if(!options.size&&headingEl){
+            var msg=headingEl.querySelector('.pj-live-reward-state');
+            if(msg)msg.textContent='Achievement earned · complimentary choice available when eligible products return to stock';
+          }
+        }
       });
       var a=doc.getElementById('a'),b=doc.getElementById('b'),c=doc.getElementById('c');
       if(a)a.textContent=unlocked+'/'+manifest.products.length;
       if(b)b.textContent=submitted;
-      if(c)c.textContent=approved;
+      if(c)c.textContent=result.rows.filter(function(r){return r.achieved===true;}).length+'/8';
       var stats=doc.querySelectorAll('.stat span');
-      if(stats.length>2)stats[2].textContent='Approved reviews';
+      if(stats.length>2)stats[2].textContent='Completed eligible rows';
       // The Board opens only when the real customer-specific response is applied.
       status.hidden=true;frame.hidden=false;
       frame.style.height=Math.max(doc.body.scrollHeight,750)+'px';
