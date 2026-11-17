@@ -7,11 +7,10 @@ const TESTING="slubpfmpjgoupujptayy";
 const BASE="https://connect.squareupsandbox.com";
 const V="2026-09-16";
 const CORS={
- "access-control-allow-origin":"https://pepperjunction401-beep.github.io",
+ "access-control-allow-origin":"*",
  "access-control-allow-headers":"authorization,apikey,content-type,x-client-info",
  "access-control-allow-methods":"POST, OPTIONS","cache-control":"no-store"
 };
-const allowedOrigin="https://pepperjunction401-beep.github.io";
 const reply=(value:unknown,status=200)=>new Response(JSON.stringify(value),{status,
  headers:{...CORS,"content-type":"application/json"}});
 function secret():string|undefined{
