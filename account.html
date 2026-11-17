@@ -200,10 +200,13 @@
     const params = new URLSearchParams(location.search);
     const from = params.get('return');
     const back = byId('account-back');
-    const safeDestination = from === 'post-payment' ? 'post-payment-badges.html' : from === 'review' ?
+    const boardDestination = 'passenger-station.html' +
+      (params.get('product') ? '?product='+encodeURIComponent(params.get('product')) : '') + '#board';
+    const safeDestination = from === 'post-payment' ? 'post-payment-badges.html' :
+      from === 'board' ? boardDestination : from === 'review' ?
       'review.html' + (params.get('product') ? '?product='+encodeURIComponent(params.get('product')) : '') : 'main.html';
     back.href = safeDestination;
-    back.textContent = from === 'post-payment' ? '← Back to Badge Reveal' : from === 'review' ? '← Back to Product Review' : '← Return to Shop';
+    back.textContent = from === 'post-payment' ? '← Back to Badge Reveal' : from === 'board' ? '← Back to Review Board' : from === 'review' ? '← Back to Product Review' : '← Return to Shop';
     function message(t) { feedback.textContent = t; feedback.hidden = false; }
     function show(mode) {
       const creating = mode === 'create';
@@ -275,7 +278,7 @@
       // Preserve the entry point after authenticated identity matching.
       // A checkout customer returns to the same verified badge reveal;
       // ordinary sign-ins still enter Passenger Station.
-      location.assign(from === 'post-payment' ? 'post-payment-badges.html' : from === 'review' ? safeDestination : auth.destination());
+      location.assign(from === 'post-payment' ? 'post-payment-badges.html' : (from === 'board' || from === 'review') ? safeDestination : auth.destination());
     }
     function normalizeUSPhone(input) {
       if (!input.trim()) return '';
@@ -302,7 +305,7 @@
         pendingPhone = normalizeUSPhone(byId('create-phone').value);
         const signup = await api.auth.signUp({
           email:byId('create-email').value.trim(),password:byId('create-password').value,
-          options:{ data:{full_name:name,pending_phone:pendingPhone||null}, emailRedirectTo:new URL('account.html?verified=1' + (from === 'review' ? '&return=review' + (params.get('product') ? '&product=' + encodeURIComponent(params.get('product')) : '') : ''),location.href).href, ...(turnstileSiteKey ? {captchaToken:humanToken('create')} : {}) }
+          options:{ data:{full_name:name,pending_phone:pendingPhone||null}, emailRedirectTo:new URL('account.html?verified=1' + ((from === 'review' || from === 'board') ? '&return=' + encodeURIComponent(from) + (params.get('product') ? '&product=' + encodeURIComponent(params.get('product')) : '') : ''),location.href).href, ...(turnstileSiteKey ? {captchaToken:humanToken('create')} : {}) }
         });
         if (signup.error) throw signup.error;
         if (signup.data && signup.data.session && await auth.verifiedUser()) {
@@ -360,11 +363,11 @@
             // Do not automatically leave the account page on page load.
             // Let a returning customer choose when to enter the Station.
             show('signin');
-            message(from === 'review' ? 'You are already signed in. Select Continue to Product Review when you are ready.' : 'You are already signed in. Select Continue to Passenger Station when you are ready.');
+            message(from === 'review' ? 'You are already signed in. Select Continue to Product Review when you are ready.' : from === 'board' ? 'You are already signed in. Select Continue to Review Board when you are ready.' : 'You are already signed in. Select Continue to Passenger Station when you are ready.');
             const continueButton = document.createElement('button');
             continueButton.type = 'button';
             continueButton.className = 'account-submit';
-            continueButton.textContent = from === 'review' ? 'Continue to Product Review' : 'Continue to Passenger Station';
+            continueButton.textContent = from === 'review' ? 'Continue to Product Review' : from === 'board' ? 'Continue to Review Board' : 'Continue to Passenger Station';
             continueButton.addEventListener('click', () => submitAction(goStation));
             feedback.insertAdjacentElement('afterend', continueButton);
           }
