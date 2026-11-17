@@ -155,6 +155,47 @@ Deno.serve(async req=>{
  }
  const slug=typeof request.slug==="string"?request.slug:typeof request.productSlug==="string"?request.productSlug:"";
  if(!slug||slug.length>180||!/^[a-z0-9][a-z0-9-]*$/.test(slug))return reply({error:"INVALID_PRODUCT"},400);
+ if(action==="reward-select"){
+  const rowNumber=Number(request.rowNumber);
+  if(!Number.isInteger(rowNumber)||rowNumber<1)return reply({error:"INVALID_ROW"},400);
+  // Customer identity comes ONLY from the verified auth token, never from the request body.
+  const {data:entitlement,error:entitlementError}=await admin
+    .from("pj_review_reward_entitlements").select("status")
+    .eq("customer_id",user.id).eq("row_number",rowNumber).maybeSingle();
+  if(entitlementError)return reply({error:"REWARD_UNAVAILABLE"},503);
+  if(!entitlement||entitlement.status==="redeemed")return reply({error:"NO_AVAILABLE_ENTITLEMENT"},409);
+  const {data:products,error:productError}=await admin.from("pj_products")
+    .select("id,cns_slug,is_active").eq("cns_slug",slug).limit(1);
+  const product=products?.[0];
+  if(productError||!product||product.is_active!==true)return reply({error:"REWARD_PRODUCT_UNAVAILABLE"},409);
+  const [slotResult,commercialResult,mappingResult]=await Promise.all([
+    admin.from("pj_review_board_slots").select("slot_number")
+      .eq("row_number",rowNumber).eq("product_id",product.id).maybeSingle(),
+    admin.from("product_commercial_state")
+      .select("sync_status,square_location_enabled,square_archived,square_sold_out,availability_status,inventory_mode,quantity_on_hand")
+      .eq("product_id",product.id).maybeSingle(),
+    admin.from("square_product_mappings").select("product_id")
+      .eq("product_id",product.id).maybeSingle()
+  ]);
+  if(slotResult.error||commercialResult.error||mappingResult.error)
+    return reply({error:"REWARD_VALIDATION_UNAVAILABLE"},503);
+  if(!slotResult.data)return reply({error:"PRODUCT_NOT_IN_COMPLETED_ROW"},409);
+  const state=commercialResult.data;
+  if(!mappingResult.data||!state||state.sync_status!=="current"||
+     state.square_location_enabled!==true||state.square_archived===true||
+     state.square_sold_out===true||state.availability_status!=="available"||
+     (state.inventory_mode==="tracked"&&!(Number(state.quantity_on_hand)>0)))
+    return reply({error:"REWARD_PRODUCT_UNAVAILABLE"},409);
+  // Selection is NOT redemption. Failed/abandoned checkout must preserve entitlement.
+  const {data:selected,error:selectionError}=await admin.from("pj_review_reward_entitlements")
+    .update({status:"selected",selected_product_id:product.id,selected_at:new Date().toISOString()})
+    .eq("customer_id",user.id).eq("row_number",rowNumber)
+    .in("status",["available","selected"])
+    .select("row_number,status,selected_product_id").maybeSingle();
+  if(selectionError)return reply({error:"REWARD_SELECTION_UNAVAILABLE"},503);
+  if(!selected)return reply({error:"NO_AVAILABLE_ENTITLEMENT"},409);
+  return reply({ok:true,rowNumber:selected.row_number,status:selected.status,selectedProductSlug:slug});
+ }
  if(action==="notes-save"){
   if(typeof request.food!=="string"||typeof request.love!=="string"||
      request.food.length>2000||request.love.length>2000)return reply({error:"INVALID_PRIVATE_NOTES"},400);
