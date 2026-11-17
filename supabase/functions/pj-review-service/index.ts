@@ -139,23 +139,39 @@ Deno.serve(async req=>{
    if(rewardSlotsError)return reply({error:"BOARD_AWARDS_UNAVAILABLE"},503);
    const ids=[...new Set((rewardSlots||[]).map(x=>x.product_id))];
    if(ids.length){
-    const [productsRes,commerceRes,mappingsRes]=await Promise.all([
-     admin.from("pj_products").select("id,cns_slug,is_active").in("id",ids),
-     admin.from("product_commercial_state")
-      .select("product_id,sync_status,square_location_enabled,square_archived,square_sold_out,availability_status,inventory_mode,quantity_on_hand")
-      .in("product_id",ids),
-     admin.from("square_product_mappings").select("product_id").in("product_id",ids)
-    ]);
-    if(productsRes.error||commerceRes.error||mappingsRes.error)return reply({error:"BOARD_AWARDS_UNAVAILABLE"},503);
+    const productsRes=await admin.from("pj_products").select("id,cns_slug,is_active").in("id",ids);
+    if(productsRes.error)return reply({error:"BOARD_AWARDS_UNAVAILABLE"},503);
     const productById=new Map((productsRes.data||[]).map(x=>[x.id,x]));
-    const commerceById=new Map((commerceRes.data||[]).map(x=>[x.product_id,x]));
-    const mapped=new Set((mappingsRes.data||[]).map(x=>x.product_id));
+    const availableIds=new Set<string>();
+    if(url.includes(DEV_PROJECT)){
+     // Testing only: sandbox identifiers must be independently verified.
+     const {data:fixtures,error:fixturesError}=await admin.from("pj_review_sandbox_catalog")
+       .select("product_id,sandbox_verified_at,square_sandbox_item_id,square_sandbox_variation_id")
+       .eq("fixture_role","reward").in("product_id",ids);
+     if(fixturesError)return reply({error:"BOARD_AWARDS_UNAVAILABLE"},503);
+     for(const x of fixtures||[]){
+      if(x.sandbox_verified_at&&x.square_sandbox_item_id&&x.square_sandbox_variation_id)
+       availableIds.add(x.product_id);
+     }
+    }else{
+     const [commerceRes,mappingsRes]=await Promise.all([
+      admin.from("product_commercial_state")
+       .select("product_id,sync_status,square_location_enabled,square_archived,square_sold_out,availability_status,inventory_mode,quantity_on_hand").in("product_id",ids),
+      admin.from("square_product_mappings").select("product_id").in("product_id",ids)
+     ]);
+     if(commerceRes.error||mappingsRes.error)return reply({error:"BOARD_AWARDS_UNAVAILABLE"},503);
+     const commerceById=new Map((commerceRes.data||[]).map(x=>[x.product_id,x]));
+     const mapped=new Set((mappingsRes.data||[]).map(x=>x.product_id));
+     for(const id of ids){
+      const c=commerceById.get(id);
+      if(mapped.has(id)&&c&&c.sync_status==="current"&&c.square_location_enabled===true&&
+         c.square_archived!==true&&c.square_sold_out!==true&&c.availability_status==="available"&&
+         (c.inventory_mode!=="tracked"||Number(c.quantity_on_hand)>0))availableIds.add(id);
+     }
+    }
     for(const slot of rewardSlots||[]){
-     const p=productById.get(slot.product_id),c=commerceById.get(slot.product_id);
-     if(!p||p.is_active!==true||!mapped.has(p.id)||!c||c.sync_status!=="current"||
-        c.square_location_enabled!==true||c.square_archived===true||c.square_sold_out===true||
-        c.availability_status!=="available"||
-        (c.inventory_mode==="tracked"&&!(Number(c.quantity_on_hand)>0)))continue;
+     const p=productById.get(slot.product_id);
+     if(!p||p.is_active!==true||!availableIds.has(p.id))continue;
      if(!rewardOptions.has(slot.row_number))rewardOptions.set(slot.row_number,[]);
      rewardOptions.get(slot.row_number)!.push(p.cns_slug);
     }
@@ -218,24 +234,33 @@ Deno.serve(async req=>{
     .select("id,cns_slug,is_active").eq("cns_slug",slug).limit(1);
   const product=products?.[0];
   if(productError||!product||product.is_active!==true)return reply({error:"REWARD_PRODUCT_UNAVAILABLE"},409);
-  const [slotResult,commercialResult,mappingResult]=await Promise.all([
-    admin.from("pj_review_board_slots").select("slot_number")
-      .eq("row_number",rowNumber).eq("product_id",product.id).maybeSingle(),
+  const {data:slot,error:slotError}=await admin.from("pj_review_board_slots")
+    .select("slot_number").eq("row_number",rowNumber).eq("product_id",product.id).maybeSingle();
+  if(slotError)return reply({error:"REWARD_VALIDATION_UNAVAILABLE"},503);
+  if(!slot)return reply({error:"PRODUCT_NOT_IN_COMPLETED_ROW"},409);
+  if(url.includes(DEV_PROJECT)){
+   const {data:fixture,error:fixtureError}=await admin.from("pj_review_sandbox_catalog")
+     .select("sandbox_verified_at,square_sandbox_item_id,square_sandbox_variation_id")
+     .eq("product_id",product.id).eq("fixture_role","reward").maybeSingle();
+   if(fixtureError)return reply({error:"REWARD_VALIDATION_UNAVAILABLE"},503);
+   if(!fixture?.sandbox_verified_at||!fixture.square_sandbox_item_id||!fixture.square_sandbox_variation_id)
+    return reply({error:"SANDBOX_REWARD_NOT_READY"},409);
+  }else{
+   const [commercialResult,mappingResult]=await Promise.all([
     admin.from("product_commercial_state")
-      .select("sync_status,square_location_enabled,square_archived,square_sold_out,availability_status,inventory_mode,quantity_on_hand")
-      .eq("product_id",product.id).maybeSingle(),
+     .select("sync_status,square_location_enabled,square_archived,square_sold_out,availability_status,inventory_mode,quantity_on_hand")
+     .eq("product_id",product.id).maybeSingle(),
     admin.from("square_product_mappings").select("product_id")
-      .eq("product_id",product.id).maybeSingle()
-  ]);
-  if(slotResult.error||commercialResult.error||mappingResult.error)
-    return reply({error:"REWARD_VALIDATION_UNAVAILABLE"},503);
-  if(!slotResult.data)return reply({error:"PRODUCT_NOT_IN_COMPLETED_ROW"},409);
-  const state=commercialResult.data;
-  if(!mappingResult.data||!state||state.sync_status!=="current"||
-     state.square_location_enabled!==true||state.square_archived===true||
-     state.square_sold_out===true||state.availability_status!=="available"||
-     (state.inventory_mode==="tracked"&&!(Number(state.quantity_on_hand)>0)))
+     .eq("product_id",product.id).maybeSingle()
+   ]);
+   if(commercialResult.error||mappingResult.error)return reply({error:"REWARD_VALIDATION_UNAVAILABLE"},503);
+   const state=commercialResult.data;
+   if(!mappingResult.data||!state||state.sync_status!=="current"||
+      state.square_location_enabled!==true||state.square_archived===true||
+      state.square_sold_out===true||state.availability_status!=="available"||
+      (state.inventory_mode==="tracked"&&!(Number(state.quantity_on_hand)>0)))
     return reply({error:"REWARD_PRODUCT_UNAVAILABLE"},409);
+  }
   // Selection is NOT redemption. Failed/abandoned checkout must preserve entitlement.
   const {data:selected,error:selectionError}=await admin.rpc("pj_review_reward_select_when_idle",{
     p_customer_id:user.id,p_row_number:rowNumber,p_product_id:product.id
