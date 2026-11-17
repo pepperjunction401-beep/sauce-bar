@@ -234,10 +234,14 @@
     /* ── QUESTION DEFINITIONS — wording locked by the Review Architecture,
        vocabularies sourced from the CNS (the Database is the Bible) ── */
     var heatOpts = D.getHeatOptions(product.heatCategory);
+    // Only authoritative CNS heat-free products receive the exemption.
+    var heatFree = !product.heatCategory && product.heatLevel === 0;
     var flavorOpts = D.getFlavorOptions(product);
 
     var QUESTIONS = [
-      { id: 'q1', type: 'slider', prompt: "When used on food, how much of the sauce's original body of flavor and heat comes through compared with tasting it straight from the bottle?",
+      { id: 'q1', type: 'slider', prompt: heatFree
+           ? "When used with food, how much of the product's original flavor comes through compared with tasting it on its own?"
+           : "When used on food, how much of the sauce's original body of flavor and heat comes through compared with tasting it straight from the bottle?",
         marks: ['Weak','Comparable','Equal'], values: ['Weak','Comparable','Equal'] },
       { id: 'q2', type: 'slider', prompt: 'How does the balance between flavor and heat feel?',
         marks: ['Mostly Flavor','', 'Balanced','', 'Mostly Heat'], values: ['0','1','2','3','4'] },
@@ -287,6 +291,12 @@
     /* Answers — field-level by design: each answer is its own field so
        non-scoring answers can be made editable later without migration. */
     var answers = {};
+    if (heatFree) {
+      // Store an explicit exemption marker; never forge a passenger's slider answers.
+      ['q2','q3','q6','q7','q12','q13','q16'].forEach(function (id) {
+        answers[id] = 'Not Applicable';
+      });
+    }
     var submitted = false;
 
     // Missing approved CNS choices must never silently waive questionnaire questions.
@@ -305,7 +315,7 @@
 
     function updateProgress() {
       document.getElementById('pjr-progress').textContent =
-        answeredCount() + ' of ' + required.length + ' Answered';
+        answeredCount() + ' of ' + required.length + (heatFree ? ' Complete' : ' Answered');
     }
 
     function clearMissed(card) {
@@ -343,6 +353,16 @@
       var h = document.createElement('h3');
       h.textContent = q.prompt;
       card.appendChild(h);
+
+      if (heatFree && answers[q.id] === 'Not Applicable') {
+        // No clickable control for heat-only questions on intentionally heat-free items.
+        var exempt = document.createElement('p');
+        exempt.className = 'pjr-q-hint';
+        exempt.textContent = 'Not Applicable — this product is heat-free. No response required.';
+        card.appendChild(exempt);
+        (q.id === 'q15' || /^q[1-6]$/.test(q.id) ? judgeWrap : qWrap).appendChild(card);
+        return;
+      }
 
       if (q.hint) {
         var hint = document.createElement('p');
@@ -519,7 +539,7 @@
 
     /* ── VALIDATION + SUBMIT ── */
     var submitBtn = document.getElementById('pjr-submit');
-    if (!heatOpts.length || !flavorOpts.length) {
+    if ((!heatFree && !heatOpts.length) || !flavorOpts.length) {
       submitBtn.disabled = true;
       submitBtn.textContent = 'Review Options Pending';
     }
