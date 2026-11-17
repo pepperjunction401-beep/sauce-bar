@@ -206,6 +206,14 @@ Deno.serve(async req=>{
     .eq("customer_id",user.id).eq("row_number",rowNumber).maybeSingle();
   if(entitlementError)return reply({error:"REWARD_UNAVAILABLE"},503);
   if(!entitlement||entitlement.status==="redeemed")return reply({error:"NO_AVAILABLE_ENTITLEMENT"},409);
+  // A selected reward is locked while a Square payment link could still be paid.
+  // The checkout service must cancel/expire its existing link before releasing this lock.
+  const {data:openAttempts,error:attemptError}=await admin
+    .from("pj_review_reward_checkout_attempts").select("id")
+    .eq("customer_id",user.id).eq("row_number",rowNumber)
+    .in("state",["creating","opened"]).limit(1);
+  if(attemptError)return reply({error:"REWARD_SELECTION_UNAVAILABLE"},503);
+  if(openAttempts?.length)return reply({error:"REWARD_CHECKOUT_IN_PROGRESS"},409);
   const {data:products,error:productError}=await admin.from("pj_products")
     .select("id,cns_slug,is_active").eq("cns_slug",slug).limit(1);
   const product=products?.[0];
