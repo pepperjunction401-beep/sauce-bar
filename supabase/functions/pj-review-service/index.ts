@@ -11,6 +11,7 @@ const LIVE_CNS="https://pepperjunction401.com/data/Database_Pepper_Junction.json
 const HEAT=["Mild","Medium","Hot","Very Hot","Super Hot","Extreme","Inferno"];
 // Six immutable review answers: three discrete score levels per question.
 const Q1_OPTIONS=["Weak","Comparable","Equal"];
+const NOT_APPLICABLE="Not Applicable";
 const FIVE_POSITION_POINTS=[1,2,3,2,1];
 const LANE=[
  "Yes — this was right where I like it.",
@@ -37,6 +38,9 @@ function uniqueColumn(records:Record<string,unknown>[],column:string):string[]{
  return [...new Set(records.map(x=>x[column]).filter((x):x is string=>typeof x==="string"&&!!x.trim()))];
 }
 function validAnswers(a:Record<string,unknown>,p:Record<string,unknown>,catalog:Record<string,unknown>[]){
+ // Heat-free is determined only by the CNS, not a browser-supplied flag.
+ const heatCategory=p["Heat Category"];
+ const heatFree=!heatCategory && p["Heat Level"]===0;
  let points=0;
  const q1=a.q1;
  if(typeof q1!=="string"||!Q1_OPTIONS.includes(q1))return null;
@@ -45,13 +49,17 @@ function validAnswers(a:Record<string,unknown>,p:Record<string,unknown>,catalog:
  // Only positions 0..4 are accepted; the middle is the 3-point favorable answer.
  for(let i=2;i<=6;i++){
   const chosen=a["q"+i];
+  if(heatFree&&(i===2||i===3||i===6)){
+   if(chosen!==NOT_APPLICABLE)return null;
+   points+=3; // Full credit for questions inapplicable to a heat-free product.
+   continue;
+  }
   if(typeof chosen!=="string"||!(/^[0-4]$/).test(chosen))return null;
   points+=FIVE_POSITION_POINTS[Number(chosen)];
  }
- const heatCategory=p["Heat Category"];
  const hi=HEAT.indexOf(typeof heatCategory==="string"?heatCategory:"");
  const heatOptions=hi<0?[]:HEAT.slice(Math.max(0,hi-1),Math.min(7,hi+2));
- if(!heatOptions.includes(a.q7 as string))return null;
+ if(heatFree ? a.q7!==NOT_APPLICABLE : !heatOptions.includes(a.q7 as string))return null;
  if(!["Yes","No"].includes(a.q8 as string)||!["Yes","No"].includes(a.q9 as string))return null;
  if(!uniqueColumn(catalog,"Food Style").includes(a.q10 as string))return null;
  // Q11 is its own approved CNS field; descriptive Primary Flavor Notes are NOT options.
@@ -60,9 +68,14 @@ function validAnswers(a:Record<string,unknown>,p:Record<string,unknown>,catalog:
  if(flavors.length===0)return null;
  if(!Array.isArray(a.q11)||a.q11.length<1||a.q11.length>3||
    new Set(a.q11).size!==a.q11.length||!a.q11.every(s=>flavors.includes(s)))return null;
- if(!uniqueColumn(catalog,"How it Hits").includes(a.q12 as string)||
-    !uniqueColumn(catalog,"Heat Finish").includes(a.q13 as string))return null;
- if(!LANE.includes(a.q16 as string)||!Number.isInteger(a.q17)||Number(a.q17)<1||Number(a.q17)>5)return null;
+ if(heatFree){
+  if(a.q12!==NOT_APPLICABLE||a.q13!==NOT_APPLICABLE||a.q16!==NOT_APPLICABLE)return null;
+ }else{
+  if(!uniqueColumn(catalog,"How it Hits").includes(a.q12 as string)||
+     !uniqueColumn(catalog,"Heat Finish").includes(a.q13 as string))return null;
+  if(!LANE.includes(a.q16 as string))return null;
+ }
+ if(!Number.isInteger(a.q17)||Number(a.q17)<1||Number(a.q17)>5)return null;
  for(const k of ["q14","q15"]){
   if(typeof a[k]!=="string"||!(a[k] as string).trim()||(a[k] as string).length>200)return null;
  }
