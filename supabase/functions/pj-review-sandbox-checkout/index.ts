@@ -82,7 +82,9 @@ Deno.serve(async req=>{
    return reply({error:"ORDER_VERIFICATION_FAILED"},409);
   const zeroLines=order.line_items.filter((x:any)=>x.total_money?.amount===0);
   const paidLines=order.line_items.filter((x:any)=>x.total_money?.amount>0);
-  if(zeroLines.length!==1||!paidLines.length||!(Number(order.total_money?.amount)>0)||
+  if(zeroLines.length!==1||!paidLines.length||
+     paidLines.some((x:any)=>Number(x.total_discount_money?.amount||0)!==0)||
+     !(Number(order.total_money?.amount)>0)||
      !(Array.isArray(zeroLines[0].applied_discounts)&&
        zeroLines[0].applied_discounts.some((d:any)=>d.discount_uid==="PJ_REVIEW_FREE")))
    return reply({error:"REWARD_ORDER_CONTENT_MISMATCH"},409);
@@ -216,6 +218,24 @@ Deno.serve(async req=>{
    type:"FIXED_PERCENTAGE",percentage:"100",scope:"LINE_ITEM"}],
   pricing_options:{auto_apply_taxes:true,auto_apply_discounts:false}
  };
+ // Validate Square's own price calculation BEFORE creating a checkout link.
+ // The discounted line must be exactly $0, and paid lines must receive NO discount.
+ let calculated:any;
+ try{
+  calculated=(await sq("/v2/orders/calculate","POST",sandboxToken,{order})).order;
+ }catch{return reply({error:"SANDBOX_DISCOUNT_PREFLIGHT_UNAVAILABLE"},503);}
+ const preflightReward=(calculated?.line_items||[]).filter((l:any)=>
+   l.catalog_object_id===rewardVariation&&
+   (l.applied_discounts||[]).some((d:any)=>d.discount_uid==="PJ_REVIEW_FREE"));
+ const preflightPaid=(calculated?.line_items||[]).filter((l:any)=>
+   l.catalog_object_id!==rewardVariation);
+ if(preflightReward.length!==1||preflightReward[0].quantity!=="1"||
+    preflightReward[0].total_money?.amount!==0||
+    preflightPaid.length!==slugs.length||
+    preflightPaid.some((l:any)=>!(l.total_money?.amount>0)||
+       Number(l.total_discount_money?.amount||0)!==0)||
+    !(Number(calculated?.total_money?.amount)>0))
+  return reply({error:"SANDBOX_DISCOUNT_PREFLIGHT_FAILED"},409);
  // DB unique constraint prevents simultaneous payment-link reservations.
  const {data:reservation,error:reserveError}=await admin.rpc("pj_review_reward_reserve_checkout",{
   p_customer_id:user.id,p_row_number:row,
@@ -247,7 +267,10 @@ Deno.serve(async req=>{
  const fullyFree=rewardLines.length===1&&rewardLines[0].quantity==="1"&&
    rewardLines[0].total_money?.amount===0;
  const paidLineCount=(created?.line_items||[]).filter((l:any)=>l.total_money?.amount>0).length;
- if(!fullyFree||paidLineCount<1||!(Number(created?.total_money?.amount)>0))
+ const createdPaid=(created?.line_items||[]).filter((l:any)=>l.total_money?.amount>0);
+ if(!fullyFree||paidLineCount!==slugs.length||
+    createdPaid.some((l:any)=>Number(l.total_discount_money?.amount||0)!==0)||
+    !(Number(created?.total_money?.amount)>0))
   return reply({error:"SANDBOX_DISCOUNT_VALIDATION_FAILED"},503);
  const {error:openError}=await admin.from("pj_review_reward_checkout_attempts").update({
   state:"opened",square_order_id:link.order_id,
