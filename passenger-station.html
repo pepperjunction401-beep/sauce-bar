@@ -59,13 +59,13 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!panel.hidd
 <div class="station-tabs" aria-label="Passenger Station navigation">
 <a class="station-edge station-home" href="main.html" aria-label="Return to Pepper Junction storefront" title="Return to storefront"><span aria-hidden="true">⌂</span><span class="station-edge-label">Home</span></a>
 <nav aria-label="Passenger Station sections" class="station-tab-group" role="tablist">
-<button aria-controls="panel-board" aria-selected="false" aria-disabled="true" disabled class="station-tab" data-panel="board" id="tab-board" role="tab" tabindex="-1">The Review Board</button>
+<button aria-controls="panel-board" aria-selected="false" class="station-tab" data-panel="board" id="tab-board" role="tab" tabindex="-1">The Review Board</button>
 <button aria-controls="panel-yard" aria-selected="false" aria-disabled="true" disabled class="station-tab" data-panel="yard" id="tab-yard" role="tab" tabindex="-1">The Review Yard</button>
 <button aria-controls="panel-depot" aria-selected="true" class="station-tab" data-panel="depot" id="tab-depot" role="tab" tabindex="0">The Badge Depot</button>
 </nav>
 <button id="pj-cart-toggle" type="button" class="station-edge station-cart" aria-label="Open Pepper Junction cart" aria-controls="pj-cart-drawer" aria-expanded="false" title="Open cart"><span aria-hidden="true">🛒</span><span class="station-edge-label">Cart</span><span class="pj-cart-count" id="pj-cart-count">0</span></button>
 </div>
-<section aria-labelledby="tab-board" class="station-panel" hidden id="panel-board" role="tabpanel"><iframe id="frame-board" loading="eager" scrolling="no" srcdoc="&lt;!DOCTYPE html&gt;
+<section aria-labelledby="tab-board" class="station-panel" hidden id="panel-board" role="tabpanel"><iframe id="frame-board" hidden loading="eager" scrolling="no" srcdoc="&lt;!DOCTYPE html&gt;
 
 &lt;html lang=&quot;en&quot;&gt;&lt;head&gt;
 &lt;base href=&quot;https://pepperjunction401.com/&quot;/&gt;&lt;meta charset=&quot;utf-8&quot;/&gt;&lt;meta content=&quot;width=device-width,initial-scale=1&quot; name=&quot;viewport&quot;/&gt;&lt;title&gt;The Review Board — Pepper Junction | Design Preview v0.6&lt;/title&gt;
@@ -5019,7 +5019,7 @@ document.addEventListener('click',function(event){
 <script>
 (function(){
  const tabs=Array.from(document.querySelectorAll('.station-tab'));
- const ids=['depot'];
+ const ids=['board','depot'];
  const previous={};
  function fit(id){
    const iframe=document.getElementById('frame-'+id);
@@ -5043,13 +5043,14 @@ document.addEventListener('click',function(event){
   fit(id);
   if(location.hash!==('#'+id)) history.replaceState(null,'','#'+id);
  }
- tabs.forEach(function(tab,index){
+ const enabledTabs=tabs.filter(function(tab){return !tab.disabled;});
+ enabledTabs.forEach(function(tab,index){
   tab.addEventListener('click',function(){activate(tab.dataset.panel,false)});
   tab.addEventListener('keydown',function(ev){
     if(ev.key==='ArrowRight'||ev.key==='ArrowLeft'||ev.key==='Home'||ev.key==='End'){
       ev.preventDefault();
-      let next=ev.key==='Home'?0:ev.key==='End'?tabs.length-1:(index+(ev.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
-      activate(tabs[next].dataset.panel,true);
+      let next=ev.key==='Home'?0:ev.key==='End'?enabledTabs.length-1:(index+(ev.key==='ArrowRight'?1:-1)+enabledTabs.length)%enabledTabs.length;
+      activate(enabledTabs[next].dataset.panel,true);
     }
   });
  });
@@ -5086,13 +5087,15 @@ document.addEventListener('click',function(event){
  });
 
  const selected=location.hash.slice(1);
- activate('depot',false);
+ activate(ids.includes(selected)?selected:'depot',false);
 })();
 </script>
 <script src="assets/js/cart-engine.js"></script>
 <script src="assets/js/cart-drawer.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="assets/js/pj-auth.js"></script>
+<script src="assets/js/pj-review-data.js"></script>
+<script src="assets/js/pj-review-board-live.js"></script>
 <script>
 (function () {
   'use strict';
@@ -5107,6 +5110,8 @@ document.addEventListener('click',function(event){
   auth.verifiedUser().then(function(user) {
     if (!user) {location.replace(auth.loginLocation());return;}
     document.body.hidden = false;
+    // Review Board stays hidden until customer-specific purchase evidence is applied.
+    if(window.PJReviewBoardLive)window.PJReviewBoardLive.mount();
 
     // Depot presentation adapter: original Command Center artwork and interactions
     // remain the sole customer presentation. Supabase supplies earned state only.
