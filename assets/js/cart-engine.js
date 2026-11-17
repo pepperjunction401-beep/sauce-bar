@@ -1006,6 +1006,77 @@
       });
   }
 
+  // Separate, LOCAL-DEV-ONLY reward checkout. Ordinary Square checkout is unchanged.
+  // No rewards can be purchased through this method on a live customer domain.
+  var rewardCheckoutInFlight = false;
+  function reviewSandboxClient() {
+    var host = window.location.hostname.toLowerCase();
+    if (host !== 'localhost' && host !== '127.0.0.1') {
+      throw new Error('Review reward checkout is available only in isolated local testing.');
+    }
+    var auth = window.PJAuth;
+    if (!auth || !auth.enabled || !auth.client) {
+      throw new Error('Supabase Testing sign-in is required.');
+    }
+    return auth;
+  }
+  function reviewCheckoutPending() {
+    try {
+      var value = JSON.parse(sessionStorage.getItem('pj_review_sandbox_pending') || 'null');
+      return value && typeof value.order_id === 'string' ? value : null;
+    } catch (_) { return null; }
+  }
+  async function startReviewRewardCheckout(rowNumber) {
+    var auth = reviewSandboxClient();
+    var summary = getCartSummary();
+    if (!Number.isInteger(Number(rowNumber)) || Number(rowNumber) < 1 ||
+        !summary.items.length) {
+      throw new Error('Add a paid product to your cart before redeeming your Review Board reward.');
+    }
+    if (rewardCheckoutInFlight) throw new Error('Reward checkout is already opening.');
+    if (reviewCheckoutPending()) throw new Error(
+      'A sandbox reward checkout is pending. Verify its payment before opening another.'
+    );
+    rewardCheckoutInFlight = true;
+    try {
+      if (!await auth.verifiedUser()) throw new Error('Please sign in to Supabase Testing.');
+      var payload = {
+        action: 'create',
+        rowNumber: Number(rowNumber),
+        checkoutRequestId: makeCheckoutRequestId(),
+        items: summary.items.map(function(item) {
+          return {product_id: item.product_id, quantity: normalizeQty(item.quantity)};
+        })
+      };
+      var response = await auth.client.functions.invoke('pj-review-sandbox-checkout', {body: payload});
+      if (response.error || !response.data || !response.data.checkout_url ||
+          !response.data.square_order_id) {
+        throw new Error(response.data && response.data.error ||
+          'Square Sandbox reward checkout is not available.');
+      }
+      sessionStorage.setItem('pj_review_sandbox_pending',JSON.stringify({
+        row_number: Number(rowNumber),order_id: response.data.square_order_id
+      }));
+      window.location.assign(response.data.checkout_url);
+      return response.data;
+    } finally { rewardCheckoutInFlight = false; }
+  }
+  async function verifyReviewRewardSandboxPayment() {
+    var auth = reviewSandboxClient();
+    var pending = reviewCheckoutPending();
+    if (!pending) throw new Error('No pending sandbox reward checkout.');
+    if (!await auth.verifiedUser()) throw new Error('Sign in to Supabase Testing.');
+    var response = await auth.client.functions.invoke('pj-review-sandbox-checkout',{
+      body: {action:'confirm',rowNumber:pending.row_number,square_order_id:pending.order_id}
+    });
+    if (response.error || !response.data || response.data.status !== 'redeemed') {
+      throw new Error(response.data && response.data.error ||
+        'Square Sandbox payment has not been confirmed.');
+    }
+    sessionStorage.removeItem('pj_review_sandbox_pending');
+    return response.data;
+  }
+
   window.PJCart = {
     key: CART_KEY,
     event: CART_EVENT,
@@ -1024,6 +1095,9 @@
     getSubtotal: getSubtotal,
     getSummary: getCartSummary,
     startCheckout: startCheckout,
+    startReviewRewardCheckout: startReviewRewardCheckout,
+    verifyReviewRewardSandboxPayment: verifyReviewRewardSandboxPayment,
+    getReviewRewardCheckoutPending: reviewCheckoutPending,
 
     getCelestialBadgeCard: getCelestialBadgeCard,
     getItemPurchaseAchievementProgress: getItemPurchaseAchievementProgress,
