@@ -25,7 +25,7 @@
    slug:record.slug,name:record['Product Name']||'',
    brand:record.Brand||'',size:record.Size||'',category:record.Category||'',
    foodStyle:record['Food Style']||'',pepperType:record['Pepper Type']||'',
-   heatCategory:record['Heat Category']||'',flavorNotes:record['Primary Flavor Notes']||'',
+   heatCategory:record['Heat Category']||'',heatLevel:record['Heat Level'],flavorNotes:record['Primary Flavor Notes']||'',
    reviewFlavorOptions:Array.isArray(record['Review Flavor Options'])
     ? record['Review Flavor Options'].filter(function(v){return typeof v==='string'&&!!v.trim();}):[]
   };
