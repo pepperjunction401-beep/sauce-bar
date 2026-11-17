@@ -22,7 +22,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Wok Star, The Veggie Outlaws"
+    "Food Badge Categories": "Wok Star, The Veggie Outlaws",
+    "Review Flavor Options": [
+      "Soy",
+      "Brown Sugar",
+      "Ginger",
+      "Lime"
+    ]
   },
   {
     "slug": "cajohns-la-segadora-carolina-reaper",
@@ -47,7 +53,15 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Taco Fever, Muy Rico!, This Is Your Brain on Hot Sauce"
+    "Food Badge Categories": "Taco Fever, Muy Rico!, This Is Your Brain on Hot Sauce",
+    "Review Flavor Options": [
+      "Soy",
+      "Ginger",
+      "Cumin",
+      "Brown Sugar",
+      "Garlic",
+      "Onion"
+    ]
   },
   {
     "slug": "dirty-dicks-hot-tropical-hot-sauce",
@@ -72,7 +86,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Wok Star, Epic Wingman, Fruity Pants, Is This Love, This Is Your Brain on Hot Sauce, The Veggie Outlaws, Shore Dinner Regular"
+    "Food Badge Categories": "Wok Star, Epic Wingman, Fruity Pants, Is This Love, This Is Your Brain on Hot Sauce, The Veggie Outlaws, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Mango",
+      "Pineapple",
+      "Banana",
+      "Raisin",
+      "Brown Sugar"
+    ]
   },
   {
     "slug": "ghost-scream",
@@ -97,7 +118,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!, Shore Dinner Regular"
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Smoked Red Pepper",
+      "Garlic",
+      "Onion",
+      "Tang"
+    ]
   },
   {
     "slug": "heartbreaking-dawns-the-green",
@@ -122,7 +149,15 @@
     "limited_addition": false,
     "narrative_series": "verde-marty",
     "PJ_Credits": 5,
-    "Food Badge Categories": "Señor Verde, Taco Fever, Garlic Breath, The Veggie Outlaws, Muy Rico!"
+    "Food Badge Categories": "Señor Verde, Taco Fever, Garlic Breath, The Veggie Outlaws, Muy Rico!",
+    "Review Flavor Options": [
+      "Roasted Jalapeño",
+      "Tomatillo",
+      "Pablano",
+      "Cilantro",
+      "Lime",
+      "Garlic"
+    ]
   },
   {
     "slug": "high-river-sauces-hellacious",
@@ -147,7 +182,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Wok Star, Taco Fever, Muy Rico!, Shore Dinner Regular, This Is Your Brain on Hot Sauce"
+    "Food Badge Categories": "Wok Star, Taco Fever, Muy Rico!, Shore Dinner Regular, This Is Your Brain on Hot Sauce",
+    "Review Flavor Options": [
+      "Smoky",
+      "Garlic",
+      "Agave",
+      "Lime",
+      "Crushed Red Pepper"
+    ]
   },
   {
     "slug": "high-river-sauces-psych-sauce",
@@ -172,7 +214,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Marty Bras, Garlic Breath, Shore Dinner Regular"
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Marty Bras, Garlic Breath, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Cayenne",
+      "Garlic",
+      "Black Pepper",
+      "Tangy"
+    ]
   },
   {
     "slug": "high-river-sauces-foo-foo-mama-choo",
@@ -197,7 +245,15 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Wok Star, Curry On, The Veggie Outlaws, Shore Dinner Regular"
+    "Food Badge Categories": "Wok Star, Curry On, The Veggie Outlaws, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Roasted Peppers",
+      "Tomato",
+      "Ginger",
+      "Garlic",
+      "Soy",
+      "Brown Sugar"
+    ]
   },
   {
     "slug": "high-river-sauces-peppers-up",
@@ -222,7 +278,12 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Wok Star, Fruity Pants, Taco Fever, This Is Your Brain on Hot Sauce, Shore Dinner Regular"
+    "Food Badge Categories": "Wok Star, Fruity Pants, Taco Fever, This Is Your Brain on Hot Sauce, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Blackberry",
+      "Blueberry",
+      "Yuzu Citrus"
+    ]
   },
   {
     "slug": "high-river-sauces-rogue",
@@ -247,7 +308,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Wok Star, Fruity Pants, Is This Love, Shore Dinner Regular"
+    "Food Badge Categories": "Wok Star, Fruity Pants, Is This Love, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Blood Orange",
+      "Pear",
+      "Apple",
+      "Lime"
+    ]
   },
   {
     "slug": "high-river-sauces-tears-of-the-sun",
@@ -272,7 +339,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Wok Star, Fruity Pants, Is This Love, Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!, Shore Dinner Regular"
+    "Food Badge Categories": "Wok Star, Fruity Pants, Is This Love, Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Peach",
+      "Pineapple",
+      "Papaya",
+      "Mango",
+      "Lime"
+    ]
   },
   {
     "slug": "high-river-sauces-thunder-juice",
@@ -297,7 +371,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Fruity Pants, Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!"
+    "Food Badge Categories": "Fruity Pants, Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!",
+    "Review Flavor Options": [
+      "Tequila",
+      "Blueberry",
+      "Peach",
+      "Raspberry"
+    ]
   },
   {
     "slug": "high-river-sauces-taco-x",
@@ -322,7 +402,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!"
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!",
+    "Review Flavor Options": [
+      "Roasted Tomato",
+      "Garlic",
+      "Cumin",
+      "Lime"
+    ]
   },
   {
     "slug": "hells-kitchen-cinnamon-ghost",
@@ -347,7 +433,15 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Wok Star, Curry On, The Veggie Outlaws, This Is Your Brain on Hot Sauce"
+    "Food Badge Categories": "Wok Star, Curry On, The Veggie Outlaws, This Is Your Brain on Hot Sauce",
+    "Review Flavor Options": [
+      "Cinnamon",
+      "Chile Pepper",
+      "Garlic",
+      "Lime",
+      "Paprika",
+      "Tomato"
+    ]
   },
   {
     "slug": "hells-kitchen-coconut-curry",
@@ -372,7 +466,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Wok Star, Curry On, Is This Love, Muy Rico!, Shore Dinner Regular"
+    "Food Badge Categories": "Wok Star, Curry On, Is This Love, Muy Rico!, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Coconut",
+      "Curry Spice",
+      "Garlic",
+      "Lime",
+      "Mango"
+    ]
   },
   {
     "slug": "hells-kitchen-black-forest",
@@ -397,7 +498,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Olive Oil & Vin – Ch. 1"
+    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Olive Oil & Vin – Ch. 1",
+    "Review Flavor Options": [
+      "Black Cherry",
+      "Sage",
+      "Balsamic Tang",
+      "Ghost",
+      "Honey"
+    ]
   },
   {
     "slug": "hells-kitchen-black-westside-red",
@@ -422,7 +530,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Wok Star, Epic Wingman, Taco Fever, This Is Your Brain on Hot Sauce, Marty Bras, Muy Rico!, Shore Dinner Regular"
+    "Food Badge Categories": "Wok Star, Epic Wingman, Taco Fever, This Is Your Brain on Hot Sauce, Marty Bras, Muy Rico!, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Sriracha",
+      "Garlic",
+      "Raspberry",
+      "Lime",
+      "Agave"
+    ]
   },
   {
     "slug": "sauce-crafters-hogs-ass-garlic-habanero-sauce",
@@ -447,7 +562,12 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Garlic Breath, Muy Rico!, Shore Dinner Regular"
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Garlic Breath, Muy Rico!, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Garlic",
+      "Tangy",
+      "Tomato"
+    ]
   },
   {
     "slug": "ashley-foods-mad-dog-sriracha",
@@ -472,7 +592,15 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Wok Star, Curry On, Shore Dinner Regular"
+    "Food Badge Categories": "Wok Star, Curry On, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Garlic",
+      "Red Jalapeño",
+      "Cayenne",
+      "Carolina Reaper",
+      "Sweetness",
+      "Tangy"
+    ]
   },
   {
     "slug": "melindas-mango-habanero",
@@ -497,7 +625,12 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Fruity Pants, Is This Love, Taco Fever, Muy Rico!, Shore Dinner Regular"
+    "Food Badge Categories": "Fruity Pants, Is This Love, Taco Fever, Muy Rico!, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Mango",
+      "Habanero",
+      "Fruity Sweetness"
+    ]
   },
   {
     "slug": "melindas-original-naga-jolokia",
@@ -522,7 +655,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Fruity Pants, Is This Love, Taco Fever, This Is Your Brain on Hot Sauce, The Veggie Outlaws, Muy Rico!, Shore Dinner Regular"
+    "Food Badge Categories": "Fruity Pants, Is This Love, Taco Fever, This Is Your Brain on Hot Sauce, The Veggie Outlaws, Muy Rico!, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Papaya",
+      "Carrot",
+      "Passion Fruit",
+      "Ghost Pepper",
+      "Lime"
+    ]
   },
   {
     "slug": "melindas-scotch-bonnet-sauce",
@@ -547,7 +687,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Fruity Pants, Is This Love, Taco Fever, This Is Your Brain on Hot Sauce, The Veggie Outlaws, Muy Rico!, Shore Dinner Regular"
+    "Food Badge Categories": "Fruity Pants, Is This Love, Taco Fever, This Is Your Brain on Hot Sauce, The Veggie Outlaws, Muy Rico!, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Scotch Bonnet",
+      "Carrot",
+      "Papaya",
+      "Passion Fruit"
+    ]
   },
   {
     "slug": "mikey-vs-i-love-taco-sauce-hot",
@@ -572,7 +718,15 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!"
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Muy Rico!",
+    "Review Flavor Options": [
+      "Savory Chile",
+      "Tomato",
+      "Garlic",
+      "Onion",
+      "Tangy",
+      "Taco Spices"
+    ]
   },
   {
     "slug": "mikey-vs-jalapeno-dill-pickle",
@@ -597,7 +751,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "The Veggie Outlaws"
+    "Food Badge Categories": "The Veggie Outlaws",
+    "Review Flavor Options": [
+      "Dill Pickle",
+      "Tangy",
+      "Garlic",
+      "Jalapeño"
+    ]
   },
   {
     "slug": "mikey-vs-reaper-jalapeno-dill-pickle",
@@ -622,7 +782,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "The Veggie Outlaws"
+    "Food Badge Categories": "The Veggie Outlaws",
+    "Review Flavor Options": [
+      "Dill Pickle",
+      "Tangy",
+      "Jalapeño",
+      "Garlic"
+    ]
   },
   {
     "slug": "mikey-vs-ghostly-garlic",
@@ -647,7 +813,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Epic Wingman, This Is Your Brain on Hot Sauce, Garlic Breath, Flavor Junkie, Snack Shack, Shore Dinner Regular, Olive Oil & Vin – Ch. 1"
+    "Food Badge Categories": "Epic Wingman, This Is Your Brain on Hot Sauce, Garlic Breath, Flavor Junkie, Snack Shack, Shore Dinner Regular, Olive Oil & Vin – Ch. 1",
+    "Review Flavor Options": [
+      "Garlic",
+      "Smoky",
+      "Tomato",
+      "Tangy"
+    ]
   },
   {
     "slug": "sauce-crafters-mountain-man-fire-roasted-habanero",
@@ -672,7 +844,12 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "This Is Your Brain on Hot Sauce, Taco Fever"
+    "Food Badge Categories": "This Is Your Brain on Hot Sauce, Taco Fever",
+    "Review Flavor Options": [
+      "Fire-Roasted",
+      "Tangy",
+      "Savory Depth"
+    ]
   },
   {
     "slug": "sauce-leopard-road-dawg-red-chili-garlic",
@@ -697,7 +874,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Garlic Breath, Muy Rico!, Shore Dinner Regular"
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Garlic Breath, Muy Rico!, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Garlic",
+      "Red Chili",
+      "Lime",
+      "Tangy",
+      "Brown Sugar"
+    ]
   },
   {
     "slug": "puckerbutt-puckerbutt-gator-sauce",
@@ -722,7 +906,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Wok Star, Taco Fever, This Is Your Brain on Hot Sauce, The Veggie Outlaws, Shore Dinner Regular"
+    "Food Badge Categories": "Wok Star, Taco Fever, This Is Your Brain on Hot Sauce, The Veggie Outlaws, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Savory Pepper",
+      "Tangy",
+      "Natural Sweetness",
+      "Cirtus"
+    ]
   },
   {
     "slug": "rheds-deja-vu",
@@ -747,7 +937,15 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Wok Star, Curry On, The Veggie Outlaws, Shore Dinner Regular"
+    "Food Badge Categories": "Wok Star, Curry On, The Veggie Outlaws, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Tamarind",
+      "Pineapple",
+      "Black Garlic",
+      "Charred Onion",
+      "Ginger",
+      "Coconut Sugar"
+    ]
   },
   {
     "slug": "rheds-lemon-drop",
@@ -772,7 +970,12 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Shore Dinner Regular"
+    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Lemon Citrus",
+      "Turmeric",
+      "Ginger"
+    ]
   },
   {
     "slug": "rheds-original",
@@ -797,7 +1000,12 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Marty Bras, Muy Rico!, Shore Dinner Regular"
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Marty Bras, Muy Rico!, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Roasted Garlic",
+      "Carrot",
+      "Tangy"
+    ]
   },
   {
     "slug": "stanky-sauce-clasico",
@@ -822,7 +1030,15 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Muy Rico!, Taco Fever, This Is Your Brain on Hot Sauce, Wok Star, The Veggie Outlaws"
+    "Food Badge Categories": "Muy Rico!, Taco Fever, This Is Your Brain on Hot Sauce, Wok Star, The Veggie Outlaws",
+    "Review Flavor Options": [
+      "Red Jalapeño",
+      "Smoked Paprika",
+      "Garlic",
+      "Key Lime",
+      "Tangy",
+      "Citrusy"
+    ]
   },
   {
     "slug": "stanky-honey-mango-habanero",
@@ -847,7 +1063,15 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 4,
-    "Food Badge Categories": "Fruity Pants, Is This Love, Taco Fever, Muy Rico!, Shore Dinner Regular"
+    "Food Badge Categories": "Fruity Pants, Is This Love, Taco Fever, Muy Rico!, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Mango",
+      "Honey",
+      "Tang",
+      "Garlic",
+      "Ginger",
+      "Turmeric"
+    ]
   },
   {
     "slug": "walker-son-slap-ya-mama-hot-sauce",
@@ -872,7 +1096,12 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Marty Bras, Muy Rico!, Shore Dinner Regular"
+    "Food Badge Categories": "Taco Fever, This Is Your Brain on Hot Sauce, Marty Bras, Muy Rico!, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Tangy",
+      "Cayenne",
+      "Garlic"
+    ]
   },
   {
     "slug": "defcon-curbstomp",
@@ -897,7 +1126,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Epic Wingman, The Veggie Outlaws"
+    "Food Badge Categories": "Epic Wingman, The Veggie Outlaws",
+    "Review Flavor Options": [
+      "Cayenne",
+      "Garlic",
+      "Tangy",
+      "Creamy",
+      "Buttery"
+    ]
   },
   {
     "slug": "defcon-cluckwing",
@@ -922,7 +1158,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Epic Wingman, The Veggie Outlaws"
+    "Food Badge Categories": "Epic Wingman, The Veggie Outlaws",
+    "Review Flavor Options": [
+      "Cayenne",
+      "Garlic",
+      "Tangy",
+      "Creamy",
+      "Buttery"
+    ]
   },
   {
     "slug": "defcon-condition-2",
@@ -947,7 +1190,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 7,
-    "Food Badge Categories": "Epic Wingman, The Veggie Outlaws"
+    "Food Badge Categories": "Epic Wingman, The Veggie Outlaws",
+    "Review Flavor Options": [
+      "Cayenne",
+      "Garlic",
+      "Tangy",
+      "Creamy",
+      "Buttery"
+    ]
   },
   {
     "slug": "defcon-condition-3",
@@ -972,7 +1222,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 7,
-    "Food Badge Categories": "Epic Wingman, The Veggie Outlaws"
+    "Food Badge Categories": "Epic Wingman, The Veggie Outlaws",
+    "Review Flavor Options": [
+      "Cayenne",
+      "Garlic",
+      "Tangy",
+      "Creamy",
+      "Buttery"
+    ]
   },
   {
     "slug": "sucklebusters-original-bbq",
@@ -997,7 +1254,16 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Smoking Section"
+    "Food Badge Categories": "Smoking Section",
+    "Review Flavor Options": [
+      "Sweetness",
+      "Tomato",
+      "Smoky",
+      "Tangy",
+      "Savory Depth",
+      "Brown Sugar",
+      "Molasses"
+    ]
   },
   {
     "slug": "sucklebusters-bbq-chipotle",
@@ -1022,7 +1288,15 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Smoking Section"
+    "Food Badge Categories": "Smoking Section",
+    "Review Flavor Options": [
+      "Sweetness",
+      "Tomato",
+      "Tangy",
+      "Savory Depth",
+      "Brown Sugar",
+      "Molasses"
+    ]
   },
   {
     "slug": "sauce-crafters-colon-cleaner-mustard",
@@ -1047,7 +1321,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 7,
-    "Food Badge Categories": "Flavor Junkie"
+    "Food Badge Categories": "Flavor Junkie",
+    "Review Flavor Options": [
+      "Mustard",
+      "Garlic",
+      "Tangy",
+      "Chardonnay"
+    ]
   },
   {
     "slug": "melindas-chipotle-ketchup",
@@ -1072,7 +1352,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Flavor Junkie"
+    "Food Badge Categories": "Flavor Junkie",
+    "Review Flavor Options": [
+      "Tomato",
+      "Smoky Chipotle",
+      "Sweetness",
+      "Tangy"
+    ]
   },
   {
     "slug": "melindas-naga-jolokia-ketchup",
@@ -1097,7 +1383,15 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Flavor Junkie"
+    "Food Badge Categories": "Flavor Junkie",
+    "Review Flavor Options": [
+      "Tomato",
+      "Sweetness",
+      "Ghost Pepper",
+      "Garlic",
+      "Onion",
+      "Tangy"
+    ]
   },
   {
     "slug": "the-spicy-shark-habanero-maple-syrup",
@@ -1122,7 +1416,11 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Smoking Section, This Is Your Brain on Hot Sauce, Flavor Junkie"
+    "Food Badge Categories": "Smoking Section, This Is Your Brain on Hot Sauce, Flavor Junkie",
+    "Review Flavor Options": [
+      "Maple",
+      "Ginger"
+    ]
   },
   {
     "slug": "mikey-vs-gator-toes-spicy",
@@ -1147,7 +1445,11 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 7,
-    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack"
+    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack",
+    "Review Flavor Options": [
+      "Garlic",
+      "Cajun"
+    ]
   },
   {
     "slug": "mikey-vs-gator-toes-bbq",
@@ -1172,7 +1474,11 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 7,
-    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack"
+    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack",
+    "Review Flavor Options": [
+      "Garlic",
+      "bbq"
+    ]
   },
   {
     "slug": "mikey-vs-gator-toes-buffalo",
@@ -1197,7 +1503,12 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 7,
-    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack"
+    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack",
+    "Review Flavor Options": [
+      "Garlic",
+      "buffalo",
+      "tangy"
+    ]
   },
   {
     "slug": "mikey-vs-gator-toes-dill-pickle",
@@ -1222,7 +1533,12 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 7,
-    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack"
+    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack",
+    "Review Flavor Options": [
+      "Garlic",
+      "dill",
+      "tangy"
+    ]
   },
   {
     "slug": "mikey-vs-gator-toes-loco-spice",
@@ -1247,7 +1563,11 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack"
+    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Snack Shack",
+    "Review Flavor Options": [
+      "Garlic",
+      "Heat"
+    ]
   },
   {
     "slug": "sweet-gs-smoked-cheddar-pretzels-sourdough",
@@ -1272,7 +1592,12 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 7,
-    "Food Badge Categories": "Snack Shack, Smoking Section"
+    "Food Badge Categories": "Snack Shack, Smoking Section",
+    "Review Flavor Options": [
+      "Smoky",
+      "Cheddar",
+      "Savory Pretzel"
+    ]
   },
   {
     "slug": "sweet-gs-smoked-cheddar-pretzels-spicy",
@@ -1297,7 +1622,12 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 7,
-    "Food Badge Categories": "Snack Shack, Smoking Section"
+    "Food Badge Categories": "Snack Shack, Smoking Section",
+    "Review Flavor Options": [
+      "Smoky",
+      "Cheddar",
+      "Savory Pretzel"
+    ]
   },
   {
     "slug": "2-pig-mafia-steak-seasoning-14oz",
@@ -1322,7 +1652,15 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Smoking Section, Garlic Breath, Flavortown Mayor"
+    "Food Badge Categories": "Smoking Section, Garlic Breath, Flavortown Mayor",
+    "Review Flavor Options": [
+      "Garlic",
+      "Black Pepper",
+      "Chile Powder",
+      "Paprika",
+      "Salt",
+      "Sweetness"
+    ]
   },
   {
     "slug": "sucklebusters-hogwaller-14oz",
@@ -1347,7 +1685,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Smoking Section, Epic Wingman, Flavortown Mayor"
+    "Food Badge Categories": "Smoking Section, Epic Wingman, Flavortown Mayor",
+    "Review Flavor Options": [
+      "Brown Sugar",
+      "Sweet",
+      "Chile Pepper",
+      "Savory Spices"
+    ]
   },
   {
     "slug": "suckelbusters-1836-14oz",
@@ -1372,7 +1716,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Smoking Section, The Veggie Outlaws, Flavortown Mayor"
+    "Food Badge Categories": "Smoking Section, The Veggie Outlaws, Flavortown Mayor",
+    "Review Flavor Options": [
+      "Cracked Black Pepper",
+      "Garlic",
+      "Onion",
+      "Paprika",
+      "Sea Salt"
+    ]
   },
   {
     "slug": "sucklebusters-clucker-dust-14oz",
@@ -1397,7 +1748,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Smoking Section, Epic Wingman, Flavortown Mayor"
+    "Food Badge Categories": "Smoking Section, Epic Wingman, Flavortown Mayor",
+    "Review Flavor Options": [
+      "Chipotle",
+      "Brown Sugar",
+      "Savory Spices",
+      "Chile Pepper",
+      "Sea Salt"
+    ]
   },
   {
     "slug": "sucklebusters-bamm-14oz",
@@ -1422,7 +1780,14 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 10,
-    "Food Badge Categories": "Smoking Section, Epic Wingman, Flavortown Mayor"
+    "Food Badge Categories": "Smoking Section, Epic Wingman, Flavortown Mayor",
+    "Review Flavor Options": [
+      "Habanero",
+      "Brown Sugar",
+      "Turbinado Sweetness",
+      "Black Pepper",
+      "Fruity"
+    ]
   },
   {
     "slug": "pepper-junction-all-purpose-spg-14oz",
@@ -1447,7 +1812,14 @@
     "limited_addition": false,
     "narrative_series": "spg",
     "PJ_Credits": 10,
-    "Food Badge Categories": "Smoking Section, Garlic Breath, The Veggie Outlaws, Flavortown Mayor"
+    "Food Badge Categories": "Smoking Section, Garlic Breath, The Veggie Outlaws, Flavortown Mayor",
+    "Review Flavor Options": [
+      "Sea Salt",
+      "Black Pepper",
+      "Garlic",
+      "Onion",
+      "Slight Sweetness"
+    ]
   },
   {
     "slug": "walker-son-slap-ya-mama-cajun-original",
@@ -1472,7 +1844,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 3,
-    "Food Badge Categories": "Epic Wingman, This Is Your Brain on Hot Sauce, Marty Bras, The Veggie Outlaws, Shore Dinner Regular"
+    "Food Badge Categories": "Epic Wingman, This Is Your Brain on Hot Sauce, Marty Bras, The Veggie Outlaws, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Salt",
+      "Red Pepper",
+      "Black Pepper",
+      "Garlic"
+    ]
   },
   {
     "slug": "walker-son-slap-ya-mama-cajun-hot",
@@ -1497,7 +1875,13 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 3,
-    "Food Badge Categories": "Epic Wingman, This Is Your Brain on Hot Sauce, Marty Bras, The Veggie Outlaws, Shore Dinner Regular"
+    "Food Badge Categories": "Epic Wingman, This Is Your Brain on Hot Sauce, Marty Bras, The Veggie Outlaws, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Salt",
+      "Red Pepper",
+      "Black Pepper",
+      "Garlic"
+    ]
   },
   {
     "slug": "walker-son-slap-ya-mama-cajun-low-sodium",
@@ -1522,7 +1906,15 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 3,
-    "Food Badge Categories": "Epic Wingman, This Is Your Brain on Hot Sauce, Marty Bras, The Veggie Outlaws, Snack Shack, Shore Dinner Regular"
+    "Food Badge Categories": "Epic Wingman, This Is Your Brain on Hot Sauce, Marty Bras, The Veggie Outlaws, Snack Shack, Shore Dinner Regular",
+    "Review Flavor Options": [
+      "Red Pepper",
+      "Black Pepper",
+      "Garlic",
+      "salt",
+      "green pepper",
+      "celery"
+    ]
   },
   {
     "slug": "ass-kickin-habanero-garlic-salt",
@@ -1547,7 +1939,12 @@
     "limited_addition": false,
     "narrative_series": null,
     "PJ_Credits": 5,
-    "Food Badge Categories": "Epic Wingman, Garlic Breath, The Veggie Outlaws, Flavortown Mayor"
+    "Food Badge Categories": "Epic Wingman, Garlic Breath, The Veggie Outlaws, Flavortown Mayor",
+    "Review Flavor Options": [
+      "Garlic",
+      "Fruity",
+      "Sea Salt"
+    ]
   },
   {
     "slug": "ariston-chili-infused-olive-oil",
@@ -1572,7 +1969,11 @@
     "limited_addition": false,
     "narrative_series": "olive-vin",
     "PJ_Credits": 12,
-    "Food Badge Categories": "The Veggie Outlaws, Olive Oil & Vin – Ch. 1"
+    "Food Badge Categories": "The Veggie Outlaws, Olive Oil & Vin – Ch. 1",
+    "Review Flavor Options": [
+      "Olive",
+      "Chili Pepper"
+    ]
   },
   {
     "slug": "ariston-garlic-infused-olive-oil",
@@ -1597,7 +1998,11 @@
     "limited_addition": false,
     "narrative_series": "olive-vin",
     "PJ_Credits": 12,
-    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Olive Oil & Vin – Ch. 1"
+    "Food Badge Categories": "Garlic Breath, The Veggie Outlaws, Olive Oil & Vin – Ch. 1",
+    "Review Flavor Options": [
+      "Garlic",
+      "Buttery Olive"
+    ]
   },
   {
     "slug": "ariston-tuscan-herb-infused-olive-oil",
@@ -1622,7 +2027,14 @@
     "limited_addition": false,
     "narrative_series": "olive-vin",
     "PJ_Credits": 12,
-    "Food Badge Categories": "The Veggie Outlaws, Olive Oil & Vin – Ch. 1"
+    "Food Badge Categories": "The Veggie Outlaws, Olive Oil & Vin – Ch. 1",
+    "Review Flavor Options": [
+      "Olive",
+      "Oregano",
+      "Basil",
+      "Garlic",
+      "Rosemary"
+    ]
   },
   {
     "slug": "ariston-lemon-infused-olive-oil",
@@ -1647,7 +2059,11 @@
     "limited_addition": false,
     "narrative_series": "olive-vin",
     "PJ_Credits": 12,
-    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Shore Dinner Regular, Olive Oil & Vin – Ch. 1"
+    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Shore Dinner Regular, Olive Oil & Vin – Ch. 1",
+    "Review Flavor Options": [
+      "Olive",
+      "Lemon Zest"
+    ]
   },
   {
     "slug": "ariston-fig-infused-balsamic-vinegar",
@@ -1672,7 +2088,13 @@
     "limited_addition": false,
     "narrative_series": "olive-vin",
     "PJ_Credits": 12,
-    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Olive Oil & Vin – Ch. 1"
+    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Olive Oil & Vin – Ch. 1",
+    "Review Flavor Options": [
+      "Fig",
+      "Grape Must",
+      "Balsamic Tang",
+      "Oak"
+    ]
   },
   {
     "slug": "ariston-black-cherry-infused-balsamic-vinegar",
@@ -1697,6 +2119,12 @@
     "limited_addition": false,
     "narrative_series": "olive-vin",
     "PJ_Credits": 12,
-    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Olive Oil & Vin – Ch. 1"
+    "Food Badge Categories": "Fruity Pants, The Veggie Outlaws, Olive Oil & Vin – Ch. 1",
+    "Review Flavor Options": [
+      "Black Cherry",
+      "Grape Must",
+      "Balsamic Tang",
+      "Oak"
+    ]
   }
 ]
