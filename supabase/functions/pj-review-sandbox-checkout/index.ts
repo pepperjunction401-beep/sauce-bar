@@ -228,7 +228,7 @@ Deno.serve(async req=>{
    l.catalog_object_id===rewardVariation&&
    (l.applied_discounts||[]).some((d:any)=>d.discount_uid==="PJ_REVIEW_FREE"));
  const preflightPaid=(calculated?.line_items||[]).filter((l:any)=>
-   l.catalog_object_id!==rewardVariation);
+   !(l.applied_discounts||[]).some((d:any)=>d.discount_uid==="PJ_REVIEW_FREE"));
  if(preflightReward.length!==1||preflightReward[0].quantity!=="1"||
     preflightReward[0].total_money?.amount!==0||
     preflightPaid.length!==slugs.length||
