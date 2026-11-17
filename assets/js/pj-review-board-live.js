@@ -168,6 +168,32 @@
               note.textContent='Achievement earned · awaiting entitlement verification';
             }
             headingEl.appendChild(note);
+            // Explicit local Testing controls only. This never calls Production checkout.
+            var localhost=location.hostname==='localhost'||location.hostname==='127.0.0.1';
+            var cart=window.PJCart;
+            if(localhost&&cart&&stateRow.entitlementStatus==='selected'){
+              var pending=typeof cart.getReviewRewardCheckoutPending==='function'?
+                cart.getReviewRewardCheckoutPending():null;
+              var samePending=pending&&pending.row_number===index+1;
+              var control=doc.createElement('button');
+              control.type='button';
+              control.style.cssText='display:block;margin:8px 0 4px;background:#DFB454;color:#203522;border:1px solid #9b6a2c;border-radius:4px;padding:8px 12px;font-weight:bold;cursor:pointer';
+              control.textContent=samePending?'Verify Sandbox Payment':'Redeem with Paid Cart (Sandbox)';
+              control.addEventListener('click',function(){
+                control.disabled=true;
+                control.textContent='Checking Square Sandbox…';
+                var action=samePending?cart.verifyReviewRewardSandboxPayment():
+                  cart.startReviewRewardCheckout(index+1);
+                action.then(function(){
+                  if(samePending)location.reload();
+                }).catch(function(err){
+                  control.disabled=false;
+                  control.textContent=samePending?'Verify Sandbox Payment':'Redeem with Paid Cart (Sandbox)';
+                  note.textContent=err&&err.message?err.message:'Sandbox checkout is unavailable.';
+                });
+              });
+              headingEl.appendChild(control);
+            }
           }
         }
         var canSelect=stateRow.achieved===true &&
