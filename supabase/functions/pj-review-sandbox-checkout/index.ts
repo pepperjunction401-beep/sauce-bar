@@ -86,9 +86,11 @@ Deno.serve(async req=>{
      !(Array.isArray(zeroLines[0].applied_discounts)&&
        zeroLines[0].applied_discounts.some((d:any)=>d.discount_uid==="PJ_REVIEW_FREE")))
    return reply({error:"REWARD_ORDER_CONTENT_MISMATCH"},409);
-  const {data:chosen}=await admin.from("square_product_mappings")
-    .select("square_item_library_token").eq("product_id",e.selected_product_id).maybeSingle();
-  if(!chosen)return reply({error:"REWARD_PRODUCT_MAPPING_MISSING"},409);
+  const {data:chosen}=await admin.from("pj_review_sandbox_catalog")
+    .select("square_sandbox_item_id,sandbox_verified_at")
+    .eq("product_id",e.selected_product_id).eq("fixture_role","reward").maybeSingle();
+  if(!chosen?.sandbox_verified_at||!chosen.square_sandbox_item_id)
+   return reply({error:"REWARD_SANDBOX_MAPPING_MISSING"},409);
   // Square variation -> item mapping must be confirmed directly from Sandbox catalog.
   let item:any;
   try{
@@ -97,7 +99,7 @@ Deno.serve(async req=>{
    item=data.object;
   }catch{return reply({error:"REWARD_CATALOG_UNAVAILABLE"},503);}
   if(!item||item.type!=="ITEM_VARIATION"||
-     item.item_variation_data?.item_id!==chosen.square_item_library_token)
+     item.item_variation_data?.item_id!==chosen.square_sandbox_item_id)
    return reply({error:"REWARD_LINE_IDENTITY_MISMATCH"},409);
   // Square payment links may leave a fully captured order OPEN: verify payment, not redirect.
   const tenderIds=[...new Set((order.tenders||[])
@@ -160,17 +162,21 @@ Deno.serve(async req=>{
     products.some(p=>p.is_active!==true))
   return reply({error:"UNAVAILABLE_PAID_ITEM"},409);
  const ids=products.map(p=>p.id);
- const [mapRes,commercialRes]=await Promise.all([
-  admin.from("square_product_mappings").select("product_id,square_item_library_token").in("product_id",ids),
-  admin.from("product_commercial_state")
-   .select("product_id,sync_status,square_location_enabled,square_archived,square_sold_out,availability_status,inventory_mode,quantity_on_hand")
-   .in("product_id",ids)
- ]);
- if(mapRes.error||commercialRes.error)return reply({error:"REWARD_VALIDATION_UNAVAILABLE"},503);
- const mappings=new Map((mapRes.data||[]).map((x:MapRow)=>[x.product_id,x.square_item_library_token]));
- const states=new Map((commercialRes.data||[]).map((x:any)=>[x.product_id,x]));
- if(products.some(p=>!mappings.has(p.id)||!liveCommercial(states.get(p.id))))
-  return reply({error:"ITEM_NOT_SANDBOX_CHECKOUT_READY"},409);
+ const {data:sandboxProducts,error:sandboxError}=await admin.from("pj_review_sandbox_catalog")
+  .select("product_id,fixture_role,square_sandbox_item_id,square_sandbox_variation_id,expected_price_cents,sandbox_verified_at")
+  .in("product_id",ids);
+ if(sandboxError)return reply({error:"SANDBOX_CATALOG_VALIDATION_UNAVAILABLE"},503);
+ const ready=new Map((sandboxProducts||[]).map((x:any)=>[x.product_id,x]));
+ const selectedFixture=ready.get(chosenProduct.id);
+ if(!selectedFixture||selectedFixture.fixture_role!=="reward")
+  return reply({error:"REWARD_NOT_IN_SANDBOX_FIXTURE"},409);
+ for(const p of products){
+  const f=ready.get(p.id);
+  if(!f||!f.sandbox_verified_at||!f.square_sandbox_item_id||
+    !f.square_sandbox_variation_id||!(Number(f.expected_price_cents)>0))
+   return reply({error:"SANDBOX_CATALOG_NOT_READY"},409);
+ }
+ const mappings=new Map((sandboxProducts||[]).map((x:any)=>[x.product_id,x.square_sandbox_item_id]));
 
  // Square's item-level percentage discount applies ONLY to the reward variation.
  // Never accept prices or variation IDs from the browser.
@@ -190,8 +196,10 @@ Deno.serve(async req=>{
   const vid=item.item_data.variations[0].id;
   const variant=found.get(vid)||item.item_data.variations[0];
   const price=variant.item_variation_data?.price_money;
-  if(!vid||!price||!(Number(price.amount)>0)||price.currency!=="USD")
-   return reply({error:"SANDBOX_PRICE_UNAVAILABLE"},409);
+  const fixture=ready.get(p.id);
+  if(!vid||vid!==fixture.square_sandbox_variation_id||!price||
+     Number(price.amount)!==Number(fixture.expected_price_cents)||price.currency!=="USD")
+   return reply({error:"SANDBOX_VARIATION_PRICE_MISMATCH"},409);
   variations.set(p.cns_slug,vid);
  }
  const paidOrderItems=slugs.map(slug=>({
