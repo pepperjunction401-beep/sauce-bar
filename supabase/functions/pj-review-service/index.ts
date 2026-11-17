@@ -100,7 +100,15 @@ Deno.serve(async req=>{
  if(action==="board"){
   const {data,error}=await admin.rpc("pj_review_board_for_customer",{p_customer_id:user.id});
   if(error)return reply({error:"BOARD_UNAVAILABLE"},503);
-  return reply({products:data||[]});
+  // Match already-submitted reviews to their actual moderation state; a pending
+  // submission must never be displayed as an approved/awarded review.
+  const {data:reviews,error:reviewError}=await admin.from("pj_review_submissions")
+    .select("product_slug_snapshot,moderation_status").eq("customer_id",user.id);
+  if(reviewError)return reply({error:"BOARD_UNAVAILABLE"},503);
+  const moderationBySlug=new Map((reviews||[]).map(r=>[r.product_slug_snapshot,r.moderation_status]));
+  return reply({products:(data||[]).map(p=>({
+   ...p,moderationStatus:moderationBySlug.get(p.product_slug)??null
+  }))});
  }
  if(action==="yard"){
   const {data:reviews,error}=await admin.from("pj_review_submissions")
