@@ -24,7 +24,7 @@ if(!token||!location||!secret){
   Authorization:'Bearer '+token,'Square-Version':'2026-09-16',
   'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});
  const db=(method,path,body)=>request(TEST+'/rest/v1/'+path,{method,headers:{
-  apikey:secret,Authorization:'Bearer '+secret,
+  apikey:secret,...(secret.startsWith('sb_secret_')?{}:{Authorization:'Bearer '+secret}),
   'Content-Type':'application/json',Prefer:'return=representation'},
   body:body?JSON.stringify(body):undefined});
  try{
