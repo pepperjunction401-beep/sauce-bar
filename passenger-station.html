@@ -5100,15 +5100,19 @@ document.addEventListener('click',function(event){
 (function () {
   'use strict';
   const auth = window.PJAuth;
+  function boardSignInDestination() {
+    const focused = new URLSearchParams(location.search).get('product');
+    return 'account.html?return=board' + (focused ? '&product=' + encodeURIComponent(focused) : '');
+  }
   if (!auth || !auth.firstParty) return; // External design preview: no credentials, no customer data.
   if (!auth.enabled) {
     document.body.hidden=true;
-    location.replace('account.html?return=station');
+    location.replace(location.hash === '#board' ? boardSignInDestination() : 'account.html?return=station');
     return;
   }
   document.body.hidden = true;
   auth.verifiedUser().then(function(user) {
-    if (!user) {location.replace(auth.loginLocation());return;}
+    if (!user) {location.replace(location.hash === '#board' ? boardSignInDestination() : auth.loginLocation());return;}
     document.body.hidden = false;
     // Review Board stays hidden until customer-specific purchase evidence is applied.
     if(window.PJReviewBoardLive)window.PJReviewBoardLive.mount();
