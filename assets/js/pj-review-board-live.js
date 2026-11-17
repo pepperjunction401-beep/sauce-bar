@@ -129,18 +129,26 @@
         if(oldPrize)oldPrize.remove();
         if(requested===product.slug)focused=card;
       });
-      // Do not infer or award row prizes from client-side review counts.
+      // Row achievements come exclusively from the authenticated Review Service.
+      // Never infer an entitlement from local card counts or preview UI.
+      if(!Array.isArray(result.rows))throw new Error('BOARD_AWARD_STATE_MISSING');
+      var authoritativeRows=new Map();
+      result.rows.forEach(function(item){
+        if(item&&Number.isInteger(item.rowNumber))authoritativeRows.set(item.rowNumber,item);
+      });
       doc.querySelectorAll('#board .section').forEach(function(row,index){
-        var items=manifest.products.slice(index*8,index*8+8);
-        var n=items.filter(function(p){
-          var r=state.get(p.slug);
-          return r&&r.already_reviewed;
-        }).length;
-        row.classList.remove('achieved');
+        var stateRow=authoritativeRows.get(index+1);
+        if(!stateRow)throw new Error('BOARD_ROW_STATE_MISSING');
+        var n=stateRow.submitted;
+        row.classList.toggle('achieved',stateRow.achieved===true);
         var progress=row.querySelector('.progress');
-        if(progress)progress.textContent=n+'/8 submitted · Row rewards verified separately';
+        if(progress)progress.textContent=n+'/8 submitted'+(
+          stateRow.achieved===true?' · Achievement earned':
+          stateRow.slotsFilled<8?' · Awaiting complete row':' · Reward pending completion'
+        );
         var heading=row.querySelector('.heading h2');
         if(heading)heading.textContent='Collection Row '+(index+1);
+        // The selection/redemption controls remain deliberately disabled.
         row.querySelectorAll('.prize-choice').forEach(function(el){el.remove();});
       });
       var a=doc.getElementById('a'),b=doc.getElementById('b'),c=doc.getElementById('c');
