@@ -58,7 +58,8 @@ Deno.serve(async req=>{
   .select("status,selected_product_id").eq("customer_id",user.id)
   .eq("row_number",row).maybeSingle();
  if(eError||!e)return reply({error:"REWARD_NOT_FOUND"},404);
- if(e.status==="redeemed")return reply({error:"REWARD_ALREADY_REDEEMED"},409);
+ if(body.action!=="confirm"&&e.status==="redeemed")
+  return reply({error:"REWARD_ALREADY_REDEEMED"},409);
 
  if(body.action==="confirm"){
   const orderId=body.square_order_id;
@@ -67,7 +68,9 @@ Deno.serve(async req=>{
    .select("id,state,selected_product_id").eq("customer_id",user.id)
    .eq("row_number",row).eq("square_order_id",orderId).maybeSingle();
   if(aError||!attempt)return reply({error:"UNKNOWN_REWARD_ORDER"},404);
-  if(attempt.state==="paid_verified"&&e.status==="redeemed")return reply({ok:true,status:"redeemed"});
+  // A replay of the same Square-confirmed order is successful, not a second redemption.
+  if(attempt.state==="paid_verified"&&e.status==="redeemed")
+   return reply({ok:true,status:"redeemed",alreadyConfirmed:true});
   if(attempt.state!=="opened"||e.status!=="selected"||
      attempt.selected_product_id!==e.selected_product_id)
    return reply({error:"REWARD_ORDER_NOT_ELIGIBLE"},409);
