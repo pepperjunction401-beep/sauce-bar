@@ -106,9 +106,28 @@ Deno.serve(async req=>{
     .select("product_slug_snapshot,moderation_status").eq("customer_id",user.id);
   if(reviewError)return reply({error:"BOARD_UNAVAILABLE"},503);
   const moderationBySlug=new Map((reviews||[]).map(r=>[r.product_slug_snapshot,r.moderation_status]));
+  // Award truth is customer-specific and server-owned, never calculated by the Board iframe.
+  const [slotsResult,creditsResult,achievementsResult,entitlementsResult]=await Promise.all([
+   admin.from("pj_review_board_slots").select("row_number,slot_number"),
+   admin.from("pj_review_row_slot_credits").select("row_number,slot_number").eq("customer_id",user.id),
+   admin.from("pj_review_row_achievements").select("row_number").eq("customer_id",user.id),
+   admin.from("pj_review_reward_entitlements").select("row_number,status").eq("customer_id",user.id)
+  ]);
+  if(slotsResult.error||creditsResult.error||achievementsResult.error||entitlementsResult.error)
+   return reply({error:"BOARD_AWARDS_UNAVAILABLE"},503);
+  const filled=new Map<number,number>();
+  for(const slot of slotsResult.data||[])filled.set(slot.row_number,(filled.get(slot.row_number)||0)+1);
+  const submitted=new Map<number,number>();
+  for(const credit of creditsResult.data||[])submitted.set(credit.row_number,(submitted.get(credit.row_number)||0)+1);
+  const achieved=new Set((achievementsResult.data||[]).map(x=>x.row_number));
+  const entitlementByRow=new Map((entitlementsResult.data||[]).map(x=>[x.row_number,x.status]));
+  const rows=Array.from(filled.entries()).sort((a,b)=>a[0]-b[0]).map(([rowNumber,slotsFilled])=>({
+   rowNumber,slotsFilled,submitted:submitted.get(rowNumber)||0,achieved:achieved.has(rowNumber),
+   entitlementStatus:entitlementByRow.get(rowNumber)||null
+  }));
   return reply({products:(data||[]).map(p=>({
    ...p,moderationStatus:moderationBySlug.get(p.product_slug)??null
-  }))});
+  })),rows});
  }
  if(action==="yard"){
   const {data:reviews,error}=await admin.from("pj_review_submissions")
