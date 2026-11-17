@@ -129,10 +129,43 @@ Deno.serve(async req=>{
    if(selectedError)return reply({error:"BOARD_AWARDS_UNAVAILABLE"},503);
    for(const p of selectedProducts||[])selectedSlugs.set(p.id,p.cns_slug);
   }
+  // Availability is a current commercial decision, not a replacement for slot ownership.
+  // A missing/stale commercial record never makes a reward selectable.
+  const rewardRows=[...achieved].filter(rowNumber=>entitlementByRow.get(rowNumber)?.status!=="redeemed");
+  const rewardOptions=new Map<number,string[]>();
+  if(rewardRows.length){
+   const {data:rewardSlots,error:rewardSlotsError}=await admin.from("pj_review_board_slots")
+    .select("row_number,product_id").in("row_number",rewardRows);
+   if(rewardSlotsError)return reply({error:"BOARD_AWARDS_UNAVAILABLE"},503);
+   const ids=[...new Set((rewardSlots||[]).map(x=>x.product_id))];
+   if(ids.length){
+    const [productsRes,commerceRes,mappingsRes]=await Promise.all([
+     admin.from("pj_products").select("id,cns_slug,is_active").in("id",ids),
+     admin.from("product_commercial_state")
+      .select("product_id,sync_status,square_location_enabled,square_archived,square_sold_out,availability_status,inventory_mode,quantity_on_hand")
+      .in("product_id",ids),
+     admin.from("square_product_mappings").select("product_id").in("product_id",ids)
+    ]);
+    if(productsRes.error||commerceRes.error||mappingsRes.error)return reply({error:"BOARD_AWARDS_UNAVAILABLE"},503);
+    const productById=new Map((productsRes.data||[]).map(x=>[x.id,x]));
+    const commerceById=new Map((commerceRes.data||[]).map(x=>[x.product_id,x]));
+    const mapped=new Set((mappingsRes.data||[]).map(x=>x.product_id));
+    for(const slot of rewardSlots||[]){
+     const p=productById.get(slot.product_id),c=commerceById.get(slot.product_id);
+     if(!p||p.is_active!==true||!mapped.has(p.id)||!c||c.sync_status!=="current"||
+        c.square_location_enabled!==true||c.square_archived===true||c.square_sold_out===true||
+        c.availability_status!=="available"||
+        (c.inventory_mode==="tracked"&&!(Number(c.quantity_on_hand)>0)))continue;
+     if(!rewardOptions.has(slot.row_number))rewardOptions.set(slot.row_number,[]);
+     rewardOptions.get(slot.row_number)!.push(p.cns_slug);
+    }
+   }
+  }
   const rows=Array.from(filled.entries()).sort((a,b)=>a[0]-b[0]).map(([rowNumber,slotsFilled])=>({
    rowNumber,slotsFilled,submitted:submitted.get(rowNumber)||0,achieved:achieved.has(rowNumber),
    entitlementStatus:entitlementByRow.get(rowNumber)?.status||null,
-   selectedProductSlug:selectedSlugs.get(entitlementByRow.get(rowNumber)?.selected_product_id)||null
+   selectedProductSlug:selectedSlugs.get(entitlementByRow.get(rowNumber)?.selected_product_id)||null,
+   rewardEligibleSlugs:rewardOptions.get(rowNumber)||[]
   }));
   return reply({products:(data||[]).map(p=>({
    ...p,moderationStatus:moderationBySlug.get(p.product_slug)??null
