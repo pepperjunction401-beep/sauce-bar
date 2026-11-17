@@ -75,7 +75,7 @@
         if(reviewed)submitted++;
         if(isApproved)approved++;
         card.classList.remove('locked','unlocked','reviewed');
-        card.classList.add(!revealed?'locked':isApproved?'reviewed':'unlocked');
+        card.classList.add(!revealed?'locked':reviewed?'reviewed':'unlocked');
         var brand=card.querySelector('.brandname'),name=card.querySelector('.name');
         if(brand)brand.textContent=revealed?product.brand:'Product locked';
         if(name)name.textContent=revealed?product.name:'????';
@@ -134,11 +134,11 @@
         var items=manifest.products.slice(index*8,index*8+8);
         var n=items.filter(function(p){
           var r=state.get(p.slug);
-          return r&&r.already_reviewed&&r.moderationStatus==='approved';
+          return r&&r.already_reviewed;
         }).length;
         row.classList.remove('achieved');
         var progress=row.querySelector('.progress');
-        if(progress)progress.textContent=n+'/8 approved · Row rewards verified separately';
+        if(progress)progress.textContent=n+'/8 submitted · Row rewards verified separately';
         var heading=row.querySelector('.heading h2');
         if(heading)heading.textContent='Collection Row '+(index+1);
         row.querySelectorAll('.prize-choice').forEach(function(el){el.remove();});
