@@ -111,7 +111,7 @@ Deno.serve(async req=>{
    admin.from("pj_review_board_slots").select("row_number,slot_number"),
    admin.from("pj_review_row_slot_credits").select("row_number,slot_number").eq("customer_id",user.id),
    admin.from("pj_review_row_achievements").select("row_number").eq("customer_id",user.id),
-   admin.from("pj_review_reward_entitlements").select("row_number,status").eq("customer_id",user.id)
+   admin.from("pj_review_reward_entitlements").select("row_number,status,selected_product_id").eq("customer_id",user.id)
   ]);
   if(slotsResult.error||creditsResult.error||achievementsResult.error||entitlementsResult.error)
    return reply({error:"BOARD_AWARDS_UNAVAILABLE"},503);
@@ -120,10 +120,19 @@ Deno.serve(async req=>{
   const submitted=new Map<number,number>();
   for(const credit of creditsResult.data||[])submitted.set(credit.row_number,(submitted.get(credit.row_number)||0)+1);
   const achieved=new Set((achievementsResult.data||[]).map(x=>x.row_number));
-  const entitlementByRow=new Map((entitlementsResult.data||[]).map(x=>[x.row_number,x.status]));
+  const entitlementByRow=new Map((entitlementsResult.data||[]).map(x=>[x.row_number,x]));
+  const selectedIds=(entitlementsResult.data||[]).map(x=>x.selected_product_id).filter(Boolean);
+  const selectedSlugs=new Map<string,string>();
+  if(selectedIds.length){
+   const {data:selectedProducts,error:selectedError}=await admin.from("pj_products")
+    .select("id,cns_slug").in("id",selectedIds);
+   if(selectedError)return reply({error:"BOARD_AWARDS_UNAVAILABLE"},503);
+   for(const p of selectedProducts||[])selectedSlugs.set(p.id,p.cns_slug);
+  }
   const rows=Array.from(filled.entries()).sort((a,b)=>a[0]-b[0]).map(([rowNumber,slotsFilled])=>({
    rowNumber,slotsFilled,submitted:submitted.get(rowNumber)||0,achieved:achieved.has(rowNumber),
-   entitlementStatus:entitlementByRow.get(rowNumber)||null
+   entitlementStatus:entitlementByRow.get(rowNumber)?.status||null,
+   selectedProductSlug:selectedSlugs.get(entitlementByRow.get(rowNumber)?.selected_product_id)||null
   }));
   return reply({products:(data||[]).map(p=>({
    ...p,moderationStatus:moderationBySlug.get(p.product_slug)??null
