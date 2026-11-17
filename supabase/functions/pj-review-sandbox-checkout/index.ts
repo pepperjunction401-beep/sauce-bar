@@ -44,14 +44,6 @@ Deno.serve(async req=>{
  const sandboxToken=Deno.env.get("SQUARE_SANDBOX_ACCESS_TOKEN");
  const location=Deno.env.get("SQUARE_SANDBOX_LOCATION_ID");
  if(!key||!sandboxToken||!location)return reply({error:"SANDBOX_NOT_CONFIGURED"},503);
- // Temporary read-only Square Sandbox diagnostic. Remove after verification.
- if(req.headers.get("x-pj-review-diagnostic")==="test-only-square-location-20261117"){
-  try{
-   const d=await sq("/v2/locations","GET",sandboxToken);
-   return reply({sandboxAuthenticated:true,sandboxLocationMatches:
-    Array.isArray(d.locations)&&d.locations.some((x:any)=>x.id===location)});
-  }catch{return reply({sandboxAuthenticated:false,sandboxLocationMatches:false},503);}
- }
  const jwt=(req.headers.get("authorization")||"").replace(/^Bearer /i,"").trim();
  if(!jwt)return reply({error:"SIGN_IN_REQUIRED"},401);
  const admin=createClient(url,key,{auth:{persistSession:false}});
