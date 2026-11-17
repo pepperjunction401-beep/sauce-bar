@@ -23,7 +23,7 @@
 'use strict';
 
 /* ── CONFIG ─────────────────────────────────────────────── */
-var SHARED_REVIEW_PAGE = '../review.html';
+var REVIEW_BOARD_PAGE = '../passenger-station.html';
 var TWO_OR_MORE_SYMBOLS = /[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?~`\/]{2,}/;
 
 /*
@@ -166,25 +166,11 @@ btn.addEventListener('click', handleReviewClick);
 }
 
 function handleReviewClick() {
-/*
-* Phase 6 will replace this prototype routing with:
-*
-* 1. Determine whether the customer is signed in.
-* 2. Require sign-in when necessary.
-* 3. Verify an eligible Square purchase.
-* 4. Confirm the customer has not already reviewed the item.
-* 5. Open the shared review page for this product.
-*
-* Authentication, Square, and Supabase eligibility checks
-* are not connected in this prototype.
-*/
-var url =
-SHARED_REVIEW_PAGE +
-'?product=' +
-encodeURIComponent(state.productSlug);
-
-window.location.href = url;
-
+  // The Review Board owns the customer entry point; no product page decides eligibility.
+  // Its verified purchase state controls which products can open the questionnaire.
+  var url = REVIEW_BOARD_PAGE + '?product=' +
+    encodeURIComponent(state.productSlug) + '#board';
+  window.location.href = url;
 }
 
 /* ══════════════════════════════════════════════════════════
