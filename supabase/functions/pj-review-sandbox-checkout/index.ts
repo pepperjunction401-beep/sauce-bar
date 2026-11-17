@@ -206,11 +206,11 @@ Deno.serve(async req=>{
   pricing_options:{auto_apply_taxes:true,auto_apply_discounts:false}
  };
  // DB unique constraint prevents simultaneous payment-link reservations.
- const {error:reserveError}=await admin.from("pj_review_reward_checkout_attempts").insert({
-  customer_id:user.id,row_number:row,selected_product_id:chosenProduct.id,
-  checkout_request_id:body.checkoutRequestId
+ const {data:reservation,error:reserveError}=await admin.rpc("pj_review_reward_reserve_checkout",{
+  p_customer_id:user.id,p_row_number:row,
+  p_expected_product_id:chosenProduct.id,p_request_id:body.checkoutRequestId
  });
- if(reserveError)return reply({error:"REWARD_CHECKOUT_ALREADY_OPEN"},409);
+ if(reserveError||!reservation)return reply({error:"REWARD_CHECKOUT_ALREADY_OPEN"},409);
  let link:any;
  try{
   const data=await sq("/v2/online-checkout/payment-links","POST",sandboxToken,{
