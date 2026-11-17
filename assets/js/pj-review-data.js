@@ -97,6 +97,8 @@
    if(!user)return {signedIn:false,eligible:false,alreadyReviewed:false,reason:'SIGN_IN_REQUIRED'};
    return service('status',slug);
   },
+  // Customer-specific eligibility and review status come from the existing Review Board service.
+  getReviewBoard:function(){return service('board',null);},
   submitReview:function(payload){return service('submit',payload.productSlug,{answers:payload.answers,submittedAt:payload.submittedAt});},
   getPersonalRating:async function(slug){var result=await service('rating-read',slug);return result.rating===null?null:Number(result.rating);},
   savePersonalRating:async function(slug,value){var result=await service('rating-save',slug,{value:value});return result.ok===true;},
