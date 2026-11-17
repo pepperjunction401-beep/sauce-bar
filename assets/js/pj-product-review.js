@@ -23,7 +23,7 @@
 'use strict';
 
 /* ── CONFIG ─────────────────────────────────────────────── */
-var REVIEW_BOARD_PAGE = '../passenger-station.html';
+// Review entry is exclusively through the Passenger Station Review Board.
 var TWO_OR_MORE_SYMBOLS = /[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?~`\/]{2,}/;
 
 /*
@@ -148,29 +148,13 @@ return section;
 REVIEW BUTTON
 ══════════════════════════════════════════════════════════ */
 function bindReviewButton() {
-var btn = document.getElementById(state.reviewButtonId);
-
-if (!btn) {
-  return;
-}
-
-/*
- * Enable the button only after this shared system
- * initializes successfully.
- */
-btn.disabled = false;
-btn.setAttribute('aria-disabled', 'false');
-
-btn.addEventListener('click', handleReviewClick);
-
-}
-
-function handleReviewClick() {
-  // The Review Board owns the customer entry point; no product page decides eligibility.
-  // Its verified purchase state controls which products can open the questionnaire.
-  var url = REVIEW_BOARD_PAGE + '?product=' +
-    encodeURIComponent(state.productSlug) + '#board';
-  window.location.href = url;
+  var btn = document.getElementById(state.reviewButtonId);
+  if (!btn) return;
+  // Owner directive: remove the product-page review action entirely.
+  // The remaining product rating/review display stays untouched.
+  btn.disabled = true;
+  btn.setAttribute('aria-disabled', 'true');
+  btn.remove();
 }
 
 /* ══════════════════════════════════════════════════════════
