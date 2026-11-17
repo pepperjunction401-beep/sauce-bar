@@ -237,14 +237,11 @@ Deno.serve(async req=>{
      (state.inventory_mode==="tracked"&&!(Number(state.quantity_on_hand)>0)))
     return reply({error:"REWARD_PRODUCT_UNAVAILABLE"},409);
   // Selection is NOT redemption. Failed/abandoned checkout must preserve entitlement.
-  const {data:selected,error:selectionError}=await admin.from("pj_review_reward_entitlements")
-    .update({status:"selected",selected_product_id:product.id,selected_at:new Date().toISOString()})
-    .eq("customer_id",user.id).eq("row_number",rowNumber)
-    .in("status",["available","selected"])
-    .select("row_number,status,selected_product_id").maybeSingle();
-  if(selectionError)return reply({error:"REWARD_SELECTION_UNAVAILABLE"},503);
-  if(!selected)return reply({error:"NO_AVAILABLE_ENTITLEMENT"},409);
-  return reply({ok:true,rowNumber:selected.row_number,status:selected.status,selectedProductSlug:slug});
+  const {data:selected,error:selectionError}=await admin.rpc("pj_review_reward_select_when_idle",{
+    p_customer_id:user.id,p_row_number:rowNumber,p_product_id:product.id
+  });
+  if(selectionError||selected!==true)return reply({error:"REWARD_SELECTION_UNAVAILABLE"},409);
+  return reply({ok:true,rowNumber,status:"selected",selectedProductSlug:slug});
  }
  if(action==="notes-save"){
   if(typeof request.food!=="string"||typeof request.love!=="string"||
