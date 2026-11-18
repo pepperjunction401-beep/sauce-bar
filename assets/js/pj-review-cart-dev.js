@@ -1,28 +1,26 @@
-/* Review Board → Pepper Junction's existing cart, LOCAL TESTING ONLY.
- * The real cart owns the $0 reward line, not an alternate checkout button.
- * Server validates the reward, the paid lines, and Square payment.
+/* Pepper Junction Review Board → native Pepper Junction Cart adapter.
+ * This adapter verifies the selected reward and adds a $0 cart line only.
+ * All transactions use PJCart.startCheckout → the existing square-checkout.
+ * The award decision stays server-owned, and no payment service is created here.
  */
 (function () {
   'use strict';
-  var host = location.hostname.toLowerCase();
-  if (host !== 'localhost' && host !== '127.0.0.1') return;
   var cart = window.PJCart, review = window.PJReviewData;
   var button = document.getElementById('pj-cart-page-checkout');
   var summaryBox = document.querySelector('.pj-cart-page-summary-box');
   if (!cart || !button || !summaryBox) return;
+
   var params = new URLSearchParams(location.search);
   var raw = params.get('reviewRewardRow');
   var saved = null;
   try { saved = sessionStorage.getItem('pj_review_cart_row'); } catch (_) {}
-  var pending = cart.getReviewRewardCheckoutPending();
-  var rowNumber = raw && /^[1-9][0-9]*$/.test(raw) ? Number(raw) :
-    pending && Number.isInteger(pending.row_number) ? pending.row_number :
-    saved && /^[1-9][0-9]*$/.test(saved) ? Number(saved) : null;
   var existing = cart.getReviewReward();
-  if (!rowNumber && existing) rowNumber = existing.reward_row_number;
+  var rowNumber = raw && /^[1-9][0-9]*$/.test(raw) ? Number(raw) :
+    saved && /^[1-9][0-9]*$/.test(saved) ? Number(saved) :
+    existing ? existing.reward_row_number : null;
   if (!rowNumber) return;
 
-  // Never start a live transaction or trust a URL parameter as entitlement.
+  // Fail closed until the review service validates the selected row.
   button.disabled = true;
   button.hidden = true;
   var section = document.createElement('section');
@@ -30,9 +28,9 @@
   section.setAttribute('role', 'status');
   section.style.cssText = 'margin:14px 0;padding:14px;border:1px solid #d8b45d;border-radius:8px;background:#203522;color:#f5e6c8;';
   var heading = document.createElement('strong');
-  heading.textContent = 'Review Board Complimentary Product';
+  heading.textContent = 'Review Board — Complimentary Product';
   var status = document.createElement('p');
-  status.textContent = 'Verifying earned reward in Supabase Testing…';
+  status.textContent = 'Checking your earned reward…';
   var defer = document.createElement('button');
   defer.type = 'button';
   defer.textContent = 'Save Reward for Later';
@@ -42,103 +40,69 @@
   link.href = 'passenger-station.html#board';
   link.textContent = 'Return to Review Board';
   link.style.cssText = 'display:block;color:#f1cc78;margin-top:8px;';
-  section.append(heading,status,defer,link);
-  summaryBox.insertBefore(section,button);
+  section.append(heading, status, defer, link);
+  summaryBox.insertBefore(section, button);
 
   function paidCount() {
-    return cart.getSummary().items.filter(function(item) {
-      return item.kind !== 'pj_review_reward';
-    }).length;
+    return cart.getSummary().paid_item_count || 0;
   }
   function resetIntent() {
     try { sessionStorage.removeItem('pj_review_cart_row'); } catch (_) {}
     try {
       var u = new URL(location.href);
       u.searchParams.delete('reviewRewardRow');
-      history.replaceState(null,'',u.pathname+u.search+u.hash);
+      history.replaceState(null, '', u.pathname + u.search + u.hash);
     } catch (_) {}
   }
-  function updateButton() {
+  function refreshButton() {
     var reward = cart.getReviewReward();
-    var hasPaid = paidCount() > 0;
-    button.hidden = !reward;
-    button.disabled = !reward || !hasPaid;
-    button.textContent = 'Checkout Now';
-    defer.hidden = !reward || !!cart.getReviewRewardCheckoutPending();
     if (!reward) return;
-    status.textContent = reward.product_name +
-      ' · $0.00 in your Pepper Junction cart. ' +
-      (hasPaid ? 'Your paid products remain unchanged.' :
-      'Add at least one paid product to redeem this reward.');
+    button.hidden = false;
+    button.disabled = paidCount() === 0;
+    button.textContent = 'Checkout Now';
+    defer.hidden = false;
+    status.textContent = reward.product_name + ' — $0.00 in your Pepper Junction Cart. ' +
+      (paidCount() ? 'Your paid items remain unchanged.' :
+      'Add at least one paid item to redeem your reward.');
   }
-  defer.addEventListener('click',function(){
-    if (cart.getReviewRewardCheckoutPending()) return;
-    var reward=cart.getReviewReward();
+  defer.addEventListener('click', function () {
+    var reward = cart.getReviewReward();
     if (reward) cart.removeItem(reward.product_id);
     resetIntent();
-    button.hidden = true; // localhost never falls through to Production checkout
-    status.textContent='Your earned selection remains saved on the Review Board for a future paid order.';
-    defer.hidden=true;
+    defer.hidden = true;
+    button.hidden = false;
+    button.disabled = paidCount() === 0;
+    status.textContent = 'Reward saved for a later purchase; paid items remain in the cart.';
   });
+
   if (!review || typeof review.getReviewBoard !== 'function') {
-    status.textContent='Review Board verification is unavailable. Checkout remains locked.';
+    status.textContent = 'Reward verification unavailable. Checkout remains locked.';
     return;
   }
-  review.getReviewBoard().then(function(board){
-    var row=(board.rows||[]).find(function(r){return r.rowNumber===rowNumber;});
-    if (row && row.entitlementStatus==='redeemed') {
-      var reward=cart.getReviewReward();
-      if(reward)cart.removeItem(reward.product_id);
+  review.getReviewBoard().then(function (board) {
+    var row = (board.rows || []).find(function (r) { return r.rowNumber === rowNumber; });
+    if (!row || row.achieved !== true || row.entitlementStatus !== 'selected' ||
+        typeof row.selectedProductSlug !== 'string' || !row.selectedProductSlug) {
+      if (existing) cart.removeItem(existing.product_id);
       resetIntent();
-      status.textContent='This Review Board reward has already been redeemed.';
+      status.textContent = 'An earned, selected Review Board reward is required. Checkout is locked until verified.';
       return;
     }
-    if (!row || row.achieved!==true || row.entitlementStatus!=='selected' ||
-        !row.selectedProductSlug) {
-      status.textContent='An earned, selected Review Board reward is required. Checkout remains locked.';
-      return;
-    }
-    var load=review.loadCatalog().catch(function(){return null;});
-    return load.then(function(){
-      var info=review.getProduct(row.selectedProductSlug);
-      cart.setReviewReward(rowNumber,{
-        slug:row.selectedProductSlug,
-        name:info&&info.name,
-        brand:info&&info.brand
+    return Promise.resolve(review.loadCatalog()).then(function () {
+      var info = review.getProduct(row.selectedProductSlug);
+      cart.setReviewReward(rowNumber, {
+        slug: row.selectedProductSlug,
+        name: info && info.name,
+        brand: info && info.brand
       });
-      try { sessionStorage.setItem('pj_review_cart_row',String(rowNumber)); } catch (_) {}
-      if (pending) {
-        if (pending.row_number!==rowNumber) {
-          status.textContent='Another reward order is awaiting payment confirmation.';
-          button.disabled=true;
-          return;
-        }
-        var returned = params.get('orderId');
-        if (returned && returned!==pending.order_id) {
-          status.textContent='Square returned a different order. No reward has been redeemed.';
-          button.disabled=true;
-          return;
-        }
-        button.hidden=true;
-        status.textContent='Verifying the pending Square Sandbox payment…';
-        return cart.verifyReviewRewardSandboxPayment().then(function(){
-          resetIntent();
-          status.textContent='Square payment verified. Review Board reward redeemed once.';
-          button.hidden=true;
-          defer.hidden=true;
-        }).catch(function(){
-          status.textContent='Payment not verified. Your paid cart and $0 reward remain intact. Return to this page after completing the Sandbox payment.';
-          button.hidden=true;
-          defer.hidden=true;
-        });
-      }
-      updateButton();
+      try { sessionStorage.setItem('pj_review_cart_row', String(rowNumber)); } catch (_) {}
+      refreshButton();
     });
-  }).catch(function(error){
-    status.textContent='Unable to verify your Review Board reward. Checkout remains locked.';
-    console.warn('Review Board cart verification failed:',error);
+  }).catch(function (error) {
+    status.textContent = 'Reward verification failed. Checkout remains locked.';
+    console.warn('Review Board cart reward verification failed:', error);
   });
-  window.addEventListener(cart.event,function(){
-    if (cart.getReviewReward() && !pending) updateButton();
+  window.addEventListener(cart.event, function () {
+    if (cart.getReviewReward()) refreshButton();
   });
 })();
