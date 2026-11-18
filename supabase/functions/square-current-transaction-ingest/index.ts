@@ -330,7 +330,11 @@ Deno.serve(async (req: Request) => {
     }
     const productBySquareToken = new Map<string, string>();
     const tokenByProduct = new Map<string, string>();
-    for (const m of effectiveMappings) { productBySquareToken.set(m.square_item_library_token, m.product_id); tokenByProduct.set(m.product_id, m.square_item_library_token); }
+    // Sandbox variation/item IDs identify the real Square test-order lines,
+    // but the CNS snapshot still has the authoritative original item ID.
+    // Do not feed Sandbox IDs into the CNS identity assertion.
+    for (const m of mappings ?? []) tokenByProduct.set(m.product_id, m.square_item_library_token);
+    for (const m of effectiveMappings) productBySquareToken.set(m.square_item_library_token, m.product_id);
 
     const productIds = Array.from(new Set((mappings ?? []).map((m: any) => m.product_id)));
     const slugByProductId = new Map<string, string>();
