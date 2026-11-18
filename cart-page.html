@@ -201,6 +201,12 @@
     normalCheckout.hidden = true;
     normalCheckout.disabled = true;
   }
+  var summary = document.querySelector('.pj-cart-page-summary-box');
+  var loading = document.createElement('p');
+  loading.id = 'pj-review-cart-loader-status';
+  loading.setAttribute('role', 'status');
+  loading.textContent = 'Verifying your Review Board reward in Supabase Testing…';
+  if (summary && normalCheckout) summary.insertBefore(loading, normalCheckout);
   var files = [
     'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
     'assets/js/pj-auth.js',
@@ -209,11 +215,16 @@
   ];
   function next() {
     var src = files.shift();
-    if (!src) return;
+    if (!src) {
+      loading.remove();
+      return;
+    }
     var script = document.createElement('script');
     script.src = src;
     script.onload = next;
     script.onerror = function () {
+      loading.textContent = 'Review Board Testing could not load. Your cart and complimentary selection are unchanged; please refresh or try again.';
+      loading.setAttribute('role', 'alert');
       console.error('Review Board Testing-only cart bridge could not load:', src);
     };
     document.body.appendChild(script);
