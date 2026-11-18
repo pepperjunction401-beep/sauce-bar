@@ -159,6 +159,16 @@ Deno.serve(async req=>{
  const {data:chosenProduct}=await admin.from("pj_products")
   .select("id,cns_slug,is_active").eq("id",e.selected_product_id).maybeSingle();
  if(!chosenProduct||chosenProduct.is_active!==true)return reply({error:"REWARD_ITEM_UNAVAILABLE"},409);
+ // A complimentary item must arrive as a distinct $0.00 Pepper Junction
+ // CART line. The request never proves entitlement: the server independently
+ // verifies the earned selection and Square catalog identity.
+ const cartReward=body.cartReward;
+ if(!cartReward||cartReward.kind!=="pj_review_reward"||
+    cartReward.product_id!=="pj-review-reward-row-"+row||
+    cartReward.reward_row_number!==row||
+    cartReward.reward_product_slug!==chosenProduct.cns_slug||
+    cartReward.quantity!==1||cartReward.price!==0)
+   return reply({error:"REWARD_CART_LINE_MISMATCH"},409);
  const [slotRes,allRes,attemptRes]=await Promise.all([
   admin.from("pj_review_board_slots").select("slot_number").eq("row_number",row)
    .eq("product_id",chosenProduct.id).maybeSingle(),
