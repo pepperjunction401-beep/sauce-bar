@@ -163,8 +163,10 @@ Deno.serve(async (req: Request) => {
   const paymentIdInput = typeof body?.square_payment_id === "string" ? body.square_payment_id : null;
   const sourceMode = body?.source_mode === "reconciliation" ? "reconciliation" : "webhook";
 
-  if (!orderIdInput && !paymentIdInput) {
-    return json({ error: "square_order_id or square_payment_id is required" }, 400);
+  // This isolated adapter accepts only independently fetched, completed Sandbox
+  // payment evidence; an order ID alone is never authorization to import.
+  if (!paymentIdInput) {
+    return json({ error: "COMPLETED_SANDBOX_PAYMENT_ID_REQUIRED" }, 400);
   }
 
   const admin = createClient(supabaseUrl, serviceRoleKey, {
@@ -206,8 +208,17 @@ Deno.serve(async (req: Request) => {
     if (order.state !== "COMPLETED" && !paidOpenOrder) {
       return json({ status: "ignored", reason: "square_order_not_completed_or_fully_paid" });
     }
-    if (order.location_id && order.location_id !== squareLocationId) {
-      return json({ status: "ignored", reason: "different_square_location" });
+    if (order.location_id !== squareLocationId ||
+        payment?.location_id !== squareLocationId ||
+        payment?.order_id !== order.id ||
+        payment?.status !== "COMPLETED") {
+      return json({ status: "blocked", reason: "SANDBOX_PAYMENT_PROVENANCE_INVALID" }, 409);
+    }
+    const completedAmount = payment.total_money?.amount ?? payment.amount_money?.amount;
+    if (!Number.isSafeInteger(completedAmount) ||
+        completedAmount !== order.total_money?.amount ||
+        (payment.total_money?.currency ?? payment.amount_money?.currency) !== order.total_money?.currency) {
+      return json({ status: "blocked", reason: "SANDBOX_PAYMENT_AMOUNT_MISMATCH" }, 409);
     }
 
     const paymentIds = squarePaymentIds(order.tenders, payment ? [payment] : []);
