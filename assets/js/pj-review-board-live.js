@@ -170,8 +170,9 @@
             headingEl.appendChild(note);
             // Local Testing: transfer the selected reward into Pepper Junction's
             // own cart. Its existing Checkout Now entry handles the Square handoff.
-            var localhost=location.hostname==='localhost'||location.hostname==='127.0.0.1';
-            if(localhost&&stateRow.entitlementStatus==='selected'){
+            var firstParty=['localhost','127.0.0.1',
+              'pepperjunction401.com','www.pepperjunction401.com'].indexOf(location.hostname)!==-1;
+            if(firstParty&&stateRow.entitlementStatus==='selected'){
               var control=doc.createElement('button');
               control.type='button';
               control.style.cssText='display:block;margin:8px 0 4px;background:#DFB454;color:#203522;border:1px solid #9b6a2c;border-radius:4px;padding:8px 12px;font-weight:bold;cursor:pointer';
