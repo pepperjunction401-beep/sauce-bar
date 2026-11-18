@@ -183,11 +183,31 @@
 <script src="assets/js/cart-drawer.js"></script>
 <!-- Square cart pricing helper loads with cart page scripts. -->
 <script src="assets/js/cart-page.js"></script>
-<!-- Isolated localhost-only Review Board reward bridge. Never redirects regular checkout. -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="assets/js/pj-auth.js"></script>
-<script src="assets/js/pj-review-data.js"></script>
-<script src="assets/js/pj-review-cart-dev.js"></script>
+<!-- Isolated localhost-only Review Board reward bridge. No extra live-domain dependencies. -->
+<script>
+(function () {
+  var host = window.location.hostname.toLowerCase();
+  if (host !== 'localhost' && host !== '127.0.0.1') return;
+  var files = [
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
+    'assets/js/pj-auth.js',
+    'assets/js/pj-review-data.js',
+    'assets/js/pj-review-cart-dev.js'
+  ];
+  function next() {
+    var src = files.shift();
+    if (!src) return;
+    var script = document.createElement('script');
+    script.src = src;
+    script.onload = next;
+    script.onerror = function () {
+      console.error('Review Board Testing-only cart bridge could not load:', src);
+    };
+    document.body.appendChild(script);
+  }
+  next();
+})();
+</script>
 
 </body>
 </html>
