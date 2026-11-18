@@ -5,7 +5,21 @@ import { resolveSquareProduct } from "../_shared/square-product-identity.ts";
 import { lookupCnsProduct } from "../_shared/cns-product-snapshot.ts";
 import { fullyPaidOpenSquareOrder, squarePaymentIds } from "../_shared/square-payment-evidence.ts";
 
-const SQUARE_BASE_URL = "https://connect.squareup.com";
+const IS_TESTING_PROJECT =
+  Deno.env.get("SUPABASE_URL") === "https://slubpfmpjgoupujptayy.supabase.co";
+const SQUARE_BASE_URL = IS_TESTING_PROJECT
+  ? "https://connect.squareupsandbox.com" : "https://connect.squareup.com";
+function databaseServiceKey(): string | undefined {
+  if (!IS_TESTING_PROJECT) return Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const direct = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
+    Deno.env.get("SUPABASE_SECRET_KEY");
+  if (direct) return direct;
+  try {
+    const parsed = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS") || "{}");
+    return typeof parsed.default === "string" ? parsed.default : undefined;
+  } catch { return undefined; }
+}
+
 const SQUARE_VERSION = "2026-09-16";
 
 type Money = { amount?: number; currency?: string };
@@ -137,9 +151,11 @@ Deno.serve(async (req: Request) => {
   }
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  const squareToken = Deno.env.get("SQUARE_PRODUCTION_ACCESS_TOKEN");
-  const squareLocationId = Deno.env.get("SQUARE_PEPPER_JUNCTION_LOCATION_ID");
+  const serviceRoleKey = databaseServiceKey();
+  const squareToken = Deno.env.get(IS_TESTING_PROJECT
+    ? "SQUARE_SANDBOX_ACCESS_TOKEN" : "SQUARE_PRODUCTION_ACCESS_TOKEN");
+  const squareLocationId = Deno.env.get(IS_TESTING_PROJECT
+    ? "SQUARE_SANDBOX_LOCATION_ID" : "SQUARE_PEPPER_JUNCTION_LOCATION_ID");
 
   if (!supabaseUrl || !serviceRoleKey) return json({ error: "Supabase environment incomplete" }, 500);
   // Fail closed if a Testing function is accidentally configured for Production.
@@ -289,9 +305,32 @@ Deno.serve(async (req: Request) => {
       .select("product_id, square_item_library_token");
     if (mappingsError) throw new Error("Unable to read PJ-to-Square product mappings");
 
+    // Testing-only fixture overlay: the existing importer still resolves
+    // products from its standard mapping shape; Production mappings are untouched.
+    let effectiveMappings: Array<{product_id:string;square_item_library_token:string}> =
+      (mappings ?? []).map((m: any) => ({
+        product_id:m.product_id, square_item_library_token:m.square_item_library_token,
+      }));
+    if (IS_TESTING_PROJECT) {
+      const {data: fixtures,error:fixtureError} = await admin
+        .from("pj_review_sandbox_catalog")
+        .select("product_id,square_sandbox_item_id,sandbox_verified_at");
+      if (fixtureError || !fixtures || fixtures.some((f:any) =>
+          !f.sandbox_verified_at || !f.square_sandbox_item_id)) {
+        throw new Error("Testing Sandbox fixture identity unavailable");
+      }
+      const byId = new Map(fixtures.map((f:any) =>
+        [f.product_id,f.square_sandbox_item_id]));
+      effectiveMappings = effectiveMappings.map(m => ({
+        ...m,
+        square_item_library_token:
+          (byId.get(m.product_id) as string | undefined) ??
+          m.square_item_library_token,
+      }));
+    }
     const productBySquareToken = new Map<string, string>();
     const tokenByProduct = new Map<string, string>();
-    for (const m of mappings ?? []) { productBySquareToken.set(m.square_item_library_token, m.product_id); tokenByProduct.set(m.product_id, m.square_item_library_token); }
+    for (const m of effectiveMappings) { productBySquareToken.set(m.square_item_library_token, m.product_id); tokenByProduct.set(m.product_id, m.square_item_library_token); }
 
     const productIds = Array.from(new Set((mappings ?? []).map((m: any) => m.product_id)));
     const slugByProductId = new Map<string, string>();

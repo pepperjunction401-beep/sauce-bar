@@ -1,7 +1,21 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const SQUARE_BASE_URL = "https://connect.squareup.com";
+const IS_TESTING_PROJECT =
+  Deno.env.get("SUPABASE_URL") === "https://slubpfmpjgoupujptayy.supabase.co";
+const SQUARE_BASE_URL = IS_TESTING_PROJECT
+  ? "https://connect.squareupsandbox.com" : "https://connect.squareup.com";
+function databaseServiceKey(): string | undefined {
+  if (!IS_TESTING_PROJECT) return Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const direct = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
+    Deno.env.get("SUPABASE_SECRET_KEY");
+  if (direct) return direct;
+  try {
+    const parsed = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS") || "{}");
+    return typeof parsed.default === "string" ? parsed.default : undefined;
+  } catch { return undefined; }
+}
+
 const SQUARE_VERSION = "2026-09-16";
 const MAX_DISTINCT_ITEMS = 50;
 const MAX_QTY_PER_ITEM = 99;
@@ -185,9 +199,11 @@ Deno.serve(async (req: Request) => {
   }
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  const squareToken = Deno.env.get("SQUARE_PRODUCTION_ACCESS_TOKEN");
-  const squareLocationId = Deno.env.get("SQUARE_PEPPER_JUNCTION_LOCATION_ID");
+  const serviceRoleKey = databaseServiceKey();
+  const squareToken = Deno.env.get(IS_TESTING_PROJECT
+    ? "SQUARE_SANDBOX_ACCESS_TOKEN" : "SQUARE_PRODUCTION_ACCESS_TOKEN");
+  const squareLocationId = Deno.env.get(IS_TESTING_PROJECT
+    ? "SQUARE_SANDBOX_LOCATION_ID" : "SQUARE_PEPPER_JUNCTION_LOCATION_ID");
 
   if (!supabaseUrl || !serviceRoleKey) {
     return json(req, { error: "Checkout service is not configured" }, 503);
@@ -328,6 +344,24 @@ Deno.serve(async (req: Request) => {
   }
 
   const mappingRows = (mappings ?? []) as MappingRow[];
+  // Isolated Testing uses its two verified Square Sandbox fixtures. The
+  // Production mapping table and checkout architecture stay unchanged.
+  if (IS_TESTING_PROJECT) {
+    const {data: fixtures, error: fixtureError} = await admin
+      .from("pj_review_sandbox_catalog")
+      .select("product_id,square_sandbox_item_id,sandbox_verified_at")
+      .in("product_id", productIds);
+    if (fixtureError || !fixtures || fixtures.some((f: any) =>
+        !f.sandbox_verified_at || !f.square_sandbox_item_id)) {
+      return json(req, {error:"Testing Sandbox product mapping is unavailable"}, 503);
+    }
+    const fixtureMap = new Map(fixtures.map((f: any) =>
+      [f.product_id, f.square_sandbox_item_id]));
+    for (const mapping of mappingRows) {
+      const sandboxId = fixtureMap.get(mapping.product_id);
+      if (typeof sandboxId === "string") mapping.square_item_library_token = sandboxId;
+    }
+  }
   const commercialRows = (commercial ?? []) as CommercialRow[];
 
   if (mappingRows.length !== productIds.length || commercialRows.length !== productIds.length) {

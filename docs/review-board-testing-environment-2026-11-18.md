@@ -1,0 +1,4 @@
+# Isolated Testing checkout — environment configuration
+Dev checkout/importer use **the same existing function names** in both Supabase projects, with an exact Testing URL gate for Sandbox credentials and Sandbox API. Production continues using its existing Production Square configuration. The two verified Testing-only Square fixtures are substituted into the existing product-mapping data flow **in memory**; no mapping rows are rewritten.
+This is **not** a second checkout pathway. The former parallel `pj-review-sandbox-checkout` deployment remains untouched until acceptance tests pass.
+No real checkout is established merely by deploying functions: Testing requires a verified-matched test customer, earned reward, Square identity link, and checkout execution through the isolated environment. The three agreed tests are successful reward, unsuccessful checkout retention, and normal paid-only checkout. Never claim acceptance from static validation alone.
