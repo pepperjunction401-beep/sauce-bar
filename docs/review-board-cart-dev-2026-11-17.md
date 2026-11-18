@@ -9,12 +9,12 @@
 4. `assets/js/pj-review-cart-dev.js` reads the actual authenticated Board API and governed CNS display name. The free item is represented in its own selection panel; it is NEVER inserted into `PJCart.items`, paid subtotal, or badge previews.
 5. With at least one paid item, the customer can start the existing `PJCart.startReviewRewardCheckout` function. The isolated backend validates the saved entitlement and creates the $0 reward line through Square Sandbox.
 6. Pending Square Sandbox orders persist per tab for verification. A confirmed payment redeems the row once and clears the paid cart **only if its content still matches the checkout snapshot**, avoiding loss of new items.
-7. An explicit **Save Reward for Later — Regular Checkout** control removes the local checkout intent but does NOT consume the server entitlement. Ordinary checkout then becomes available.
-8. On localhost, `PJCart.startCheckout` rejects attempts to use Production checkout while an active reward selection or pending Sandbox payment exists. Live domains are untouched.
+7. An explicit **Save Reward for Later** control removes the local reward checkout intent but does NOT consume the server entitlement or paid cart. **Local Dev never opens live checkout**, even after deferral.
+8. On localhost, `PJCart.startCheckout` rejects **all** ordinary Production Square checkout attempts, including with no reward selected. Local Sandbox checkout remains separately available. Live domains are untouched.
 
 ## Simulated browser/code regression findings
 - 8 UI simulations passed: live-domain no-op; empty paid cart disabled; valid paid cart enabled; pending confirmation; user defers; already redeemed; other row pending; Board API failure fails closed.
-- 5 checkout guard simulations passed: localhost selected, pending, and query-parameter rewards do not reach Production checkout; plain local cart and live-domain cart retain the existing request path.
+- 5 earlier checkout guard simulations passed for selected, pending and query-parameter rewards. An additional safety revision now blocks **all local ordinary checkout**, including plain carts; the live-domain checkout path is unchanged. That revision must be separately verified.
 - 4 checkout finalization simulations passed: unchanged paid cart clears on verified payment; modified paid cart remains; declined/unconfirmed payment preserves pending/order; idempotent replay accepted.
 - All 3 edited JS scripts and cart-page inline JS passed JavaScript syntax evaluation.
 - Confirmed current Dev cart-page and cart-engine blobs differ from main: no main promotion or Production modification.
@@ -27,9 +27,9 @@ Development commits:
 - `f3a9e905` Dev reward cart bridge.
 - `66ead662` Board-to-Cart button.
 - `824bbf63`, `54f2af4e`, `5f5b118d`, `1cccf841` local-only cart page loading/guard.
-- `3a58a6a6`, `adb10d55` cart snapshot and normal-checkout safety guard.
+- `3a58a6a6`, `adb10d55`, `62bf3598` cart snapshot and absolute localhost Production-checkout safety guard.
 - `5d7ee088` Board navigation intent.
-- `d20bcbfe`, `4d7f16a8`, `a2122c63` earned reward state, defer-for-later choice, and CNS name.
+- `d20bcbfe`, `4d7f16a8`, `a2122c63`, `bfe64ed1` earned reward state, safe defer-for-later choice, and CNS name.
 
 Prework Dev source blobs for selective recovery:
 - `cart-page.html`: `7e2b93c0e8ab4546d3635d93c1615fee58e89737`
