@@ -14,10 +14,16 @@
 
   var query = new URLSearchParams(window.location.search);
   var rawRow = query.get('reviewRewardRow');
+  var savedRow = null;
+  try { savedRow = sessionStorage.getItem('pj_review_cart_row'); } catch (_) {}
   var pending = window.PJCart && window.PJCart.getReviewRewardCheckoutPending
     ? window.PJCart.getReviewRewardCheckoutPending() : null;
   var rowNumber = rawRow && /^[1-9][0-9]*$/.test(rawRow) ? Number(rawRow)
-    : pending && Number.isInteger(pending.row_number) ? pending.row_number : null;
+    : pending && Number.isInteger(pending.row_number) ? pending.row_number
+    : savedRow && /^[1-9][0-9]*$/.test(savedRow) ? Number(savedRow) : null;
+  if (rowNumber) {
+    try { sessionStorage.setItem('pj_review_cart_row', String(rowNumber)); } catch (_) {}
+  }
   if (!rowNumber) return;
 
   var cart = window.PJCart;
@@ -52,7 +58,14 @@
   summaryBox.insertBefore(section, normalCheckout);
   // The original paid checkout must never silently omit a selected reward.
   normalCheckout.hidden = true;
+  normalCheckout.disabled = true;
   normalCheckout.setAttribute('aria-hidden', 'true');
+  function restoreRegularCheckout() {
+    try { sessionStorage.removeItem('pj_review_cart_row'); } catch (_) {}
+    normalCheckout.hidden = false;
+    normalCheckout.removeAttribute('aria-hidden');
+    normalCheckout.disabled = cart.getSummary().item_count === 0;
+  }
 
   function selectedRow(rows) {
     return Array.isArray(rows) ? rows.find(function (row) {
@@ -103,6 +116,7 @@
     }
     if (serverRow.entitlementStatus === 'redeemed') {
       details.textContent = 'This row reward has already been redeemed. Your earned achievement remains.';
+      restoreRegularCheckout();
       return;
     }
     if (!eligible(serverRow)) {
@@ -130,6 +144,7 @@
         details.textContent = 'Square Sandbox payment verified. Complimentary reward redeemed once.';
         redeem.style.display = 'none';
         serverRow.entitlementStatus = 'redeemed';
+        restoreRegularCheckout();
       }
       // New checkout redirects to Square in PJCart; cart stays intact until return.
     }).catch(function (error) {
