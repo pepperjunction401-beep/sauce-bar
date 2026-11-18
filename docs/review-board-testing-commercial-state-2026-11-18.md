@@ -1,0 +1,2 @@
+## Testing-only commercial-state isolation
+The two verified Testing Square Sandbox fixtures have no corresponding `product_commercial_state` records. In the Testing URL only, `square-checkout` synthesizes in-memory commercial-state placeholders exclusively for fixtures with `sandbox_verified_at` and valid Square Sandbox catalog IDs. No database rows are inserted. Subsequent live Square catalog, price, location, stock and order-calculation checks still determine checkout eligibility. Production behavior is unchanged.

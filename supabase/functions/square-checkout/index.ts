@@ -344,6 +344,7 @@ Deno.serve(async (req: Request) => {
   }
 
   const mappingRows = (mappings ?? []) as MappingRow[];
+  const commercialRows = (commercial ?? []) as CommercialRow[];
   // Isolated Testing uses its two verified Square Sandbox fixtures. The
   // Production mapping table and checkout architecture stay unchanged.
   if (IS_TESTING_PROJECT) {
@@ -361,8 +362,19 @@ Deno.serve(async (req: Request) => {
       const sandboxId = fixtureMap.get(mapping.product_id);
       if (typeof sandboxId === "string") mapping.square_item_library_token = sandboxId;
     }
+    // The two Sandbox catalog fixtures do not have Production commercial-state
+    // rows. Use their Sandbox catalog verification ONLY in isolated Testing.
+    // Live stock, location availability, and price are still checked by Square.
+    for (const fixture of fixtures) {
+      if (!commercialRows.some(row => row.product_id === fixture.product_id)) {
+        commercialRows.push({
+          product_id: fixture.product_id, sync_status:"sandbox-fixture",
+          square_location_enabled:true, square_archived:false,
+          square_sold_out:false, availability_status:"available",
+        });
+      }
+    }
   }
-  const commercialRows = (commercial ?? []) as CommercialRow[];
 
   if (mappingRows.length !== productIds.length || commercialRows.length !== productIds.length) {
     return json(req, { error: "One or more cart items are not checkout-ready" }, 409);
