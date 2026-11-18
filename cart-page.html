@@ -188,6 +188,19 @@
 (function () {
   var host = window.location.hostname.toLowerCase();
   if (host !== 'localhost' && host !== '127.0.0.1') return;
+  var rewardContext = !!(new URLSearchParams(window.location.search).get('reviewRewardRow'));
+  try {
+    rewardContext = rewardContext ||
+      !!sessionStorage.getItem('pj_review_cart_row') ||
+      !!sessionStorage.getItem('pj_review_sandbox_pending');
+  } catch (_) {}
+  if (!rewardContext) return;
+  // Hide regular checkout before asynchronous Supabase scripts load.
+  var normalCheckout = document.getElementById('pj-cart-page-checkout');
+  if (normalCheckout) {
+    normalCheckout.hidden = true;
+    normalCheckout.disabled = true;
+  }
   var files = [
     'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
     'assets/js/pj-auth.js',
