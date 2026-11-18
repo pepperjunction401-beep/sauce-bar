@@ -857,3 +857,40 @@ body {
   .pjr-question-mark { font-size: 10px; }
   .pjr-question-range-wrap { padding: 3px 0 0; }
 }
+
+/* Passenger Review: owner-approved heat behavior help, display-only. */
+.pjr-heat-help-heading {display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pjr-heat-help-heading h3 {margin:0}
+.pjr-heat-help-trigger {
+  flex:none;display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;min-width:30px;border:2px solid var(--pj-brass-bright);
+  border-radius:50%;background:var(--pj-green-deep);color:var(--pj-brass-bright);
+  font:700 18px/1 'Josefin Sans',sans-serif;cursor:pointer;
+}
+.pjr-heat-help-trigger:focus-visible,.pjr-heat-help-close:focus-visible {
+  outline:3px solid var(--pj-brass-bright);outline-offset:3px;
+}
+.pjr-heat-help-dialog {
+  position:fixed;inset:0;box-sizing:border-box;width:min(530px,calc(100% - 28px));
+  max-height:min(85dvh,760px);overflow-y:auto;margin:auto;padding:22px;
+  border:2px solid var(--pj-brass-bright);border-radius:13px;
+  background:var(--pj-green-dark);color:var(--pj-cream);
+  box-shadow:0 15px 60px #000b;
+}
+.pjr-heat-help-dialog::backdrop {background:rgba(0,0,0,.75)}
+.pjr-heat-help-top {display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.pjr-heat-help-top h2 {margin:0;font-size:clamp(21px,5vw,28px);line-height:1.2}
+.pjr-heat-help-close {
+  flex:none;width:36px;height:36px;border:1px solid var(--pj-brass-bright);
+  border-radius:50%;background:transparent;color:var(--pj-cream);
+  font:700 23px/1 sans-serif;cursor:pointer;
+}
+.pjr-heat-help-intro {margin:12px 0 18px;line-height:1.5}
+.pjr-heat-help-list {list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.pjr-heat-help-list li {
+  padding:10px 12px;border:1px solid var(--pj-brass);
+  border-radius:7px;background:var(--pj-green-deep);
+}
+.pjr-heat-help-list strong {display:block;color:var(--pj-brass-bright);margin-bottom:4px}
+.pjr-heat-help-list span {display:block;line-height:1.45}
+@media(max-width:640px) {.pjr-heat-help-dialog {padding:16px}.pjr-heat-help-list li {padding:9px 11px}}

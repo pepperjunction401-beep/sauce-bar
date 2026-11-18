@@ -117,6 +117,15 @@
         <a class="pjr-btn pjr-btn-ghost" href="passenger-station.html#depot">Badge Depot</a>
       </div>
     </section>
+    <!-- Informational heat guides: never alter questionnaire answers or eligibility. -->
+    <dialog id="pjr-heat-help" class="pjr-heat-help-dialog" aria-labelledby="pjr-heat-help-title">
+      <div class="pjr-heat-help-top">
+        <h2 id="pjr-heat-help-title"></h2>
+        <button type="button" id="pjr-heat-help-close" class="pjr-heat-help-close" aria-label="Close heat guide">×</button>
+      </div>
+      <p class="pjr-heat-help-intro">Choose the description that best matches your experience.</p>
+      <ol id="pjr-heat-help-list" class="pjr-heat-help-list"></ol>
+    </dialog>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -262,7 +271,11 @@
         prompt: 'Which flavors stood out to you the most?',
         hint: 'Select up to three.', options: flavorOpts },
       { id: 'q12', type: 'single',
-        prompt: 'How did the heat hit?', options: D.getHowItHits() },
+        prompt: 'How did the heat hit?', options: D.getHowItHits().sort(function(a,b) {
+          var order=['Water Park','Jacuzzi Heat','Bonfire','Rip Current','Rogue Wave','Tsunami'];
+          var ai=order.indexOf(a), bi=order.indexOf(b);
+          return (ai<0?order.length:ai)-(bi<0?order.length:bi);
+        }) },
       { id: 'q13', type: 'single',
         prompt: 'How did the heat finish?', options: D.getHeatFinish() },
       { id: 'q16', type: 'single', stacked: true,
@@ -328,6 +341,59 @@
         : missing + ' stops still need answers';
     }
 
+    /* Owner-approved heat-behavior guide text; presentation only. */
+    var HEAT_GUIDES = {
+      q12: {
+        heading: 'How Did the Heat Hit?',
+        entries: [
+          ['Water Park', 'Playful, lively, zippy heat without overwhelming intensity.'],
+          ['Jacuzzi Heat', 'Gradual, comfortable warmth that builds without an aggressive burn.'],
+          ['Bonfire', 'A prolonged, persistent, comfortable heat with no sudden hit.'],
+          ['Rip Current', 'Flavor arrives first, followed by a delayed punch of heat.'],
+          ['Rogue Wave', 'Immediate heat that hits right out of the gate.'],
+          ['Tsunami', 'Immediate heat that continues intensifying into something powerful.']
+        ]
+      },
+      q13: {
+        heading: 'How Did the Heat Finish?',
+        entries: [
+          ['Mutual Split', 'The heat and flavor finish together, with the flavor having the final word.'],
+          ['Thanks for Stopping By', 'A smooth, pleasant departure. The heat winds down gently.'],
+          ['No Hard Feelings', 'The heat drops away quickly after making its impression.'],
+          ['Stays for Coffee', 'The heat lingers awhile, overstaying its welcome.'],
+          ['Escorted Out', 'A substantial lingering burn that refuses to leave quietly.'],
+          ['Say Goodnight', 'Overwhelming, long-lasting heat that’ll end your night.']
+        ]
+      }
+    };
+
+    var heatHelp = document.getElementById('pjr-heat-help');
+    var heatHelpHeading = document.getElementById('pjr-heat-help-title');
+    var heatHelpList = document.getElementById('pjr-heat-help-list');
+    function showHeatGuide(kind) {
+      var guide = HEAT_GUIDES[kind];
+      if (!guide || !heatHelp) return;
+      heatHelpHeading.textContent = guide.heading;
+      heatHelpList.replaceChildren();
+      guide.entries.forEach(function (entry) {
+        var item = document.createElement('li');
+        var name = document.createElement('strong');
+        name.textContent = entry[0];
+        var meaning = document.createElement('span');
+        meaning.textContent = entry[1];
+        item.appendChild(name);
+        item.appendChild(meaning);
+        heatHelpList.appendChild(item);
+      });
+      heatHelp.showModal();
+    }
+    document.getElementById('pjr-heat-help-close').addEventListener('click', function () {
+      heatHelp.close();
+    });
+    heatHelp.addEventListener('click', function (event) {
+      if (event.target === heatHelp) heatHelp.close();
+    });
+
     /* ── RENDER QUESTIONS ── */
     var qWrap = document.getElementById('pjr-questions');
     var judgeWrap = document.getElementById('pjr-judge-questions');
@@ -348,7 +414,22 @@
 
       var h = document.createElement('h3');
       h.textContent = q.prompt;
-      card.appendChild(h);
+      if (HEAT_GUIDES[q.id]) {
+        var headingRow = document.createElement('div');
+        headingRow.className = 'pjr-heat-help-heading';
+        var helpButton = document.createElement('button');
+        helpButton.type = 'button';
+        helpButton.className = 'pjr-heat-help-trigger';
+        helpButton.textContent = '?';
+        helpButton.setAttribute('aria-label', 'Explain ' + q.prompt);
+        helpButton.setAttribute('title', 'Heat behavior guide');
+        helpButton.addEventListener('click', function () { showHeatGuide(q.id); });
+        headingRow.appendChild(h);
+        headingRow.appendChild(helpButton);
+        card.appendChild(headingRow);
+      } else {
+        card.appendChild(h);
+      }
 
       if (heatFree && answers[q.id] === 'Not Applicable') {
         // No clickable control for heat-only questions on intentionally heat-free items.
