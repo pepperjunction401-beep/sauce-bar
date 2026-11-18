@@ -111,6 +111,11 @@
     if (!Number.isInteger(row) || row < 1 || !/^[a-z0-9][a-z0-9-]*$/.test(slug))
       throw new Error('A server-verified Review Board selection is required.');
     var cart = readCart();
+    var existingReward = cart.items.find(isReviewReward);
+    // Preserve the cart snapshot across Square's return redirect for verified
+    // redemption. Re-adding an unchanged reward must not mutate the paid order.
+    if (existingReward && existingReward.reward_row_number === row &&
+        existingReward.reward_product_slug === slug) return getCartSummary();
     // One complimentary reward per checkout; ordinary paid SKU remains separate.
     cart.items = cart.items.filter(function(item){return !isReviewReward(item);});
     cart.items.push({
@@ -1118,7 +1123,15 @@
         // selection, inserts the 100%-discounted line, and checks paid lines.
         items: paidItems.map(function(item) {
           return {product_id: item.product_id, quantity: normalizeQty(item.quantity)};
-        })
+        }),
+        // The $0 line travels from Pepper Junction's CART into the checkout
+        // adapter. The backend independently verifies the earned selection.
+        cartReward: {
+          kind: reward.kind, product_id: reward.product_id,
+          reward_row_number: reward.reward_row_number,
+          reward_product_slug: reward.reward_product_slug,
+          price: 0, quantity: 1
+        }
       };
       var response = await auth.client.functions.invoke('pj-review-sandbox-checkout', {body: payload});
       if (response.error || !response.data || !response.data.checkout_url ||
