@@ -1088,7 +1088,8 @@
           if (data.square_order_id) {
             sessionStorage.setItem('pj_checkout_pending', JSON.stringify({
               order_id: data.square_order_id,
-              cart_snapshot: sessionStorage.getItem(CART_KEY)
+              cart_snapshot: sessionStorage.getItem(CART_KEY),
+              reward_row_number: reward ? reward.reward_row_number : null
             }));
           }
         } catch (_) {}
