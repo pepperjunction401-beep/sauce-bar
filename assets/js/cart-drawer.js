@@ -38,8 +38,10 @@
   function syncCommercialPrices() {
     var cart = window.PJCart.read();
     var items = Array.isArray(cart && cart.items) ? cart.items : [];
-    var ids = Array.from(new Set(items.map(function (item) {
-      return item && item.product_id;
+    var ids = Array.from(new Set(items.filter(function (item) {
+      return item && item.kind !== 'pj_review_reward';
+    }).map(function (item) {
+      return item.product_id;
     }).filter(Boolean)));
 
     if (!ids.length) return;
@@ -70,6 +72,8 @@
         var changed = false;
 
         latest.items.forEach(function (item) {
+          // Complimentary reward price is always $0.00 and server-authorized.
+          if (item.kind === 'pj_review_reward') return;
           var state = byId[item.product_id];
           if (!state || state.current !== true || state.available !== true) return;
 
@@ -421,17 +425,14 @@
             '</div>' +
 
             '<div class="pj-cart-qty-row">' +
-              '<button class="pj-cart-qty-btn" type="button" data-cart-dec="' +
-                esc(item.product_id) +
-              '" aria-label="Decrease quantity">−</button>' +
-
-              '<span class="pj-cart-qty">' +
-                esc(item.quantity) +
-              '</span>' +
-
-              '<button class="pj-cart-qty-btn" type="button" data-cart-inc="' +
-                esc(item.product_id) +
-              '" aria-label="Increase quantity">+</button>' +
+              (item.kind === 'pj_review_reward' ?
+                '<span class="pj-cart-qty">1 complimentary · $0.00</span>' :
+                '<button class="pj-cart-qty-btn" type="button" data-cart-dec="' +
+                  esc(item.product_id) +
+                '" aria-label="Decrease quantity">−</button>' +
+                '<span class="pj-cart-qty">' + esc(item.quantity) + '</span>' +
+                '<button class="pj-cart-qty-btn" type="button" data-cart-inc="' +
+                  esc(item.product_id) + '" aria-label="Increase quantity">+</button>') +
 
               '<button class="pj-cart-remove" type="button" data-cart-remove="' +
                 esc(item.product_id) +
