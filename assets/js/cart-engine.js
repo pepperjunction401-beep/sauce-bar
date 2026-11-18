@@ -98,7 +98,45 @@
     };
   }
 
+  function isReviewReward(item) {
+    return !!(item && item.kind === 'pj_review_reward' &&
+      /^pj-review-reward-row-[1-9][0-9]*$/.test(String(item.product_id || '')));
+  }
+
+  // A reward is a genuine Pepper Junction CART line; the server remains the
+  // authority for entitlement, Square price, selected SKU and redemption.
+  function setReviewReward(rowNumber, product) {
+    var row = Number(rowNumber);
+    var slug = product && String(product.slug || '');
+    if (!Number.isInteger(row) || row < 1 || !/^[a-z0-9][a-z0-9-]*$/.test(slug))
+      throw new Error('A server-verified Review Board selection is required.');
+    var cart = readCart();
+    // One complimentary reward per checkout; ordinary paid SKU remains separate.
+    cart.items = cart.items.filter(function(item){return !isReviewReward(item);});
+    cart.items.push({
+      kind: 'pj_review_reward',
+      product_id: 'pj-review-reward-row-' + row,
+      reward_row_number: row,
+      reward_product_slug: slug,
+      slug: slug,
+      product_name: String(product.name || slug.replace(/-/g, ' ')) + ' (Review Board Reward)',
+      brand: String(product.brand || 'Pepper Junction'),
+      price: 0, quantity: 1, price_source: 'pj-review-reward',
+      image: String(product.image || ''), category: 'Complimentary Reward',
+      added_at: new Date().toISOString()
+    });
+    writeCart(cart);
+    return getCartSummary();
+  }
+
+  function getReviewReward() {
+    return readCart().items.find(isReviewReward) || null;
+  }
+
   function addItem(product) {
+    // Never let ordinary add-to-cart forge a zero-dollar entitlement.
+    if (product && (product.kind === 'pj_review_reward' || product.is_review_reward))
+      throw new Error('Review rewards must be selected through the verified Review Board.');
     var item = normalizeProduct(product);
     var cart = readCart();
 
@@ -130,7 +168,9 @@
     cart.items = cart.items.filter(function (item) {
       return item.product_id !== productId;
     });
-
+    if (!cart.items.some(isReviewReward)) {
+      try { sessionStorage.removeItem('pj_review_cart_row'); } catch (_) {}
+    }
     writeCart(cart);
     return getCartSummary();
   }
@@ -140,7 +180,7 @@
     var cart = readCart();
 
     cart.items = cart.items.map(function (item) {
-      if (item.product_id === productId) {
+      if (item.product_id === productId && !isReviewReward(item)) {
         item.quantity = qty;
       }
       return item;
@@ -154,7 +194,7 @@
     var cart = readCart();
 
     cart.items = cart.items.map(function (item) {
-      if (item.product_id === productId) {
+      if (item.product_id === productId && !isReviewReward(item)) {
         item.quantity = normalizeQty(item.quantity) + 1;
       }
       return item;
@@ -168,7 +208,7 @@
     var cart = readCart();
 
     cart.items = cart.items.reduce(function (items, item) {
-      if (item.product_id === productId) {
+      if (item.product_id === productId && !isReviewReward(item)) {
         var newQty = normalizeQty(item.quantity) - 1;
 
         if (newQty < 1) {
@@ -199,7 +239,7 @@
     var cart = readCart();
 
     return cart.items.reduce(function (sum, item) {
-      return sum + normalizeQty(item.quantity);
+      return sum + (isReviewReward(item) ? 0 : normalizeQty(item.quantity));
     }, 0);
   }
 
@@ -207,7 +247,8 @@
     var cart = readCart();
 
     return money(cart.items.reduce(function (sum, item) {
-      return sum + money(item.price) * normalizeQty(item.quantity);
+      return sum + (isReviewReward(item) ? 0 :
+        money(item.price) * normalizeQty(item.quantity));
     }, 0));
   }
 
@@ -832,7 +873,9 @@
     var cart = readCart();
     var subtotal = getSubtotal();
     var itemCount = getItemCount();
-    var badgeProgress = getBadgeProgressModel(cart, subtotal, itemCount);
+    // Reward is visible in the cart, but NEVER counted toward earned badges.
+    var paidCart = {items: cart.items.filter(function(item){return !isReviewReward(item);})};
+    var badgeProgress = getBadgeProgressModel(paidCart, subtotal, itemCount);
 
     return {
       items: cart.items,
@@ -934,27 +977,22 @@
   }
 
   function startCheckout() {
-    // Fail closed on local Testing when a Review Board reward is in progress.
-    // Never silently redirect a selected reward cart to the Production endpoint.
-    var local = window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1';
-    if (local) {
-      var rewardIntent = false;
-      try {
-        rewardIntent = !!sessionStorage.getItem('pj_review_cart_row') ||
-          !!(new URLSearchParams(window.location.search).get('reviewRewardRow'));
-      } catch (_) {}
-      if (rewardIntent || reviewCheckoutPending()) {
+    var reward = getReviewReward();
+    // Single Pepper Junction checkout entry point. Reward handling uses the
+    // cart's paid items plus the cart's verified free line.
+    if (reward) {
+      if (window.location.hostname !== 'localhost' &&
+          window.location.hostname !== '127.0.0.1') {
         return Promise.reject(new Error(
-          'Review Board reward checkout is active. Use the Square Sandbox reward option, ' +
-          'or explicitly save the reward for a later purchase.'
-        ));
+          'Review Board reward checkout is not yet enabled on the live site.'));
       }
-      // Local Dev must not silently create a live Square order.
+      return startReviewRewardCheckout(reward.reward_row_number);
+    }
+    // Local testing never sends ordinary cart purchases to live Production.
+    if (window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1') {
       return Promise.reject(new Error(
-        'Regular Square checkout is disabled on localhost. ' +
-        'Use Square Sandbox for testing; live checkout is available only on the real website.'
-      ));
+        'Live Square checkout is disabled in local testing.'));
     }
     var summary = getCartSummary();
 
@@ -1051,8 +1089,10 @@
   async function startReviewRewardCheckout(rowNumber) {
     var auth = reviewSandboxClient();
     var summary = getCartSummary();
-    if (!Number.isInteger(Number(rowNumber)) || Number(rowNumber) < 1 ||
-        !summary.items.length) {
+    var reward = getReviewReward();
+    var paidItems = summary.items.filter(function(item){return !isReviewReward(item);});
+    if (!reward || reward.reward_row_number !== Number(rowNumber) ||
+        !paidItems.length) {
       throw new Error('Add a paid product to your cart before redeeming your Review Board reward.');
     }
     if (rewardCheckoutInFlight) throw new Error('Reward checkout is already opening.');
@@ -1069,7 +1109,9 @@
         // Fixed local origin only. Square may use this as a hosted-checkout return.
         // Returning here never confirms payment; the server verifies Square.
         returnUrl: window.location.origin + '/cart-page.html',
-        items: summary.items.map(function(item) {
+        // Reward is already in PJCart.items. Server verifies reward-row
+        // selection, inserts the 100%-discounted line, and checks paid lines.
+        items: paidItems.map(function(item) {
           return {product_id: item.product_id, quantity: normalizeQty(item.quantity)};
         })
       };
@@ -1126,6 +1168,8 @@
     getItemCount: getItemCount,
     getSubtotal: getSubtotal,
     getSummary: getCartSummary,
+    setReviewReward: setReviewReward,
+    getReviewReward: getReviewReward,
     startCheckout: startCheckout,
     startReviewRewardCheckout: startReviewRewardCheckout,
     verifyReviewRewardSandboxPayment: verifyReviewRewardSandboxPayment,
