@@ -130,6 +130,18 @@ Deno.serve(async req=>{
   return reply({error:"SELECT_REWARD_FIRST"},409);
  if(!matchText(body.checkoutRequestId,100)||!/^[A-Za-z0-9-]{8,100}$/.test(body.checkoutRequestId))
   return reply({error:"INVALID_REQUEST_ID"},400);
+ // Only the isolated local test cart may receive a Sandbox return redirect.
+ // This URL is never evidence of payment or reward eligibility.
+ let returnUrl:string;
+ try{
+  const u=new URL(body.returnUrl);
+  const local=u.hostname==="localhost"||u.hostname==="127.0.0.1";
+  if(!local||!["http:","https:"].includes(u.protocol)||
+     u.username||u.password||u.pathname!=="/cart-page.html"||
+     u.hash||u.search||u.toString().length>500)
+   return reply({error:"INVALID_SANDBOX_RETURN_URL"},400);
+  returnUrl=u.toString();
+ }catch{return reply({error:"INVALID_SANDBOX_RETURN_URL"},400);}
  const items=body.items;
  if(!Array.isArray(items)||items.length<1||items.length>25||body.loyaltyToken||
     body.loyaltyExchange||body.freeItem||body.priceOverride)
@@ -247,7 +259,9 @@ Deno.serve(async req=>{
   const data=await sq("/v2/online-checkout/payment-links","POST",sandboxToken,{
     idempotency_key:"pj-review-"+body.checkoutRequestId,
     description:"Pepper Junction Review Board Sandbox",
-    order,checkout_options:{ask_for_shipping_address:true}
+    order,checkout_options:{
+     ask_for_shipping_address:true,allow_tipping:false,redirect_url:returnUrl
+    }
   });
   link=data.payment_link;
  }catch{
