@@ -550,6 +550,13 @@
       return;
     }
 
+    // Review redemption needs the authenticated Review Board cart adapter.
+    // Paid-only shoppers continue through the existing drawer checkout.
+    if (window.PJCart.getReviewReward && window.PJCart.getReviewReward()) {
+      window.location.assign(getCartBasePath() + 'cart-page.html');
+      return;
+    }
+
     if (btn) {
       btn.disabled = true;
       btn.textContent = 'Opening Square Checkout…';
