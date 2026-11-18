@@ -183,6 +183,54 @@
 <script src="assets/js/cart-drawer.js"></script>
 <!-- Square cart pricing helper loads with cart page scripts. -->
 <script src="assets/js/cart-page.js"></script>
+<!-- Review Board rewards enter the existing Pepper Junction cart; no alternate checkout. -->
+<script>
+(function () {
+  // Production and isolated local Testing use their respective PJAuth environments.
+  var rewardContext = !!(new URLSearchParams(window.location.search).get('reviewRewardRow'));
+  try {
+    rewardContext = rewardContext ||
+      !!sessionStorage.getItem('pj_review_cart_row') ||
+      !!(window.PJCart && window.PJCart.getReviewReward());
+  } catch (_) {}
+  if (!rewardContext) return;
+  // Hide regular checkout before asynchronous Supabase scripts load.
+  var normalCheckout = document.getElementById('pj-cart-page-checkout');
+  if (normalCheckout) {
+    normalCheckout.hidden = true;
+    normalCheckout.disabled = true;
+  }
+  var summary = document.querySelector('.pj-cart-page-summary-box');
+  var loading = document.createElement('p');
+  loading.id = 'pj-review-cart-loader-status';
+  loading.setAttribute('role', 'status');
+  loading.textContent = 'Verifying your Review Board reward…';
+  if (summary && normalCheckout) summary.insertBefore(loading, normalCheckout);
+  var files = [
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
+    'assets/js/pj-auth.js',
+    'assets/js/pj-review-data.js',
+    'assets/js/pj-review-cart-dev.js'
+  ];
+  function next() {
+    var src = files.shift();
+    if (!src) {
+      loading.remove();
+      return;
+    }
+    var script = document.createElement('script');
+    script.src = src;
+    script.onload = next;
+    script.onerror = function () {
+      loading.textContent = 'Review Board verification could not load. Your cart and complimentary selection remain unchanged; please refresh or try again.';
+      loading.setAttribute('role', 'alert');
+      console.error('Review Board cart adapter could not load:', src);
+    };
+    document.body.appendChild(script);
+  }
+  next();
+})();
+</script>
 
 </body>
 </html>
