@@ -1066,6 +1066,9 @@
         action: 'create',
         rowNumber: Number(rowNumber),
         checkoutRequestId: makeCheckoutRequestId(),
+        // Fixed local origin only. Square may use this as a hosted-checkout return.
+        // Returning here never confirms payment; the server verifies Square.
+        returnUrl: window.location.origin + '/cart-page.html',
         items: summary.items.map(function(item) {
           return {product_id: item.product_id, quantity: normalizeQty(item.quantity)};
         })
