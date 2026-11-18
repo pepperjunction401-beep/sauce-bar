@@ -167,10 +167,13 @@
         restoreRegularCheckout();
         details.textContent = 'Square Sandbox verified your payment. Your complimentary reward was redeemed once.';
       }).catch(function () {
+        busy = false;
+        refreshControl();
         details.textContent = 'Your Square return did not verify a completed payment. Your reward remains reserved; use Verify Square Sandbox Payment when payment is complete.';
       }).finally(function () {
         busy = false;
-        refreshControl();
+        if (serverRow.entitlementStatus === 'redeemed') refreshControl();
+        else redeem.disabled = !eligible(serverRow);
       });
     } else if (returnedOrderId) {
       details.textContent = 'The return order does not match this pending checkout. No reward was redeemed.';
