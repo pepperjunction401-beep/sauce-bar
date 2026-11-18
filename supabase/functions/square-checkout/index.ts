@@ -56,7 +56,7 @@ function corsHeaders(origin: string | null) {
   const allowed = origin && ALLOWED_ORIGINS.has(origin) ? origin : "";
   return {
     "Access-Control-Allow-Origin": allowed,
-    "Access-Control-Allow-Headers": "content-type",
+    "Access-Control-Allow-Headers": "content-type, authorization",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Vary": "Origin",
   };
@@ -165,6 +165,124 @@ function returnUrlForOrigin(origin: string) {
   return origin + "/post-payment-badges.html";
 }
 
+
+/**
+ * Verify a completed reward order using the SAME Square account and the SAME
+ * Pepper Junction checkout/return pipeline. A redirect is NEVER payment proof.
+ * This is a confirmation action, not a separate checkout or Square order creator.
+ */
+async function confirmReviewReward(
+  req: Request, body: any, admin: any, squareToken: string, locationId: string,
+): Promise<Response> {
+  const row = Number(body?.row_number);
+  const orderId = body?.square_order_id;
+  if (!Number.isInteger(row) || row < 1 ||
+      typeof orderId !== "string" || !/^[A-Za-z0-9_-]{8,120}$/.test(orderId)) {
+    return json(req, {error: "Invalid Review Board confirmation"}, 400);
+  }
+  const token = (req.headers.get("Authorization") || "").replace(/^Bearer /i, "").trim();
+  if (!token) return json(req, {error: "Sign-in required"}, 401);
+  const {data: identity, error: identityError} = await admin.auth.getUser(token);
+  const user = identity?.user;
+  if (identityError || !user?.id || !user.email_confirmed_at) {
+    return json(req, {error: "Sign-in required"}, 401);
+  }
+  const [{data: ent, error: entError}, {data: attempt, error: attemptError}] =
+    await Promise.all([
+      admin.from("pj_review_reward_entitlements")
+        .select("status,selected_product_id,redeemed_square_order_id")
+        .eq("customer_id", user.id).eq("row_number", row).maybeSingle(),
+      admin.from("pj_review_reward_checkout_attempts")
+        .select("state,selected_product_id")
+        .eq("customer_id", user.id).eq("row_number", row)
+        .eq("square_order_id", orderId).maybeSingle(),
+    ]);
+  if (entError || attemptError || !ent || !attempt ||
+      ent.selected_product_id !== attempt.selected_product_id) {
+    return json(req, {error: "Reward order not recognized"}, 404);
+  }
+  if (ent.status === "redeemed" && attempt.state === "paid_verified" &&
+      ent.redeemed_square_order_id === orderId) {
+    return json(req, {status: "redeemed", already_confirmed: true});
+  }
+  if (ent.status !== "selected" || attempt.state !== "opened") {
+    return json(req, {error: "Reward order not eligible"}, 409);
+  }
+  let order: any;
+  try {
+    order = (await squareRequest("GET",
+      "/v2/orders/" + encodeURIComponent(orderId), squareToken)).order;
+  } catch {
+    return json(req, {error: "Square order verification unavailable"}, 503);
+  }
+  if (!order || order.id !== orderId || order.location_id !== locationId ||
+      !Array.isArray(order.line_items)) {
+    return json(req, {error: "Square order identity mismatch"}, 409);
+  }
+  const freeLines = order.line_items.filter((line: any) => line.total_money?.amount === 0);
+  const paidLines = order.line_items.filter((line: any) => line.total_money?.amount > 0);
+  if (freeLines.length !== 1 || !paidLines.length ||
+      freeLines[0].quantity !== "1" ||
+      !freeLines[0].applied_discounts?.some(
+        (d: any) => d.discount_uid === "PJ_REVIEW_FREE") ||
+      paidLines.some((line: any) => line.applied_discounts?.some(
+        (d: any) => d.discount_uid === "PJ_REVIEW_FREE")) ||
+      !(Number(order.total_money?.amount) > 0)) {
+    return json(req, {error: "Square reward/paid line mismatch"}, 409);
+  }
+  const {data: mapping, error: mappingError} = await admin.from("square_product_mappings")
+    .select("square_item_library_token")
+    .eq("product_id", ent.selected_product_id).maybeSingle();
+  if (mappingError || !mapping?.square_item_library_token) {
+    return json(req, {error: "Review reward mapping unavailable"}, 503);
+  }
+  // Confirm the free Square variation belongs to the verified PJ product.
+  let variation: any;
+  try {
+    variation = (await squareRequest("GET", "/v2/catalog/object/" +
+      encodeURIComponent(freeLines[0].catalog_object_id), squareToken)).object;
+  } catch {
+    return json(req, {error: "Reward Square catalog verification unavailable"}, 503);
+  }
+  if (!variation || variation.type !== "ITEM_VARIATION" ||
+      (variation.id !== mapping.square_item_library_token &&
+       variation.item_variation_data?.item_id !== mapping.square_item_library_token)) {
+    return json(req, {error: "Complimentary Square item identity mismatch"}, 409);
+  }
+  const tenderIds: string[] = Array.from(new Set(
+    (order.tenders || []).map((t: any) => t.payment_id)
+      .filter((v: any) => typeof v === "string" && v.length > 0),
+  ));
+  if (!tenderIds.length) return json(req, {error: "Payment not confirmed"}, 409);
+  let verifiedPaidCents = 0;
+  try {
+    for (const paymentId of tenderIds) {
+      const payment = (await squareRequest("GET", "/v2/payments/" +
+        encodeURIComponent(paymentId), squareToken)).payment;
+      if (!payment || payment.status !== "COMPLETED" ||
+          payment.order_id !== orderId || payment.location_id !== locationId ||
+          payment.total_money?.currency !== "USD") {
+        return json(req, {error: "Payment not confirmed"}, 409);
+      }
+      verifiedPaidCents += Number(payment.total_money.amount) -
+        Number(payment.refunded_money?.amount || 0);
+    }
+  } catch {
+    return json(req, {error: "Payment verification unavailable"}, 503);
+  }
+  if (verifiedPaidCents <= 0 || verifiedPaidCents < Number(order.total_money.amount)) {
+    return json(req, {error: "Payment not fully captured"}, 409);
+  }
+  const {data: completed, error: finalizeError} = await admin.rpc(
+    "pj_review_reward_finalize_verified_order", {
+      p_customer_id: user.id, p_row_number: row, p_square_order_id: orderId,
+    });
+  if (finalizeError || completed !== true) {
+    return json(req, {error: "Review reward finalization unavailable"}, 503);
+  }
+  return json(req, {status: "redeemed"});
+}
+
 Deno.serve(async (req: Request) => {
   const origin = req.headers.get("Origin");
 
@@ -196,6 +314,12 @@ Deno.serve(async (req: Request) => {
   }
 
   const body = await req.json().catch(() => ({}));
+  if (body?.action === "confirm_review_reward") {
+    const admin = createClient(supabaseUrl, serviceRoleKey, {
+      auth: {persistSession: false, autoRefreshToken: false},
+    });
+    return confirmReviewReward(req, body, admin, squareToken, squareLocationId);
+  }
   const celestialTimezone = typeof body?.checkout_timezone === "string" ? body.checkout_timezone.trim() : "";
   const sessionKey = typeof body?.shopping_session_id === "string" ? body.shopping_session_id : "";
   if (sessionKey && !/^[0-9a-f]{8}-[0-9a-f-]{27,}$/.test(sessionKey)) {
