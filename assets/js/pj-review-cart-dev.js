@@ -47,6 +47,10 @@
   redeem.type = 'button';
   redeem.className = 'pj-cart-page-checkout';
   redeem.style.cssText = 'display:none;margin:8px 0;width:100%;';
+  var deferReward = document.createElement('button');
+  deferReward.type = 'button';
+  deferReward.textContent = 'Save Reward for Later — Regular Checkout';
+  deferReward.style.cssText = 'display:none;margin:8px 0;color:#f1cc78;background:transparent;border:1px solid #d8b45d;padding:8px;cursor:pointer;';
   var returnLink = document.createElement('a');
   returnLink.href = 'passenger-station.html';
   returnLink.textContent = 'Return to Review Board';
@@ -54,6 +58,7 @@
   section.appendChild(heading);
   section.appendChild(details);
   section.appendChild(redeem);
+  section.appendChild(deferReward);
   section.appendChild(returnLink);
   summaryBox.insertBefore(section, normalCheckout);
   // The original paid checkout must never silently omit a selected reward.
@@ -62,6 +67,13 @@
   normalCheckout.setAttribute('aria-hidden', 'true');
   function restoreRegularCheckout() {
     try { sessionStorage.removeItem('pj_review_cart_row'); } catch (_) {}
+    try {
+      var returnUrl = new URL(window.location.href);
+      returnUrl.searchParams.delete('reviewRewardRow');
+      if (window.history && typeof window.history.replaceState === 'function') {
+        window.history.replaceState(null, '', returnUrl.pathname + returnUrl.search + returnUrl.hash);
+      }
+    } catch (_) {}
     normalCheckout.hidden = false;
     normalCheckout.removeAttribute('aria-hidden');
     normalCheckout.disabled = cart.getSummary().item_count === 0;
@@ -78,20 +90,25 @@
   }
   var serverRow = null;
   var busy = false;
+  var deferred = false;
 
   function refreshControl() {
     var summary = cart.getSummary();
     var existing = cart.getReviewRewardCheckoutPending();
     var hasPaid = Array.isArray(summary.items) && summary.items.length > 0;
-    if (!eligible(serverRow)) {
+    if (!eligible(serverRow) || deferred) {
       redeem.style.display = 'none';
+      deferReward.style.display = 'none';
       return;
     }
     if (existing && existing.row_number !== rowNumber) {
       details.textContent = 'Another Review Board reward has an outstanding Sandbox checkout. Confirm that order before opening a new one.';
       redeem.style.display = 'none';
+      deferReward.style.display = 'none';
       return;
     }
+    deferReward.style.display = existing ? 'none' : 'inline-block';
+    deferReward.disabled = busy;
     var product = serverRow.selectedProductSlug.replace(/-/g, ' ');
     details.textContent = 'Saved complimentary selection: ' + product +
       '. The free item is added by Square Sandbox at $0.00, not as a paid cart line.' +
@@ -129,6 +146,13 @@
   });
 
   window.addEventListener(cart.event, refreshControl);
+  deferReward.addEventListener('click', function () {
+    if (busy || deferred || !eligible(serverRow) || cart.getReviewRewardCheckoutPending()) return;
+    deferred = true;
+    restoreRegularCheckout();
+    details.textContent = 'Your Review Board complimentary selection is saved for a future paid purchase. This checkout will not include it.';
+    refreshControl();
+  });
   redeem.addEventListener('click', function () {
     if (busy || !eligible(serverRow)) return;
     var existing = cart.getReviewRewardCheckoutPending();
