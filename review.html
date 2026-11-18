@@ -123,8 +123,8 @@
       <h2>Ticket Punched</h2>
       <p>Your review is aboard and headed to the conductor for a quick look — that's how every passenger review travels before it reaches the product page. Once it's approved, it joins the People's Choice Rating and counts toward your Review Badge.</p>
       <div class="pjr-actions">
-        <a class="pjr-btn pjr-btn-primary" href="main.html">Back to the Shop</a>
-        <a class="pjr-btn pjr-btn-ghost" href="badge-depot.html">Badge Depot</a>
+        <a class="pjr-btn pjr-btn-primary" href="passenger-station.html#board">Return to Review Board</a>
+        <a class="pjr-btn pjr-btn-ghost" href="passenger-station.html#depot">Badge Depot</a>
       </div>
     </section>
   </main>
@@ -595,7 +595,7 @@
     D.getEligibility(slug).then(function (e) {
       if (!e.signedIn) {
         // Sign-in still required, without a separate sign-in panel.
-        window.location.replace('account.html?return=review&product=' + encodeURIComponent(slug));
+        window.location.replace('account.html?return=board&product=' + encodeURIComponent(slug));
       } else if (e.alreadyReviewed || !e.eligible) {
         // No questionnaire without eligibility, or after an original review.
         // The existing product hero and private rating remain available.
