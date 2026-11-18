@@ -199,10 +199,13 @@
     const params = new URLSearchParams(location.search);
     const from = params.get('return');
     const back = byId('account-back');
-    const safeDestination = from === 'post-payment' ? 'post-payment-badges.html' : from === 'review' ?
+    const boardDestination = 'passenger-station.html' +
+      (params.get('product') ? '?product='+encodeURIComponent(params.get('product')) : '') + '#board';
+    const safeDestination = from === 'post-payment' ? 'post-payment-badges.html' :
+      from === 'board' ? boardDestination : from === 'review' ?
       'review.html' + (params.get('product') ? '?product='+encodeURIComponent(params.get('product')) : '') : 'main.html';
     back.href = safeDestination;
-    back.textContent = from === 'post-payment' ? '← Back to Badge Reveal' : from === 'review' ? '← Back to Product Review' : '← Return to Shop';
+    back.textContent = from === 'post-payment' ? '← Back to Badge Reveal' : from === 'board' ? '← Back to Review Board' : from === 'review' ? '← Back to Product Review' : '← Return to Shop';
     function message(t) { feedback.textContent = t; feedback.hidden = false; }
     function show(mode) {
       const creating = mode === 'create';
