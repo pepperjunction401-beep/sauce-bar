@@ -49,7 +49,7 @@
   redeem.style.cssText = 'display:none;margin:8px 0;width:100%;';
   var deferReward = document.createElement('button');
   deferReward.type = 'button';
-  deferReward.textContent = 'Save Reward for Later — Regular Checkout';
+  deferReward.textContent = 'Save Reward for Later';
   deferReward.style.cssText = 'display:none;margin:8px 0;color:#f1cc78;background:transparent;border:1px solid #d8b45d;padding:8px;cursor:pointer;';
   var returnLink = document.createElement('a');
   returnLink.href = 'passenger-station.html';
@@ -74,9 +74,10 @@
         window.history.replaceState(null, '', returnUrl.pathname + returnUrl.search + returnUrl.hash);
       }
     } catch (_) {}
-    normalCheckout.hidden = false;
-    normalCheckout.removeAttribute('aria-hidden');
-    normalCheckout.disabled = cart.getSummary().item_count === 0;
+    // Local testing does not provide a live Square checkout shortcut.
+    normalCheckout.hidden = true;
+    normalCheckout.disabled = true;
+    normalCheckout.setAttribute('aria-hidden', 'true');
   }
 
   function selectedRow(rows) {
@@ -160,7 +161,7 @@
     if (busy || deferred || !eligible(serverRow) || cart.getReviewRewardCheckoutPending()) return;
     deferred = true;
     restoreRegularCheckout();
-    details.textContent = 'Your Review Board complimentary selection is saved for a future paid purchase. This checkout will not include it.';
+    details.textContent = 'Your Review Board complimentary selection remains saved for a future paid purchase. Local testing never opens live Square checkout; your cart is unchanged.';
     refreshControl();
   });
   redeem.addEventListener('click', function () {
