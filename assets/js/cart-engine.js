@@ -239,7 +239,7 @@
     var cart = readCart();
 
     return cart.items.reduce(function (sum, item) {
-      return sum + (isReviewReward(item) ? 0 : normalizeQty(item.quantity));
+      return sum + normalizeQty(item.quantity);
     }, 0);
   }
 
@@ -873,13 +873,18 @@
     var cart = readCart();
     var subtotal = getSubtotal();
     var itemCount = getItemCount();
-    // Reward is visible in the cart, but NEVER counted toward earned badges.
+    // The reward counts as a visible cart item, but not as a purchased item,
+    // badge milestone, discountable merchandise or payable subtotal.
     var paidCart = {items: cart.items.filter(function(item){return !isReviewReward(item);})};
-    var badgeProgress = getBadgeProgressModel(paidCart, subtotal, itemCount);
+    var paidItemCount = paidCart.items.reduce(function(total,item){
+      return total + normalizeQty(item.quantity);
+    },0);
+    var badgeProgress = getBadgeProgressModel(paidCart, subtotal, paidItemCount);
 
     return {
       items: cart.items,
       item_count: itemCount,
+      paid_item_count: paidItemCount,
       subtotal: subtotal,
       subtotal_display: '$' + subtotal.toFixed(2),
 
@@ -1171,7 +1176,7 @@
     setReviewReward: setReviewReward,
     getReviewReward: getReviewReward,
     startCheckout: startCheckout,
-    startReviewRewardCheckout: startReviewRewardCheckout,
+    // No alternate public checkout entry; the only checkout button calls startCheckout.
     verifyReviewRewardSandboxPayment: verifyReviewRewardSandboxPayment,
     getReviewRewardCheckoutPending: reviewCheckoutPending,
 
