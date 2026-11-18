@@ -91,6 +91,7 @@
   var serverRow = null;
   var busy = false;
   var deferred = false;
+  var selectedProductName = null;
 
   function refreshControl() {
     var summary = cart.getSummary();
@@ -109,7 +110,8 @@
     }
     deferReward.style.display = existing ? 'none' : 'inline-block';
     deferReward.disabled = busy;
-    var product = serverRow.selectedProductSlug.replace(/-/g, ' ');
+    var product = selectedProductName ||
+      serverRow.selectedProductSlug.replace(/-/g, ' ');
     details.textContent = 'Saved complimentary selection: ' + product +
       '. The free item is added by Square Sandbox at $0.00, not as a paid cart line.' +
       (existing ? ' Verify your earlier Sandbox payment below.' :
@@ -125,8 +127,16 @@
     details.textContent = 'Supabase Testing review verification is unavailable. No checkout has been opened.';
     return;
   }
-  review.getReviewBoard().then(function (result) {
+  // CNS supplies the display name only. Entitlement comes from the protected Board API.
+  var catalogRead = typeof review.loadCatalog === 'function'
+    ? review.loadCatalog().catch(function () { return null; }) : Promise.resolve(null);
+  Promise.all([review.getReviewBoard(), catalogRead]).then(function (loaded) {
+    var result = loaded[0];
     serverRow = selectedRow(result && result.rows);
+    if (serverRow && serverRow.selectedProductSlug && typeof review.getProduct === 'function') {
+      var product = review.getProduct(serverRow.selectedProductSlug);
+      selectedProductName = product && product.name ? product.name : null;
+    }
     if (!serverRow || serverRow.achieved !== true) {
       details.textContent = 'No completed Review Board row was verified for this account.';
       return;
