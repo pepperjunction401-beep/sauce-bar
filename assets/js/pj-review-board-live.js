@@ -168,14 +168,14 @@
               note.textContent='Achievement earned · awaiting entitlement verification';
             }
             headingEl.appendChild(note);
-            // Isolated localhost Testing: take the saved reward into the existing cart page.
-            // The cart separately verifies entitlement and initiates Square Sandbox checkout.
+            // Local Testing: transfer the selected reward into Pepper Junction's
+            // own cart. Its existing Checkout Now entry handles the Square handoff.
             var localhost=location.hostname==='localhost'||location.hostname==='127.0.0.1';
             if(localhost&&stateRow.entitlementStatus==='selected'){
               var control=doc.createElement('button');
               control.type='button';
               control.style.cssText='display:block;margin:8px 0 4px;background:#DFB454;color:#203522;border:1px solid #9b6a2c;border-radius:4px;padding:8px 12px;font-weight:bold;cursor:pointer';
-              control.textContent='Review Reward in Cart (Sandbox)';
+              control.textContent='Add Reward to Pepper Junction Cart';
               control.addEventListener('click',function(){
                 // Remember the customer's intent across local pages, not an award decision.
                 try {sessionStorage.setItem('pj_review_cart_row',String(index+1));}catch(_){}
