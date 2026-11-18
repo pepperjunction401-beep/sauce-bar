@@ -3,16 +3,23 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const allowed=new Set(["https://pepperjunction401.com","https://www.pepperjunction401.com","https://pepperjunction401-beep.github.io"]);
+const testingProject=Deno.env.get("SUPABASE_URL")==="https://slubpfmpjgoupujptayy.supabase.co";
 Deno.serve(async req=>{
  const origin=req.headers.get("Origin")||"";
- const headers={"Access-Control-Allow-Origin":allowed.has(origin)?origin:"","Access-Control-Allow-Methods":"POST, OPTIONS","Access-Control-Allow-Headers":"content-type","Vary":"Origin","Content-Type":"application/json","Cache-Control":"no-store"};
- if(!allowed.has(origin))return new Response(JSON.stringify({confirmed:false}),{status:403,headers});
+ const permitted=allowed.has(origin)||(testingProject&&/^http:\/\/(?:localhost|127\.0\.0\.1):(?:8000|8080)$/.test(origin));
+ const headers={"Access-Control-Allow-Origin":permitted?origin:"","Access-Control-Allow-Methods":"POST, OPTIONS","Access-Control-Allow-Headers":"content-type","Vary":"Origin","Content-Type":"application/json","Cache-Control":"no-store"};
+ if(!permitted)return new Response(JSON.stringify({confirmed:false}),{status:403,headers});
  if(req.method==="OPTIONS")return new Response(null,{status:204,headers});
  if(req.method!=="POST")return new Response(JSON.stringify({confirmed:false}),{status:405,headers});
  const body=await req.json().catch(()=>({}));
  const order=body?.square_order_id;
  if(typeof order!=="string"||!/^[A-Za-z0-9_-]{8,80}$/.test(order))return new Response(JSON.stringify({confirmed:false}),{status:400,headers});
- const url=Deno.env.get("SUPABASE_URL"),key=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+ const url=Deno.env.get("SUPABASE_URL");
+ let key=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+ if(!key&&testingProject){
+   key=Deno.env.get("SUPABASE_SECRET_KEY")||"";
+   if(!key){try{key=JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS")||"{}").default||"";}catch(_){}}
+ }
  if(!url||!key)return new Response(JSON.stringify({confirmed:false}),{status:503,headers});
  const admin=createClient(url,key,{auth:{persistSession:false}});
  const {data,error}=await admin.from("purchases").select("id,customer_id").eq("square_order_id",order).eq("purchase_status","completed").eq("import_status","attached").limit(1);

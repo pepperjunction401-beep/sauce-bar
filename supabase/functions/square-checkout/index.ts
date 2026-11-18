@@ -25,6 +25,11 @@ const ALLOWED_ORIGINS = new Set([
   "https://pepperjunction401.com",
   "https://www.pepperjunction401.com",
 ]);
+function permittedOrigin(origin: string | null): boolean {
+  return !!origin && (ALLOWED_ORIGINS.has(origin) ||
+    (IS_TESTING_PROJECT &&
+      /^http:\/\/(?:localhost|127\.0\.0\.1):(?:8000|8080)$/.test(origin)));
+}
 
 type CartItem = { product_id?: unknown; quantity?: unknown; kind?: unknown; reward_row_number?: unknown; reward_product_slug?: unknown; price?: unknown };
 type ProductRow = { id: string; cns_slug: string; is_active: boolean };
@@ -67,7 +72,7 @@ type InventoryCount = {
 };
 
 function corsHeaders(origin: string | null) {
-  const allowed = origin && ALLOWED_ORIGINS.has(origin) ? origin : "";
+  const allowed = permittedOrigin(origin) ? origin : "";
   return {
     "Access-Control-Allow-Origin": allowed,
     "Access-Control-Allow-Headers": "content-type, authorization",
@@ -184,7 +189,7 @@ Deno.serve(async (req: Request) => {
   const origin = req.headers.get("Origin");
 
   if (req.method === "OPTIONS") {
-    if (!origin || !ALLOWED_ORIGINS.has(origin)) {
+    if (!permittedOrigin(origin)) {
       return new Response(null, { status: 403 });
     }
     return new Response(null, {
@@ -194,7 +199,7 @@ Deno.serve(async (req: Request) => {
   }
 
   if (req.method !== "POST") return json(req, { error: "Method not allowed" }, 405);
-  if (!origin || !ALLOWED_ORIGINS.has(origin)) {
+  if (!permittedOrigin(origin)) {
     return json(req, { error: "Origin not allowed" }, 403);
   }
 

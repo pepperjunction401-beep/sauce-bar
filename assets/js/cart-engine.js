@@ -13,7 +13,12 @@
 
   var CART_KEY = 'pj_cart';
   var CART_EVENT = 'pj-cart-updated';
-  var CHECKOUT_ENDPOINT = 'https://cdbenwthxhypuuipyjlv.supabase.co/functions/v1/square-checkout';
+  // Native Cart uses isolated Testing only on localhost, just like PJAuth.
+  var localDev = window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1';
+  var CHECKOUT_ENDPOINT = 'https://' +
+    (localDev ? 'slubpfmpjgoupujptayy' : 'cdbenwthxhypuuipyjlv') +
+    '.supabase.co/functions/v1/square-checkout';
   var lifetimeContext = null;
   var checkoutInFlight = false;
 
@@ -989,12 +994,7 @@
   function startCheckout() {
     // One Pepper Junction checkout pathway for paid merchandise and $0 rewards.
     // The deployed service validates the reward against authenticated ownership.
-    // Local Testing remains isolated: NEVER send Testing carts to Production.
-    if (window.location.hostname === 'localhost' ||
-        window.location.hostname === '127.0.0.1') {
-      return Promise.reject(new Error(
-        'Live checkout is disabled in isolated local Testing.'));
-    }
+    // Local Dev is routed to the isolated Testing Sandbox, never Production.
     var summary = getCartSummary();
     var reward = getReviewReward();
     if (reward && !summary.paid_item_count) {

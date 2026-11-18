@@ -8,7 +8,9 @@
   try { pending=JSON.parse(sessionStorage.getItem('pj_checkout_pending')||'null'); }
   catch(_){return;}
   if(!pending||typeof pending.order_id!=='string'||typeof pending.cart_snapshot!=='string')return;
-  var base='https://cdbenwthxhypuuipyjlv.supabase.co/functions/v1/';
+  var localDev=location.hostname==='localhost'||location.hostname==='127.0.0.1';
+  var base='https://'+(localDev?'slubpfmpjgoupujptayy':'cdbenwthxhypuuipyjlv')+
+    '.supabase.co/functions/v1/';
   fetch(base+'checkout-order-confirmed',{
     method:'POST',headers:{'Content-Type':'application/json'},credentials:'omit',cache:'no-store',
     body:JSON.stringify({square_order_id:pending.order_id,
