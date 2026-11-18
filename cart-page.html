@@ -183,16 +183,15 @@
 <script src="assets/js/cart-drawer.js"></script>
 <!-- Square cart pricing helper loads with cart page scripts. -->
 <script src="assets/js/cart-page.js"></script>
-<!-- Isolated localhost-only Review Board reward bridge. No extra live-domain dependencies. -->
+<!-- Review Board rewards enter the existing Pepper Junction cart; no alternate checkout. -->
 <script>
 (function () {
-  var host = window.location.hostname.toLowerCase();
-  if (host !== 'localhost' && host !== '127.0.0.1') return;
+  // Production and isolated local Testing use their respective PJAuth environments.
   var rewardContext = !!(new URLSearchParams(window.location.search).get('reviewRewardRow'));
   try {
     rewardContext = rewardContext ||
       !!sessionStorage.getItem('pj_review_cart_row') ||
-      !!sessionStorage.getItem('pj_review_sandbox_pending');
+      !!(window.PJCart && window.PJCart.getReviewReward());
   } catch (_) {}
   if (!rewardContext) return;
   // Hide regular checkout before asynchronous Supabase scripts load.
@@ -205,7 +204,7 @@
   var loading = document.createElement('p');
   loading.id = 'pj-review-cart-loader-status';
   loading.setAttribute('role', 'status');
-  loading.textContent = 'Verifying your Review Board reward in Supabase Testing…';
+  loading.textContent = 'Verifying your Review Board reward…';
   if (summary && normalCheckout) summary.insertBefore(loading, normalCheckout);
   var files = [
     'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
@@ -223,9 +222,9 @@
     script.src = src;
     script.onload = next;
     script.onerror = function () {
-      loading.textContent = 'Review Board Testing could not load. Your cart and complimentary selection are unchanged; please refresh or try again.';
+      loading.textContent = 'Review Board verification could not load. Your cart and complimentary selection remain unchanged; please refresh or try again.';
       loading.setAttribute('role', 'alert');
-      console.error('Review Board Testing-only cart bridge could not load:', src);
+      console.error('Review Board cart adapter could not load:', src);
     };
     document.body.appendChild(script);
   }
