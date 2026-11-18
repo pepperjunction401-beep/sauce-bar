@@ -177,6 +177,8 @@
               control.style.cssText='display:block;margin:8px 0 4px;background:#DFB454;color:#203522;border:1px solid #9b6a2c;border-radius:4px;padding:8px 12px;font-weight:bold;cursor:pointer';
               control.textContent='Review Reward in Cart (Sandbox)';
               control.addEventListener('click',function(){
+                // Remember the customer's intent across local pages, not an award decision.
+                try {sessionStorage.setItem('pj_review_cart_row',String(index+1));}catch(_){}
                 var target=new URL('cart-page.html',location.href);
                 target.searchParams.set('reviewRewardRow',String(index+1));
                 location.assign(target.toString());
