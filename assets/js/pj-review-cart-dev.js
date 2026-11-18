@@ -88,16 +88,14 @@
       status.textContent = 'An earned, selected Review Board reward is required. Checkout is locked until verified.';
       return;
     }
-    return Promise.resolve(review.loadCatalog()).then(function () {
-      var info = review.getProduct(row.selectedProductSlug);
-      cart.setReviewReward(rowNumber, {
-        slug: row.selectedProductSlug,
-        name: info && info.name,
-        brand: info && info.brand
-      });
-      try { sessionStorage.setItem('pj_review_cart_row', String(rowNumber)); } catch (_) {}
-      refreshButton();
+    // The Review Service is authoritative; never depend on a second
+    // client-side product catalog to construct a selected reward.
+    cart.setReviewReward(rowNumber, {
+      slug: row.selectedProductSlug,
+      name: row.selectedProductName || row.selectedProductSlug.replace(/-/g, ' ')
     });
+    try { sessionStorage.setItem('pj_review_cart_row', String(rowNumber)); } catch (_) {}
+    refreshButton();
   }).catch(function (error) {
     status.textContent = 'Reward verification failed. Checkout remains locked.';
     console.warn('Review Board cart reward verification failed:', error);
