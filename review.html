@@ -368,7 +368,7 @@
       }
 
       if (q.type === 'slider') {
-        // An untouched center thumb is not a response: the passenger must interact.
+        // Every slider position is a valid answer, including the initial center.
         var rangeWrap = document.createElement('div');
         rangeWrap.className = 'pjr-question-range-wrap';
         var range = document.createElement('input');
@@ -379,7 +379,6 @@
         range.step = '1';
         range.value = String(Math.floor((q.values.length - 1) / 2));
         range.setAttribute('aria-label', q.prompt);
-        range.setAttribute('aria-valuetext', 'No answer selected');
 
         var ticks = document.createElement('div');
         ticks.className = 'pjr-question-ticks';
@@ -399,32 +398,25 @@
           el.textContent = mark;
           markRow.appendChild(el);
         });
-        var output = document.createElement('p');
-        output.className = 'pjr-range-choice';
-        output.setAttribute('aria-live', 'polite');
-        output.textContent = 'Move or tap the slider to answer.';
-
         function selectValue() {
           var index = Number(range.value);
           if (!Number.isInteger(index) || index < 0 || index >= q.values.length) return;
           answers[q.id] = q.values[index];
-          var word = q.marks[index] || ('Position ' + (index + 1) + ' of ' + q.values.length);
-          var detail = q.descriptions ? ' · ' + q.descriptions[index] : '';
-          // Browser displays descriptive responses only; server owns scoring.
-          range.setAttribute('aria-valuetext', word + detail);
-          output.textContent = word + detail;
+          // Accessible description only; no redundant visible position counter.
+          var label = q.descriptions && q.descriptions[index] || q.marks[index] || 'Value ' + q.values[index];
+          range.setAttribute('aria-valuetext', label);
           clearMissed(card);
           updateProgress();
         }
         range.addEventListener('input', selectValue);
         range.addEventListener('change', selectValue);
-        // Clicking the center thumb is a real selection even when its value does not move.
         range.addEventListener('pointerup', selectValue);
         rangeWrap.appendChild(range);
         rangeWrap.appendChild(ticks);
         rangeWrap.appendChild(markRow);
-        rangeWrap.appendChild(output);
         card.appendChild(rangeWrap);
+        // Default center is a genuine response even without a touch.
+        selectValue();
       }
 
       if (q.type === 'single' || q.type === 'multi') {
