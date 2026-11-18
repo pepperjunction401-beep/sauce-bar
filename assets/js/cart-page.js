@@ -224,8 +224,8 @@
     if (subtotalEl) subtotalEl.textContent = summary.subtotal_display;
 
     if (checkoutBtn) {
-      checkoutBtn.disabled = summary.item_count === 0;
-      checkoutBtn.classList.toggle('disabled', summary.item_count === 0);
+      checkoutBtn.disabled = (summary.paid_item_count || 0) === 0;
+      checkoutBtn.classList.toggle('disabled', (summary.paid_item_count || 0) === 0);
     }
   }
 
