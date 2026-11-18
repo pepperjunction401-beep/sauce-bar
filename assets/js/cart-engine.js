@@ -1055,7 +1055,9 @@
           'Square Sandbox reward checkout is not available.');
       }
       sessionStorage.setItem('pj_review_sandbox_pending',JSON.stringify({
-        row_number: Number(rowNumber),order_id: response.data.square_order_id
+        row_number: Number(rowNumber),order_id: response.data.square_order_id,
+        // Reward stays server-owned; the paid cart is only cleared after verified payment.
+        cart_snapshot: sessionStorage.getItem(CART_KEY)
       }));
       window.location.assign(response.data.checkout_url);
       return response.data;
@@ -1074,6 +1076,11 @@
         'Square Sandbox payment has not been confirmed.');
     }
     sessionStorage.removeItem('pj_review_sandbox_pending');
+    // Only clear the exact purchased cart, never newly added or changed items.
+    if (pending.cart_snapshot &&
+        sessionStorage.getItem(CART_KEY) === pending.cart_snapshot) {
+      clearCart();
+    }
     return response.data;
   }
 
