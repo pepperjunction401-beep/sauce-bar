@@ -824,8 +824,8 @@ body {
   position: absolute;
   z-index: 1;
   top: 18px;
-  left: 17.5px;
-  right: 17.5px;
+  left: 11.5px;
+  right: 11.5px;
   height: 12px;
   transform: translateY(-50%);
   padding: 0;
@@ -839,9 +839,7 @@ body {
   border: 2px solid var(--pj-brass-bright);
   border-radius: 50%;
   background: var(--pj-green-deep);
-  transform: translateX(-50%);
 }
-.pjr-question-tick:last-child { transform: translateX(50%); }
 .pjr-question-marks {
   gap: 3px;
 }
