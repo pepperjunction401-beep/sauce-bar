@@ -35,7 +35,9 @@
   defer.type = 'button';
   defer.textContent = 'Save Reward for Later';
   defer.style.cssText = 'margin:8px 0;padding:8px;color:#f1cc78;background:transparent;border:1px solid #d8b45d;cursor:pointer;';
-  defer.hidden = true;
+  // Always offer a deliberate paid-only escape if reward verification fails.
+  // Deferring leaves the earned Board entitlement untouched.
+  defer.hidden = false;
   var link = document.createElement('a');
   link.href = 'passenger-station.html#board';
   link.textContent = 'Return to Review Board';
