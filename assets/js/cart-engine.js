@@ -987,24 +987,19 @@
   }
 
   function startCheckout() {
-    var reward = getReviewReward();
-    // Single Pepper Junction checkout entry point. Reward handling uses the
-    // cart's paid items plus the cart's verified free line.
-    if (reward) {
-      if (window.location.hostname !== 'localhost' &&
-          window.location.hostname !== '127.0.0.1') {
-        return Promise.reject(new Error(
-          'Review Board reward checkout is not yet enabled on the live site.'));
-      }
-      return startReviewRewardCheckout(reward.reward_row_number);
-    }
-    // Local testing never sends ordinary cart purchases to live Production.
+    // One Pepper Junction checkout pathway for paid merchandise and $0 rewards.
+    // The deployed service validates the reward against authenticated ownership.
+    // Local Testing remains isolated: NEVER send Testing carts to Production.
     if (window.location.hostname === 'localhost' ||
         window.location.hostname === '127.0.0.1') {
       return Promise.reject(new Error(
-        'Live Square checkout is disabled in local testing.'));
+        'Live checkout is disabled in isolated local Testing.'));
     }
     var summary = getCartSummary();
+    var reward = getReviewReward();
+    if (reward && !summary.paid_item_count) {
+      return Promise.reject(new Error('A paid item is required to redeem a reward.'));
+    }
 
     if (!summary.items.length) {
       return Promise.reject(new Error('Your cart is empty.'));
@@ -1024,22 +1019,52 @@
         catch (_) { return null; }
       })(),
       items: summary.items.map(function (item) {
+        if (isReviewReward(item)) {
+          return {
+            kind: 'pj_review_reward',
+            product_id: item.product_id,
+            reward_row_number: item.reward_row_number,
+            reward_product_slug: item.reward_product_slug,
+            quantity: 1, price: 0
+          };
+        }
         return {
           product_id: item.product_id,
           quantity: normalizeQty(item.quantity)
         };
       })
     };
+    // The user's session only enables a server verification. It cannot
+    // authorize a discount or change Square prices.
+    var authorize = Promise.resolve(null);
+    if (reward) {
+      var auth = window.PJAuth;
+      if (!auth || !auth.enabled || !auth.client)
+        return Promise.reject(new Error('Sign in to redeem your Review Board reward.'));
+      authorize = auth.verifiedUser().then(function(user) {
+        if (!user) throw new Error('Sign in to redeem your Review Board reward.');
+        return auth.client.auth.getSession();
+      }).then(function(result) {
+        var token = result && result.data && result.data.session &&
+          result.data.session.access_token;
+        if (!token) throw new Error('Review Board session expired. Please sign in again.');
+        return token;
+      });
+      payload.review_reward = {
+        row_number: reward.reward_row_number,
+        selected_product_slug: reward.reward_product_slug
+      };
+    }
 
-    return fetch(CHECKOUT_ENDPOINT, {
+    return authorize.then(function(token) { return fetch(CHECKOUT_ENDPOINT, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: Object.assign({'Content-Type': 'application/json'},
+        token ? {'Authorization': 'Bearer ' + token} : {}),
+
       cache: 'no-store',
       credentials: 'omit',
       body: JSON.stringify(payload)
-    })
+    }); })
       .then(function (response) {
         return response.json()
           .catch(function () {
@@ -1076,99 +1101,6 @@
       });
   }
 
-  // Separate, LOCAL-DEV-ONLY reward checkout. Ordinary Square checkout is unchanged.
-  // No rewards can be purchased through this method on a live customer domain.
-  var rewardCheckoutInFlight = false;
-  function reviewSandboxClient() {
-    var host = window.location.hostname.toLowerCase();
-    if (host !== 'localhost' && host !== '127.0.0.1') {
-      throw new Error('Review reward checkout is available only in isolated local testing.');
-    }
-    var auth = window.PJAuth;
-    if (!auth || !auth.enabled || !auth.client) {
-      throw new Error('Supabase Testing sign-in is required.');
-    }
-    return auth;
-  }
-  function reviewCheckoutPending() {
-    try {
-      var value = JSON.parse(sessionStorage.getItem('pj_review_sandbox_pending') || 'null');
-      return value && typeof value.order_id === 'string' ? value : null;
-    } catch (_) { return null; }
-  }
-  async function startReviewRewardCheckout(rowNumber) {
-    var auth = reviewSandboxClient();
-    var summary = getCartSummary();
-    var reward = getReviewReward();
-    var paidItems = summary.items.filter(function(item){return !isReviewReward(item);});
-    if (!reward || reward.reward_row_number !== Number(rowNumber) ||
-        !paidItems.length) {
-      throw new Error('Add a paid product to your cart before redeeming your Review Board reward.');
-    }
-    if (rewardCheckoutInFlight) throw new Error('Reward checkout is already opening.');
-    if (reviewCheckoutPending()) throw new Error(
-      'A sandbox reward checkout is pending. Verify its payment before opening another.'
-    );
-    rewardCheckoutInFlight = true;
-    try {
-      if (!await auth.verifiedUser()) throw new Error('Please sign in to Supabase Testing.');
-      var payload = {
-        action: 'create',
-        rowNumber: Number(rowNumber),
-        checkoutRequestId: makeCheckoutRequestId(),
-        // Fixed local origin only. Square may use this as a hosted-checkout return.
-        // Returning here never confirms payment; the server verifies Square.
-        returnUrl: window.location.origin + '/cart-page.html',
-        // Reward is already in PJCart.items. Server verifies reward-row
-        // selection, inserts the 100%-discounted line, and checks paid lines.
-        items: paidItems.map(function(item) {
-          return {product_id: item.product_id, quantity: normalizeQty(item.quantity)};
-        }),
-        // The $0 line travels from Pepper Junction's CART into the checkout
-        // adapter. The backend independently verifies the earned selection.
-        cartReward: {
-          kind: reward.kind, product_id: reward.product_id,
-          reward_row_number: reward.reward_row_number,
-          reward_product_slug: reward.reward_product_slug,
-          price: 0, quantity: 1
-        }
-      };
-      var response = await auth.client.functions.invoke('pj-review-sandbox-checkout', {body: payload});
-      if (response.error || !response.data || !response.data.checkout_url ||
-          !response.data.square_order_id) {
-        throw new Error(response.data && response.data.error ||
-          'Square Sandbox reward checkout is not available.');
-      }
-      sessionStorage.setItem('pj_review_sandbox_pending',JSON.stringify({
-        row_number: Number(rowNumber),order_id: response.data.square_order_id,
-        // Reward stays server-owned; the paid cart is only cleared after verified payment.
-        cart_snapshot: sessionStorage.getItem(CART_KEY)
-      }));
-      window.location.assign(response.data.checkout_url);
-      return response.data;
-    } finally { rewardCheckoutInFlight = false; }
-  }
-  async function verifyReviewRewardSandboxPayment() {
-    var auth = reviewSandboxClient();
-    var pending = reviewCheckoutPending();
-    if (!pending) throw new Error('No pending sandbox reward checkout.');
-    if (!await auth.verifiedUser()) throw new Error('Sign in to Supabase Testing.');
-    var response = await auth.client.functions.invoke('pj-review-sandbox-checkout',{
-      body: {action:'confirm',rowNumber:pending.row_number,square_order_id:pending.order_id}
-    });
-    if (response.error || !response.data || response.data.status !== 'redeemed') {
-      throw new Error(response.data && response.data.error ||
-        'Square Sandbox payment has not been confirmed.');
-    }
-    sessionStorage.removeItem('pj_review_sandbox_pending');
-    // Only clear the exact purchased cart, never newly added or changed items.
-    if (pending.cart_snapshot &&
-        sessionStorage.getItem(CART_KEY) === pending.cart_snapshot) {
-      clearCart();
-    }
-    return response.data;
-  }
-
   window.PJCart = {
     key: CART_KEY,
     event: CART_EVENT,
@@ -1189,9 +1121,6 @@
     setReviewReward: setReviewReward,
     getReviewReward: getReviewReward,
     startCheckout: startCheckout,
-    // No alternate public checkout entry; the only checkout button calls startCheckout.
-    verifyReviewRewardSandboxPayment: verifyReviewRewardSandboxPayment,
-    getReviewRewardCheckoutPending: reviewCheckoutPending,
 
     getCelestialBadgeCard: getCelestialBadgeCard,
     getItemPurchaseAchievementProgress: getItemPurchaseAchievementProgress,
