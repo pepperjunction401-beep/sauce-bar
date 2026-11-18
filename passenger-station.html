@@ -128,6 +128,52 @@ header{background:#750E0D;border-bottom:2px solid #DFB454}
 .prize-preview{background:#355E3B;border-color:#DFB454}
 .no-image{color:#F3CA68}
 
+/* pj-mobile-board-swipe-20261118: presentation-only. Eight cards in a single
+   independently scrolling row. Native overflow clamps at the final card. */
+@media (max-width:640px) {
+  .cards {
+    display:grid;
+    grid-auto-flow:column;
+    grid-template-columns:none;
+    grid-template-rows:minmax(0,1fr);
+    grid-auto-columns:calc((100% - 16px) / 2.5);
+    gap:8px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;
+    scroll-padding-inline:0;
+    touch-action:pan-x pan-y;
+    align-items:stretch;
+    padding:0 0 5px;
+  }
+  .cards > .product, .cards > .empty {
+    width:100%;
+    min-width:0;
+    height:250px;
+    min-height:250px;
+    max-height:250px;
+    scroll-snap-align:start;
+    flex-shrink:0;
+  }
+  .cards > .product .thumb {
+    height:100px;
+    min-height:100px;
+    flex:0 0 100px;
+  }
+  .cards > .product .product-image {
+    max-height:92px;
+    max-width:98%;
+  }
+  .cards > .product .bottle {font-size:35px;}
+  .cards > .product .copy {padding:7px;gap:5px;min-height:0;}
+  .cards > .product .brandname {font-size:10px;}
+  .cards > .product .name {font-size:11px;line-height:1.2;min-height:0;}
+  .cards > .product .ratingrow {font-size:10px;}
+  .cards > .product .actions {gap:5px;margin-top:auto;}
+  .cards > .product .actions button {font-size:10px;line-height:1.25;padding:7px 3px;min-height:32px;}
+}
 &lt;/style&gt;&lt;style&gt;
 /* Passenger Station v0.5: unified burgundy bar dimensions only. */
 header.pj-unified-bar, header.page-header.pj-unified-bar {

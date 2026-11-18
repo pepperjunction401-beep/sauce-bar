@@ -42,16 +42,6 @@
       <p id="pjr-inline-status" role="status" aria-live="polite" hidden></p>
     </section>
 
-    <!-- Unknown product -->
-    <section class="pjr-card pjr-status" id="pjr-no-product" hidden>
-      <div>
-        <p class="pjr-eyebrow">Wrong Platform</p>
-        <h2>We Can't Find That Item</h2>
-        <p>This review link doesn't match anything on the manifest. Head back to the shop and try the review button from the product's own page.</p>
-      </div>
-      <a class="pjr-btn pjr-btn-primary" href="main.html">Back to the Shop</a>
-    </section>
-
     <!-- Notice — visible for every valid product -->
     <section class="pjr-card pjr-intro pjr-notice" id="pjr-intro" hidden>
       <p class="pjr-eyebrow">Before You Begin · One Ticket, One Review</p>
@@ -156,7 +146,13 @@
 
     /* ── PRODUCT HERO ── */
     if (!product) {
-      show('pjr-no-product');
+      // Unknown links must not offer the questionnaire or imply product eligibility.
+      document.getElementById('pjr-product-name').textContent = 'Review Unavailable';
+      var invalidStatus = document.getElementById('pjr-inline-status');
+      invalidStatus.textContent = 'This product is not available for review here. Return to the Review Board to select a verified purchase.';
+      invalidStatus.setAttribute('role', 'alert');
+      show('pjr-hero');
+      invalidStatus.hidden = false;
       return;
     }
 
@@ -611,12 +607,15 @@
       status.setAttribute('role', 'alert');
       status.hidden = false;
     });
-  })().catch(function() {
-    var panel = document.getElementById('pjr-no-product');
-    panel.querySelector('h2').textContent = 'Review Service Unavailable';
-    panel.querySelector('p:not(.pjr-eyebrow)').textContent =
-      'Product information could not be loaded from the current Pepper Junction CNS. Please try again later.';
-    panel.hidden = false;
+  })().catch(function(error) {
+    // Keep the valid product hero; never misidentify a verified Board product.
+    // A failed review-data load does not grant questionnaire access.
+    console.error('Review initialization unavailable',error);
+    var status = document.getElementById('pjr-inline-status');
+    status.textContent = 'Review information is temporarily unavailable. Please return to the Review Board and try again.';
+    status.setAttribute('role', 'alert');
+    status.hidden = false;
+    document.getElementById('pjr-hero').hidden = false;
   });
   </script>
 </body>
