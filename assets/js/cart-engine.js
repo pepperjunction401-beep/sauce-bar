@@ -950,6 +950,11 @@
           'or explicitly save the reward for a later purchase.'
         ));
       }
+      // Local Dev must not silently create a live Square order.
+      return Promise.reject(new Error(
+        'Regular Square checkout is disabled on localhost. ' +
+        'Use Square Sandbox for testing; live checkout is available only on the real website.'
+      ));
     }
     var summary = getCartSummary();
 
