@@ -5,7 +5,21 @@ import { resolveSquareProduct } from "../_shared/square-product-identity.ts";
 import { lookupCnsProduct } from "../_shared/cns-product-snapshot.ts";
 import { fullyPaidOpenSquareOrder, squarePaymentIds } from "../_shared/square-payment-evidence.ts";
 
-const SQUARE_BASE_URL = "https://connect.squareup.com";
+const IS_TESTING_PROJECT =
+  Deno.env.get("SUPABASE_URL") === "https://slubpfmpjgoupujptayy.supabase.co";
+const SQUARE_BASE_URL = IS_TESTING_PROJECT
+  ? "https://connect.squareupsandbox.com" : "https://connect.squareup.com";
+function databaseServiceKey(): string | undefined {
+  if (!IS_TESTING_PROJECT) return Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const direct = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
+    Deno.env.get("SUPABASE_SECRET_KEY");
+  if (direct) return direct;
+  try {
+    const parsed = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS") || "{}");
+    return typeof parsed.default === "string" ? parsed.default : undefined;
+  } catch { return undefined; }
+}
+
 const SQUARE_VERSION = "2026-09-16";
 
 type Money = { amount?: number; currency?: string };
@@ -137,9 +151,11 @@ Deno.serve(async (req: Request) => {
   }
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  const squareToken = Deno.env.get("SQUARE_PRODUCTION_ACCESS_TOKEN");
-  const squareLocationId = Deno.env.get("SQUARE_PEPPER_JUNCTION_LOCATION_ID");
+  const serviceRoleKey = databaseServiceKey();
+  const squareToken = Deno.env.get(IS_TESTING_PROJECT
+    ? "SQUARE_SANDBOX_ACCESS_TOKEN" : "SQUARE_PRODUCTION_ACCESS_TOKEN");
+  const squareLocationId = Deno.env.get(IS_TESTING_PROJECT
+    ? "SQUARE_SANDBOX_LOCATION_ID" : "SQUARE_PEPPER_JUNCTION_LOCATION_ID");
 
   if (!supabaseUrl || !serviceRoleKey) return json({ error: "Supabase environment incomplete" }, 500);
   // Fail closed if a Testing function is accidentally configured for Production.
@@ -289,9 +305,36 @@ Deno.serve(async (req: Request) => {
       .select("product_id, square_item_library_token");
     if (mappingsError) throw new Error("Unable to read PJ-to-Square product mappings");
 
+    // Testing-only fixture overlay: the existing importer still resolves
+    // products from its standard mapping shape; Production mappings are untouched.
+    let effectiveMappings: Array<{product_id:string;square_item_library_token:string}> =
+      (mappings ?? []).map((m: any) => ({
+        product_id:m.product_id, square_item_library_token:m.square_item_library_token,
+      }));
+    if (IS_TESTING_PROJECT) {
+      const {data: fixtures,error:fixtureError} = await admin
+        .from("pj_review_sandbox_catalog")
+        .select("product_id,square_sandbox_item_id,sandbox_verified_at");
+      if (fixtureError || !fixtures || fixtures.some((f:any) =>
+          !f.sandbox_verified_at || !f.square_sandbox_item_id)) {
+        throw new Error("Testing Sandbox fixture identity unavailable");
+      }
+      const byId = new Map(fixtures.map((f:any) =>
+        [f.product_id,f.square_sandbox_item_id]));
+      effectiveMappings = effectiveMappings.map(m => ({
+        ...m,
+        square_item_library_token:
+          (byId.get(m.product_id) as string | undefined) ??
+          m.square_item_library_token,
+      }));
+    }
     const productBySquareToken = new Map<string, string>();
     const tokenByProduct = new Map<string, string>();
-    for (const m of mappings ?? []) { productBySquareToken.set(m.square_item_library_token, m.product_id); tokenByProduct.set(m.product_id, m.square_item_library_token); }
+    // Sandbox variation/item IDs identify the real Square test-order lines,
+    // but the CNS snapshot still has the authoritative original item ID.
+    // Do not feed Sandbox IDs into the CNS identity assertion.
+    for (const m of mappings ?? []) tokenByProduct.set(m.product_id, m.square_item_library_token);
+    for (const m of effectiveMappings) productBySquareToken.set(m.square_item_library_token, m.product_id);
 
     const productIds = Array.from(new Set((mappings ?? []).map((m: any) => m.product_id)));
     const slugByProductId = new Map<string, string>();
@@ -302,6 +345,46 @@ Deno.serve(async (req: Request) => {
         .in("id", productIds);
       if (productsError) throw new Error("Unable to read PJ product identities");
       for (const p of products ?? []) slugByProductId.set(p.id, p.cns_slug);
+    }
+
+    // Only the established Square transaction importer completes reward redemption.
+    // Ordinary paid-only orders never consult the Review Board tables.
+    const rewardDiscountLines = (order.line_items ?? []).filter((line: any) =>
+      (line.applied_discounts ?? []).some((d: any) => d.discount_uid === "PJ_REVIEW_FREE"));
+    let verifiedRewardRow: number | null = null;
+    if (rewardDiscountLines.length) {
+      const {data: rewardAttempt, error: rewardAttemptError} = await admin
+        .from("pj_review_reward_checkout_attempts")
+        .select("customer_id,row_number,selected_product_id,state")
+        .eq("square_order_id", order.id).maybeSingle();
+      if (rewardAttemptError || !rewardAttempt ||
+          rewardAttempt.customer_id !== customerId ||
+          !["opened", "paid_verified"].includes(rewardAttempt.state)) {
+        throw new Error("Review reward order is not bound to the verified customer");
+      }
+      const freeLines = (order.line_items ?? []).filter((line: any) =>
+        line.total_money?.amount === 0);
+      const paidLines = (order.line_items ?? []).filter((line: any) =>
+        Number(line.total_money?.amount) > 0);
+      if (freeLines.length !== 1 || rewardDiscountLines.length !== 1 ||
+          freeLines[0] !== rewardDiscountLines[0] ||
+          freeLines[0].quantity !== "1" || paidLines.length < 1 ||
+          paidLines.some((line: any) => (line.applied_discounts ?? [])
+            .some((d: any) => d.discount_uid === "PJ_REVIEW_FREE"))) {
+        throw new Error("Review reward order does not contain one isolated free line alongside paid merchandise");
+      }
+      const freeLine = freeLines[0];
+      const freeCatalogId = freeLine.catalog_object_id ?? null;
+      const freeCatalog = freeCatalogId ? catalogById.get(freeCatalogId) : undefined;
+      const resolvedReward = resolveSquareProduct(
+        freeCatalogId, freeCatalog, productBySquareToken);
+      if (resolvedReward.productId !== rewardAttempt.selected_product_id) {
+        throw new Error("Review reward line is not the reserved product");
+      }
+      verifiedRewardRow = Number(rewardAttempt.row_number);
+      if (!Number.isInteger(verifiedRewardRow) || verifiedRewardRow < 1) {
+        throw new Error("Invalid reserved Review Board row");
+      }
     }
 
     const normalizedLines: any[] = [];
@@ -405,6 +488,21 @@ Deno.serve(async (req: Request) => {
     const purchaseId = recorded?.purchase_id;
     if (typeof purchaseId !== "string") throw new Error("Purchase recorder did not return a purchase ID");
     await recordPassengerMerchandiseEvidence(admin, purchaseId, order.line_items ?? []);
+
+    // The reward is spent ONLY after the existing verified importer has attached
+    // the purchase and recorded its free-line exclusion evidence. No browser
+    // confirmation action, secondary Square checkout or second payment verifier.
+    if (verifiedRewardRow !== null) {
+      const {data: redeemed, error: redeemError} = await admin.rpc(
+        "pj_review_reward_finalize_verified_order", {
+          p_customer_id: customerId,
+          p_row_number: verifiedRewardRow,
+          p_square_order_id: order.id,
+        });
+      if (redeemError || redeemed !== true) {
+        throw new Error("Review reward could not be finalized from the verified purchase");
+      }
+    }
 
     await admin.from("purchase_import_runs").update({
       status: "succeeded",

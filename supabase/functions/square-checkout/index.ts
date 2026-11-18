@@ -1,7 +1,21 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const SQUARE_BASE_URL = "https://connect.squareup.com";
+const IS_TESTING_PROJECT =
+  Deno.env.get("SUPABASE_URL") === "https://slubpfmpjgoupujptayy.supabase.co";
+const SQUARE_BASE_URL = IS_TESTING_PROJECT
+  ? "https://connect.squareupsandbox.com" : "https://connect.squareup.com";
+function databaseServiceKey(): string | undefined {
+  if (!IS_TESTING_PROJECT) return Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const direct = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
+    Deno.env.get("SUPABASE_SECRET_KEY");
+  if (direct) return direct;
+  try {
+    const parsed = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS") || "{}");
+    return typeof parsed.default === "string" ? parsed.default : undefined;
+  } catch { return undefined; }
+}
+
 const SQUARE_VERSION = "2026-09-16";
 const MAX_DISTINCT_ITEMS = 50;
 const MAX_QTY_PER_ITEM = 99;
@@ -11,8 +25,13 @@ const ALLOWED_ORIGINS = new Set([
   "https://pepperjunction401.com",
   "https://www.pepperjunction401.com",
 ]);
+function permittedOrigin(origin: string | null): boolean {
+  return !!origin && (ALLOWED_ORIGINS.has(origin) ||
+    (IS_TESTING_PROJECT &&
+      /^http:\/\/(?:localhost|127\.0\.0\.1):(?:8000|8080)$/.test(origin)));
+}
 
-type CartItem = { product_id?: unknown; quantity?: unknown };
+type CartItem = { product_id?: unknown; quantity?: unknown; kind?: unknown; reward_row_number?: unknown; reward_product_slug?: unknown; price?: unknown };
 type ProductRow = { id: string; cns_slug: string; is_active: boolean };
 type MappingRow = { product_id: string; square_item_library_token: string };
 type CommercialRow = {
@@ -53,10 +72,10 @@ type InventoryCount = {
 };
 
 function corsHeaders(origin: string | null) {
-  const allowed = origin && ALLOWED_ORIGINS.has(origin) ? origin : "";
+  const allowed = permittedOrigin(origin) ? origin : "";
   return {
     "Access-Control-Allow-Origin": allowed,
-    "Access-Control-Allow-Headers": "content-type",
+    "Access-Control-Allow-Headers": "content-type, authorization",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Vary": "Origin",
   };
@@ -165,11 +184,12 @@ function returnUrlForOrigin(origin: string) {
   return origin + "/post-payment-badges.html";
 }
 
+
 Deno.serve(async (req: Request) => {
   const origin = req.headers.get("Origin");
 
   if (req.method === "OPTIONS") {
-    if (!origin || !ALLOWED_ORIGINS.has(origin)) {
+    if (!permittedOrigin(origin)) {
       return new Response(null, { status: 403 });
     }
     return new Response(null, {
@@ -179,14 +199,16 @@ Deno.serve(async (req: Request) => {
   }
 
   if (req.method !== "POST") return json(req, { error: "Method not allowed" }, 405);
-  if (!origin || !ALLOWED_ORIGINS.has(origin)) {
+  if (!permittedOrigin(origin)) {
     return json(req, { error: "Origin not allowed" }, 403);
   }
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  const squareToken = Deno.env.get("SQUARE_PRODUCTION_ACCESS_TOKEN");
-  const squareLocationId = Deno.env.get("SQUARE_PEPPER_JUNCTION_LOCATION_ID");
+  const serviceRoleKey = databaseServiceKey();
+  const squareToken = Deno.env.get(IS_TESTING_PROJECT
+    ? "SQUARE_SANDBOX_ACCESS_TOKEN" : "SQUARE_PRODUCTION_ACCESS_TOKEN");
+  const squareLocationId = Deno.env.get(IS_TESTING_PROJECT
+    ? "SQUARE_SANDBOX_LOCATION_ID" : "SQUARE_PEPPER_JUNCTION_LOCATION_ID");
 
   if (!supabaseUrl || !serviceRoleKey) {
     return json(req, { error: "Checkout service is not configured" }, 503);
@@ -196,12 +218,26 @@ Deno.serve(async (req: Request) => {
   }
 
   const body = await req.json().catch(() => ({}));
+  // Reward redemption belongs to the existing verified-purchase importer,
+  // never to the checkout API or a browser-triggered payment verifier.
+  if (body?.action) return json(req, { error: "Unsupported checkout action" }, 400);
   const celestialTimezone = typeof body?.checkout_timezone === "string" ? body.checkout_timezone.trim() : "";
   const sessionKey = typeof body?.shopping_session_id === "string" ? body.shopping_session_id : "";
   if (sessionKey && !/^[0-9a-f]{8}-[0-9a-f-]{27,}$/.test(sessionKey)) {
     return json(req, { error: "Shopping session identity is required" }, 400);
   }
   const rawItems = Array.isArray(body?.items) ? body.items as CartItem[] : [];
+  // Reward is transmitted as a distinct $0 line from PJCart, never as a
+  // client-supplied discount on paid merchandise.
+  const freeLines = rawItems.filter(item => item?.kind === "pj_review_reward");
+  if (freeLines.length > 1 || rawItems.some(item => item?.kind && item.kind !== "pj_review_reward")) {
+    return json(req, { error: "Invalid cart line classification" }, 400);
+  }
+  const rewardLine = freeLines[0] ?? null;
+  const paidCartItems = rawItems.filter(item => item?.kind !== "pj_review_reward");
+  if (body?.review_reward && !rewardLine || rewardLine && !body?.review_reward) {
+    return json(req, { error: "Review reward cart mismatch" }, 400);
+  }
   const checkoutRequestId =
     typeof body?.checkout_request_id === "string" ? body.checkout_request_id : "";
 
@@ -212,8 +248,11 @@ Deno.serve(async (req: Request) => {
     return json(req, { error: "Cart is empty or too large" }, 400);
   }
 
+  if (paidCartItems.length < 1) {
+    return json(req, { error: "Paid merchandise required with reward" }, 400);
+  }
   const normalized = new Map<string, number>();
-  for (const item of rawItems) {
+  for (const item of paidCartItems) {
     const productId = typeof item?.product_id === "string" ? item.product_id.trim() : "";
     const quantity = Number(item?.quantity);
 
@@ -233,6 +272,50 @@ Deno.serve(async (req: Request) => {
   const admin = createClient(supabaseUrl, serviceRoleKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+  // Existing paid-only checkout requires no account or behavior changes.
+  let verifiedReward: {customerId: string; row: number; productId: string; slug: string} | null = null;
+  if (rewardLine) {
+    const row = Number(rewardLine.reward_row_number);
+    const claim = body.review_reward;
+    if (!Number.isInteger(row) || row < 1 ||
+        rewardLine.product_id !== "pj-review-reward-row-" + row ||
+        rewardLine.quantity !== 1 || rewardLine.price !== 0 ||
+        !claim || claim.row_number !== row ||
+        typeof rewardLine.reward_product_slug !== "string" ||
+        claim.selected_product_slug !== rewardLine.reward_product_slug) {
+      return json(req, { error: "Invalid Review Board reward line" }, 409);
+    }
+    const bearer = (req.headers.get("Authorization") || "").replace(/^Bearer /i, "").trim();
+    if (!bearer) return json(req, { error: "Review Board sign-in required" }, 401);
+    const { data: identity, error: userError } = await admin.auth.getUser(bearer);
+    if (userError || !identity?.user?.id || !identity.user.email_confirmed_at) {
+      return json(req, { error: "Review Board sign-in required" }, 401);
+    }
+    const [{ data: entitlement, error: entitlementError }, { data: selectedProduct, error: selectedError }] =
+      await Promise.all([
+        admin.from("pj_review_reward_entitlements").select("status,selected_product_id")
+          .eq("customer_id", identity.user.id).eq("row_number", row).maybeSingle(),
+        admin.from("pj_products").select("id,cns_slug,is_active")
+          .eq("cns_slug", rewardLine.reward_product_slug).maybeSingle(),
+      ]);
+    if (entitlementError || selectedError || !entitlement ||
+        entitlement.status !== "selected" || !selectedProduct ||
+        selectedProduct.is_active !== true ||
+        entitlement.selected_product_id !== selectedProduct.id) {
+      return json(req, { error: "Review Board reward not available" }, 409);
+    }
+    const { data: allowedSlot, error: slotError } = await admin.from("pj_review_board_slots")
+      .select("slot_number").eq("row_number", row)
+      .eq("product_id", selectedProduct.id).maybeSingle();
+    if (slotError || !allowedSlot) {
+      return json(req, { error: "Reward is not eligible for this row" }, 409);
+    }
+    verifiedReward = {
+      customerId: identity.user.id, row,
+      productId: selectedProduct.id, slug: selectedProduct.cns_slug,
+    };
+    if (!slugs.includes(selectedProduct.cns_slug)) slugs.push(selectedProduct.cns_slug);
+  }
 
   const { data: products, error: productError } = await admin
     .from("pj_products")
@@ -267,6 +350,36 @@ Deno.serve(async (req: Request) => {
 
   const mappingRows = (mappings ?? []) as MappingRow[];
   const commercialRows = (commercial ?? []) as CommercialRow[];
+  // Isolated Testing uses its two verified Square Sandbox fixtures. The
+  // Production mapping table and checkout architecture stay unchanged.
+  if (IS_TESTING_PROJECT) {
+    const {data: fixtures, error: fixtureError} = await admin
+      .from("pj_review_sandbox_catalog")
+      .select("product_id,square_sandbox_item_id,sandbox_verified_at")
+      .in("product_id", productIds);
+    if (fixtureError || !fixtures || fixtures.some((f: any) =>
+        !f.sandbox_verified_at || !f.square_sandbox_item_id)) {
+      return json(req, {error:"Testing Sandbox product mapping is unavailable"}, 503);
+    }
+    const fixtureMap = new Map(fixtures.map((f: any) =>
+      [f.product_id, f.square_sandbox_item_id]));
+    for (const mapping of mappingRows) {
+      const sandboxId = fixtureMap.get(mapping.product_id);
+      if (typeof sandboxId === "string") mapping.square_item_library_token = sandboxId;
+    }
+    // The two Sandbox catalog fixtures do not have Production commercial-state
+    // rows. Use their Sandbox catalog verification ONLY in isolated Testing.
+    // Live stock, location availability, and price are still checked by Square.
+    for (const fixture of fixtures) {
+      if (!commercialRows.some(row => row.product_id === fixture.product_id)) {
+        commercialRows.push({
+          product_id: fixture.product_id, sync_status:"sandbox-fixture",
+          square_location_enabled:true, square_archived:false,
+          square_sold_out:false, availability_status:"available",
+        });
+      }
+    }
+  }
 
   if (mappingRows.length !== productIds.length || commercialRows.length !== productIds.length) {
     return json(req, { error: "One or more cart items are not checkout-ready" }, 409);
@@ -421,7 +534,10 @@ Deno.serve(async (req: Request) => {
           }, 503);
         }
 
-        if (onHand < item.quantity) {
+        // Paid quantity plus the one physical complimentary bottle must fit stock.
+        const needed = (normalized.get(item.slug) ?? 0) +
+          (verifiedReward && item.slug === verifiedReward.slug ? 1 : 0);
+        if (onHand < needed) {
           return json(req, {
             error: "Not enough inventory is available for a cart item",
             product_id: item.slug,
@@ -431,19 +547,70 @@ Deno.serve(async (req: Request) => {
       }
     }
 
-    const order = {
+    const paidLines = resolved.filter(item => normalized.has(item.slug)).map(item => ({
+      quantity: String(normalized.get(item.slug)),
+      catalog_object_id: item.variation.id,
+    }));
+    const rewardVariation = verifiedReward
+      ? resolved.find(item => item.slug === verifiedReward!.slug)?.variation.id
+      : null;
+    if (verifiedReward && !rewardVariation) {
+      return json(req, { error: "Reward inventory mapping unavailable" }, 409);
+    }
+    const order: any = {
       location_id: squareLocationId,
-      line_items: resolved.map((item) => ({
-        quantity: String(item.quantity),
-        catalog_object_id: item.variation.id,
-      })),
+      line_items: [...paidLines, ...(rewardVariation ? [{
+        quantity: "1",
+        catalog_object_id: rewardVariation,
+        applied_discounts: [{ discount_uid: "PJ_REVIEW_FREE" }],
+      }] : [])],
       pricing_options: {
         auto_apply_taxes: true,
         auto_apply_discounts: true,
       },
     };
+    if (verifiedReward) {
+      order.discounts = [{
+        uid: "PJ_REVIEW_FREE",
+        name: "Review Board Complimentary",
+        type: "FIXED_PERCENTAGE",
+        percentage: "100",
+        scope: "LINE_ITEM",
+      }];
+      // Square's authoritative pricing must confirm only the reward received
+      // the review discount, with one fully-free line and paid items intact.
+      const preview = await squarePost("/v2/orders/calculate", squareToken, { order });
+      const lines = preview?.order?.line_items ?? [];
+      const free = lines.filter((line: any) =>
+        line.total_money?.amount === 0 &&
+        line.applied_discounts?.some((d: any) => d.discount_uid === "PJ_REVIEW_FREE"));
+      const leaked = lines.some((line: any) =>
+        line.total_money?.amount > 0 &&
+        line.applied_discounts?.some((d: any) => d.discount_uid === "PJ_REVIEW_FREE"));
+      if (free.length !== 1 || free[0].quantity !== "1" ||
+          free[0].catalog_object_id !== rewardVariation || leaked ||
+          lines.length !== paidLines.length + 1) {
+        return json(req, { error: "Square reward discount validation failed" }, 409);
+      }
+    }
 
-    const squarePayload = await squarePost(
+    // The existing checkout owns the Square order, checkout link and redirect.
+    // Reserve the selected reward before opening the same standard payment link.
+    if (verifiedReward) {
+      const { error: reserveError, data: reservation } = await admin.rpc(
+        "pj_review_reward_reserve_checkout", {
+          p_customer_id: verifiedReward.customerId,
+          p_row_number: verifiedReward.row,
+          p_expected_product_id: verifiedReward.productId,
+          p_request_id: checkoutRequestId,
+        });
+      if (reserveError || !reservation) {
+        return json(req, { error: "Review reward already reserved or unavailable" }, 409);
+      }
+    }
+    let squarePayload: any;
+    try {
+      squarePayload = await squarePost(
       "/v2/online-checkout/payment-links",
       squareToken,
       {
@@ -457,7 +624,15 @@ Deno.serve(async (req: Request) => {
         },
         payment_note: "Pepper Junction website checkout",
       },
-    );
+      );
+    } catch (checkoutError) {
+      if (verifiedReward) {
+        await admin.from("pj_review_reward_checkout_attempts")
+          .update({state:"cancelled"})
+          .eq("checkout_request_id", checkoutRequestId).eq("state", "creating");
+      }
+      throw checkoutError;
+    }
 
     const checkoutUrl = squarePayload?.payment_link?.url;
     const orderId = squarePayload?.payment_link?.order_id;
@@ -468,6 +643,22 @@ Deno.serve(async (req: Request) => {
 
     if (typeof orderId !== "string" || !orderId) {
       return json(req, { error: "Square order identity missing" }, 502);
+    }
+    if (verifiedReward) {
+      const paymentLinkId = squarePayload?.payment_link?.id;
+      if (typeof paymentLinkId !== "string" || !paymentLinkId) {
+        return json(req, { error: "Reward checkout link identity missing" }, 503);
+      }
+      const {data: savedAttempt, error: attemptError} = await admin.from("pj_review_reward_checkout_attempts")
+        .update({
+          state: "opened", square_order_id: orderId,
+          square_payment_link_id: paymentLinkId, opened_at: new Date().toISOString(),
+        }).eq("checkout_request_id", checkoutRequestId).eq("state", "creating")
+        .select("id").maybeSingle();
+      if (attemptError || !savedAttempt) {
+        console.error("Review Board reward attempt registration failed", orderId);
+        return json(req, { error: "Could not register reward checkout" }, 503);
+      }
     }
     if (celestialTimezone) {
       // A badge evidence failure must not strand a valid Square checkout.
