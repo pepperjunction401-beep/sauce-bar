@@ -11,7 +11,8 @@
   var base='https://cdbenwthxhypuuipyjlv.supabase.co/functions/v1/';
   fetch(base+'checkout-order-confirmed',{
     method:'POST',headers:{'Content-Type':'application/json'},credentials:'omit',cache:'no-store',
-    body:JSON.stringify({square_order_id:pending.order_id})
+    body:JSON.stringify({square_order_id:pending.order_id,
+      reward_row_number:pending.reward_row_number||null})
   }).then(function(r){if(!r.ok)throw Error('Not confirmed');return r.json();})
   .then(function(data){
     if(!data.confirmed) return false;

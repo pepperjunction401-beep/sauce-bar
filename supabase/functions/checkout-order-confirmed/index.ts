@@ -21,10 +21,18 @@ Deno.serve(async req=>{
  // This is a read-only status check: the established purchase importer
  // finalizes the reward. Never let a completed paid order clear an unredeemed
  // reward from the user's cart.
+ const rewardRow=body?.reward_row_number;
+ // Paid-only orders never query Review Board tables or depend on migrations.
+ if(rewardRow===null||rewardRow===undefined)
+   return new Response(JSON.stringify({confirmed:true}),{headers});
+ if(!Number.isInteger(rewardRow)||rewardRow<1)
+   return new Response(JSON.stringify({confirmed:false}),{status:400,headers});
  const {data:attempt,error:attemptError}=await admin.from("pj_review_reward_checkout_attempts")
-   .select("customer_id,row_number,state").eq("square_order_id",order).maybeSingle();
+   .select("customer_id,row_number,state").eq("square_order_id",order)
+   .eq("row_number",rewardRow).maybeSingle();
  if(attemptError)return new Response(JSON.stringify({confirmed:false}),{status:503,headers});
- if(attempt){
+ if(!attempt)return new Response(JSON.stringify({confirmed:false}),{headers});
+ {
    if(attempt.customer_id!==data[0].customer_id||attempt.state!=="paid_verified")
      return new Response(JSON.stringify({confirmed:false}),{headers});
    const {data:entitlement,error:rewardError}=await admin.from("pj_review_reward_entitlements")
