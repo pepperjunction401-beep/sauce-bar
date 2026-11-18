@@ -304,6 +304,46 @@ Deno.serve(async (req: Request) => {
       for (const p of products ?? []) slugByProductId.set(p.id, p.cns_slug);
     }
 
+    // Only the established Square transaction importer completes reward redemption.
+    // Ordinary paid-only orders never consult the Review Board tables.
+    const rewardDiscountLines = (order.line_items ?? []).filter((line: any) =>
+      (line.applied_discounts ?? []).some((d: any) => d.discount_uid === "PJ_REVIEW_FREE"));
+    let verifiedRewardRow: number | null = null;
+    if (rewardDiscountLines.length) {
+      const {data: rewardAttempt, error: rewardAttemptError} = await admin
+        .from("pj_review_reward_checkout_attempts")
+        .select("customer_id,row_number,selected_product_id,state")
+        .eq("square_order_id", order.id).maybeSingle();
+      if (rewardAttemptError || !rewardAttempt ||
+          rewardAttempt.customer_id !== customerId ||
+          !["opened", "paid_verified"].includes(rewardAttempt.state)) {
+        throw new Error("Review reward order is not bound to the verified customer");
+      }
+      const freeLines = (order.line_items ?? []).filter((line: any) =>
+        line.total_money?.amount === 0);
+      const paidLines = (order.line_items ?? []).filter((line: any) =>
+        Number(line.total_money?.amount) > 0);
+      if (freeLines.length !== 1 || rewardDiscountLines.length !== 1 ||
+          freeLines[0] !== rewardDiscountLines[0] ||
+          freeLines[0].quantity !== "1" || paidLines.length < 1 ||
+          paidLines.some((line: any) => (line.applied_discounts ?? [])
+            .some((d: any) => d.discount_uid === "PJ_REVIEW_FREE"))) {
+        throw new Error("Review reward order does not contain one isolated free line alongside paid merchandise");
+      }
+      const freeLine = freeLines[0];
+      const freeCatalogId = freeLine.catalog_object_id ?? null;
+      const freeCatalog = freeCatalogId ? catalogById.get(freeCatalogId) : undefined;
+      const resolvedReward = resolveSquareProduct(
+        freeCatalogId, freeCatalog, productBySquareToken);
+      if (resolvedReward.productId !== rewardAttempt.selected_product_id) {
+        throw new Error("Review reward line is not the reserved product");
+      }
+      verifiedRewardRow = Number(rewardAttempt.row_number);
+      if (!Number.isInteger(verifiedRewardRow) || verifiedRewardRow < 1) {
+        throw new Error("Invalid reserved Review Board row");
+      }
+    }
+
     const normalizedLines: any[] = [];
 
     for (const line of order.line_items ?? []) {
@@ -405,6 +445,21 @@ Deno.serve(async (req: Request) => {
     const purchaseId = recorded?.purchase_id;
     if (typeof purchaseId !== "string") throw new Error("Purchase recorder did not return a purchase ID");
     await recordPassengerMerchandiseEvidence(admin, purchaseId, order.line_items ?? []);
+
+    // The reward is spent ONLY after the existing verified importer has attached
+    // the purchase and recorded its free-line exclusion evidence. No browser
+    // confirmation action, secondary Square checkout or second payment verifier.
+    if (verifiedRewardRow !== null) {
+      const {data: redeemed, error: redeemError} = await admin.rpc(
+        "pj_review_reward_finalize_verified_order", {
+          p_customer_id: customerId,
+          p_row_number: verifiedRewardRow,
+          p_square_order_id: order.id,
+        });
+      if (redeemError || redeemed !== true) {
+        throw new Error("Review reward could not be finalized from the verified purchase");
+      }
+    }
 
     await admin.from("purchase_import_runs").update({
       status: "succeeded",

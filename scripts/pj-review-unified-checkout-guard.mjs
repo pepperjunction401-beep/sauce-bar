@@ -10,6 +10,8 @@ const board = read('assets/js/pj-review-board-live.js');
 const cartPage = read('cart-page.html');
 const checkout = read('supabase/functions/square-checkout/index.ts');
 const postpay = read('assets/js/post-payment-cart-clear.js');
+const importer = read('supabase/functions/square-current-transaction-ingest/index.ts');
+const confirmation = read('supabase/functions/checkout-order-confirmed/index.ts');
 const service = read('supabase/functions/pj-review-service/index.ts');
 const finalize = read('supabase/sql/pj_review_reward_atomic_verified_redemption.sql');
 const reserve = read('supabase/sql/pj_review_reward_atomic_selection_reservation.sql');
@@ -30,8 +32,14 @@ const checks = [
   ['server checks reward entitlement and row slot', checkout.includes('pj_review_reward_entitlements') && checkout.includes('pj_review_board_slots')],
   ['Square line-level reward discount checked', checkout.includes('PJ_REVIEW_FREE') && checkout.includes('/v2/orders/calculate')],
   ['single existing Square payment-link creator retained', (checkout.match(/\/v2\/online-checkout\/payment-links/g) || []).length === 1],
-  ['verified payment precedes reward finalization', checkout.includes('payment.status !== "COMPLETED"') && checkout.lastIndexOf('pj_review_reward_finalize_verified_order') > checkout.lastIndexOf('payment.status !== "COMPLETED"')],
-  ['ledger check occurs before reward finalization on return', postpay.indexOf('checkout-order-confirmed') < postpay.indexOf('return confirmReviewReward()')],
+  ['checkout contains no reward payment confirmation action', !checkout.includes('confirmReviewReward') && !checkout.includes('confirm_review_reward')],
+  ['browser performs no reward payment verification', !postpay.includes('confirmReviewReward') && !postpay.includes('confirm_review_reward')],
+  ['existing importer retains verified paid-order gate', importer.includes('fullyPaidOpenSquareOrder') && importer.includes('record_square_purchase')],
+  ['only importer owns reward finalization', importer.includes('pj_review_reward_finalize_verified_order') && !checkout.includes('pj_review_reward_finalize_verified_order')],
+  ['importer validates reserved reward discount and product', importer.includes('PJ_REVIEW_FREE') && importer.includes('rewardAttempt.selected_product_id')],
+  ['importer finalizes after purchase recorder', importer.indexOf('pj_review_reward_finalize_verified_order') > importer.indexOf('record_square_purchase')],
+  ['return uses only existing read-only purchase confirmation', postpay.includes('checkout-order-confirmed') && !postpay.includes('square-checkout')],
+  ['return checks redeemed reward state', confirmation.includes('paid_verified') && confirmation.includes('redeemed_square_order_id')],
   ['cart snapshot safeguarded on Square return', postpay.includes('pending.cart_snapshot')],
   ['atomic entitlement RPC preserved', finalize.includes('pj_review_reward_finalize_verified_order')],
   ['atomic checkout reservation RPC preserved', reserve.includes('pj_review_reward_reserve_checkout')],
