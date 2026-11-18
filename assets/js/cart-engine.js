@@ -934,6 +934,23 @@
   }
 
   function startCheckout() {
+    // Fail closed on local Testing when a Review Board reward is in progress.
+    // Never silently redirect a selected reward cart to the Production endpoint.
+    var local = window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1';
+    if (local) {
+      var rewardIntent = false;
+      try {
+        rewardIntent = !!sessionStorage.getItem('pj_review_cart_row') ||
+          !!(new URLSearchParams(window.location.search).get('reviewRewardRow'));
+      } catch (_) {}
+      if (rewardIntent || reviewCheckoutPending()) {
+        return Promise.reject(new Error(
+          'Review Board reward checkout is active. Use the Square Sandbox reward option, ' +
+          'or explicitly save the reward for a later purchase.'
+        ));
+      }
+    }
     var summary = getCartSummary();
 
     if (!summary.items.length) {
