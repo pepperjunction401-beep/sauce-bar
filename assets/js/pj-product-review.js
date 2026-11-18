@@ -148,43 +148,12 @@ return section;
 REVIEW BUTTON
 ══════════════════════════════════════════════════════════ */
 function bindReviewButton() {
-var btn = document.getElementById(state.reviewButtonId);
-
-if (!btn) {
-  return;
-}
-
-/*
- * Enable the button only after this shared system
- * initializes successfully.
- */
-btn.disabled = false;
-btn.setAttribute('aria-disabled', 'false');
-
-btn.addEventListener('click', handleReviewClick);
-
-}
-
-function handleReviewClick() {
-/*
-* Phase 6 will replace this prototype routing with:
-*
-* 1. Determine whether the customer is signed in.
-* 2. Require sign-in when necessary.
-* 3. Verify an eligible Square purchase.
-* 4. Confirm the customer has not already reviewed the item.
-* 5. Open the shared review page for this product.
-*
-* Authentication, Square, and Supabase eligibility checks
-* are not connected in this prototype.
-*/
-var url =
-SHARED_REVIEW_PAGE +
-'?product=' +
-encodeURIComponent(state.productSlug);
-
-window.location.href = url;
-
+  var btn = document.getElementById(state.reviewButtonId);
+  if (!btn) return;
+  // Customer questionnaires are entered exclusively from the Review Board.
+  btn.disabled = true;
+  btn.setAttribute('aria-disabled', 'true');
+  btn.remove();
 }
 
 /* ══════════════════════════════════════════════════════════
