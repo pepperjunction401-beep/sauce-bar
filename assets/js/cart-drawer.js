@@ -350,7 +350,7 @@
     renderBadgeTeasers(summary);
 
     if (summary.items.some(function (item) {
-      return item.price_source !== 'square-commercial';
+      return item.kind !== 'pj_review_reward' && item.price_source !== 'square-commercial';
     })) {
       syncCommercialPrices();
     }
