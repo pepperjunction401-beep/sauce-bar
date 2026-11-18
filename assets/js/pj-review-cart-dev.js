@@ -93,6 +93,12 @@
   var busy = false;
   var deferred = false;
   var selectedProductName = null;
+  // Square may append orderId after a completed hosted checkout.
+  // The URL alone never authorizes redemption; the stored pending order
+  // and direct Square payment verification are both mandatory.
+  var returnedOrderId = query.get('orderId') || null;
+  var returnedOrderMatches = !!(returnedOrderId && pending &&
+    returnedOrderId === pending.order_id && pending.row_number === rowNumber);
 
   function refreshControl() {
     var summary = cart.getSummary();
@@ -152,6 +158,25 @@
       return;
     }
     refreshControl();
+    if (returnedOrderMatches) {
+      busy = true;
+      refreshControl();
+      details.textContent = 'Checking your returned Square order with Square Sandbox…';
+      cart.verifyReviewRewardSandboxPayment().then(function () {
+        serverRow.entitlementStatus = 'redeemed';
+        restoreRegularCheckout();
+        details.textContent = 'Square Sandbox verified your payment. Your complimentary reward was redeemed once.';
+      }).catch(function () {
+        details.textContent = 'Your Square return did not verify a completed payment. Your reward remains reserved; use Verify Square Sandbox Payment when payment is complete.';
+      }).finally(function () {
+        busy = false;
+        refreshControl();
+      });
+    } else if (returnedOrderId) {
+      details.textContent = 'The return order does not match this pending checkout. No reward was redeemed.';
+      redeem.style.display = 'none';
+      deferReward.style.display = 'none';
+    }
   }).catch(function () {
     details.textContent = 'Unable to verify your Review Board reward. Checkout is locked until verification succeeds.';
   });
