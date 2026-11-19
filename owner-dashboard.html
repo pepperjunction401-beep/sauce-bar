@@ -3,7 +3,7 @@
 <meta name="robots" content="noindex,nofollow"><title>Pepper Junction — Owner Control Room</title>
 <link rel="stylesheet" href="assets/css/pj-review.css">
 <style>
-body{background:#14241a;color:#f6eedc;font-family:Arial,sans-serif;margin:0}
+body{background:#14241a;color:#f6eedc;font-family:Arial,sans-serif;margin:0}#owner-transfers[hidden]{display:none!important}
 main{max-width:1100px;margin:35px auto;padding:0 18px 56px}
 h1{font:normal clamp(28px,4vw,42px) Georgia,serif;color:#f6e8c8}
 p{line-height:1.55}a{color:#e7cf84}
@@ -18,6 +18,9 @@ button:disabled{opacity:.55}.muted{color:#cfc6af}
 @media(max-width:600px){th,td{font-size:13px;padding:10px 5px}}
 </style></head><body>
 <main><p><a href="main.html">Pepper Junction Home</a></p>
+<nav id="owner-transfers" aria-label="Owner transfer controls" hidden style="display:flex;flex-wrap:wrap;gap:10px;margin:14px 0">
+ <a href="passenger-station.html" style="display:inline-block;padding:11px 16px;border:1px solid #bd9a5e;border-radius:6px;background:#355e3b;color:#fff5df;text-decoration:none;font-weight:700">Visit Passenger Station</a>
+</nav>
 <h1>Owner Control Room</h1><p>Private business overview. Registrations update when you refresh; no registration emails are sent by this page.</p>
 <div id="status" role="status" aria-live="polite">Checking owner authorization…</div>
 <p id="signin" hidden>Use your existing Pepper Junction account to sign in: <a href="account.html?return=station">Account sign-in</a>. Then return to this page in the same tab.</p>
@@ -45,7 +48,7 @@ var refresh=document.getElementById('refresh');
 function put(id,value){document.getElementById(id).textContent=String(value);}
 function el(tag,value){var n=document.createElement(tag);n.textContent=value;return n;}
 async function load(){
- dashboard.hidden=true;signin.hidden=true;refresh.disabled=true;status.textContent='Verifying owner authorization…';
+ dashboard.hidden=true;signin.hidden=true;document.getElementById('owner-transfers').hidden=true;refresh.disabled=true;status.textContent='Verifying owner authorization…';
  try{
   if(!client)throw Error('NO_CLIENT');
   var session=await client.auth.getSession();
@@ -66,7 +69,7 @@ async function load(){
    tr.appendChild(el('td',u.verified?'Verified':'Unverified'));
    rows.appendChild(tr);
   });
-  dashboard.hidden=false;status.textContent='Owner access verified. Dashboard loaded.';
+  dashboard.hidden=false;document.getElementById('owner-transfers').hidden=false;status.textContent='Owner access verified. Dashboard loaded.';
  }catch(e){status.textContent=e&&e.message==='SIGN_IN_REQUIRED'?'Sign in with your existing Pepper Junction owner account.':'Dashboard access denied or owner service unavailable.';signin.hidden=e&&e.message!=='SIGN_IN_REQUIRED';}
  finally{refresh.disabled=false;}
 }
