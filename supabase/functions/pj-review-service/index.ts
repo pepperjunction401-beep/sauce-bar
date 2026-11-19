@@ -100,6 +100,8 @@ function reviewFlag(raw: string): string|null {
 async function notifyFlaggedReview(
  admin: ReturnType<typeof createClient>, reviewId: string, slug: string, reason: string
 ){
+ // Testing never emails the real owner; its flagged cases remain in Testing.
+ if((Deno.env.get("SUPABASE_URL")||"").includes(DEV_PROJECT))return;
  // The flag is durable even when the mail provider is not configured.
  const apiKey=Deno.env.get("RESEND_API_KEY");
  const from=Deno.env.get("PJ_REVIEW_ALERT_FROM");
@@ -108,7 +110,7 @@ async function notifyFlaggedReview(
  let errorText:string|null=null;
  try {
   const response=await fetch("https://api.resend.com/emails",{
-   method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json","Idempotency-Key":"pj-review-flag-"+reviewId},
+   method:"POST",signal:AbortSignal.timeout(4000),headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json","Idempotency-Key":"pj-review-flag-"+reviewId},
    body:JSON.stringify({
     from,to:[owner],
     subject:"Pepper Junction — Flagged Passenger Review: "+slug,
