@@ -30,7 +30,7 @@ revoke all on public.pj_review_moderation_audit from public,anon,authenticated;
 
 create or replace function public.pj_review_apply_moderation(
  p_review_id uuid, p_status text, p_reason text default null)
-returns boolean language plpgsql security definer set search_path = ''
+returns boolean language plpgsql security invoker set search_path = ''
 as $$
 declare v_changed uuid;
 begin
@@ -59,7 +59,7 @@ grant execute on function public.pj_review_apply_moderation(uuid,text,text) to s
 
 create or replace function public.pj_review_owner_moderation_decision(
  p_review_id uuid, p_owner_id uuid, p_decision text)
-returns boolean language plpgsql security definer set search_path = ''
+returns boolean language plpgsql security invoker set search_path = ''
 as $$
 declare v_record record;
 begin
