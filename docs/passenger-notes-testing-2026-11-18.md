@@ -97,3 +97,21 @@ Owner expressly rejected arbitrary minimums: **one approved customer review per 
 - **Policy verified**: no minimum beyond one approved review. Tie handling and heat-free exclusions unchanged.
 
 **Remaining:** full rendered product page in an actual browser connected to the Testing function, and a qualifying four-card real HTTP response using genuinely descriptive data. Avoid artificial records in customer-owned tables. Main and Production untouched.
+
+## Browser acceptance attempt — November 19, 2026
+
+The local Chromium environment **cannot resolve/download raw GitHub content from the Dev branch**, so a full Dev product page with its actual remote dependencies could not be loaded. Do **not** mark the deployed complete-page browser acceptance as passed.
+
+Read-only source inspection verified the actual Dev product templates, review-script inclusion and `PJProductReview.init` path, and their placement anchors on these 10 products:
+- `rheds-original`, `melindas-chipotle-ketchup`
+- `2-pig-mafia-steak-seasoning-14oz` (contains an additional award-style `.pj-standard` block)
+- `ariston-garlic-infused-olive-oil`
+- `sweet-gs-smoked-cheddar-pretzels-sourdough`, `sweet-gs-smoked-cheddar-pretzels-spicy`
+- `stanky-honey-mango-habanero`, `mikey-vs-gator-toes-bbq`
+- `defcon-cluckwing`, `hells-kitchen-black-westside-red`
+
+For all ten, the Pepper Junction Standard is before the share controls; the shared stylesheet/script are loaded; the product initializes the shared integration. The script creates Passenger Notes immediately before `.share-btn-wrap`, so the extra award block in the steak seasoning page does not alter insertion order.
+
+Previous isolated Chromium viewport rendering and actual Dev JavaScript DOM integration fixture checks remain valid **within their scope**, not full-product-page checks.
+
+Outstanding: a working first-party local Dev host (localhost or 127.0.0.1) with full repo assets and a browser for visual/end-to-end validation against Supabase Testing. No Main/Production change.
