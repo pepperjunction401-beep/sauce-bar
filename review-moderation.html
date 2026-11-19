@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pepper Junction — Owner Review Moderation</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="assets/css/pj-review.css">
+<style>
+body{background:#14241a;color:#f6eedc;font-family:Arial,sans-serif}
+main{max-width:900px;margin:35px auto;padding:0 18px 50px}
+h1{font-family:Georgia,serif;font-size:clamp(26px,4vw,39px);color:#f6e8c8}
+#cases{display:grid;gap:16px;margin-top:26px}
+.case{border:2px solid #751b28;background:#f9eed7;color:#213a29;padding:18px;border-radius:10px}
+.case h2{font-size:19px;overflow-wrap:anywhere;margin:0 0 8px}
+.case p{line-height:1.6;overflow-wrap:anywhere}
+.case blockquote{border-left:3px solid #751b28;margin:12px 0;padding:8px 14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.case .actions{display:flex;flex-wrap:wrap;gap:12px}
+button{border:1px solid #751b28;border-radius:6px;padding:12px 18px;background:#355e3b;color:#fff;cursor:pointer}
+button.reject{background:#751b28}
+button:disabled{opacity:.5;cursor:wait}
+a{color:#e7cf84}
+#status{padding:12px;border:1px solid #81663a}
+small{color:#574734}
+</style>
+</head><body><main>
+<p><a href="main.html">Pepper Junction Home</a></p>
+<h1>Flagged Passenger Reviews</h1>
+<p>Private owner moderation. Clean reviews are automatically approved. Only flagged submissions appear here.</p>
+<p id="status" role="status" aria-live="polite">Verifying owner access…</p>
+<p id="email-readiness" role="status" hidden style="padding:12px;border:1px solid #d3ae51">Email notification configuration has not been confirmed. Flagged reviews remain securely queued even if email is unavailable.</p>
+<p id="signin-help" hidden>This administration page requires an authorized owner session. A dedicated Head Pepper entrance is being designed separately.</p>
+<section id="cases" aria-label="Flagged reviews"></section>
+<button id="reload" type="button" hidden>Refresh flagged reviews</button>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="assets/js/pj-auth.js"></script>
+<script>
+(function(){
+'use strict';
+var status=document.getElementById('status');
+var list=document.getElementById('cases');
+var reload=document.getElementById('reload');
+var client=window.PJAuth&&PJAuth.client;
+if(!client){status.textContent='Owner authentication is unavailable in this environment.';return;}
+var local=['localhost','127.0.0.1'].includes(location.hostname);
+var endpoint=(local?'https://slubpfmpjgoupujptayy.supabase.co':'https://cdbenwthxhypuuipyjlv.supabase.co')+'/functions/v1/pj-review-moderation-admin';
+function node(tag,text){var n=document.createElement(tag);n.textContent=text;return n;}
+async function call(payload){
+ var auth=await client.auth.getSession();
+ var token=auth.data&&auth.data.session&&auth.data.session.access_token;
+ if(auth.error||!token)throw Error('Sign in with your authorized Pepper Junction owner account.');
+ var result=await client.functions.invoke('pj-review-moderation-admin',{
+  body:payload,headers:{Authorization:'Bearer '+token}
+ });
+ if(result.error||!result.data||result.data.error)throw Error('Owner authorization or moderation service unavailable.');
+ return result.data;
+}
+async function load(){
+ status.textContent='Checking the flagged-review queue…';
+ list.textContent='';
+ try {
+  var result=await call({action:'queue'});
+  reload.hidden=false;
+  document.getElementById('email-readiness').hidden=result.emailConfigured===true;
+  var cases=Array.isArray(result.cases)?result.cases:[];
+  status.textContent=cases.length?cases.length+' flagged review(s) awaiting a decision.':'No flagged reviews need your attention.';
+  cases.forEach(function(item){
+   var card=node('article','');card.className='case';
+   card.appendChild(node('h2',item.productSlug));
+   card.appendChild(node('p','Flag reason: '+item.reason));
+   var excerpt=node('blockquote',item.publicReviewCandidate||'');card.appendChild(excerpt);
+   if(item.privateFoodUse)card.appendChild(node('p','Private food-use response: '+item.privateFoodUse));
+   if(!item.notified)card.appendChild(node('small','Email notification not confirmed. This flagged review remains securely queued.'));
+   var actions=node('div','');actions.className='actions';
+   [{decision:'approved',label:'Approve',className:''},{decision:'rejected',label:'Reject',className:'reject'}].forEach(function(option){
+    var button=node('button',option.label);button.type='button';button.className=option.className;
+    button.onclick=async function(){
+     if(!confirm(option.label+' this flagged review for '+item.productSlug+'?'))return;
+     button.disabled=true;status.textContent='Saving owner decision…';
+     try {await call({action:'decide',reviewId:item.id,decision:option.decision});await load();}
+     catch {button.disabled=false;status.textContent='Decision was not saved. Verify your owner access and try again.';}
+    };
+    actions.appendChild(button);
+   });
+   card.appendChild(actions);list.appendChild(card);
+  });
+ } catch {status.textContent='Access denied or moderation service not configured.';document.getElementById('signin-help').hidden=false;}
+}
+reload.onclick=load;load();
+})();
+</script></body></html>
