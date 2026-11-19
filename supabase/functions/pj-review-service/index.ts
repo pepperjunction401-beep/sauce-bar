@@ -81,6 +81,63 @@ function validAnswers(a:Record<string,unknown>,p:Record<string,unknown>,catalog:
  }
  return points;
 }
+// Protected server-side screening. Unsuccessful screening leaves the review pending.
+function reviewFlag(raw: string): string|null {
+ const content=raw.normalize("NFKC").trim();
+ if(/(?:https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|net|org|io|co|biz|info)\b)/i.test(content))return "LINK";
+ if(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i.test(content))return "EMAIL";
+ if/(?:\+?\d[\d ().-]{8,}\d)/.test(content))return "PHONE";
+ if(/[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?~\/]{2,}/.test(content))return "REPEATED_SYMBOLS";
+ if(/\b(?:fuck(?:ing|ed|er)?|shit(?:ty)?|bitch(?:es)?|cunt|asshole|motherfucker|faggot|nigger)\b/i.test(content))return "ABUSIVE_LANGUAGE";
+ if(/\b(?:i(?:'m| am) going to (?:kill|hurt|attack)|kill yourself|i will (?:kill|hurt|attack)|death threat)\b/i.test(content))return "THREAT";
+ if(/\b(?:porn|nudes?|explicit sex|sexual intercourse)\b/i.test(content))return "SEXUAL_CONTENT";
+ if(/(.)\1{7,}/i.test(content))return "SPAM_OR_GIBBERISH";
+ return null;
+}
+async function notifyFlaggedReview(
+ admin: ReturnType<typeof createClient>, reviewId: string, slug: string, reason: string
+){
+ // The flag is durable even when the mail provider is not configured.
+ const apiKey=Deno.env.get("RESEND_API_KEY");
+ const from=Deno.env.get("PJ_REVIEW_ALERT_FROM");
+ if(!apiKey||!from)return;
+ const owner="john@pepperjunction401.com";
+ let errorText:string|null=null;
+ try {
+  const response=await fetch("https://api.resend.com/emails",{
+   method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json","Idempotency-Key":"pj-review-flag-"+reviewId},
+   body:JSON.stringify({
+    from,to:[owner],
+    subject:"Pepper Junction — Flagged Passenger Review: "+slug,
+    text:"A Passenger Review requires your attention.\nProduct: "+slug+
+      "\nReason: "+reason+"\nOpen your private moderation queue: https://pepperjunction401.com/review-moderation.html"+
+      "\nReview ID: "+reviewId+"\nDo not reply to approve a review."
+   })
+  });
+  if(!response.ok)errorText="PROVIDER_HTTP_"+response.status;
+ }catch{errorText="PROVIDER_UNAVAILABLE";}
+ await admin.from("pj_review_moderation_cases")
+   .update(errorText
+      ? {notification_attempts:1,last_notification_error:errorText}
+      : {notification_attempts:1,notification_sent_at:new Date().toISOString(),last_notification_error:null})
+   .eq("review_id",reviewId).is("notification_sent_at",null);
+}
+async function moderateSubmission(
+ admin: ReturnType<typeof createClient>, reviewId:string, slug:string,
+ answers:Record<string,unknown>
+) {
+ const q14=typeof answers.q14==="string"?answers.q14:"";
+ const q15=typeof answers.q15==="string"?answers.q15:"";
+ const reason=reviewFlag(q14)||reviewFlag(q15);
+ const status=reason?"frozen":"approved";
+ const {data,error}=await admin.rpc("pj_review_apply_moderation",{
+  p_review_id:reviewId,p_status:status,p_reason:reason
+ });
+ if(error||data!==true)return "pending";
+ if(reason)await notifyFlaggedReview(admin,reviewId,slug,reason);
+ return status;
+}
+
 Deno.serve(async req=>{
  if(req.method==="OPTIONS")return new Response(null,{status:204,headers:cors});
  if(req.method!=="POST")return reply({error:"METHOD_NOT_ALLOWED"},405);
@@ -330,5 +387,12 @@ Deno.serve(async req=>{
   p_customer_id:user.id,p_slug:slug,p_answers:answers,p_points:points
  });
  if(error)return reply({error:error.code==="23505"?"ALREADY_REVIEWED":"REVIEW_NOT_ACCEPTED"},error.code==="23505"?409:409);
- return reply(result,201);
+ // Review Board acceptance is independent of public approval.
+ const acceptedId=typeof result?.reviewId==="string"?result.reviewId:"";
+ let moderationStatus="pending";
+ if(acceptedId){
+  try {moderationStatus=await moderateSubmission(admin,acceptedId,slug,answers);}
+  catch {moderationStatus="pending";}
+ }
+ return reply({...result,moderationStatus:moderationStatus.toUpperCase()},201);
 });
