@@ -23,6 +23,7 @@
 'use strict';
 
 /* ── CONFIG ─────────────────────────────────────────────── */
+// Review entry is exclusively through the Passenger Station Review Board.
 var TWO_OR_MORE_SYMBOLS = /[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?~`\/]{2,}/;
 
 /*
@@ -57,13 +58,103 @@ state.productSlug = opts.productSlug;
 state.reviewButtonId = opts.reviewButtonId || 'pj-review';
 state.customerLineId = opts.customerLineId || 'customer-line';
 
-createPassengerReviewsSection();
+// Owner-directed: remove the on-page Passenger Reviews section.
+// Its historical presentation functions remain inactive; preserve the
+// independent left-side Customer Line testimonial and review-button cleanup.
 bindReviewButton();
-loadSummary();
-initReviewDisplay();
 prefetchCustomerLines();
 bindCustomerLineDismissal();
+mountPassengerNotes();
 
+}
+
+/* ══════════════════════════════════════════════════════════
+PASSENGER NOTES — public, anonymous review trends.
+Independent of removed Passenger Reviews block and Customer Line.
+Only display backend-approved product aggregates (no raw reviews).
+══════════════════════════════════════════════════════════ */
+function mountPassengerNotes() {
+  var standard = document.querySelector('.pj-standard');
+  if (!standard || !standard.closest('.editorial') ||
+      document.getElementById('pj-passenger-notes')) return;
+  var standardBlock = standard.closest('.editorial');
+  var share = standardBlock.parentNode.querySelector('.share-btn-wrap');
+  if (!share) return;
+  var section = document.createElement('section');
+  section.id = 'pj-passenger-notes';
+  section.className = 'pj-passenger-notes';
+  section.setAttribute('aria-labelledby', 'pj-passenger-notes-title');
+  section.hidden = true;
+  var header = document.createElement('div');
+  header.className = 'pj-passenger-notes-header';
+  var heading = document.createElement('h2');
+  heading.id = 'pj-passenger-notes-title';
+  heading.textContent = 'Passenger Notes';
+  var sub = document.createElement('p');
+  sub.textContent = 'What fellow passengers are discovering';
+  header.appendChild(heading);
+  header.appendChild(sub);
+  var grid = document.createElement('div');
+  grid.className = 'pj-passenger-notes-grid';
+  section.appendChild(header);
+  section.appendChild(grid);
+  share.parentNode.insertBefore(section, share);
+
+  // Public Edge Function is read-only and returns only anonymous winners.
+  // Local development uses isolated Supabase Testing; live uses Production.
+  var local = ['localhost','127.0.0.1'].includes(window.location.hostname);
+  var base = local ? 'https://slubpfmpjgoupujptayy.supabase.co' :
+    'https://cdbenwthxhypuuipyjlv.supabase.co';
+  var publishable = local ? 'sb_publishable_Yqg6Y8-c2Kf_T6s9D-76WQ_aVqxLyTo' :
+    'sb_publishable_1VOvjHvVLszMI_Rrb-tfig_Ox_EitKr';
+  var icons = {
+    arrival: '♨',
+    finish: '☕',
+    food: '✦',
+    flavor: '✧'
+  };
+  var fields = [
+    ['arrival','Most reported heat arrival'],
+    ['finish','Most reported heat finish'],
+    ['food','Most reported food use'],
+    ['flavor','Most noticed flavor']
+  ];
+  fetch(base + '/functions/v1/pj-passenger-notes', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json', 'apikey':publishable},
+    body: JSON.stringify({slug:state.productSlug})
+  }).then(function(response){
+    if (!response.ok) throw new Error('NOTES_UNAVAILABLE');
+    return response.json();
+  }).then(function(result){
+    if (!result || result.available !== true || !result.cards) return;
+    grid.textContent = '';
+    fields.forEach(function(pair){
+      var value = result.cards[pair[0]];
+      if (typeof value !== 'string' || !value.trim()) return;
+      var card = document.createElement('div');
+      card.className = 'pj-passenger-note-card';
+      var symbol = document.createElement('span');
+      symbol.className = 'pj-passenger-note-icon';
+      symbol.setAttribute('aria-hidden', 'true');
+      symbol.textContent = icons[pair[0]];
+      var label = document.createElement('span');
+      label.className = 'pj-passenger-note-label';
+      label.textContent = pair[1];
+      var answer = document.createElement('strong');
+      answer.className = 'pj-passenger-note-value';
+      answer.textContent = value;
+      card.appendChild(symbol);
+      card.appendChild(label);
+      card.appendChild(answer);
+      grid.appendChild(card);
+    });
+    // Heat-free products naturally show only available food/flavor cards.
+    if (grid.children.length) section.hidden = false;
+  }).catch(function(){
+    // No approved aggregate or unavailable service: do not show empty cards.
+    section.hidden = true;
+  });
 }
 
 /* ══════════════════════════════════════════════════════════
