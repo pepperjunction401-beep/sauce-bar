@@ -20,14 +20,14 @@ button:disabled{opacity:.55}.muted{color:#cfc6af}
 <main><p><a href="main.html">Pepper Junction Home</a></p>
 <h1>Owner Control Room</h1><p>Private business overview. Registrations update when you refresh; no registration emails are sent by this page.</p>
 <div id="status" role="status" aria-live="polite">Checking owner authorization…</div>
-<p id="signin" hidden><a href="account.html">Sign in to your authorized Pepper Junction owner account</a>, then reopen this page in the same tab.</p>
+<p id="signin" hidden>Use your existing Pepper Junction account to sign in: <a href="account.html?return=station">Account sign-in</a>. Then return to this page in the same tab.</p>
 <section id="dashboard" hidden>
  <button id="refresh" type="button">Refresh dashboard</button>
  <p id="updated" class="muted"></p>
  <div class="grid" aria-label="Registration and moderation summary">
   <article class="tile"><strong>Registered passengers</strong><div id="registered" class="value">—</div><small>Supabase Auth accounts</small></article>
   <article class="tile"><strong>Verified passengers</strong><div id="verified" class="value">—</div><small>Email-confirmed accounts</small></article>
-  <article class="tile"><strong>Flagged reviews</strong><div id="flagged" class="value">—</div><small>Awaiting owner moderation</small><p><a href="review-moderation.html">Open moderation queue</a></p></article>
+  <article class="tile"><strong>Flagged reviews</strong><div id="flagged" class="value">—</div><small>Frozen submissions · owner moderation queue coming separately</small></article>
  </div>
  <h2 class="subheading">Recent registrations</h2>
  <p class="muted">For owner use only. Most recent 20 registered accounts.</p>
@@ -67,7 +67,7 @@ async function load(){
    rows.appendChild(tr);
   });
   dashboard.hidden=false;status.textContent='Owner access verified. Dashboard loaded.';
- }catch(e){status.textContent='Dashboard access denied or owner service not configured.';signin.hidden=false;}
+ }catch(e){status.textContent=e&&e.message==='SIGN_IN_REQUIRED'?'Sign in with your existing Pepper Junction owner account.':'Dashboard access denied or owner service unavailable.';signin.hidden=e&&e.message!=='SIGN_IN_REQUIRED';}
  finally{refresh.disabled=false;}
 }
 refresh.addEventListener('click',load);load();
