@@ -25,7 +25,8 @@ small{color:#574734}
 <h1>Flagged Passenger Reviews</h1>
 <p>Private owner moderation. Clean reviews are automatically approved. Only flagged submissions appear here.</p>
 <p id="status" role="status" aria-live="polite">Verifying owner access…</p>
-<p id="signin-help" hidden><a href="account.html">Sign in to your Pepper Junction owner account</a>, then reopen this moderation page in the same browser tab.</p>
+<p id="email-readiness" role="status" hidden style="padding:12px;border:1px solid #d3ae51">Email notification configuration has not been confirmed. Flagged reviews remain securely queued even if email is unavailable.</p>
+<p id="signin-help" hidden>This administration page requires an authorized owner session. A dedicated Head Pepper entrance is being designed separately.</p>
 <section id="cases" aria-label="Flagged reviews"></section>
 <button id="reload" type="button" hidden>Refresh flagged reviews</button>
 </main>
@@ -58,6 +59,7 @@ async function load(){
  try {
   var result=await call({action:'queue'});
   reload.hidden=false;
+  document.getElementById('email-readiness').hidden=result.emailConfigured===true;
   var cases=Array.isArray(result.cases)?result.cases:[];
   status.textContent=cases.length?cases.length+' flagged review(s) awaiting a decision.':'No flagged reviews need your attention.';
   cases.forEach(function(item){
