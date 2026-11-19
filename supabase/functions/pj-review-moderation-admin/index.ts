@@ -1,0 +1,74 @@
+// Pepper Junction private owner moderation API — Testing/Dev until separately promoted.
+// Only a configured owner UUID AND verified owner email may read or decide cases.
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "npm:@supabase/supabase-js@2.83.0";
+const OWNER_EMAIL="john@pepperjunction401.com";
+const cors={
+ "access-control-allow-origin":"*",
+ "access-control-allow-headers":"authorization,apikey,content-type,x-client-info",
+ "access-control-allow-methods":"POST, OPTIONS",
+ "cache-control":"no-store",
+ "content-type":"application/json"
+};
+function reply(body:unknown,status=200){
+ return new Response(JSON.stringify(body),{status,headers:cors});
+}
+function secretKey():string|undefined{
+ try{const m=JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS")||"{}");return typeof m.default==="string"?m.default:undefined;}
+ catch{return undefined;}
+}
+Deno.serve(async(req)=>{
+ if(req.method==="OPTIONS")return new Response(null,{status:204,headers:cors});
+ if(req.method!=="POST")return reply({error:"METHOD_NOT_ALLOWED"},405);
+ const url=Deno.env.get("SUPABASE_URL"),key=secretKey();
+ // Require exact trusted project and independently verified owner UUID, email and JWT.
+ // Production UUID is an identity selector, not a password or authentication secret.
+ const production=!!url&&new URL(url).hostname==="cdbenwthxhypuuipyjlv.supabase.co";
+ const testing=!!url&&new URL(url).hostname==="slubpfmpjgoupujptayy.supabase.co";
+ const ownerId=production?"60e36cd4-50aa-452e-b1cc-f3060ac32952":
+   testing?Deno.env.get("PJ_REVIEW_OWNER_USER_ID"):undefined;
+ // No owner claim can come from client-controlled metadata or caller-supplied IDs.
+ if(!ownerId||!url||!key)return reply({error:"OWNER_MODERATION_NOT_CONFIGURED"},503);
+ const token=(req.headers.get("authorization")||"").replace(/^Bearer /i,"").trim();
+ if(!token)return reply({error:"SIGN_IN_REQUIRED"},401);
+ const admin=createClient(url,key,{auth:{persistSession:false}});
+ const {data,error:authError}=await admin.auth.getUser(token);
+ const owner=data?.user;
+ if(authError||!owner||!owner.email_confirmed_at)return reply({error:"SIGN_IN_REQUIRED"},401);
+ if(owner.id!==ownerId||String(owner.email||"").toLowerCase()!==OWNER_EMAIL)return reply({error:"FORBIDDEN"},403);
+ const payload=await req.json().catch(()=>null);
+ if(!payload||typeof payload!=="object")return reply({error:"BAD_REQUEST"},400);
+ if(payload.action==="queue"){
+  const emailConfigured=!!Deno.env.get("RESEND_API_KEY")&&!!Deno.env.get("PJ_REVIEW_ALERT_FROM");
+  // Unresolved first: historical decisions must never crowd out new flags.
+  const {data:reviews,error:reviewError}=await admin.from("pj_review_submissions")
+   .select("id,product_slug_snapshot,q14_original,q15_original,submitted_at")
+   .eq("moderation_status","frozen").order("submitted_at",{ascending:true}).limit(100);
+  if(reviewError)return reply({error:"QUEUE_UNAVAILABLE"},503);
+  if(!reviews?.length)return reply({cases:[],emailConfigured});
+  const {data:cases,error:caseError}=await admin.from("pj_review_moderation_cases")
+   .select("review_id,reason,notification_sent_at,last_notification_error")
+   .in("review_id",reviews.map(r=>r.id));
+  if(caseError)return reply({error:"QUEUE_UNAVAILABLE"},503);
+  const caseById=new Map((cases||[]).map(c=>[c.review_id,c]));
+  return reply({emailConfigured,cases:reviews.map(r=>{
+   const c=caseById.get(r.id);
+   return {id:r.id,productSlug:r.product_slug_snapshot,submittedAt:r.submitted_at,
+    reason:c?.reason||"CONTENT_FLAGGED",
+    privateFoodUse:r.q14_original,publicReviewCandidate:r.q15_original,
+    notified:!!c?.notification_sent_at,notificationError:c?.last_notification_error||null};
+  })});
+ }
+ if(payload.action==="decide"){
+  const reviewId=payload.reviewId,decision=payload.decision;
+  if(typeof reviewId!=="string"||!/^[a-f0-9-]{36}$/i.test(reviewId)||
+     !["approved","rejected"].includes(decision))return reply({error:"INVALID_DECISION"},400);
+  const {data:changed,error}=await admin.rpc("pj_review_owner_moderation_decision",{
+   p_review_id:reviewId,p_owner_id:owner.id,p_decision:decision
+  });
+  if(error)return reply({error:"DECISION_FAILED"},503);
+  if(changed!==true)return reply({error:"CASE_ALREADY_RESOLVED"},409);
+  return reply({ok:true,decision});
+ }
+ return reply({error:"UNKNOWN_ACTION"},400);
+});
