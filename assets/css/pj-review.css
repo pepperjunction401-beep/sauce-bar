@@ -894,3 +894,9 @@ body {
 .pjr-heat-help-list strong {display:block;color:var(--pj-brass-bright);margin-bottom:4px}
 .pjr-heat-help-list span {display:block;line-height:1.45}
 @media(max-width:640px) {.pjr-heat-help-dialog {padding:16px}.pjr-heat-help-list li {padding:9px 11px}}
+
+/* Train Stop 16: keep the entire 5-point explanatory anchor on one line. */
+.pjr-hint-keep-together { white-space: nowrap; }
+@media (max-width: 390px) {
+  .pjr-q-hint-accuracy { font-size: 11px; }
+}
