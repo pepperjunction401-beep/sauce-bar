@@ -9,7 +9,15 @@ function key():string|undefined{try{const obj=JSON.parse(Deno.env.get("SUPABASE_
 Deno.serve(async req=>{
  if(req.method==="OPTIONS")return new Response(null,{status:204,headers:cors});
  if(req.method!=="POST")return reply({error:"METHOD_NOT_ALLOWED"},405);
- const url=Deno.env.get("SUPABASE_URL"),secret=key(),ownerId=Deno.env.get("PJ_REVIEW_OWNER_USER_ID");
+ const url=Deno.env.get("SUPABASE_URL"),secret=key();
+ // Production owner UUID was independently verified against auth.users on 19 Nov 2026.
+ // The UUID is an identity selector, not an authentication secret. The JWT and
+ // confirmed email are still independently validated by Supabase Auth.
+ const isProduction=!!url&&url.includes("cdbenwthxhypuuipyjlv.supabase.co");
+ const isTesting=!!url&&url.includes("slubpfmpjgoupujptayy.supabase.co");
+ const ownerId=isProduction
+  ? "60e36cd4-50aa-452e-b1cc-f3060ac32952"
+  : isTesting ? Deno.env.get("PJ_REVIEW_OWNER_USER_ID") : undefined;
  if(!url||!secret||!ownerId)return reply({error:"OWNER_DASHBOARD_NOT_CONFIGURED"},503);
  const token=(req.headers.get("authorization")||"").replace(/^Bearer /i,"").trim();
  if(!token)return reply({error:"SIGN_IN_REQUIRED"},401);
