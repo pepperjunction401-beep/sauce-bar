@@ -27,7 +27,7 @@ type Answers = {q10:string|null;q11:string[]|null;q12:string|null;q13:string|nul
 function winner(values: string[]): string|null {
   const counts=new Map<string,number>();
   for (const value of values) {
-    if (!value || value==="Not Applicable") continue;
+    // Legacy Testing fixtures can contain numeric slot values rather than\n    // descriptive questionnaire choices; never publish those as insights.\n    if (!value || value==="Not Applicable" || /^\\d+$/.test(value.trim())) continue;
     counts.set(value,(counts.get(value)||0)+1);
   }
   if (!counts.size) return null;
