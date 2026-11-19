@@ -58,10 +58,10 @@ state.productSlug = opts.productSlug;
 state.reviewButtonId = opts.reviewButtonId || 'pj-review';
 state.customerLineId = opts.customerLineId || 'customer-line';
 
-createPassengerReviewsSection();
+// Owner-directed: remove the on-page Passenger Reviews section.
+// Its historical presentation functions remain inactive; preserve the
+// independent left-side Customer Line testimonial and review-button cleanup.
 bindReviewButton();
-loadSummary();
-initReviewDisplay();
 prefetchCustomerLines();
 bindCustomerLineDismissal();
 
