@@ -1791,3 +1791,62 @@ body {
   .pj-review-quote { font-size: 14px; }
   .pj-review-control { flex: 1 1 auto; text-align: center; }
 }
+
+/* Passenger Notes — aggregated Passenger Review insights.
+   Approved colors: deep green surround, cream cards, burgundy border/value,
+   green icon and label. The section is hidden until the backend qualifies it. */
+.pj-passenger-notes {
+  margin: 20px 0 24px;
+  padding: clamp(16px, 3vw, 25px);
+  background: #203B2A;
+  border-radius: 14px;
+  color: #F6E8C8;
+}
+.pj-passenger-notes[hidden] { display: none !important; }
+.pj-passenger-notes-header { margin-bottom: 16px; }
+.pj-passenger-notes-header h2 {
+  color: #F6E8C8;
+  margin: 0 0 3px;
+  font: 600 clamp(23px, 3vw, 29px)/1.2 Georgia, serif;
+}
+.pj-passenger-notes-header p {
+  color: #E6D5B3;
+  margin: 0;
+  font-size: 12px;
+}
+.pj-passenger-notes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 12px;
+}
+.pj-passenger-note-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  min-height: 137px;
+  padding: clamp(12px, 2.6vw, 19px);
+  border-radius: 10px;
+  border: 2px solid #751B28;
+  background: #F9EED7;
+}
+.pj-passenger-note-icon {
+  color: #355E3B;
+  font-size: 20px;
+  line-height: 1;
+}
+.pj-passenger-note-label {
+  color: #355E3B;
+  font: 600 12px/1.4 'Josefin Sans', sans-serif;
+}
+.pj-passenger-note-value {
+  color: #751B28;
+  overflow-wrap: anywhere;
+  font: 600 clamp(16px, 2.2vw, 20px)/1.3 Georgia, serif;
+}
+@media (max-width: 360px) {
+  .pj-passenger-notes-grid { gap: 8px; }
+  .pj-passenger-note-card { padding: 10px; }
+  .pj-passenger-note-label { font-size: 11px; }
+  .pj-passenger-note-value { font-size: 15px; }
+}
