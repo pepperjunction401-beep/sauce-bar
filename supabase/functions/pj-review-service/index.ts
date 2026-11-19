@@ -84,8 +84,8 @@ function validAnswers(a:Record<string,unknown>,p:Record<string,unknown>,catalog:
 // Protected server-side screening. Unsuccessful screening leaves the review pending.
 function reviewFlag(raw: string): string|null {
  const content=raw.normalize("NFKC").trim();
- if(/(?:https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|net|org|io|co|biz|info)\b)/i.test(content))return "LINK";
  if(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i.test(content))return "EMAIL";
+ if(/(?:https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|net|org|io|co|biz|info)\b)/i.test(content))return "LINK";
  if(/(?:\+?\d[\d ().-]{8,}\d)/.test(content))return "PHONE";
  if(/[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?~\/]{2,}/.test(content))return "REPEATED_SYMBOLS";
  if(/\b(?:fuck(?:ing|ed|er)?|shit(?:ty)?|bitch(?:es)?|cunt|asshole|motherfucker|faggot|nigger)\b/i.test(content))return "ABUSIVE_LANGUAGE";
