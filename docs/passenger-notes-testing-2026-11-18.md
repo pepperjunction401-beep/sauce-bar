@@ -41,3 +41,44 @@ Viewport widths 320 / 360 / 375 / 390 / 430 / 768 px:
 - Owner approval required before selective promotion; Production endpoint not deployed.
 
 **Do not infer live endpoint/UI acceptance from the synthetic fixture results.**
+
+
+## Continued verification — endpoint and actual shared script
+
+### Actual deployed Testing endpoint (HTTP via Supabase Testing's pg_net)
+The ACTIVE v1 endpoint was invoked using its first-party publishable key. No review data changed.
+
+| Request | HTTP | Body | Outcome |
+|---|---|---|---|
+| Existing product with <5 approved reviews | 200 | `{"available":false}` | PASS |
+| Product slug with no reviews | 200 | `{"available":false}` | PASS |
+| Invalid slug `../bad` | 400 | `{"error":"INVALID_PRODUCT"}` | PASS |
+| Missing slug | 400 | `{"error":"INVALID_PRODUCT"}` | PASS |
+
+Supabase Testing outbound HTTP request IDs: 31–35. These are real Edge Function responses, not browser stubs.
+
+### Real Dev JavaScript logic with controlled HTTP fixtures
+Fetched the actual `assets/js/pj-product-review.js` from Sauce-Bar-Dev and executed it using mocked DOM elements and `fetch` responses:
+- Four aggregate answers: rendered exactly four ordered cards (Rogue Wave, Stays for Coffee, Snacking, Garlic): PASS.
+- Heat-free answers: rendered exactly food and flavor, no heat cards: PASS.
+- `available:false`: section remains hidden, with zero cards: PASS.
+- Network rejection: section remains hidden, with zero cards: PASS.
+- HTML-like answer text: written via `textContent`, not parsed as HTML: PASS.
+- Mount order Standard → Notes → Share: PASS.
+- Existing Customer Line swipe/dismiss listeners survive: PASS.
+- Existing disallowed product-page review button cleanup survives: PASS.
+- Script selected isolated Supabase Testing on localhost: PASS.
+
+This is a DOM integration harness invoking the **actual** shared Dev script, not a complete product-page browser session.
+
+### Database fixture logic (no persisted synthetic reviews)
+Read-only SQL CTE verified five approved reviews, a pending conflicting review, four approved reviews, ties, and heat-free data. All calculated as expected.
+
+### Outstanding before any Main promotion
+- Test a qualifying `available:true` result from the deployed endpoint using non-customer fixtures in a controlled test-only route/harness; avoid polluting `pj_review_submissions`.
+- Validate a complete product HTML page loaded with its real scripts and CSS on mobile and desktop, including positioning against Share and other page content.
+- **Owner confirmation of the provisional minimum: five approved reviews for each individual product.**
+- Verify CORS, availability errors, and performance in a representative browser session.
+- Review whether the existing read model should use deterministic ordering when paging beyond 500 approved reviews per product.
+
+No changes to Main or Production. Do not claim end-to-end browser or qualifying-live-data acceptance.
