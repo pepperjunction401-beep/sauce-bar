@@ -82,3 +82,18 @@ Read-only SQL CTE verified five approved reviews, a pending conflicting review, 
 - Review whether the existing read model should use deterministic ordering when paging beyond 500 approved reviews per product.
 
 No changes to Main or Production. Do not claim end-to-end browser or qualifying-live-data acceptance.
+
+
+## Owner-approved activation change — November 18, 2026
+
+Owner expressly rejected arbitrary minimums: **one approved customer review per product activates Passenger Notes**. A customer may submit only one questionnaire per product. The `MIN_APPROVED` constant in `supabase/functions/pj-passenger-notes/index.ts` is now **1**, superseding earlier provisional five-review descriptions in this document. No tiers or review-count badges are needed.
+
+### Real Testing Edge Function calls (version 2 and version 3)
+- Before adding a legacy-value guard, version 2 returned HTTP 200 `available:true` for a one-review Testing product, confirming the new threshold. This also surfaced older Testing fixture fields containing numeric `3` where descriptive q10/q12/q13 values belong.
+- A narrow display-only guard was added in Dev: numeric-only answers and `Not Applicable` are excluded from public winners, without rewriting submissions.
+- **Version 3 ACTIVE on Supabase Testing** returned HTTP 200: `{\"available\":true,\"cards\":{\"arrival\":null,\"finish\":null,\"food\":null,\"flavor\":\"smoky\"}}` for a one-approved-review Testing product. The frontend only renders cards with meaningful values, so these legacy placeholders will not display as `3`.
+- A zero-review product returned HTTP 200 `available:false`; malformed slugs returned HTTP 400 `INVALID_PRODUCT`.
+- Actual Testing HTTP request IDs: 36–39. No submitted review or real customer record was created, changed, or removed.
+- **Policy verified**: no minimum beyond one approved review. Tie handling and heat-free exclusions unchanged.
+
+**Remaining:** full rendered product page in an actual browser connected to the Testing function, and a qualifying four-card real HTTP response using genuinely descriptive data. Avoid artificial records in customer-owned tables. Main and Production untouched.
