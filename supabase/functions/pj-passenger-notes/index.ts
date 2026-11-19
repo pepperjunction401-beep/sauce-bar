@@ -4,7 +4,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.83.0";
 
-const MIN_APPROVED = 5;
+const MIN_APPROVED = 1; // Each customer contributes at most one approved review per product.
 const PAGE_SIZE = 500;
 const MAX_PAGES = 100;
 const headers = {
