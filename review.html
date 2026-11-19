@@ -266,7 +266,7 @@
       { id: 'q9', type: 'single',
         prompt: 'Would you purchase this as a gift for someone?', options: ['Yes', 'No'] },
       { id: 'q10', type: 'single',
-        prompt: 'What food style best matches how you used it?', options: D.getFoodStyles() },
+        prompt: 'What style of food did you use this item on?', options: D.getFoodStyles() },
       { id: 'q11', type: 'multi', max: 3,
         prompt: 'Which flavors stood out to you the most?',
         hint: 'Select up to three.', options: flavorOpts },
@@ -289,7 +289,7 @@
       { id: 'q17', type: 'slider',
         prompt: "How accurate was Pepper Junction's description of this item?",
         hint: "1 — Pepper Junction shouldn't quit its day job · 5 — Pepper Junction is a sauce sommelier.",
-        marks: ['1','2','3','4','5'], values: [1,2,3,4,5],
+        marks: ['','','','',''], values: [1,2,3,4,5],
         descriptions: ['Way off', 'A little off', 'Mostly accurate', 'Very accurate', 'Nailed it'] },
       { id: 'q14', type: 'text', limit: 200,
         prompt: 'What food do you love ' + product.name + ' on?' },
@@ -445,6 +445,15 @@
         var hint = document.createElement('p');
         hint.className = 'pjr-q-hint';
         hint.textContent = q.hint;
+        if (q.id === 'q17') {
+          hint.classList.add('pjr-q-hint-accuracy');
+          hint.textContent = '';
+          hint.appendChild(document.createTextNode("1 — Pepper Junction shouldn't quit its day job · "));
+          var endAnchor = document.createElement('span');
+          endAnchor.className = 'pjr-hint-keep-together';
+          endAnchor.textContent = '5 — Pepper Junction is a sauce sommelier.';
+          hint.appendChild(endAnchor);
+        }
         card.appendChild(hint);
       }
 
@@ -515,7 +524,7 @@
             var b = document.createElement('button');
             b.type = 'button';
             b.className = 'pjr-bubble';
-            b.textContent = opt;
+            b.textContent = q.id === 'q10' && opt === 'Snack' ? 'Snacking' : opt;
             b.setAttribute('aria-pressed', 'false');
             b.addEventListener('click', function () {
               if (q.type === 'single') {
