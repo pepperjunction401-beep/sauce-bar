@@ -105,7 +105,13 @@ async function notifyFlaggedReview(
  // The flag is durable even when the mail provider is not configured.
  const apiKey=Deno.env.get("RESEND_API_KEY");
  const from=Deno.env.get("PJ_REVIEW_ALERT_FROM");
- if(!apiKey||!from)return;
+ if(!apiKey||!from){
+  // Never silently describe missing email as delivered; the case remains queued.
+  await admin.from("pj_review_moderation_cases")
+    .update({last_notification_error:"EMAIL_SENDER_NOT_CONFIGURED"})
+    .eq("review_id",reviewId).is("notification_sent_at",null);
+  return;
+ }
  const owner="PassengerReviews@pepperjunction401.com";
  let errorText:string|null=null;
  try {
