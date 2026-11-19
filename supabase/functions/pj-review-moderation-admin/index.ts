@@ -21,7 +21,12 @@ Deno.serve(async(req)=>{
  if(req.method==="OPTIONS")return new Response(null,{status:204,headers:cors});
  if(req.method!=="POST")return reply({error:"METHOD_NOT_ALLOWED"},405);
  const url=Deno.env.get("SUPABASE_URL"),key=secretKey();
- const ownerId=Deno.env.get("PJ_REVIEW_OWNER_USER_ID");
+ // Require exact trusted project and independently verified owner UUID, email and JWT.
+ // Production UUID is an identity selector, not a password or authentication secret.
+ const production=!!url&&new URL(url).hostname==="cdbenwthxhypuuipyjlv.supabase.co";
+ const testing=!!url&&new URL(url).hostname==="slubpfmpjgoupujptayy.supabase.co";
+ const ownerId=production?"60e36cd4-50aa-452e-b1cc-f3060ac32952":
+   testing?Deno.env.get("PJ_REVIEW_OWNER_USER_ID"):undefined;
  // No owner claim can come from client-controlled metadata or caller-supplied IDs.
  if(!ownerId||!url||!key)return reply({error:"OWNER_MODERATION_NOT_CONFIGURED"},503);
  const token=(req.headers.get("authorization")||"").replace(/^Bearer /i,"").trim();
