@@ -65,7 +65,7 @@
  var D={
   loadCatalog:loadCatalog,
   getProduct:function(slug){return products[slug]||null;},
-  getFoodStyles:function(){return uniqueColumn('Food Style');},
+  getFoodStyles:function(){return uniqueColumn('Food Style').filter(function(style){return !['Seasoning','Condiment','Fruit','Vegetable'].includes(style);});},
   getHeatOptions:function(category){
    var i=HEAT_LADDER.indexOf(category);
    if(i<0)return [];
