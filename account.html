@@ -278,6 +278,15 @@
       // Preserve the entry point after authenticated identity matching.
       // A checkout customer returns to the same verified badge reveal;
       // ordinary sign-ins still enter Passenger Station.
+      // Special checkout/review return destinations take priority.
+      // Only ordinary sign-ins use the server-authorized owner junction.
+      if (from !== 'post-payment' && from !== 'board' && from !== 'review') {
+        const signedIn = await auth.verifiedUser();
+        if (signedIn && await auth.isOwnerAuthorized(signedIn)) {
+          location.assign('owner-dashboard.html');
+          return;
+        }
+      }
       location.assign(from === 'post-payment' ? 'post-payment-badges.html' : (from === 'board' || from === 'review') ? safeDestination : auth.destination());
     }
     function normalizeUSPhone(input) {
