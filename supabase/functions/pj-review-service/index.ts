@@ -88,6 +88,9 @@ function reviewFlag(raw: string): string|null {
  if(/(?:https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|net|org|io|co|biz|info)\b)/i.test(content))return "LINK";
  if(/(?:\+?\d[\d ().-]{8,}\d)/.test(content))return "PHONE";
  if(/[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?~\/]{2,}/.test(content))return "REPEATED_SYMBOLS";
+ // Allow the full legitimate product name, but not standalone vulgar terms.
+ const withoutProductName=content.replace(/\bDirty Dick['’]?s Hot Tropical Hot Sauce\b/gi,"");
+ if(/\bdicks?\b/i.test(withoutProductName))return "ABUSIVE_LANGUAGE";
  if(/\b(?:fuck(?:ing|ed|er)?|shit(?:ty)?|bitch(?:es)?|cunt|asshole|motherfucker|faggot|nigger)\b/i.test(content))return "ABUSIVE_LANGUAGE";
  if(/\b(?:i(?:'m| am) going to (?:kill|hurt|attack)|kill yourself|i will (?:kill|hurt|attack)|death threat)\b/i.test(content))return "THREAT";
  if(/\b(?:porn|nudes?|explicit sex|sexual intercourse)\b/i.test(content))return "SEXUAL_CONTENT";
