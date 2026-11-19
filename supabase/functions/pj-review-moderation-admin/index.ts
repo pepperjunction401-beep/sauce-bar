@@ -39,18 +39,19 @@ Deno.serve(async(req)=>{
  const payload=await req.json().catch(()=>null);
  if(!payload||typeof payload!=="object")return reply({error:"BAD_REQUEST"},400);
  if(payload.action==="queue"){
+  const emailConfigured=!!Deno.env.get("RESEND_API_KEY")&&!!Deno.env.get("PJ_REVIEW_ALERT_FROM");
   // Unresolved first: historical decisions must never crowd out new flags.
   const {data:reviews,error:reviewError}=await admin.from("pj_review_submissions")
    .select("id,product_slug_snapshot,q14_original,q15_original,submitted_at")
    .eq("moderation_status","frozen").order("submitted_at",{ascending:true}).limit(100);
   if(reviewError)return reply({error:"QUEUE_UNAVAILABLE"},503);
-  if(!reviews?.length)return reply({cases:[]});
+  if(!reviews?.length)return reply({cases:[],emailConfigured});
   const {data:cases,error:caseError}=await admin.from("pj_review_moderation_cases")
    .select("review_id,reason,notification_sent_at,last_notification_error")
    .in("review_id",reviews.map(r=>r.id));
   if(caseError)return reply({error:"QUEUE_UNAVAILABLE"},503);
   const caseById=new Map((cases||[]).map(c=>[c.review_id,c]));
-  return reply({cases:reviews.map(r=>{
+  return reply({emailConfigured,cases:reviews.map(r=>{
    const c=caseById.get(r.id);
    return {id:r.id,productSlug:r.product_slug_snapshot,submittedAt:r.submitted_at,
     reason:c?.reason||"CONTENT_FLAGGED",
