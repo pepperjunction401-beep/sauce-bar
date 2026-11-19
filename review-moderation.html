@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pepper Junction — Owner Review Moderation</title>
+<meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="assets/css/pj-review.css">
 <style>
 body{background:#14241a;color:#f6eedc;font-family:Arial,sans-serif}
@@ -24,6 +25,7 @@ small{color:#574734}
 <h1>Flagged Passenger Reviews</h1>
 <p>Private owner moderation. Clean reviews are automatically approved. Only flagged submissions appear here.</p>
 <p id="status" role="status" aria-live="polite">Verifying owner access…</p>
+<p id="signin-help" hidden><a href="account.html">Sign in to your Pepper Junction owner account</a>, then reopen this moderation page in the same browser tab.</p>
 <section id="cases" aria-label="Flagged reviews"></section>
 <button id="reload" type="button" hidden>Refresh flagged reviews</button>
 </main>
@@ -78,7 +80,7 @@ async function load(){
    });
    card.appendChild(actions);list.appendChild(card);
   });
- } catch {status.textContent='Access denied or moderation service not configured. Sign in with the authorized owner account.';}
+ } catch {status.textContent='Access denied or moderation service not configured.';document.getElementById('signin-help').hidden=false;}
 }
 reload.onclick=load;load();
 })();
