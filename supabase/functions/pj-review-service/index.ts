@@ -106,7 +106,7 @@ async function notifyFlaggedReview(
  const apiKey=Deno.env.get("RESEND_API_KEY");
  const from=Deno.env.get("PJ_REVIEW_ALERT_FROM");
  if(!apiKey||!from)return;
- const owner="john@pepperjunction401.com";
+ const owner="PassengerReviews@pepperjunction401.com";
  let errorText:string|null=null;
  try {
   const response=await fetch("https://api.resend.com/emails",{
