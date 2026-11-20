@@ -1,41 +1,122 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><title>Pepper Junction — Owner Control Room</title>
-<link rel="stylesheet" href="assets/css/pj-review.css">
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Pepper Junction — Head Pepper Control Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-body{background:#14241a;color:#f6eedc;font-family:Arial,sans-serif;margin:0}#owner-transfers[hidden]{display:none!important}
-main{max-width:1100px;margin:35px auto;padding:0 18px 56px}
-h1{font:normal clamp(28px,4vw,42px) Georgia,serif;color:#f6e8c8}
-p{line-height:1.55}a{color:#e7cf84}
-#status{border:1px solid #9b814a;border-radius:8px;padding:13px;margin:18px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:14px}
-.tile{border:1px solid #bd9a5e;background:#20392a;border-radius:9px;padding:16px}
-.value{font-size:32px;font-weight:bold;margin:8px 0}
-small{color:#d4c6a5}.subheading{margin-top:32px}
-table{border-collapse:collapse;width:100%;margin-top:12px}th,td{padding:12px 8px;text-align:left;border-bottom:1px solid #63725e;overflow-wrap:anywhere}
-th{color:#e7cf84}button{padding:10px 16px;background:#e7cf84;border:0;border-radius:6px;color:#14241a;cursor:pointer;font-weight:bold}
-button:disabled{opacity:.55}.muted{color:#cfc6af}
-@media(max-width:600px){th,td{font-size:13px;padding:10px 5px}}
-</style></head><body>
-<main><p><a href="main.html">Pepper Junction Home</a></p>
-<nav id="owner-transfers" aria-label="Owner transfer controls" hidden style="display:flex;flex-wrap:wrap;gap:10px;margin:14px 0">
- <a href="passenger-station.html" style="display:inline-block;padding:11px 16px;border:1px solid #bd9a5e;border-radius:6px;background:#355e3b;color:#fff5df;text-decoration:none;font-weight:700">Visit Passenger Station</a>
-</nav>
-<h1>Owner Control Room</h1><p>Private business overview. Registrations update when you refresh; no registration emails are sent by this page.</p>
-<div id="status" role="status" aria-live="polite">Checking owner authorization…</div>
-<p id="signin" hidden>Use your existing Pepper Junction account to sign in: <a href="account.html?return=station">Account sign-in</a>. Then return to this page in the same tab.</p>
-<section id="dashboard" hidden>
- <button id="refresh" type="button">Refresh dashboard</button>
- <p id="updated" class="muted"></p>
- <div class="grid" aria-label="Registration and moderation summary">
-  <article class="tile"><strong>Registered passengers</strong><div id="registered" class="value">—</div><small>Supabase Auth accounts</small></article>
-  <article class="tile"><strong>Verified passengers</strong><div id="verified" class="value">—</div><small>Email-confirmed accounts</small></article>
-  <article class="tile"><strong>Flagged reviews</strong><div id="flagged" class="value">—</div><small>Frozen submissions awaiting owner decision</small><p><a href="review-moderation.html">Open private moderation queue</a></p></article>
- </div>
- <h2 class="subheading">Recent registrations</h2>
- <p class="muted">For owner use only. Most recent 20 registered accounts.</p>
- <table><thead><tr><th>Registered</th><th>Email</th><th>Verification</th></tr></thead><tbody id="recent"></tbody></table>
+:root{--pine:#101d16;--green:#1e3426;--green2:#284833;--cream:#f8ecd1;--gold:#e6bf69;--brass:#aa8544;--burgundy:#671f22;--muted:#cbbf9f;--line:rgba(226,183,103,.38)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#38503a 0,#1b2e22 34%,#0c1510 88%);color:var(--cream);font:15px/1.5 'Josefin Sans',Arial,sans-serif}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}
+[hidden]{display:none!important}
+.topline{height:7px;background:repeating-linear-gradient(90deg,#ae8543 0 38px,#6e2726 38px 45px,#dec27b 45px 80px)}
+.sitebar{border-bottom:1px solid var(--line);background:rgba(8,17,12,.83)}
+.sitebar-inner{max-width:1230px;padding:14px 24px;margin:auto;display:flex;gap:18px;justify-content:space-between;align-items:center}
+.brand{font:700 17px 'Playfair Display',Georgia,serif;letter-spacing:.07em;text-decoration:none;color:var(--cream)}
+.brand span{display:block;font:700 9px 'Josefin Sans',sans-serif;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-top:2px}
+.sitebar-actions{display:flex;gap:12px;flex-wrap:wrap}
+.sitebar-actions a{font-size:12px;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--brass)}
+.shell{width:min(1230px,calc(100% - 36px));margin:auto;padding-bottom:75px}
+.hero{position:relative;overflow:hidden;padding:53px clamp(20px,5vw,65px) 42px;margin-top:28px;text-align:center;background:linear-gradient(120deg,rgba(89,20,28,.93),rgba(65,17,22,.97) 48%,rgba(90,29,31,.93));border:2px solid var(--gold);box-shadow:inset 0 0 0 5px rgba(12,19,12,.5),0 24px 45px #0007}
+.hero:before,.hero:after{content:'';position:absolute;top:22px;bottom:22px;width:22px;border-left:2px solid #c9a057;border-right:2px solid #c9a057;opacity:.5}
+.hero:before{left:17px}.hero:after{right:17px}
+.kicker{font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:#f0cf8f;font-weight:700}
+.hero h1{font:700 clamp(38px,6vw,74px)/1.05 'Playfair Display',Georgia,serif;letter-spacing:.015em;margin:12px 0 10px;text-shadow:0 4px 10px #170807}
+.hero p{font-size:14px;margin:0 auto;max-width:650px;color:#f2d9ac}
+.track{display:flex;align-items:center;gap:12px;justify-content:center;margin:25px auto 0;max-width:600px;color:#eed298}
+.track:before,.track:after{content:'';height:2px;flex:1;background:repeating-linear-gradient(90deg,#d2ad68 0 24px,transparent 24px 30px)}
+.medallion{border:2px solid #ecd18a;border-radius:50%;display:grid;place-items:center;width:53px;height:53px;background:#23412f;color:#edc77a;font:700 23px Georgia,serif;box-shadow:0 0 0 5px #2c1b17}
+.status{margin:22px 0;padding:14px 17px;border:1px solid var(--line);background:rgba(9,17,12,.74);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.status p{margin:0}
+.status .signal{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px #e6bf6966;margin-right:9px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin:29px 0 15px}
+.section-head h2{font:700 clamp(25px,3vw,33px) 'Playfair Display',Georgia,serif;margin:0}
+.section-head p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.eyebrow{margin:0 0 5px;color:var(--gold);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.28em}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:45px;padding:12px 18px;border:1px solid #d5ac60;text-decoration:none;background:#264231;color:var(--cream);font-size:12px;font-weight:700;letter-spacing:.04em}
+.btn:hover,.department a:hover{background:#365c40}
+.btn:focus-visible,.department a:focus-visible,button:focus-visible,.sitebar a:focus-visible{outline:3px solid #fff4ce;outline-offset:3px}
+.btn.primary{background:#e2bf77;color:#1d2216}
+.btn.primary:hover{background:#f1d595}
+#owner-transfers{display:flex;gap:10px;flex-wrap:wrap}
+.overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.metric{padding:22px 23px;min-height:158px;border:1px solid var(--line);background:linear-gradient(145deg,#2a4531,#182d20);box-shadow:0 9px 18px #0003}
+.metric .label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.13em;color:#e4cd9a;font-weight:700}
+.metric .value{font:700 54px/1.2 'Playfair Display',Georgia,serif;color:#fff1cf;display:block;margin-top:9px}
+.metric small{color:#c9c0a8;font-size:12px}
+.metric.alert{background:linear-gradient(140deg,#59302a,#311d20);border-color:#d7a35a}
+.departments{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.department{position:relative;background:#1a3023;border:1px solid var(--line);padding:25px;min-height:193px;overflow:hidden}
+.department:before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--gold)}
+.department .number{font:700 12px Georgia,serif;color:var(--gold);letter-spacing:.18em}
+.department h3{margin:11px 0 7px;font:700 24px 'Playfair Display',Georgia,serif}
+.department p{margin:0 0 20px;color:#d3c8ad;line-height:1.55;font-size:13px}
+.department a{display:inline-flex;align-items:center;justify-content:center;border:1px solid #c3a161;padding:10px 15px;text-decoration:none;font-weight:700;font-size:12px;background:#294835}
+.department.pending{opacity:.74}
+.department.pending:before{background:#75634a}
+.department .notice{display:inline-block;color:#e0c18c;border:1px dashed #8c734d;padding:8px 12px;font-size:12px}
+.registry{border:1px solid var(--line);background:rgba(8,20,14,.8);overflow:hidden}
+.registry-intro{padding:18px 20px;border-bottom:1px solid var(--line);color:#d2c7b1;font-size:13px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:590px}
+th,td{padding:14px 18px;text-align:left;border-bottom:1px solid rgba(213,172,96,.19);overflow-wrap:anywhere}
+th{background:#243b2b;color:#e5cb96;text-transform:uppercase;letter-spacing:.13em;font-size:11px}
+td{font-size:13px}
+tr:last-child td{border-bottom:none}
+mark{background:transparent;color:#f0d596;font-weight:700}
+mark.verified{color:#9dddba}
+.footer{margin-top:32px;text-align:center;color:#b1a588;font-size:11px;letter-spacing:.15em;text-transform:uppercase}
+@media(max-width:720px){.sitebar-inner{align-items:start;flex-direction:column}.hero{padding:37px 30px}.hero:before,.hero:after{display:none}.overview{grid-template-columns:1fr 1fr}.metric.alert{grid-column:1/-1}.departments{grid-template-columns:1fr}.metric{min-height:135px}.metric .value{font-size:42px}}
+@media(max-width:430px){.overview{grid-template-columns:1fr}.metric.alert{grid-column:auto}.section-head{align-items:start}.hero h1{font-size:37px}}
+</style>
+</head>
+<body>
+<div class="topline" aria-hidden="true"></div>
+<header class="sitebar"><div class="sitebar-inner">
+<a class="brand" href="main.html">PEPPER JUNCTION<span>Head Pepper · Private Dispatch</span></a>
+<div class="sitebar-actions"><a href="main.html">Return to Storefront</a></div>
+</div></header>
+<main class="shell">
+<section class="hero" aria-labelledby="page-title">
+<div class="kicker">Private Operations · Dispatch Office</div>
+<h1 id="page-title">Owner Control Room</h1>
+<p>Welcome aboard, Head Pepper. Your railroad, your passengers, your command.</p>
+<div class="track" aria-hidden="true"><span class="medallion">PJ</span></div>
 </section>
+<div class="status" id="status" role="status" aria-live="polite"><p><span class="signal" aria-hidden="true"></span>Verifying owner authorization…</p></div>
+<p id="signin" hidden>Owner session required. <a href="account.html?return=station">Sign in with your existing Pepper Junction account</a>, then return to this page.</p>
+<section id="dashboard" hidden aria-label="Private owner operations">
+<div class="section-head"><div><div class="eyebrow">Transfer Platform</div><h2>Your Junction</h2><p>Switch stations without signing in again.</p></div>
+<nav id="owner-transfers" aria-label="Owner transfer controls"><a class="btn primary" href="passenger-station.html">Visit Passenger Station</a><a class="btn" href="review-moderation.html">Review Queue</a></nav>
+</div>
+<div class="section-head"><div><div class="eyebrow">Live Signal Board</div><h2>Railroad at a Glance</h2><p>Verified figures from the existing owner dashboard service.</p></div><button class="btn" id="refresh" type="button">Refresh Figures</button></div>
+<div class="overview" aria-label="Registration and review statistics">
+<article class="metric"><span class="label">Registered Passengers</span><strong class="value" id="registered">—</strong><small>Accounts created, including unverified signups</small></article>
+<article class="metric"><span class="label">Verified Passengers</span><strong class="value" id="verified">—</strong><small>Email-confirmed accounts</small></article>
+<article class="metric alert"><span class="label">Flagged Reviews</span><strong class="value" id="flagged">—</strong><small>Submissions held for owner decision</small></article>
+</div>
+<p id="updated" class="footer"></p>
+<div class="section-head"><div><div class="eyebrow">Departments</div><h2>Dispatch Desks</h2><p>Only operational destinations are linked. Future departments remain closed.</p></div></div>
+<div class="departments" aria-label="Control Room departments">
+<article class="department"><div class="number">DESK 01 · OPERATING</div><h3>Review Moderation</h3><p>Automatic approvals continue as normal. Inspect and resolve only flagged submissions.</p><a href="review-moderation.html">Open Review Queue</a></article>
+<article class="department"><div class="number">DESK 02 · OPERATING</div><h3>Passenger Station</h3><p>Visit your own Board and Badge Depot, then return to headquarters through the owner transfer.</p><a href="passenger-station.html">Enter Passenger Station</a></article>
+<article class="department pending"><div class="number">DESK 03 · RESERVED</div><h3>Badge Command Center</h3><p>Future badge administration will connect to existing authoritative systems, not replace them.</p><span class="notice">Not connected yet</span></article>
+<article class="department pending"><div class="number">DESK 04 · PROTECTED</div><h3>Loyalty Bridge &amp; PJ Credits</h3><p>Reserved for the separately developed loyalty system. No controls are active here.</p><span class="notice">Awaiting separately approved integration</span></article>
+</div>
+<div class="section-head"><div><div class="eyebrow">Passenger Manifest</div><h2>Recent Registrations</h2><p>Registrations are not proof of purchases or genuine customer activity.</p></div></div>
+<section class="registry" aria-label="Recent registered accounts">
+<div class="registry-intro">Most recent 20 accounts from Supabase Auth. Only owner-authorized sessions can load this information. Verification reflects confirmed email status.</div>
+<div class="table-wrap"><table><thead><tr><th scope="col">Registered</th><th scope="col">Email</th><th scope="col">Verification</th></tr></thead><tbody id="recent"></tbody></table></div>
+</section>
+</section>
+<footer class="footer">Pepper Junction · Head Pepper Dispatch · Private Operations</footer>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="assets/js/pj-auth.js"></script>
@@ -48,7 +129,7 @@ var refresh=document.getElementById('refresh');
 function put(id,value){document.getElementById(id).textContent=String(value);}
 function el(tag,value){var n=document.createElement(tag);n.textContent=value;return n;}
 async function load(){
- dashboard.hidden=true;signin.hidden=true;document.getElementById('owner-transfers').hidden=true;refresh.disabled=true;status.textContent='Verifying owner authorization…';
+ dashboard.hidden=true;signin.hidden=true;refresh.disabled=true;status.textContent='Verifying owner authorization…';
  try{
   if(!client)throw Error('NO_CLIENT');
   var session=await client.auth.getSession();
@@ -60,17 +141,18 @@ async function load(){
   put('registered',data.registeredCount);
   put('verified',data.verifiedCount);
   put('flagged',data.flaggedCount);
-  put('updated','Updated '+new Date(data.asOf).toLocaleString()+(data.complete?'':' — Count may be incomplete'));
+  put('updated','Last dispatch update · '+new Date(data.asOf).toLocaleString()+(data.complete?'':' · Count may be incomplete'));
   var rows=document.getElementById('recent');rows.replaceChildren();
   (Array.isArray(data.recent)?data.recent:[]).forEach(function(u){
    var tr=document.createElement('tr');
    tr.appendChild(el('td',new Date(u.createdAt).toLocaleString()));
    tr.appendChild(el('td',u.email||'Not supplied'));
-   tr.appendChild(el('td',u.verified?'Verified':'Unverified'));
-   rows.appendChild(tr);
+   var td=document.createElement('td');var mark=el('mark',u.verified?'Verified':'Unverified');
+   if(u.verified)mark.className='verified';td.appendChild(mark);tr.appendChild(td);rows.appendChild(tr);
   });
-  dashboard.hidden=false;document.getElementById('owner-transfers').hidden=false;status.textContent='Owner access verified. Dashboard loaded.';
- }catch(e){status.textContent=e&&e.message==='SIGN_IN_REQUIRED'?'Sign in with your existing Pepper Junction owner account.':'Dashboard access denied or owner service unavailable.';signin.hidden=e&&e.message!=='SIGN_IN_REQUIRED';}
+  dashboard.hidden=false;
+  status.textContent='Dispatch online · Owner authorization confirmed · Data loaded.';
+ }catch(e){status.textContent=e&&e.message==='SIGN_IN_REQUIRED'?'Owner sign-in required.':'Dashboard access denied or owner service unavailable.';signin.hidden=e&&e.message!=='SIGN_IN_REQUIRED';}
  finally{refresh.disabled=false;}
 }
 refresh.addEventListener('click',load);load();
