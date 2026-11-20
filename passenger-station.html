@@ -5199,7 +5199,9 @@ document.addEventListener('click',function(event){
       auth.client.rpc('pj_passenger_my_tokens'),
       auth.client.rpc('pj_milestone_my_awards'),
       auth.client.rpc('pj_loyalty_my_collection'),
-      auth.client.rpc('pj_state_my_collection')
+      auth.client.rpc('pj_state_my_collection'),
+      // Review Badge Phase 3 permanent awards; customer-only RLS read.
+      auth.client.from('pj_review_badge_awards').select('tier').eq('customer_id',user.id)
     ];
     Promise.all(sections).then(function(results){
       // An optional family may not yet exist in the active Supabase project.
@@ -5239,6 +5241,13 @@ document.addEventListener('click',function(event){
       const milestoneAwards=results[10]&&!results[10].error?(results[10].data||[]):[];
       // G9: authenticated read-only State projection; no browser award evaluation.
       // Missing projection leaves State cards locked, without affecting other families.
+      // Review Badges are one-time lifetime tiers. Missing/failed projection
+      // leaves all review cards locked and all Easter Egg art concealed.
+      const reviewResult=results[13];
+      const reviewTiers=new Set(reviewResult&&!reviewResult.error?(reviewResult.data||[])
+        .map(function(a){return Number(a.tier);})
+        .filter(function(t){return Number.isSafeInteger(t)&&t>=1&&t<=12;}):[]);
+      if(reviewResult&&reviewResult.error)console.warn('Review Badge awards unavailable',reviewResult.error);
       const stateResult=results[12];
       const stateCollection=stateResult&&!stateResult.error?stateResult.data:null;
       const stateReady=!!(stateCollection&&stateCollection.status==='verified'&&
@@ -5364,6 +5373,40 @@ document.addEventListener('click',function(event){
           card.dataset.pjState='0';
           if(sectionId==='secret'||card.classList.contains('secret')){
             card.hidden=true; // no secret hints or placeholders before verified earned state
+          }
+          if(sectionId==='reviews'){
+            // Only verified permanent Phase 3 awards unlock the review ladder.
+            const reviewCards=Array.from(section.querySelectorAll('.badge-grid > .badge-card'));
+            const tier=reviewCards.indexOf(card)+1;
+            const isEarned=reviewTiers.has(tier);
+            card.classList.toggle('unearned',!isEarned);
+            if(isEarned)card.removeAttribute('aria-disabled');
+            else card.setAttribute('aria-disabled','true');
+            const hint=card.querySelector('.depot-unlock');
+            if(hint)hint.hidden=isEarned;
+            if(tier>=10&&tier<=12){
+              // The final three pictures are spoilers. Never mount an image
+              // element or asset URL before an earned-only RLS result exists.
+              const secretFile={10:'badge-reporter.png',11:'badge-journalist.png',12:'badge-anchorman.png'}[tier];
+              const info=card.querySelector('.badge-info');
+              let cover=card.querySelector('.pj-review-secret-cover');
+              if(!cover&&info){
+                cover=info.previousElementSibling;
+                if(cover&&!cover.matches('img'))cover.classList.add('pj-review-secret-cover');
+                else cover=null;
+              }
+              if(cover)cover.hidden=isEarned;
+              let secretImg=card.querySelector('.pj-review-secret-art');
+              if(isEarned&&info){
+                if(!secretImg){
+                  secretImg=doc.createElement('img');
+                  secretImg.className='badge-img pj-review-secret-art';
+                  secretImg.alt=card.querySelector('.badge-name')?.textContent||'Earned Review Badge';
+                  info.insertAdjacentElement('beforebegin',secretImg);
+                }
+                secretImg.src='assets/badges/reviews/'+secretFile;
+              }else if(secretImg)secretImg.remove();
+            }
           }
           if(sectionId==='states'){
             const level=stateReady?(stateLevels.get(asset)||0):0;
