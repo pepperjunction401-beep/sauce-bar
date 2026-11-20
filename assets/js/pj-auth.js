@@ -41,6 +41,25 @@
     var u = response.data.user;
     return u.email && u.email_confirmed_at ? u : null;
   }
+  // Owner routing is strictly a navigation hint. Server-enforced owner access
+  // remains inside pj-owner-dashboard and pj-review-moderation-admin.
+  // Email is an optimization only; it never grants an owner privilege.
+  async function isOwnerAuthorized(verified) {
+    if (!api || !verified || !verified.id ||
+        String(verified.email || '').toLowerCase() !== 'john@pepperjunction401.com') return false;
+    try {
+      var session = await api.auth.getSession();
+      var token = session.data && session.data.session && session.data.session.access_token;
+      if (session.error || !token) return false;
+      var result = await api.functions.invoke('pj-owner-dashboard', {
+        body: {action:'summary'}, headers: {Authorization:'Bearer '+token}
+      });
+      return !result.error && !!result.data && result.data.ok === true;
+    } catch (_) {
+      // Never infer owner privileges from browser identity or failed requests.
+      return false;
+    }
+  }
   function destination() { return 'passenger-station.html'; }
   function loginLocation() { return 'account.html?return=station'; }
   window.PJAuth = Object.freeze({
@@ -48,6 +67,7 @@
     firstParty: firstParty,
     enabled: !!api,
     verifiedUser: verifiedUser,
+    isOwnerAuthorized: isOwnerAuthorized,
     destination: destination,
     loginLocation: loginLocation,
     signOut: async function () {
