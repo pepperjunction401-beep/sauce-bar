@@ -5159,6 +5159,20 @@ document.addEventListener('click',function(event){
   auth.verifiedUser().then(function(user) {
     if (!user) {location.replace(location.hash === '#board' ? boardSignInDestination() : auth.loginLocation());return;}
     document.body.hidden = false;
+    // Show the return junction only after existing server-side owner authorization.
+    // This link provides navigation, never administrative permissions.
+    auth.isOwnerAuthorized(user).then(function(allowed){
+      if (!allowed) return;
+      const header=document.querySelector('.station-header');
+      if (!header || document.getElementById('pj-owner-return')) return;
+      const link=document.createElement('a');
+      link.id='pj-owner-return';
+      link.href='owner-dashboard.html';
+      link.textContent='Return to Control Room';
+      link.setAttribute('aria-label','Return to Head Pepper Control Room');
+      link.style.cssText='display:inline-block;margin:12px 8px 0;padding:10px 14px;border:2px solid #F3CA68;border-radius:6px;background:#355E3B;color:#F5E6C8;font:700 12px Josefin Sans,Arial,sans-serif;text-decoration:none';
+      header.appendChild(link);
+    }).catch(function(){/* Owner shortcut stays hidden if verification fails. */});
     if(window.PJReviewBoardLive)window.PJReviewBoardLive.mount();
 
     // Depot presentation adapter: original Command Center artwork and interactions
