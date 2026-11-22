@@ -5506,22 +5506,21 @@ document.addEventListener('click',function(event){
           note.className='pj-loyalty-readonly-state';
           note.style.cssText='margin:12px 14px;color:#f1d5a2;font:12px/1.5 Josefin Sans,Arial,sans-serif';
           note.textContent=loyaltyReady
-            ? 'Bridge availability reflects your current verified PJ Credits balance. Reward exchanges are not active yet.'
+            ? 'Bridge availability reflects your current verified PJ Credits balance.'
             : (loyaltyData&&loyaltyData.status==='prelaunch_locked'
               ? 'Loyalty Bridge is awaiting its coordinated launch. Historical member balances are being prepared; tokens and exchanges remain locked.'
               : 'Bridge availability is locked until your verified account and wallet can be confirmed.');
           const header=loyaltySection.querySelector('.category-header');
           if(header)header.insertAdjacentElement('afterend',note);
-          // Only isolated Testing may expose the new checkout controls until
-          // the owner separately authorizes the coordinated Production launch.
+          // The authenticated quote enforces the existing coordinated launch gates.
+          // Each selected reward is re-quoted by the existing cart and checkout.
           const oldControls=loyaltySection.querySelector('.pj-loyalty-exchange-controls');
           if(oldControls)oldControls.remove();
-          const localLoyalty=location.hostname==='localhost'||location.hostname==='127.0.0.1';
           const qualified=loyaltyReady?loyaltyCards.map(function(card,i){
             const r=rows.get(i+1);
             return r&&r.balance_qualified===true?{card:card,number:i+1}:null;
           }).filter(Boolean):[];
-          if(localLoyalty&&qualified.length&&window.PJCart&&window.PJCart.selectLoyaltyReward){
+          if(qualified.length&&window.PJCart&&window.PJCart.selectLoyaltyReward){
             const controls=doc.createElement('div');
             controls.className='pj-loyalty-exchange-controls';
             controls.style.cssText='margin:12px 14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:#f1d5a2';
@@ -5548,8 +5547,12 @@ document.addEventListener('click',function(event){
               }
             });
             controls.append(select,button,status);
-            note.insertAdjacentElement('afterend',controls);
-            note.textContent='Choose an available bridge reward for your cart. Credits are deducted only after verified payment.';
+            auth.client.rpc('pj_loyalty_my_exchange_quote',{p_token_number:qualified[0].number}).then(function(result){
+              const q=result&&!result.error&&result.data;
+              if(!note.isConnected||!q||q.status!=='qualifies'||q.token_number!==qualified[0].number)return;
+              note.insertAdjacentElement('afterend',controls);
+              note.textContent='Choose an available bridge reward for your cart. Credits are deducted only after verified payment.';
+            }).catch(function(){/* Server quote unavailable: keep exchange controls hidden. */});
           }
         }
         // Year navigation preserves the original art with edition-specific earned state.
