@@ -14,7 +14,8 @@
   fetch(base+'checkout-order-confirmed',{
     method:'POST',headers:{'Content-Type':'application/json'},credentials:'omit',cache:'no-store',
     body:JSON.stringify({square_order_id:pending.order_id,
-      reward_row_number:pending.reward_row_number||null})
+      reward_row_number:pending.reward_row_number||null,
+      loyalty_token_number:pending.loyalty_token_number||null})
   }).then(function(r){if(!r.ok)throw Error('Not confirmed');return r.json();})
   .then(function(data){
     if(!data.confirmed) return false;
@@ -37,6 +38,6 @@
     }
   }).catch(function(error){
     // Never auto-redeem or clear the cart on an unconfirmed purchase.
-    if(pending.reward_row_number) console.warn('Review Board order confirmation pending:',error);
+    if(pending.reward_row_number||pending.loyalty_token_number) console.warn('Reward order confirmation pending:',error);
   });
 })();
