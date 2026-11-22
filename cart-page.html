@@ -183,11 +183,10 @@
 <script src="assets/js/cart-drawer.js"></script>
 <!-- Square cart pricing helper loads with cart page scripts. -->
 <script src="assets/js/cart-page.js"></script>
-<!-- Loyalty Bridge uses the existing cart and verified sign-in, only in Testing. -->
+<!-- Loyalty Bridge uses the existing cart and verified sign-in in the matching environment. -->
 <script>
 (function(){
   if(!window.PJCart||!window.PJCart.getLoyaltyReward())return;
-  if(location.hostname!=='localhost'&&location.hostname!=='127.0.0.1')return;
   var button=document.getElementById('pj-cart-page-checkout');
   if(button){button.disabled=true;button.hidden=true;}
   var notice=document.createElement('p');notice.setAttribute('role','status');
