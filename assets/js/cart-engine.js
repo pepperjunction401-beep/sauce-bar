@@ -116,6 +116,7 @@
     if (!Number.isInteger(row) || row < 1 || !/^[a-z0-9][a-z0-9-]*$/.test(slug))
       throw new Error('A server-verified Review Board selection is required.');
     var cart = readCart();
+    if (cart.loyalty_reward) throw new Error('Remove the Loyalty Bridge selection before adding a Review Board reward.');
     var existingReward = cart.items.find(isReviewReward);
     // Preserve the cart snapshot across Square's return redirect for verified
     // redemption. Re-adding an unchanged reward must not mutate the paid order.
@@ -183,6 +184,8 @@
     if (!product && !discount)
       throw new Error('Loyalty Bridge reward definition is unavailable.');
     var cart = readCart();
+    if (!localDev) throw new Error('Loyalty Bridge checkout is not active yet.');
+    if (cart.items.some(isReviewReward)) throw new Error('Remove the Review Board reward before selecting a Loyalty Bridge reward.');
     cart.loyalty_reward = {
       token_number: token,
       tier_cost: q.tier_cost,
@@ -1049,12 +1052,12 @@
     // Local Dev is routed to the isolated Testing Sandbox, never Production.
     var summary = getCartSummary();
     var reward = getReviewReward();
-    // Fail closed during the coordinated integration: never open a payment
-    // link that omits a customer's selected Loyalty reward.
-    if (summary.loyalty_reward) {
-      return Promise.reject(new Error('Loyalty Bridge checkout is not active yet. Remove the selection to continue without it.'));
+    var loyalty = summary.loyalty_reward;
+    if (loyalty && (!localDev || reward || !Number.isInteger(loyalty.token_number) ||
+        loyalty.token_number < 1 || loyalty.token_number > 15)) {
+      return Promise.reject(new Error('Loyalty Bridge selection is not available for this checkout.'));
     }
-    if (reward && !summary.paid_item_count) {
+    if ((reward || loyalty) && !summary.paid_item_count) {
       return Promise.reject(new Error('A paid item is required to redeem a reward.'));
     }
 
@@ -1094,23 +1097,26 @@
     // The user's session only enables a server verification. It cannot
     // authorize a discount or change Square prices.
     var authorize = Promise.resolve(null);
-    if (reward) {
+    if (reward || loyalty) {
       var auth = window.PJAuth;
-      if (!auth || !auth.enabled || !auth.client)
-        return Promise.reject(new Error('Sign in to redeem your Review Board reward.'));
+      if (!auth || !auth.enabled || !auth.client) {
+        checkoutInFlight = false;
+        return Promise.reject(new Error('Sign in to redeem your reward.'));
+      }
       authorize = auth.verifiedUser().then(function(user) {
-        if (!user) throw new Error('Sign in to redeem your Review Board reward.');
+        if (!user) throw new Error('Sign in to redeem your reward.');
         return auth.client.auth.getSession();
       }).then(function(result) {
         var token = result && result.data && result.data.session &&
           result.data.session.access_token;
-        if (!token) throw new Error('Review Board session expired. Please sign in again.');
+        if (!token) throw new Error('Reward session expired. Please sign in again.');
         return token;
       });
-      payload.review_reward = {
+      if (reward) payload.review_reward = {
         row_number: reward.reward_row_number,
         selected_product_slug: reward.reward_product_slug
       };
+      if (loyalty) payload.loyalty_reward = {token_number:loyalty.token_number};
     }
 
     return authorize.then(function(token) { return fetch(CHECKOUT_ENDPOINT, {
@@ -1146,7 +1152,8 @@
             sessionStorage.setItem('pj_checkout_pending', JSON.stringify({
               order_id: data.square_order_id,
               cart_snapshot: sessionStorage.getItem(CART_KEY),
-              reward_row_number: reward ? reward.reward_row_number : null
+              reward_row_number: reward ? reward.reward_row_number : null,
+              loyalty_token_number: loyalty ? loyalty.token_number : null
             }));
           }
         } catch (_) {}
