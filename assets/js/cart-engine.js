@@ -143,6 +143,57 @@
     return readCart().items.find(isReviewReward) || null;
   }
 
+  // Loyalty Bridge selection lives in the existing session cart, not in a
+  // reservation, wallet debit, payment link, or second checkout.
+  function getLoyaltyReward() {
+    return readCart().loyalty_reward || null;
+  }
+
+  function clearLoyaltyReward() {
+    var cart = readCart();
+    delete cart.loyalty_reward;
+    writeCart(cart);
+    return getCartSummary();
+  }
+
+  async function selectLoyaltyReward(tokenNumber) {
+    var token = Number(tokenNumber);
+    if (!Number.isInteger(token) || token < 1 || token > 15)
+      throw new Error('Invalid Loyalty Bridge token.');
+    var auth = window.PJAuth;
+    if (!auth || !auth.enabled || !auth.client || !await auth.verifiedUser())
+      throw new Error('Sign in to select a Loyalty Bridge reward.');
+    var result = await auth.client.rpc('pj_loyalty_my_exchange_quote', {
+      p_token_number: token
+    });
+    var q = result && !result.error && result.data;
+    // The authenticated server owns eligibility, cost and reward definition.
+    // A quote is not a redemption and cannot debit PJ Credits.
+    if (!q || q.status !== 'qualifies' || q.token_number !== token ||
+        !Number.isInteger(q.tier_cost) || q.tier_cost < 1 ||
+        q.tier_cost > 275 || !Number.isInteger(q.current_credits) ||
+        q.current_credits < q.tier_cost || q.current_credits > 275)
+      throw new Error('This Loyalty Bridge reward is not currently available.');
+    var product = q.reward_kind === 'product' &&
+      typeof q.reward_product_slug === 'string' &&
+      /^[a-z0-9][a-z0-9-]*$/.test(q.reward_product_slug) &&
+      q.discount_percent == null;
+    var discount = q.reward_kind === 'discount' &&
+      q.reward_product_slug == null && [10,15,20].indexOf(q.discount_percent) !== -1;
+    if (!product && !discount)
+      throw new Error('Loyalty Bridge reward definition is unavailable.');
+    var cart = readCart();
+    cart.loyalty_reward = {
+      token_number: token,
+      tier_cost: q.tier_cost,
+      reward_kind: q.reward_kind,
+      reward_product_slug: product ? q.reward_product_slug : null,
+      discount_percent: discount ? q.discount_percent : null
+    };
+    writeCart(cart);
+    return getCartSummary();
+  }
+
   function addItem(product) {
     // Never let ordinary add-to-cart forge a zero-dollar entitlement.
     if (product && (product.kind === 'pj_review_reward' || product.is_review_reward))
@@ -895,6 +946,7 @@
       items: cart.items,
       item_count: itemCount,
       paid_item_count: paidItemCount,
+      loyalty_reward: cart.loyalty_reward || null,
       subtotal: subtotal,
       subtotal_display: '$' + subtotal.toFixed(2),
 
@@ -997,6 +1049,11 @@
     // Local Dev is routed to the isolated Testing Sandbox, never Production.
     var summary = getCartSummary();
     var reward = getReviewReward();
+    // Fail closed during the coordinated integration: never open a payment
+    // link that omits a customer's selected Loyalty reward.
+    if (summary.loyalty_reward) {
+      return Promise.reject(new Error('Loyalty Bridge checkout is not active yet. Remove the selection to continue without it.'));
+    }
     if (reward && !summary.paid_item_count) {
       return Promise.reject(new Error('A paid item is required to redeem a reward.'));
     }
@@ -1121,6 +1178,9 @@
     getSummary: getCartSummary,
     setReviewReward: setReviewReward,
     getReviewReward: getReviewReward,
+    selectLoyaltyReward: selectLoyaltyReward,
+    getLoyaltyReward: getLoyaltyReward,
+    clearLoyaltyReward: clearLoyaltyReward,
     startCheckout: startCheckout,
 
     getCelestialBadgeCard: getCelestialBadgeCard,
