@@ -184,7 +184,6 @@
     if (!product && !discount)
       throw new Error('Loyalty Bridge reward definition is unavailable.');
     var cart = readCart();
-    if (!localDev) throw new Error('Loyalty Bridge checkout is not active yet.');
     if (cart.items.some(isReviewReward)) throw new Error('Remove the Review Board reward before selecting a Loyalty Bridge reward.');
     cart.loyalty_reward = {
       token_number: token,
@@ -1053,7 +1052,7 @@
     var summary = getCartSummary();
     var reward = getReviewReward();
     var loyalty = summary.loyalty_reward;
-    if (loyalty && (!localDev || reward || !Number.isInteger(loyalty.token_number) ||
+    if (loyalty && (reward || !Number.isInteger(loyalty.token_number) ||
         loyalty.token_number < 1 || loyalty.token_number > 15)) {
       return Promise.reject(new Error('Loyalty Bridge selection is not available for this checkout.'));
     }
