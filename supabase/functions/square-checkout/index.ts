@@ -249,7 +249,7 @@ Deno.serve(async (req: Request) => {
   }
   const rawItems = Array.isArray(body?.items) ? body.items as CartItem[] : [];
   const loyaltyClaim = body?.loyalty_reward;
-  if (loyaltyClaim !== undefined && (!IS_TESTING_PROJECT || !loyaltyClaim ||
+  if (loyaltyClaim !== undefined && (!loyaltyClaim ||
       !Number.isInteger(loyaltyClaim.token_number) || loyaltyClaim.token_number < 1 ||
       loyaltyClaim.token_number > 15 || Object.keys(loyaltyClaim).length !== 1 ||
       body?.review_reward || rawItems.some(item => item?.kind))) {
