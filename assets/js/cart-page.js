@@ -124,6 +124,7 @@
 
     if (itemsEl) {
       itemsEl.addEventListener('click', function (e) {
+        if (e.target.closest('[data-loyalty-remove]')) { window.PJCart.clearLoyaltyReward(); return; }
         var removeBtn = e.target.closest('[data-cart-page-remove]');
         var incBtn = e.target.closest('[data-cart-page-inc]');
         var decBtn = e.target.closest('[data-cart-page-dec]');
@@ -166,7 +167,7 @@
 
     if (!emptyEl || !itemsEl) return;
 
-    if (!summary.items.length) {
+    if (!summary.items.length && !summary.loyalty_reward) {
       emptyEl.style.display = 'block';
       itemsEl.innerHTML = '';
       return;
@@ -213,6 +214,13 @@
         '</article>'
       );
     }).join('');
+    if (summary.loyalty_reward) {
+      var reward=summary.loyalty_reward;
+      var label=reward.reward_kind==='product'
+        ? String(reward.reward_product_slug||'').replace(/-/g,' ')+' · 1 complimentary · $0.00'
+        : String(reward.discount_percent)+'% off paid merchandise';
+      itemsEl.insertAdjacentHTML('beforeend','<article class="pj-cart-page-item"><div class="pj-cart-page-item-main"><strong>Loyalty Bridge reward</strong><div>'+esc(label)+'</div><div>'+esc(reward.tier_cost)+' PJ Credits upon verified payment</div><p>Square verifies the final reward and pricing at checkout. Paid merchandise required.</p><button class="pj-cart-page-remove" type="button" data-loyalty-remove>Remove reward</button></div></article>');
+    }
   }
 
   function renderSummary(summary) {
@@ -342,7 +350,7 @@ function renderBadgeMedia(card) {
         btn.textContent = 'Checkout Now';
         btn.disabled = false;
         btn.classList.remove('disabled');
-        window.alert('Checkout could not be opened. Please try again.');
+        window.alert(error && error.message ? error.message : 'Checkout could not be opened. Please try again.');
       });
   }
 
