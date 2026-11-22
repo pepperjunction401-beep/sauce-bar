@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { loyaltyPreviewMatches } from "../_shared/loyalty-order-evidence.ts";
 
 const IS_TESTING_PROJECT =
   Deno.env.get("SUPABASE_URL") === "https://slubpfmpjgoupujptayy.supabase.co";
@@ -34,35 +35,6 @@ function loyaltyOrderPricing(paidLines: any[], reward: any, variation: string | 
       type:"FIXED_PERCENTAGE", percentage:product ? "100" : String(reward.discount_percent),
       scope:"LINE_ITEM"}],
   };
-}
-
-function loyaltyPreviewMatches(preview: any, pricing: any, reward: any, variation: string | null): boolean {
-  const lines = preview?.order?.line_items;
-  const defs = preview?.order?.discounts;
-  const expected = pricing.discounts[0];
-  if (!Array.isArray(lines) || lines.length !== pricing.line_items.length ||
-      !Array.isArray(defs)) return false;
-  const d = defs.filter((x: any) => x.uid === expected.uid);
-  if (d.length !== 1 || d[0].scope !== "LINE_ITEM" ||
-      d[0].type !== "FIXED_PERCENTAGE" || Number(d[0].percentage) !== Number(expected.percentage)) return false;
-  const product = reward.reward_kind === "product";
-  const hasDiscount = (line: any) => Array.isArray(line.applied_discounts) &&
-    line.applied_discounts.some((x: any) => x.discount_uid === expected.uid);
-  const affected = lines.filter(hasDiscount);
-  const cents = (line: any) => line.total_money?.amount;
-  if (!lines.every((line: any) => Number.isSafeInteger(cents(line)) && cents(line) >= 0)) return false;
-  if (product && (affected.length !== 1 || affected[0].quantity !== "1" ||
-      affected[0].catalog_object_id !== variation || cents(affected[0]) !== 0 ||
-      !lines.filter((line: any) => !hasDiscount(line)).every((line: any) => cents(line) > 0))) return false;
-  if (!product && (affected.length !== lines.length || !lines.every((line: any) => cents(line) > 0) ||
-      !affected.every((line: any) => line.applied_discounts.some((x: any) =>
-        x.discount_uid === expected.uid && Number.isSafeInteger(x.applied_money?.amount) && x.applied_money.amount >= 0)) ||
-      !affected.some((line: any) => line.applied_discounts.some((x: any) =>
-        x.discount_uid === expected.uid && x.applied_money.amount > 0)))) return false;
-  // Compare each line's canonical catalog variation, quantity and discount
-  // designation, even when the free SKU is also present as paid merchandise.
-  const signature = (line: any) => JSON.stringify([line.catalog_object_id,String(line.quantity),hasDiscount(line)]);
-  return JSON.stringify(lines.map(signature).sort()) === JSON.stringify(pricing.line_items.map(signature).sort());
 }
 
 const SQUARE_VERSION = "2026-09-16";
@@ -353,7 +325,13 @@ Deno.serve(async (req: Request) => {
     const discount = q.reward_kind === "discount" && q.reward_product_slug == null &&
       [10,15,20].includes(q.discount_percent);
     if (!product && !discount) return json(req,{error:"Invalid Loyalty reward definition"},409);
-    verifiedLoyalty = {...q, customerId:identity.user.id};
+    // The existing verified identity bridge supplies the Square customer.
+    const {data:link,error:linkError} = await admin.from("square_customer_links")
+      .select("square_customer_id").eq("customer_id",identity.user.id)
+      .eq("is_active",true).maybeSingle();
+    if (linkError || typeof link?.square_customer_id !== "string" || !link.square_customer_id)
+      return json(req,{error:"Verified Square customer identity unavailable"},409);
+    verifiedLoyalty = {...q, customerId:identity.user.id, squareCustomerId:link.square_customer_id};
     if (product && !slugs.includes(q.reward_product_slug)) slugs.push(q.reward_product_slug);
   }
   // Existing paid-only checkout requires no account or behavior changes.
@@ -690,10 +668,13 @@ Deno.serve(async (req: Request) => {
       });
       if (!loyaltyPreviewMatches(preview,pricing,verifiedLoyalty,variation))
         return json(req,{error:"Square Loyalty reward price validation failed"},409);
-      // Do not issue a discounted payment link yet. The next integration
-      // must persist order/customer/token evidence and settle verified payment.
-      // This is Sandbox calculation only, not an alternate checkout.
-      return json(req,{error:"Loyalty Bridge payment settlement is not active"},409);
+      const {data:binding,error:bindingError} = await admin.rpc("pj_loyalty_begin_order_binding",{
+        p_customer_id:verifiedLoyalty.customerId,p_token_number:verifiedLoyalty.token_number,
+        p_request_id:checkoutRequestId,p_expected_pricing:pricing,p_reward_variation_id:variation,
+      });
+      if (bindingError || binding?.accepted !== true)
+        return json(req,{error:"Loyalty reward checkout already pending or unavailable"},409);
+      Object.assign(order,pricing,{customer_id:verifiedLoyalty.squareCustomerId,reference_id:"PJ_LOYALTY"});
     }
     // The existing checkout owns the Square order, checkout link and redirect.
     // Reserve the selected reward before opening the same standard payment link.
@@ -759,6 +740,21 @@ Deno.serve(async (req: Request) => {
       if (attemptError || !savedAttempt) {
         console.error("Review Board reward attempt registration failed", orderId);
         return json(req, { error: "Could not register reward checkout" }, 503);
+      }
+    }
+    if (verifiedLoyalty) {
+      const paymentLinkId = squarePayload?.payment_link?.id;
+      if (typeof paymentLinkId !== "string" || !paymentLinkId)
+        return json(req,{error:"Loyalty checkout link identity missing"},503);
+      const {data:bound,error:bindError} = await admin.rpc("pj_loyalty_bind_square_order",{
+        p_request_id:checkoutRequestId,p_customer_id:verifiedLoyalty.customerId,
+        p_square_order_id:orderId,p_square_payment_link_id:paymentLinkId,
+      });
+      if (bindError || bound !== true) {
+        // Do not release an unbound discounted payment link. Keep the binding
+        // pending for server-side reconciliation, even after an ambiguous error.
+        console.error("Loyalty order binding failed",orderId);
+        return json(req,{error:"Could not verify Loyalty checkout identity"},503);
       }
     }
     if (celestialTimezone) {
