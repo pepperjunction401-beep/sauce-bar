@@ -116,6 +116,7 @@
     if (!Number.isInteger(row) || row < 1 || !/^[a-z0-9][a-z0-9-]*$/.test(slug))
       throw new Error('A server-verified Review Board selection is required.');
     var cart = readCart();
+    if (cart.loyalty_reward) throw new Error('Remove the Loyalty Bridge selection before adding a Review Board reward.');
     var existingReward = cart.items.find(isReviewReward);
     // Preserve the cart snapshot across Square's return redirect for verified
     // redemption. Re-adding an unchanged reward must not mutate the paid order.
@@ -141,6 +142,58 @@
 
   function getReviewReward() {
     return readCart().items.find(isReviewReward) || null;
+  }
+
+  // Loyalty Bridge selection lives in the existing session cart, not in a
+  // reservation, wallet debit, payment link, or second checkout.
+  function getLoyaltyReward() {
+    return readCart().loyalty_reward || null;
+  }
+
+  function clearLoyaltyReward() {
+    var cart = readCart();
+    delete cart.loyalty_reward;
+    writeCart(cart);
+    return getCartSummary();
+  }
+
+  async function selectLoyaltyReward(tokenNumber) {
+    var token = Number(tokenNumber);
+    if (!Number.isInteger(token) || token < 1 || token > 15)
+      throw new Error('Invalid Loyalty Bridge token.');
+    var auth = window.PJAuth;
+    if (!auth || !auth.enabled || !auth.client || !await auth.verifiedUser())
+      throw new Error('Sign in to select a Loyalty Bridge reward.');
+    var result = await auth.client.rpc('pj_loyalty_my_exchange_quote', {
+      p_token_number: token
+    });
+    var q = result && !result.error && result.data;
+    // The authenticated server owns eligibility, cost and reward definition.
+    // A quote is not a redemption and cannot debit PJ Credits.
+    if (!q || q.status !== 'qualifies' || q.token_number !== token ||
+        !Number.isInteger(q.tier_cost) || q.tier_cost < 1 ||
+        q.tier_cost > 275 || !Number.isInteger(q.current_credits) ||
+        q.current_credits < q.tier_cost || q.current_credits > 275)
+      throw new Error('This Loyalty Bridge reward is not currently available.');
+    var product = q.reward_kind === 'product' &&
+      typeof q.reward_product_slug === 'string' &&
+      /^[a-z0-9][a-z0-9-]*$/.test(q.reward_product_slug) &&
+      q.discount_percent == null;
+    var discount = q.reward_kind === 'discount' &&
+      q.reward_product_slug == null && [10,15,20].indexOf(q.discount_percent) !== -1;
+    if (!product && !discount)
+      throw new Error('Loyalty Bridge reward definition is unavailable.');
+    var cart = readCart();
+    if (cart.items.some(isReviewReward)) throw new Error('Remove the Review Board reward before selecting a Loyalty Bridge reward.');
+    cart.loyalty_reward = {
+      token_number: token,
+      tier_cost: q.tier_cost,
+      reward_kind: q.reward_kind,
+      reward_product_slug: product ? q.reward_product_slug : null,
+      discount_percent: discount ? q.discount_percent : null
+    };
+    writeCart(cart);
+    return getCartSummary();
   }
 
   function addItem(product) {
@@ -895,6 +948,7 @@
       items: cart.items,
       item_count: itemCount,
       paid_item_count: paidItemCount,
+      loyalty_reward: cart.loyalty_reward || null,
       subtotal: subtotal,
       subtotal_display: '$' + subtotal.toFixed(2),
 
@@ -997,7 +1051,12 @@
     // Local Dev is routed to the isolated Testing Sandbox, never Production.
     var summary = getCartSummary();
     var reward = getReviewReward();
-    if (reward && !summary.paid_item_count) {
+    var loyalty = summary.loyalty_reward;
+    if (loyalty && (reward || !Number.isInteger(loyalty.token_number) ||
+        loyalty.token_number < 1 || loyalty.token_number > 15)) {
+      return Promise.reject(new Error('Loyalty Bridge selection is not available for this checkout.'));
+    }
+    if ((reward || loyalty) && !summary.paid_item_count) {
       return Promise.reject(new Error('A paid item is required to redeem a reward.'));
     }
 
@@ -1037,23 +1096,26 @@
     // The user's session only enables a server verification. It cannot
     // authorize a discount or change Square prices.
     var authorize = Promise.resolve(null);
-    if (reward) {
+    if (reward || loyalty) {
       var auth = window.PJAuth;
-      if (!auth || !auth.enabled || !auth.client)
-        return Promise.reject(new Error('Sign in to redeem your Review Board reward.'));
+      if (!auth || !auth.enabled || !auth.client) {
+        checkoutInFlight = false;
+        return Promise.reject(new Error('Sign in to redeem your reward.'));
+      }
       authorize = auth.verifiedUser().then(function(user) {
-        if (!user) throw new Error('Sign in to redeem your Review Board reward.');
+        if (!user) throw new Error('Sign in to redeem your reward.');
         return auth.client.auth.getSession();
       }).then(function(result) {
         var token = result && result.data && result.data.session &&
           result.data.session.access_token;
-        if (!token) throw new Error('Review Board session expired. Please sign in again.');
+        if (!token) throw new Error('Reward session expired. Please sign in again.');
         return token;
       });
-      payload.review_reward = {
+      if (reward) payload.review_reward = {
         row_number: reward.reward_row_number,
         selected_product_slug: reward.reward_product_slug
       };
+      if (loyalty) payload.loyalty_reward = {token_number:loyalty.token_number};
     }
 
     return authorize.then(function(token) { return fetch(CHECKOUT_ENDPOINT, {
@@ -1089,7 +1151,8 @@
             sessionStorage.setItem('pj_checkout_pending', JSON.stringify({
               order_id: data.square_order_id,
               cart_snapshot: sessionStorage.getItem(CART_KEY),
-              reward_row_number: reward ? reward.reward_row_number : null
+              reward_row_number: reward ? reward.reward_row_number : null,
+              loyalty_token_number: loyalty ? loyalty.token_number : null
             }));
           }
         } catch (_) {}
@@ -1121,6 +1184,9 @@
     getSummary: getCartSummary,
     setReviewReward: setReviewReward,
     getReviewReward: getReviewReward,
+    selectLoyaltyReward: selectLoyaltyReward,
+    getLoyaltyReward: getLoyaltyReward,
+    clearLoyaltyReward: clearLoyaltyReward,
     startCheckout: startCheckout,
 
     getCelestialBadgeCard: getCelestialBadgeCard,

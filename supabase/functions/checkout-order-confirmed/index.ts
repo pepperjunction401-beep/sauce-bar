@@ -29,6 +29,26 @@ Deno.serve(async req=>{
  // finalizes the reward. Never let a completed paid order clear an unredeemed
  // reward from the user's cart.
  const rewardRow=body?.reward_row_number;
+ const loyaltyToken=body?.loyalty_token_number;
+ if(loyaltyToken!==null&&loyaltyToken!==undefined&&
+    (!Number.isInteger(loyaltyToken)||loyaltyToken<1||loyaltyToken>15))
+   return new Response(JSON.stringify({confirmed:false}),{status:400,headers});
+ if(testingProject||(loyaltyToken!==null&&loyaltyToken!==undefined)){
+   const {data:binding,error:bindingError}=await admin.from("pj_loyalty_order_bindings")
+     .select("customer_id,token_number,state").eq("square_order_id",order).maybeSingle();
+   if(bindingError)return new Response(JSON.stringify({confirmed:false}),{status:503,headers});
+   if(binding||loyaltyToken!=null){
+     if(!binding||binding.customer_id!==data[0].customer_id||binding.state!=="paid_verified"||
+        (loyaltyToken!=null&&binding.token_number!==loyaltyToken)||rewardRow!=null)
+       return new Response(JSON.stringify({confirmed:false}),{headers});
+     const {data:exchange,error:exchangeError}=await admin.from("pj_loyalty_exchanges")
+       .select("id").eq("source_purchase_id",data[0].id)
+       .eq("customer_id",binding.customer_id).eq("token_number",binding.token_number)
+       .eq("delivery_state","fulfilled_in_order").maybeSingle();
+     return new Response(JSON.stringify({confirmed:!exchangeError&&!!exchange}),
+       {status:exchangeError?503:200,headers});
+   }
+ }
  // Paid-only orders never query Review Board tables or depend on migrations.
  if(rewardRow===null||rewardRow===undefined)
    return new Response(JSON.stringify({confirmed:true}),{headers});

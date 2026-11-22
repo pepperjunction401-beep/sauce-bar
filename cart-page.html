@@ -183,6 +183,26 @@
 <script src="assets/js/cart-drawer.js"></script>
 <!-- Square cart pricing helper loads with cart page scripts. -->
 <script src="assets/js/cart-page.js"></script>
+<!-- Loyalty Bridge uses the existing cart and verified sign-in in the matching environment. -->
+<script>
+(function(){
+  if(!window.PJCart||!window.PJCart.getLoyaltyReward())return;
+  var button=document.getElementById('pj-cart-page-checkout');
+  if(button){button.disabled=true;button.hidden=true;}
+  var notice=document.createElement('p');notice.setAttribute('role','status');
+  notice.textContent='Loading verified Loyalty Bridge checkout...';
+  if(button)button.insertAdjacentElement('beforebegin',notice);
+  var files=['https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js','assets/js/pj-auth.js'];
+  function next(){
+    var src=files.shift();
+    if(!src){notice.remove();if(button){button.hidden=false;button.disabled=!window.PJCart.getSummary().paid_item_count;}return;}
+    var script=document.createElement('script');script.src=src;script.onload=next;
+    script.onerror=function(){notice.textContent='Sign-in verification unavailable. Refresh this page to try again.';};
+    document.body.appendChild(script);
+  }
+  next();
+})();
+</script>
 <!-- Review Board rewards enter the existing Pepper Junction cart; no alternate checkout. -->
 <script>
 (function () {

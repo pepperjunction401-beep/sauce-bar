@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { loyaltyPreviewMatches } from "../_shared/loyalty-order-evidence.ts";
 
 const IS_TESTING_PROJECT =
   Deno.env.get("SUPABASE_URL") === "https://slubpfmpjgoupujptayy.supabase.co";
@@ -14,6 +15,26 @@ function databaseServiceKey(): string | undefined {
     const parsed = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS") || "{}");
     return typeof parsed.default === "string" ? parsed.default : undefined;
   } catch { return undefined; }
+}
+
+// Loyalty Bridge price calculation is private to the existing Square checkout.
+// No wallet changes, order creation, replacement payment path or reservation.
+function loyaltyOrderPricing(paidLines: any[], reward: any, variation: string | null) {
+  if (!Array.isArray(paidLines) || paidLines.length === 0) throw new Error("Paid merchandise required");
+  const product = reward.reward_kind === "product";
+  if (product ? !variation : ![10,15,20].includes(reward.discount_percent)) {
+    throw new Error("Invalid canonical Loyalty reward");
+  }
+  const uid = product ? "PJ_LOYALTY_FREE" : "PJ_LOYALTY_PERCENT";
+  const lines = product
+    ? [...paidLines, {quantity:"1", catalog_object_id:variation, applied_discounts:[{discount_uid:uid}]}]
+    : paidLines.map(line => ({...line, applied_discounts:[{discount_uid:uid}]}));
+  return {
+    line_items: lines,
+    discounts: [{uid, name:product ? "Loyalty Bridge Complimentary" : "Loyalty Bridge Discount",
+      type:"FIXED_PERCENTAGE", percentage:product ? "100" : String(reward.discount_percent),
+      scope:"LINE_ITEM"}],
+  };
 }
 
 const SQUARE_VERSION = "2026-09-16";
@@ -227,6 +248,13 @@ Deno.serve(async (req: Request) => {
     return json(req, { error: "Shopping session identity is required" }, 400);
   }
   const rawItems = Array.isArray(body?.items) ? body.items as CartItem[] : [];
+  const loyaltyClaim = body?.loyalty_reward;
+  if (loyaltyClaim !== undefined && (!loyaltyClaim ||
+      !Number.isInteger(loyaltyClaim.token_number) || loyaltyClaim.token_number < 1 ||
+      loyaltyClaim.token_number > 15 || Object.keys(loyaltyClaim).length !== 1 ||
+      body?.review_reward || rawItems.some(item => item?.kind))) {
+    return json(req, { error: "Loyalty Bridge checkout is unavailable or invalid" }, 409);
+  }
   // Reward is transmitted as a distinct $0 line from PJCart, never as a
   // client-supplied discount on paid merchandise.
   const freeLines = rawItems.filter(item => item?.kind === "pj_review_reward");
@@ -272,6 +300,40 @@ Deno.serve(async (req: Request) => {
   const admin = createClient(supabaseUrl, serviceRoleKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+  // Re-quote through the customer's JWT. Browser-supplied costs, discounts,
+  // customer IDs, product slugs and availability are never authoritative.
+  let verifiedLoyalty: any = null;
+  if (loyaltyClaim !== undefined) {
+    const bearer = (req.headers.get("Authorization") || "").replace(/^Bearer /i, "").trim();
+    if (!bearer) return json(req, {error:"Loyalty Bridge sign-in required"},401);
+    const {data:identity,error:userError} = await admin.auth.getUser(bearer);
+    if (userError || !identity?.user?.id || !identity.user.email_confirmed_at)
+      return json(req, {error:"Loyalty Bridge sign-in required"},401);
+    const customerClient = createClient(supabaseUrl,serviceRoleKey,{
+      auth:{persistSession:false,autoRefreshToken:false},
+      global:{headers:{Authorization:"Bearer "+bearer}},
+    });
+    const {data:q,error:quoteError} = await customerClient.rpc("pj_loyalty_my_exchange_quote",{
+      p_token_number:loyaltyClaim.token_number
+    });
+    if (quoteError || q?.status !== "qualifies" || q.token_number !== loyaltyClaim.token_number ||
+        !Number.isInteger(q.tier_cost) || q.tier_cost < 50 || q.tier_cost > 225 ||
+        !Number.isInteger(q.current_credits) || q.current_credits < q.tier_cost || q.current_credits > 275)
+      return json(req,{error:"Loyalty Bridge reward unavailable"},409);
+    const product = q.reward_kind === "product" && typeof q.reward_product_slug === "string" &&
+      /^[a-z0-9][a-z0-9-]*$/.test(q.reward_product_slug) && q.discount_percent == null;
+    const discount = q.reward_kind === "discount" && q.reward_product_slug == null &&
+      [10,15,20].includes(q.discount_percent);
+    if (!product && !discount) return json(req,{error:"Invalid Loyalty reward definition"},409);
+    // The existing verified identity bridge supplies the Square customer.
+    const {data:link,error:linkError} = await admin.from("square_customer_links")
+      .select("square_customer_id").eq("customer_id",identity.user.id)
+      .eq("is_active",true).maybeSingle();
+    if (linkError || typeof link?.square_customer_id !== "string" || !link.square_customer_id)
+      return json(req,{error:"Verified Square customer identity unavailable"},409);
+    verifiedLoyalty = {...q, customerId:identity.user.id, squareCustomerId:link.square_customer_id};
+    if (product && !slugs.includes(q.reward_product_slug)) slugs.push(q.reward_product_slug);
+  }
   // Existing paid-only checkout requires no account or behavior changes.
   let verifiedReward: {customerId: string; row: number; productId: string; slug: string} | null = null;
   if (rewardLine) {
@@ -536,7 +598,9 @@ Deno.serve(async (req: Request) => {
 
         // Paid quantity plus the one physical complimentary bottle must fit stock.
         const needed = (normalized.get(item.slug) ?? 0) +
-          (verifiedReward && item.slug === verifiedReward.slug ? 1 : 0);
+          (verifiedReward && item.slug === verifiedReward.slug ? 1 : 0) +
+          (verifiedLoyalty?.reward_kind === "product" &&
+            item.slug === verifiedLoyalty.reward_product_slug ? 1 : 0);
         if (onHand < needed) {
           return json(req, {
             error: "Not enough inventory is available for a cart item",
@@ -594,6 +658,24 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    if (verifiedLoyalty) {
+      const variation = verifiedLoyalty.reward_kind === "product"
+        ? resolved.find(item => item.slug === verifiedLoyalty.reward_product_slug)?.variation.id ?? null
+        : null;
+      const pricing = loyaltyOrderPricing(paidLines, verifiedLoyalty, variation);
+      const preview = await squarePost("/v2/orders/calculate", squareToken, {
+        order:{...order,...pricing},
+      });
+      if (!loyaltyPreviewMatches(preview,pricing,verifiedLoyalty,variation))
+        return json(req,{error:"Square Loyalty reward price validation failed"},409);
+      const {data:binding,error:bindingError} = await admin.rpc("pj_loyalty_begin_order_binding",{
+        p_customer_id:verifiedLoyalty.customerId,p_token_number:verifiedLoyalty.token_number,
+        p_request_id:checkoutRequestId,p_expected_pricing:pricing,p_reward_variation_id:variation,
+      });
+      if (bindingError || binding?.accepted !== true)
+        return json(req,{error:"Loyalty reward checkout already pending or unavailable"},409);
+      Object.assign(order,pricing,{customer_id:verifiedLoyalty.squareCustomerId,reference_id:"PJ_LOYALTY"});
+    }
     // The existing checkout owns the Square order, checkout link and redirect.
     // Reserve the selected reward before opening the same standard payment link.
     if (verifiedReward) {
@@ -658,6 +740,21 @@ Deno.serve(async (req: Request) => {
       if (attemptError || !savedAttempt) {
         console.error("Review Board reward attempt registration failed", orderId);
         return json(req, { error: "Could not register reward checkout" }, 503);
+      }
+    }
+    if (verifiedLoyalty) {
+      const paymentLinkId = squarePayload?.payment_link?.id;
+      if (typeof paymentLinkId !== "string" || !paymentLinkId)
+        return json(req,{error:"Loyalty checkout link identity missing"},503);
+      const {data:bound,error:bindError} = await admin.rpc("pj_loyalty_bind_square_order",{
+        p_request_id:checkoutRequestId,p_customer_id:verifiedLoyalty.customerId,
+        p_square_order_id:orderId,p_square_payment_link_id:paymentLinkId,
+      });
+      if (bindError || bound !== true) {
+        // Do not release an unbound discounted payment link. Keep the binding
+        // pending for server-side reconciliation, even after an ambiguous error.
+        console.error("Loyalty order binding failed",orderId);
+        return json(req,{error:"Could not verify Loyalty checkout identity"},503);
       }
     }
     if (celestialTimezone) {

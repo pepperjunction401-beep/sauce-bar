@@ -1,4 +1,5 @@
 import { recordPassengerMerchandiseEvidence } from "../_shared/passenger-merchandise-evidence.ts";
+import { hasLoyaltyOrderEvidence, loyaltyPreviewMatches } from "../_shared/loyalty-order-evidence.ts";
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { resolveSquareProduct } from "../_shared/square-product-identity.ts";
@@ -387,6 +388,46 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    // Validate Loyalty reward evidence against the same canonical pricing
+    // registered by the existing checkout. No browser-supplied token or cost.
+    let loyaltyBinding: any = null;
+    let loyaltyRewardLineUid: string | null = null;
+    if (IS_TESTING_PROJECT || hasLoyaltyOrderEvidence(order)) {
+      const {data:binding,error:bindingError} = await admin.from("pj_loyalty_order_bindings")
+        .select("customer_id,token_number,reward_kind,reward_product_slug,discount_percent,expected_pricing,reward_variation_id,state")
+        .eq("square_order_id",order.id).maybeSingle();
+      if (bindingError) throw new Error("Loyalty order evidence unavailable");
+      if (binding || hasLoyaltyOrderEvidence(order)) {
+        if (!binding || binding.customer_id !== customerId ||
+            !["opened","paid_verified"].includes(binding.state) ||
+            verifiedRewardRow !== null ||
+            !loyaltyPreviewMatches({order},binding.expected_pricing,binding,binding.reward_variation_id))
+          throw new Error("Loyalty order does not match its authenticated reward binding");
+        // Require actual completed payments for the exact order (even if
+        // Square has already marked the order COMPLETED). Reuse the existing
+        // payment evidence validator, not a separate payment pathway.
+        const verifiedPayments: any[] = [];
+        for (const id of paymentIds) {
+          const p = payment?.id === id ? payment :
+            (await squareGet("/v2/payments/"+encodeURIComponent(id),squareToken))?.payment;
+          if (!p || p.id !== id ||
+              Number(p.refunded_money?.amount ?? 0) !== 0 ||
+              (p.customer_id && !acceptedSquareIdsForCustomer.has(p.customer_id)))
+            throw new Error("Loyalty payment requires reconciliation");
+          verifiedPayments.push(p);
+        }
+        if (!fullyPaidOpenSquareOrder({order:{...order,state:"OPEN"},payments:verifiedPayments,
+              requiredLocationId:squareLocationId}))
+          throw new Error("Loyalty order lacks full captured payment evidence");
+        if (binding.reward_kind === "product") {
+          const freeLine = (order.line_items ?? []).find((l:any) =>
+            (l.applied_discounts ?? []).some((d:any) => d.discount_uid === "PJ_LOYALTY_FREE"));
+          if (!freeLine?.uid) throw new Error("Loyalty complimentary line identity missing");
+          loyaltyRewardLineUid = freeLine.uid;
+        }
+        loyaltyBinding = binding;
+      }
+    }
     const normalizedLines: any[] = [];
 
     for (const line of order.line_items ?? []) {
@@ -504,6 +545,15 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    if (loyaltyBinding) {
+      const {data:settled,error:settleError} = await admin.rpc("pj_loyalty_settle_verified_order",{
+        p_purchase_id:purchaseId,p_square_order_id:order.id,
+        p_reward_line_uid:loyaltyRewardLineUid,
+      });
+      if (settleError || settled?.committed !== true ||
+          settled.delivery_state !== "fulfilled_in_order")
+        throw new Error("Loyalty reward settlement requires reconciliation");
+    }
     await admin.from("purchase_import_runs").update({
       status: "succeeded",
       transactions_seen: 1,

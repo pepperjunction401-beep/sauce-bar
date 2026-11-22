@@ -374,7 +374,7 @@
 
     if (!itemsEl || !emptyEl) return;
 
-    if (!summary.items.length) {
+    if (!summary.items.length && !summary.loyalty_reward) {
       emptyEl.style.display = 'block';
       itemsEl.innerHTML = '';
       return;
@@ -445,6 +445,10 @@
         '</div>'
       );
     }).join('');
+    if(summary.loyalty_reward){
+      var r=summary.loyalty_reward;
+      itemsEl.insertAdjacentHTML('beforeend','<div class="pj-cart-item"><div class="pj-cart-item-main"><strong>Loyalty Bridge reward</strong><div>'+esc(r.reward_kind==='product'?String(r.reward_product_slug||'').replace(/-/g,' ')+' · $0.00':String(r.discount_percent)+'% off paid merchandise')+'</div><div>'+esc(r.tier_cost)+' PJ Credits upon verified payment</div><a href="'+esc(getCartBasePath()+'cart-page.html')+'">View or remove reward in cart</a></div></div>');
+    }
   }
 
   function renderSubtotal(summary) {
@@ -457,7 +461,7 @@
     }
 
     if (checkoutBtn) {
-      checkoutBtn.disabled = summary.item_count === 0;
+      checkoutBtn.disabled = summary.loyalty_reward ? (summary.paid_item_count || 0) === 0 : summary.item_count === 0;
     }
   }
 
@@ -546,6 +550,11 @@
 
     if (!summary.items.length) {
       openDrawer();
+      return;
+    }
+
+    if (window.PJCart.getLoyaltyReward && window.PJCart.getLoyaltyReward()) {
+      window.location.assign(getCartBasePath() + 'cart-page.html');
       return;
     }
 

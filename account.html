@@ -138,6 +138,7 @@
     const api = auth && auth.client;
     const byId = id => document.getElementById(id);
     const feedback = byId('account-feedback');
+
     // Security boundary: Supabase MUST validate Turnstile tokens server-side.
     // Localhost uses Cloudflare's PUBLIC testing sitekey (never accepted by
     // Production Turnstile secrets). Set a real PUBLIC live sitekey only
@@ -252,6 +253,26 @@
           console.error('Phase 4 identity matching failed', error);
           message('Account verified, but purchase matching could not complete. Please sign in again.');
           return;
+        }
+      }
+      // PJ Loyalty Bridge: the server checks only the already authenticated
+      // and Phase 1-verified identity. With the owner launch gate OFF, this
+      // returns a pending status and cannot award any legacy credits.
+      // Optional loyalty status must never prevent account sign-in or alter
+      // existing identity matching, Railroad, or post-payment navigation.
+      if (api && auth) {
+        try {
+          const verifiedCustomer = await auth.verifiedUser();
+          if (verifiedCustomer) {
+            const onboarding = await api.rpc('pj_loyalty_my_onboarding');
+            if (onboarding.error) {
+              // Production may not have this Dev-only RPC until owner Go Ahead.
+              // Do not expose internal account or Square details to clients.
+              console.warn('Loyalty onboarding unavailable; customer sign-in preserved.');
+            }
+          }
+        } catch (_) {
+          console.warn('Loyalty onboarding deferred; customer sign-in preserved.');
         }
       }
       // Preserve the entry point after authenticated identity matching.
