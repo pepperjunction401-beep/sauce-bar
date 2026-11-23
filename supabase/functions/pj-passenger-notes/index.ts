@@ -69,7 +69,7 @@ Deno.serve(async (request) => {
   // Never expose individual scoring values or questionnaire responses.
   const scores=rows.map(r=>r.points_raw);
   const scoresValid=scores.every(v=>Number.isInteger(v)&&Number(v)>=6&&Number(v)<=18);
-  const mean=scoresValid?scores.reduce((sum,v)=>sum+Number(v),0)/scores.length:null;
+  const mean=scoresValid?rows.reduce((sum,r)=>sum+Number(r.points_raw),0)/rows.length:null;
   const rating=mean===null?null:Math.round((3+(mean-6)/6)*4)/4;
   const food=winner(rows.map(r=>r.q10==="Snack"?"Snacking":r.q10||""));
   const flavor=winner(rows.flatMap(r=>[...new Set(Array.isArray(r.q11)?r.q11:[])]));
