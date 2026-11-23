@@ -50,24 +50,33 @@ Deno.serve(async (request) => {
   if(!url||!key) return reply({error:"SERVICE_UNAVAILABLE"},503);
   const admin=createClient(url,key,{auth:{persistSession:false}});
   // Query only the four fields being aggregated. Never select identities or prose.
-  const rows:Answers[]=[];
+  const rows:(Answers & {points_raw:number|null})[]=[];
   for(let page=0;page<MAX_PAGES;page++){
     const start=page*PAGE_SIZE;
     const {data,error}=await admin.from("pj_review_submissions")
-      .select("q10,q11,q12,q13")
+      .select("q10,q11,q12,q13,points_raw")
       .eq("product_slug_snapshot",slug).eq("moderation_status","approved")
       .range(start,start+PAGE_SIZE-1);
     if(error)return reply({error:"NOTES_UNAVAILABLE"},503);
-    const batch=(data||[]) as Answers[];
+    const batch=(data||[]) as (Answers & {points_raw:number|null})[];
     rows.push(...batch);
     if(batch.length<PAGE_SIZE)break;
     if(page===MAX_PAGES-1)return reply({error:"NOTES_LIMIT_REACHED"},503);
   }
   if(rows.length<MIN_APPROVED)return reply({available:false});
+  // Approved 6–18-point original-review system, mapped to a 3–5 star scale.
+  // Average raw scores before converting and quarter-round exactly once.
+  // Never expose individual scoring values or questionnaire responses.
+  const scores=rows.map(r=>r.points_raw);
+  const scoresValid=scores.every(v=>Number.isInteger(v)&&Number(v)>=6&&Number(v)<=18);
+  const mean=scoresValid?scores.reduce((sum,v)=>sum+Number(v),0)/scores.length:null;
+  const rating=mean===null?null:Math.round((3+(mean-6)/6)*4)/4;
   const food=winner(rows.map(r=>r.q10==="Snack"?"Snacking":r.q10||""));
   const flavor=winner(rows.flatMap(r=>[...new Set(Array.isArray(r.q11)?r.q11:[])]));
   return reply({
     available:true,
+    rating,
+    count:rows.length,
     cards:{
       arrival:winner(rows.map(r=>r.q12||"")),
       finish:winner(rows.map(r=>r.q13||"")),
