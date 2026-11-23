@@ -591,7 +591,8 @@ function detail(id){
   const img=r.image?`<img src="https://pepperjunction401.com/assets/sauces/${encodeURIComponent(r.image)}" alt="${esc(r.product)}" onerror="this.style.display='none'">`:'✦';
   // Simulation only: not a claim about the real inventory of any illustrated SKU.
   const avail=r.retired?'discontinued':'out';
-  const availLabel=r.retired?'Discontinued':'Checking availability';
+  const availLabel=r.retired?'Discontinued':r.availability==='available'?'In Stock':
+    r.availability==='out_of_stock'?'Out of Stock':'Unavailable';
   const productName=r.product;
   $('detail').innerHTML=`
    <div class="detail-top">
@@ -692,23 +693,15 @@ function detail(id){
    finally{btn.disabled=false;}
   });
   const cartButton=$('detail-cart');
-  let commercial=null;
-  if(!r.retired){
-   cartButton.textContent='Checking Availability';cartButton.disabled=true;
-   const cns=rawCatalog.find(p=>p.slug===r.slug);
-   if(cns){
-    fetch('https://cdbenwthxhypuuipyjlv.supabase.co/functions/v1/square-commercial-public',{
-     method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',credentials:'omit',body:JSON.stringify({product_ids:[r.slug]})
-    }).then(x=>x.json().then(body=>{if(!x.ok)throw Error('Unavailable');return body;}))
-      .then(body=>{
-       const state=Array.isArray(body.items)?body.items.find(p=>p.product_id===r.slug):null;
-       if(!state||state.current!==true||!Number.isFinite(Number(state.price)))throw Error('No current price');
-       commercial={price:Number(state.price),available:state.available===true};
-       cartButton.disabled=!commercial.available;
-       cartButton.textContent=commercial.available?'Add to Cart':'Out of Stock';
-      }).catch(()=>{cartButton.disabled=true;cartButton.textContent='Unavailable';});
-   }else{cartButton.disabled=true;cartButton.textContent='No Longer Available';}
-  }
+  // Commercial availability and price come from the authenticated Yard response
+  // in this environment. Dev must never consult Production.
+  const cns=rawCatalog.find(p=>p.slug===r.slug);
+  const cartEligible=!r.retired&&r.availability==='available'&&
+    Number.isFinite(Number(r.commercialPrice))&&Number(r.commercialPrice)>0&&!!cns;
+  const commercial=cartEligible?{price:Number(r.commercialPrice),available:true}:null;
+  cartButton.disabled=!cartEligible;
+  cartButton.textContent=r.retired||!cns?'No Longer Available':
+    cartEligible?'Add to Cart':r.availability==='out_of_stock'?'Out of Stock':'Unavailable';
   cartButton.addEventListener('click',()=>{
    const cns=rawCatalog.find(p=>p.slug===r.slug);
    const host=window.parent!==window&&window.parent.PJCart?window.parent:window;
