@@ -355,7 +355,9 @@ Deno.serve(async req=>{
     return index<0?[]:HEAT.slice(Math.max(0,index-1),Math.min(HEAT.length,index+2));
    }
    if(id==="q10")return uniqueColumn(catalog,"Food Style");
-   if(id==="q11")return Array.isArray(product?.["Review Flavor Options"])?product!["Review Flavor Options"] as unknown[]:[];
+   if(id==="q11")return Array.isArray(product?.["Review Flavor Options"])
+    ?product!["Review Flavor Options"] as unknown[]
+    :Array.isArray(review.q11)?review.q11:[];
    if(id==="q12")return uniqueColumn(catalog,"How it Hits");
    if(id==="q13")return uniqueColumn(catalog,"Heat Finish");
    return [];
