@@ -315,6 +315,8 @@ Deno.serve(async req=>{
     moderationStatus:r.moderation_status,isActive:product?.is_active===true,
     availability:product?.is_active===false?"retired":available?"available":
       state?.availability_status==="out_of_stock"?"out_of_stock":"unavailable",
+    // Price and availability come from this same environment; never cross to Production in Dev.
+    commercialPrice:available && Number.isFinite(Number(state?.price_amount)) ? Number(state?.price_amount) : null,
     answers:{q1:r.q1,q2:r.q2,q3:r.q3,q4:r.q4,q5:r.q5,q6:r.q6,
      q7:r.q7,q8:r.q8,q9:r.q9,q10:r.q10,q11:r.q11,q12:r.q12,q13:r.q13,
      q16:r.q16,q17:r.q17,q14:r.q14_original,q15:r.q15_original},
