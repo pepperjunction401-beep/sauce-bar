@@ -70,7 +70,7 @@
       if(!doc.getElementById('pj-board-public-score-style')){
         var scoreStyle=doc.createElement('style');
         scoreStyle.id='pj-board-public-score-style';
-        scoreStyle.textContent='.pj-board-public-score{display:block;margin:4px 0 8px;color:#F3CA68;font-size:11px;font-weight:800;line-height:1.35;font-variant-numeric:tabular-nums}';
+        scoreStyle.textContent='.pj-board-public-score{display:block;margin:4px 0 8px;color:#F3CA68;font-size:11px;font-weight:800;line-height:1.35;font-variant-numeric:tabular-nums}.pj-board-score-value{display:block;white-space:nowrap;margin-top:2px}';
         doc.head.appendChild(scoreStyle);
       }
       var unlocked=0,submitted=0,approved=0,focused=null;
@@ -93,7 +93,11 @@
           if(reviewed&&typeof publicScore==='number'&&Number.isFinite(publicScore)&&publicScore>=3&&publicScore<=5){
             var scoreLine=doc.createElement('div');
             scoreLine.className='pj-board-public-score';
-            scoreLine.textContent='★ Your Public Score: '+publicScore.toFixed(2)+' / 5';
+            scoreLine.textContent='★ Your Public Score';
+            var scoreValue=doc.createElement('span');
+            scoreValue.className='pj-board-score-value';
+            scoreValue.textContent=publicScore.toFixed(2)+' / 5';
+            scoreLine.appendChild(scoreValue);
             name.insertAdjacentElement('afterend',scoreLine);
           }
         }
