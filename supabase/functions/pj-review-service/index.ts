@@ -171,9 +171,18 @@ Deno.serve(async req=>{
   // Match already-submitted reviews to their actual moderation state; a pending
   // submission must never be displayed as an approved/awarded review.
   const {data:reviews,error:reviewError}=await admin.from("pj_review_submissions")
-    .select("product_slug_snapshot,moderation_status").eq("customer_id",user.id);
+    .select("product_slug_snapshot,moderation_status,points_raw").eq("customer_id",user.id);
   if(reviewError)return reply({error:"BOARD_UNAVAILABLE"},503);
   const moderationBySlug=new Map((reviews||[]).map(r=>[r.product_slug_snapshot,r.moderation_status]));
+  // Original immutable public scoring contribution. Current approved input is 6..18
+  // across six 1..3 judging answers. Keep normalization on the server, separate
+  // from the editable private rating; do not alter stored points or aggregates.
+  const publicScoreBySlug=new Map((reviews||[]).map(r=>{
+   const points=r.points_raw;
+   const score=Number.isInteger(points)&&points>=6&&points<=18
+    ?Math.round((3+(points-6)/6)*4)/4:null;
+   return [r.product_slug_snapshot,score];
+  }));
   // Award truth is customer-specific and server-owned, never calculated by the Board iframe.
   const [slotsResult,creditsResult,achievementsResult,entitlementsResult]=await Promise.all([
    admin.from("pj_review_board_slots").select("row_number,slot_number"),
@@ -252,7 +261,7 @@ Deno.serve(async req=>{
    rewardEligibleSlugs:rewardOptions.get(rowNumber)||[]
   }));
   return reply({products:(data||[]).map(p=>({
-   ...p,moderationStatus:moderationBySlug.get(p.product_slug)??null
+   ...p,moderationStatus:moderationBySlug.get(p.product_slug)??null,\n   originalPublicScore:publicScoreBySlug.get(p.product_slug)??null
   })),rows});
  }
  if(action==="yard"){
