@@ -256,7 +256,7 @@ Deno.serve(async req=>{
   })),rows});
  }
  if(action==="yard"){
-  const [reviewsResult,notesResult,ratingsResult,purchasesResult,logResult,productsResult,commerceResult]=await Promise.all([
+  const [reviewsResult,notesResult,ratingsResult,purchasesResult,logResult,excludedResult,productsResult,commerceResult]=await Promise.all([
    admin.from("pj_review_submissions")
     .select("id,product_id,product_slug_snapshot,submitted_at,moderation_status,q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q16,q17,q14_original,q15_original")
     .eq("customer_id",user.id).order("submitted_at",{ascending:false}),
@@ -265,29 +265,34 @@ Deno.serve(async req=>{
    admin.from("pj_review_personal_ratings")
     .select("product_slug,rating").eq("customer_id",user.id),
    admin.from("purchases")
-    .select("id,completed_at,square_created_at,created_at,purchase_status,purchase_line_items(id,product_id,cns_slug_snapshot,quantity,source_product_snapshot)")
+    .select("id,completed_at,square_created_at,created_at,purchase_status,import_status,purchase_line_items(id,product_id,cns_slug_snapshot,quantity,line_total_amount,square_line_item_uid,source_product_snapshot)")
     .eq("customer_id",user.id),
    admin.from("pj_review_bottle_log")
     .select("id,purchase_line_item_id,bottle_ordinal,purpose,opened_on,finished_on")
     .eq("customer_id",user.id),
+   admin.from("pj_review_reward_excluded_lines")
+    .select("purchase_id,square_line_item_uid").eq("customer_id",user.id),
    admin.from("pj_products").select("id,cns_slug,is_active"),
    admin.from("product_commercial_state")
     .select("product_id,sync_status,availability_status,square_location_enabled,square_archived,square_sold_out,inventory_mode,quantity_on_hand,price_amount")
   ]);
   if(reviewsResult.error||notesResult.error||ratingsResult.error||purchasesResult.error||
-     logResult.error||productsResult.error||commerceResult.error)return reply({error:"YARD_UNAVAILABLE"},503);
+     logResult.error||excludedResult.error||productsResult.error||commerceResult.error)return reply({error:"YARD_UNAVAILABLE"},503);
   const notes=new Map((notesResult.data||[]).map(x=>[x.review_id,x]));
   const ratings=new Map((ratingsResult.data||[]).map(x=>[x.product_slug,x.rating]));
   const products=new Map((productsResult.data||[]).map(x=>[x.id,x]));
   const commercial=new Map((commerceResult.data||[]).map(x=>[x.product_id,x]));
   const logs=new Map((logResult.data||[]).map(x=>[x.purchase_line_item_id+":"+x.bottle_ordinal,x]));
+  const excluded=new Set((excludedResult.data||[]).map(x=>x.purchase_id+":"+x.square_line_item_uid));
   const bottlesByProduct=new Map<string,unknown[]>();
   for(const purchase of purchasesResult.data||[]){
    // Completed verified facts only; never count refunded/reward-only lines as bottles.
-   if(purchase.purchase_status!=="completed")continue;
+   if(purchase.purchase_status!=="completed"||purchase.import_status!=="attached")continue;
    for(const line of purchase.purchase_line_items||[]){
     const count=Number(line.quantity);
-    if(!Number.isSafeInteger(count)||count<1||count>200)continue;
+    if(!Number.isSafeInteger(count)||count<1||count>200||
+      Number(line.line_total_amount)<=0||
+      excluded.has(purchase.id+":"+line.square_line_item_uid))continue;
     const product=products.get(line.product_id);
     const slug=product?.cns_slug||line.cns_slug_snapshot;
     if(!slug)continue;
