@@ -1,0 +1,756 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Review Yard — Pepper Junction</title><style>
+:root{--bg:#10120f;--panel:#1a1e19;--green:#1c3022;--gold:#d4a64b;--wine:#750E0D;--ok:#3f9866;--line:#494333;--cream:#f7f0df;--muted:#bbc0b5}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 30% -10%,#293427,transparent 42%),var(--bg);color:var(--cream);font:14px/1.55 system-ui,-apple-system,Segoe UI,Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #f1c46b;outline-offset:3px}header{background:#1c3022;border-bottom:2px solid #a67d38;padding:17px max(22px,calc((100vw - 1400px)/2));display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{font:small-caps 25px Georgia,serif;letter-spacing:.08em}.brand small{display:block;font:10px system-ui;letter-spacing:.26em;color:var(--gold)}.toplink{border:1px solid #806d43;color:#f5e3b8;text-decoration:none;padding:8px 14px;border-radius:8px}.container{max-width:1400px;margin:auto;padding:33px 22px 90px}.eyebrow{color:var(--gold);letter-spacing:.22em;font-size:11px;font-weight:700;text-transform:uppercase}h1{font:normal clamp(37px,5vw,62px) Georgia,serif;margin:6px 0 7px}h2{font:normal 27px Georgia,serif;margin:0}p{margin:0}.intro{color:#c4c6bc;max-width:820px;line-height:1.7}.prototype{background:#28271b;border:1px solid #8b713e;color:#eed6a3;padding:12px 16px;margin:25px 0 17px;font-size:12px}.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:17px 0 24px}.controls button{border:1px solid #806d43;border-radius:99px;color:#eee0c5;background:#28261e;padding:9px 15px}.controls button.active{background:var(--gold);border-color:var(--gold);color:#211d15;font-weight:700}.stats{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}.stat{background:#1d241c;border:1px solid #484936;min-width:155px;padding:16px 21px}.stat strong{font:30px Georgia,serif;color:#e7b963;display:block}.stat span{color:#bcbfb1;font-size:12px}.filters{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:28px 0 25px}.field{display:flex;flex-direction:column;gap:5px;min-width:170px;flex:1}.field label{color:#decb9d;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.field input,.field select{width:100%;background:#181d17;color:var(--cream);border:1px solid #665d43;padding:12px;min-height:45px;border-radius:8px}.field.search{flex:2;min-width:230px}.groups{display:grid;gap:25px}.group{background:linear-gradient(145deg,#1b1e18,#11150f);border:1px solid #453f30;padding:20px}.grouphead{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap;border-bottom:1px solid #51452e;padding-bottom:12px;margin-bottom:16px}.grouphead small{color:#c7b583}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.review{border:2px solid #574a31;background:#20251e;min-width:0;display:flex;flex-direction:column;position:relative}.review.retired{border-color:#757364}.reviewhead{display:flex;gap:14px;padding:13px}.thumb{width:98px;height:112px;flex-shrink:0;background:radial-gradient(circle,#38412e,transparent 72%);display:grid;place-items:center;position:relative}.thumb img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 5px 5px #0008)}.thumb .fallback{font-size:29px;color:#ab9a6d}.reviewtop{min-width:0}.brandname{color:#d3b774;font-size:10px;letter-spacing:.07em;text-transform:uppercase;font-weight:700}.productname{font-weight:750;line-height:1.25;margin:6px 0;overflow-wrap:anywhere}.date{color:#b3b9ad;font-size:11px}.private{color:#f4c86f;font-weight:700;margin-top:8px}.subtext{color:#b8bcaf;font-size:11px}.reviewbody{padding:0 13px 12px;flex:1}.reviewbody p{font-size:12px;line-height:1.55;color:#d2d4c7}.reviewbody .notelabel{font-size:10px;letter-spacing:.1em;color:#d1b780;text-transform:uppercase;font-weight:700;margin-bottom:4px}.status{display:inline-block;font-size:10px;padding:3px 7px;border:1px solid #736a49;color:#e5d9b7;margin-top:10px}.status.pending{border-color:#8b6930;color:#e8bb73}.status.retired{border-color:#777d74;color:#c4c4bc;margin-right:5px}.cardactions{padding:12px 13px 15px;border-top:1px solid #454434;display:flex;gap:7px}.cardactions button{border-radius:8px;border:1px solid #856e45;background:#46351f;color:#f6dfb1;padding:8px 11px;font-size:11px;flex:1;font-weight:700}.cardactions button.secondary{background:transparent;color:#cfccbf}.empty{padding:40px 18px;border:1px dashed #665d44;text-align:center;color:#c1c4bb}.fineprint{margin-top:24px;border-top:1px solid #3f4339;padding-top:16px;color:#aeb2a6;font-size:12px;max-width:950px}.overlay{position:fixed;inset:0;background:#060806ed;display:none;align-items:center;justify-content:center;padding:15px;z-index:50}.overlay.visible{display:flex}.dialog{max-height:92dvh;overflow:auto;width:min(700px,100%);border:2px solid #ab8a4b;background:#1a231b;padding:28px;box-shadow:0 25px 80px #000;position:relative}.dialog h2{margin:7px 40px 14px 0}.dialog h3{font:20px Georgia,serif;margin:20px 0 8px}.dialog p{margin:9px 0;color:#d0d2c9}.dialog .close{position:absolute;right:13px;top:12px;background:#20271f;color:white;border:1px solid #716346;border-radius:99px;width:35px;height:35px}.dialog .block{border:1px solid #4c513e;padding:15px;margin-top:12px;background:#192019}.dialog .fine{font-size:12px;color:#b9bfb3}.dialog .rating{color:#f5c569;font-size:22px}.dialog .notice{background:#29271c;border-left:3px solid #c59d4c;padding:12px;color:#ead5a9;font-size:12px;margin-top:14px}@media(max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:780px){.grid{grid-template-columns:repeat(2,1fr)}.reviewhead{flex-direction:column}.thumb{width:100%;height:140px}header .toplink{display:none}}@media(max-width:520px){.container{padding:24px 14px 65px}.grid{grid-template-columns:1fr}.reviewhead{flex-direction:row}.thumb{width:104px;height:118px}.group{padding:14px}.controls button{flex:1}.dialog{padding:19px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* THE REVIEW YARD v0.3 — refined theme comparisons. Palette references:
+   main.html burgundy ribbon #750E0D; pairing-bar.html ticket #F5E6C8, green #355E3B. */
+.theme-controls{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:14px 0 5px;padding:15px 16px;border:1px solid #726143;background:#24281f}
+.theme-controls .theme-caption{font-weight:800;letter-spacing:.09em;font-size:11px;text-transform:uppercase;color:#edcb8b;margin-right:8px}
+.theme-controls button{background:#22241e;border:1px solid #967d52;color:#f2e7d0;padding:10px 15px;border-radius:999px;font-size:12px;font-weight:750}
+.theme-controls button.active{background:#d4a64b;color:#201b15;border-color:#d4a64b}
+.theme-hint{font-size:11px;color:#c1c8bb;margin:5px 0 18px}
+/* Theme 2: Pairing Bar's parchment ticket color as page background. */
+body[data-theme="cream"]{background:#f5e6c8;color:#2b1d15}
+body[data-theme="cream"] .eyebrow,body[data-theme="cream"] .brandname{color:#750E0D}
+body[data-theme="cream"] .intro,body[data-theme="cream"] .fineprint,body[data-theme="cream"] .theme-hint{color:#65482d}
+body[data-theme="cream"] .group{background:#1E3020;border-color:#b48958;color:#F5ECD6}
+body[data-theme="cream"] .grouphead h2{color:#F5ECD6}
+body[data-theme="cream"] .grouphead small{color:#EDD9B4}
+body[data-theme="cream"] .grouphead{border-color:#d2b38a}
+body[data-theme="cream"] .date,body[data-theme="cream"] .subtext{color:#72543a}
+body[data-theme="cream"] .review{background:#f9edd8;border-color:#b48958;color:#2b1d15}
+body[data-theme="cream"] .reviewbody p{color:#433124}
+body[data-theme="cream"] .reviewbody .notelabel{color:#750E0D}
+body[data-theme="cream"] .private{color:#750E0D}
+body[data-theme="cream"] .stat{background:#fff7e8;border-color:#b48958}
+body[data-theme="cream"] .stat strong{color:#750E0D}
+body[data-theme="cream"] .stat span{color:#5d432b}
+body[data-theme="cream"] .field label{color:#6b1608}
+body[data-theme="cream"] .field input,body[data-theme="cream"] .field select{background:#fffaf0;color:#2b1d15;border-color:#b48958}
+body[data-theme="cream"] .cardactions{border-color:#c3a47d}
+body[data-theme="cream"] .cardactions button{background:#750E0D;color:#fff5e6;border-color:#750E0D}
+body[data-theme="cream"] .cardactions button.secondary{background:#fff8e9;color:#750E0D}
+body[data-theme="cream"] .status{border-color:#a88d6c;color:#513721}
+body[data-theme="cream"] .status.pending{color:#7e4e15}
+body[data-theme="cream"] .thumb{background:radial-gradient(circle,#ead4ad,transparent 72%)}
+body[data-theme="cream"] .prototype{background:#f6e0bb;border-color:#b48958;color:#573718}
+body[data-theme="cream"] .theme-controls{background:#eddbbc;border-color:#b48958}
+body[data-theme="cream"] .theme-controls .theme-caption{color:#750E0D}
+body[data-theme="cream"] .theme-controls button{background:#fff4e0;color:#543520;border-color:#b48958}
+body[data-theme="cream"] .theme-controls button.active{background:#750E0D;color:white;border-color:#750E0D}
+body[data-theme="cream"] .empty{color:#65452a;border-color:#b48958}
+body[data-theme="cream"] .fineprint{border-color:#bc986a}
+/* Theme 3: Pairing Bar green canvas, cream brand/category boxes,
+   burgundy/green lettering within the brand/category boxes. */
+body[data-theme="green-cream"]{background:radial-gradient(circle at 25% -10%,#294632,transparent 42%),#1E3020;color:#fff5df}
+body[data-theme="green-cream"] .group{background:#f5e6c8;border:2px solid #b48958;color:#1e3020}
+body[data-theme="green-cream"] .grouphead{border-bottom-color:#c4aa82}
+body[data-theme="green-cream"] .grouphead h2{color:#750E0D}
+body[data-theme="green-cream"] .grouphead small{color:#355E3B;font-weight:750}
+body[data-theme="green-cream"] .review{background:#355E3B;border-color:#b48958;color:#fff5df}
+body[data-theme="green-cream"] .brandname,body[data-theme="green-cream"] .reviewbody .notelabel{color:#ffe0a0}
+body[data-theme="green-cream"] .productname,body[data-theme="green-cream"] .reviewbody p{color:#fff5df}
+body[data-theme="green-cream"] .date,body[data-theme="green-cream"] .subtext{color:#d3e3cb}
+body[data-theme="green-cream"] .private{color:#ffe0a0}
+body[data-theme="green-cream"] .status{color:#fff5df;border-color:#91a28a}
+body[data-theme="green-cream"] .status.pending{color:#ffe0a0;border-color:#ac7e59}
+body[data-theme="green-cream"] .thumb{background:radial-gradient(circle,#547d56,transparent 72%)}
+body[data-theme="green-cream"] .cardactions{border-color:#c7b18d}
+body[data-theme="green-cream"] .cardactions button{background:#750E0D;color:#fff9ee;border-color:#750E0D}
+body[data-theme="green-cream"] .stat{background:#355E3B;border-color:#8eac83}
+body[data-theme="green-cream"] .field input,body[data-theme="green-cream"] .field select{background:#355E3B;border-color:#b9a071}
+body[data-theme="green-cream"] .prototype,body[data-theme="green-cream"] .theme-controls{background:#355E3B;border-color:#a99769}
+body[data-theme="green-cream"] .fineprint{color:#e1ead9;border-color:#8aa88e}
+body[data-theme="green-cream"] header{background:#750E0D}
+@media(max-width:520px){.theme-controls{padding:12px}.theme-controls button{flex:1}}
+
+/* v0.5 — brighter gold accents for the selected dark-green + cream treatment only. */
+body[data-theme="green-cream"]{
+  --gold:#F3CA68;
+}
+body[data-theme="green-cream"] .brand small,
+body[data-theme="green-cream"] .eyebrow,
+body[data-theme="green-cream"] .theme-controls .theme-caption,
+body[data-theme="green-cream"] .field label,
+body[data-theme="green-cream"] .brandname,
+body[data-theme="green-cream"] .reviewbody .notelabel,
+body[data-theme="green-cream"] .private,
+body[data-theme="green-cream"] .stat strong,
+body[data-theme="green-cream"] .status.pending {
+  color:#F3CA68;
+}
+body[data-theme="green-cream"] header,
+body[data-theme="green-cream"] .group,
+body[data-theme="green-cream"] .review,
+body[data-theme="green-cream"] .stat,
+body[data-theme="green-cream"] .theme-controls,
+body[data-theme="green-cream"] .prototype,
+body[data-theme="green-cream"] .field input,
+body[data-theme="green-cream"] .field select {
+  border-color:#DFB454;
+}
+body[data-theme="green-cream"] .grouphead,
+body[data-theme="green-cream"] .cardactions {
+  border-color:#C49A45;
+}
+body[data-theme="green-cream"] .toplink,
+body[data-theme="green-cream"] .controls button,
+body[data-theme="green-cream"] .theme-controls button,
+body[data-theme="green-cream"] .status.pending {
+  border-color:#E9C26A;
+}
+body[data-theme="green-cream"] .toplink,
+body[data-theme="green-cream"] .theme-controls button:not(.active) {
+  color:#F7DA8D;
+}
+body[data-theme="green-cream"] .controls button.active,
+body[data-theme="green-cream"] .theme-controls button.active {
+  background:#F3CA68;
+  border-color:#F3CA68;
+  color:#231A10;
+}
+
+/* Review Yard v0.6: split public immutable answers and editable private notes. */
+.dialog .private-editor{background:#f5e6c8;color:#1E3020;border:2px solid #f3ca68}
+.dialog .private-editor .eyebrow{color:#750E0D}
+.dialog .private-editor .fine{color:#355E3B}
+.edit-label{display:block;margin:15px 0 6px;color:#750E0D;font-weight:750;font-size:12px}
+.edit-field{display:block;width:100%;background:#fffaf0;color:#1E3020;border:1.5px solid #a27c3e;border-radius:6px;padding:11px;font:14px/1.5 system-ui,sans-serif;resize:vertical}
+.edit-field:focus-visible{outline:3px solid #f3ca68;outline-offset:2px}
+.editor-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.editor-actions button{border-radius:8px;padding:11px 15px;font-weight:800;cursor:pointer}
+.save-notes{background:#750E0D;color:#fff8e9;border:1px solid #750E0D}
+.cancel-notes{background:transparent;color:#750E0D;border:1px solid #750E0D}
+.save-feedback{min-height:1.5em;color:#1E3020!important;font-weight:700;font-size:12px}
+.dialog .readonly-public{border:1px solid #f3ca68;background:#253d2b}
+.dialog .readonly-public strong{color:#f3ca68}
+
+/* VIEW YOUR REVIEW v1.2 DESIGN STUDY — detail panel only. */
+.dialog{width:min(1020px,100%);max-height:95dvh;background:#15291d;border:2px solid #d1a54c;padding:26px 28px 30px;scrollbar-color:#b99147 #1e3020;}
+.dialog h2{font:normal clamp(25px,3vw,36px) Georgia,serif;color:#f5e6c8;margin:4px 56px 7px 0}
+.detail-top{display:grid;grid-template-columns:120px 1fr;gap:20px;align-items:center;border-bottom:1px solid #a78140;padding:0 25px 23px 0;}
+.detail-photo{height:155px;width:116px;background:#203b2b;border:1px solid #8e703d;display:grid;place-items:center;color:#ecc56d;font:32px Georgia,serif}
+.detail-photo img{height:100%;width:100%;object-fit:contain;grid-area:1/1;z-index:2}.detail-fallback{grid-area:1/1;z-index:1;display:grid;place-items:center;color:#dfb25c;font-size:32px}
+.detail-kicker{letter-spacing:.17em;text-transform:uppercase;font-size:11px;font-weight:800;color:#f4cb7a}
+.detail-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.meta-chip{font-size:11px;border:1px solid #9e854d;padding:5px 10px;background:#243e2c;color:#f7e6be}
+.meta-chip.neutral{background:#343f31;color:#dde4d2}
+.meta-chip.unavailable{border-color:#ac7568;color:#ffd9cb;background:#4b2729}
+.detail-help{font-size:12px;line-height:1.6;color:#d1d1bb;margin:14px 0 18px;max-width:780px}
+.detail-section{margin-top:21px;border:1px solid #7d713e;background:#f5e6c8;color:#1e3020;padding:19px 21px;}
+.detail-section h3{color:#750e0d!important;margin:0 0 6px;font:normal 24px Georgia,serif!important;}
+.detail-section p{color:#314736!important;}
+.detail-section .subnote{font-size:12px;line-height:1.55;margin:5px 0 12px}
+.rating-row{display:grid;grid-template-columns:126px 1fr;align-items:center;gap:18px}
+.rating-display{background:#1e3020;color:#f3ca68;text-align:center;padding:15px 8px;border:2px solid #cf9f45}
+.rating-display strong{font-size:31px;display:block;line-height:1.2}
+.rating-display small{font-size:11px;text-transform:uppercase;letter-spacing:.1em}
+.rate-input{width:100%;accent-color:#b68b2a;cursor:pointer;height:32px}
+.range-labels{display:flex;justify-content:space-between;font-weight:700;color:#355e3b;font-size:12px}
+.detail-stage-title{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px}
+.detail-stage-title .train-stop{font-size:11px;font-weight:900;letter-spacing:.11em;color:#750e0d;text-transform:uppercase}
+.locked-tag{font-size:11px;color:#364e3e;border:1px solid #bca475;padding:5px 9px;background:#fff8e9}
+.question-label{font-size:17px;font-weight:750;color:#1e3020;line-height:1.4;margin-bottom:14px}
+.readonly-value{border-left:4px solid #c39b4a;background:#fffaf0;color:#2f3b30;padding:13px 15px;font-size:14px;white-space:pre-wrap;line-height:1.55}
+.stops-intro{font-size:12px;color:#dce6d9;line-height:1.6;margin:7px 0 15px}
+.stop-group{margin-top:20px}
+.stop-group h3{font:normal 24px Georgia,serif;color:#f3d18f}
+.stop-pair{padding:17px 18px;margin:11px 0;border:1px solid #baa06c;background:#f5e6c8;color:#1e3020}
+.stop-pair .question-label{font-size:15px;margin:3px 0 12px}
+.original-current{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.answer-side{border:1px solid #bdad85;background:#fff7e7;padding:11px 12px;min-width:0}
+.answer-side.now{border:1px solid #9e713b;background:#fffdf6}
+.answer-heading{display:flex;justify-content:space-between;gap:8px;align-items:center;color:#750e0d;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.answer-value{font-size:13px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere}
+.current-field{font:inherit;font-size:14px;width:100%;max-width:100%;border:1px solid #998465;background:#fffaf0;color:#1e3020;padding:9px;min-height:40px}
+.current-field:focus-visible{outline:2px solid #af7d25;outline-offset:2px}
+.choice-chips{display:flex;gap:8px;flex-wrap:wrap}
+ .choice-chips label{display:inline-flex;align-items:center;gap:5px;font-size:12px;border:1px solid #a38b62;background:#fffaf0;color:#213b2a;padding:9px 13px;cursor:pointer;border-radius:99px;line-height:1.45}
+.choice-chips label:focus-within{outline:2px solid #b78935;outline-offset:2px}
+.choice-chips.choice-lines{display:grid;grid-template-columns:1fr}
+.choice-chips label:has(input:checked){background:#750e0d;border-color:#750e0d;color:#fff7df;font-weight:700}
+.choice-chips input{accent-color:#750e0d;vertical-align:middle;margin-right:4px}
+.field-hint{font-size:11px;color:#516858;margin:7px 0 0}
+.note-textarea{border:1px solid #aa8b55;background:#fffaf0;color:#1e3020;width:100%;font:14px/1.5 system-ui,sans-serif;min-height:120px;padding:13px;resize:vertical}
+.note-bottom{display:flex;justify-content:space-between;align-items:center;color:#4f644e;font-size:12px;gap:12px;margin-top:5px}
+.note-bottom b{font-variant-numeric:tabular-nums}
+.detail-actions{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;border-top:1px solid #a18442;margin-top:24px;padding-top:20px}
+.action-group{display:flex;gap:10px;flex-wrap:wrap}
+.action-button{border:1px solid #d7a452;background:#750e0d;color:#fff7df;font:700 13px system-ui,sans-serif;cursor:pointer;padding:13px 17px;min-height:44px}
+.action-button.secondary{border-color:#9b854f;background:transparent;color:#f3e0bb}
+.action-button.cart{background:#dbaf4e;color:#1c3022;border-color:#edca79}
+.action-button:disabled{opacity:.55;cursor:not-allowed;background:#47443a;color:#dfd6c9}
+#detail-feedback{min-height:20px;color:#ffda91;font-size:13px;line-height:1.5;margin-top:10px}
+.preview-pill{display:inline-block;margin:6px 0;color:#f1d6a3;font-size:11px;border:1px solid #8c7040;padding:4px 8px}
+.reviewbody .notelabel{color:#f1ca78}
+@media(max-width:710px){.dialog{padding:20px 13px}.detail-top{grid-template-columns:80px 1fr;gap:11px}.detail-photo{width:78px;height:100px}.original-current{grid-template-columns:1fr}.rating-row{grid-template-columns:1fr}.detail-section{padding:16px 13px}.stop-pair{padding:14px 11px}.action-group{width:100%}.action-button{flex:1}.detail-actions{justify-content:stretch}}
+
+/* VIEW YOUR REVIEW v1.1 — private journal & bottle history demo */
+.detail-shortcuts{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:4px 0 20px}
+.detail-shortcuts span{color:#dfcfad;font-size:11px;letter-spacing:.03em}
+.detail-shortcuts button{border:1px solid #ab8748;color:#f8e4ba;background:#263d2b;padding:8px 12px;font:700 11px system-ui,sans-serif;cursor:pointer;min-height:34px}
+.detail-shortcuts button:hover,.detail-shortcuts button:focus-visible{background:#d3ac5c;color:#203226}
+.detail-section:target{outline:3px solid #cba048;outline-offset:3px}
+#section-personal-notes .note-textarea{min-height:170px;line-height:1.65}
+.journal-guidance{display:flex;flex-wrap:wrap;gap:7px;margin-top:5px}
+.journal-guidance span{border:1px solid #c5aa75;background:#fff7e3;color:#535b40;padding:5px 8px;font-size:11px}
+.history-help{font-size:12px!important;line-height:1.6}
+/* One purchase-confirmed row per individual bottle, regardless of gift status. */
+.history-scroll{overflow-x:auto;max-width:100%;padding:0 0 6px;scrollbar-color:#ad8a48 #fff8e7;scrollbar-width:thin}
+.history-sheet{min-width:796px;border:1px solid #b4a07b;background:#fffaf0;padding:9px}
+.history-grid{display:grid;grid-template-columns:132px 193px 142px 142px minmax(142px,1fr);gap:10px;align-items:center}
+.history-column-head{padding:3px 12px 8px;text-transform:uppercase;letter-spacing:.1em;color:#6a4b26;font-size:10px;font-weight:900}
+.history-row{padding:12px;background:#fff7e8;border:1px solid #d2be93;border-left:4px solid #c0994e;margin:7px 0;min-height:108px}
+.history-row.completed{border-left-color:#750e0d;background:#fff1d7}
+.history-row.gifted{border-left-color:#78816b;background:#f6f4e9}
+.history-purchased-value{font-weight:850;color:#223d2b;font-size:14px;display:block;white-space:nowrap}
+.history-caption{font-size:11px;color:#6b6d52;line-height:1.45}
+.history-bottle-id{font-size:11px;color:#6b6d52;display:block;margin-top:5px}
+.history-purpose{display:flex;gap:6px;align-items:stretch;min-width:0}
+.history-choice{flex:1;min-width:0;min-height:43px;border:1px solid #8e7b58;background:#fffdf5;color:#354634;border-radius:4px;padding:5px 6px;font-size:11px;font-weight:850;line-height:1.25;cursor:pointer}
+.history-choice[aria-pressed="true"]{background:#254d32;border-color:#254d32;color:#fff6df;box-shadow:inset 0 0 0 1px #d2ad58}
+.history-choice.gift[aria-pressed="true"]{background:#76501f;border-color:#76501f;color:#fff6df}
+.history-choice:hover{border-color:#750e0d}
+.history-date-input{display:block;width:138px;max-width:100%;min-height:40px;border:1px solid #a48b62;background:#fffdf5;color:#263d2b;padding:5px 5px;font:12px system-ui,sans-serif;border-radius:4px}
+.history-date-input:disabled{background:#eee9dc;border-color:#c5b9a4;color:#858575;cursor:not-allowed}
+.history-date-input:focus-visible,.history-choice:focus-visible{outline:3px solid #e3b951;outline-offset:2px}
+.history-duration{background:#e8ddc6;border:1px solid #baa783;min-height:81px;padding:9px 7px;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0;color:#4d543e}
+.history-duration strong{font:900 19px/1.1 system-ui,sans-serif;letter-spacing:-.02em}
+.history-duration small{font-size:9px;letter-spacing:.03em;line-height:1.4;margin-top:4px;font-weight:750}
+.history-duration.completed{background:#750e0d;color:#ffe09a;border-color:#750e0d;box-shadow:0 3px 0 #ae8646}
+.history-duration.completed strong{font:900 42px/.95 Georgia,serif;letter-spacing:-.035em}
+.history-duration.completed .unit{font-size:12px;letter-spacing:.15em;font-weight:900;line-height:1.3}
+.history-duration.gifted{background:#e0e6d9;color:#36553d;border-color:#acbca8}
+.history-summary{border-top:1px solid #b39d6e;margin:13px 0 0;padding:11px 2px 0;color:#324937;font-size:12px;line-height:1.5}
+.history-footer{color:#596d55!important;margin:14px 0 0;font-size:11px!important}
+.history-invalid{border-color:#a92127!important;outline:2px solid #a92127}
+.history-mobile-hint{display:none;color:#7e4b2e!important;font-size:11px!important;margin:5px 0!important;font-weight:800}
+@media(max-width:870px){.history-mobile-hint{display:block}.history-sheet{min-width:796px}}
+@media(max-width:710px){.detail-shortcuts{gap:6px}.history-sheet{min-width:796px}.history-grid{gap:8px}}
+
+/* v1.3 — NOW / Your Answer: burgundy + gold frame, cream options; no inline radio dots */
+.answer-side.now {
+  background:#750e0d;
+  border:2px solid #dfb652;
+  box-shadow:inset 0 0 0 1px #8b341d;
+  color:#fff1cf;
+  padding:13px 14px;
+}
+.answer-side.now .answer-heading {
+  color:#f5d17e;
+  border-bottom:1px solid rgba(243,203,112,.36);
+  padding-bottom:9px;
+  margin-bottom:12px;
+}
+.answer-side.now .choice-chips { gap:9px; }
+.answer-side.now .choice-chips label {
+  position:relative;
+  display:inline-flex;
+  gap:0;
+  padding:9px 14px;
+  border:2px solid #f2ddad;
+  background:#f8edcf;
+  color:#750e0d;
+  font-weight:650;
+  border-radius:999px;
+  cursor:pointer;
+  transition:background .14s ease,border-color .14s ease,box-shadow .14s ease;
+}
+/* Real inputs remain operable and keyboard-accessible, but their little circles disappear. */
+.answer-side.now .choice-chips input[type=radio],
+.answer-side.now .choice-chips input[type=checkbox] {
+  position:absolute;
+  opacity:0;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:0;
+  overflow:hidden;
+  clip-path:inset(50%);
+  pointer-events:none;
+}
+.answer-side.now .choice-chips label:has(input:checked) {
+  background:#fff4d8;
+  border-color:#f5bc3f;
+  color:#660b0d;
+  box-shadow:0 0 0 1px #f5bc3f,inset 0 0 0 1px #a77b31;
+  font-weight:850;
+}
+.answer-side.now .choice-chips label:hover {background:#fff9e7;border-color:#efc362;}
+.answer-side.now .choice-chips label:focus-within {outline:3px solid #ffe899;outline-offset:4px;}
+.answer-side.now .field-hint,
+.answer-side.now .field-hint p,
+.answer-side.now .range-labels {color:#fff0cf;}
+.answer-side.now .field-hint summary {color:#f6d583;cursor:pointer;}
+.answer-side.now .current-field.now-accuracy {
+  background:transparent;
+  border:0;
+  padding:9px 0;
+  min-height:34px;
+  accent-color:#efc55c;
+}
+.answer-side.now .range-labels b{color:#fce0a2;}
+
+/* v1.4 — live-questionnaire heat explanations, collapsed until requested. */
+.answer-side.now .heat-guide {
+  margin-top:16px;
+  border-top:1px solid rgba(246,213,131,.38);
+  padding:13px 0 0;
+  color:#fff2d9;
+}
+.answer-side.now .heat-guide summary {
+  display:flex;align-items:center;gap:9px;
+  width:fit-content;max-width:100%;
+  font-size:12px;font-weight:850;color:#f8d684;
+  cursor:pointer;list-style:none;line-height:1.5;
+}
+.answer-side.now .heat-guide summary::-webkit-details-marker{display:none}
+.answer-side.now .heat-guide summary:focus-visible{outline:2px solid #ffdb83;outline-offset:4px}
+.answer-side.now .heat-guide summary:hover{text-decoration:underline}
+.answer-side.now .heat-guide .heat-guide-icon {
+  width:24px;height:24px;flex:0 0 24px;
+  display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid #e9c26e;border-radius:50%;
+  font-size:15px;font-weight:900;color:#f8dc9d;
+}
+.answer-side.now .heat-guide summary:after{content:'▾';font-size:13px;margin-left:2px;color:#f7d17e}
+.answer-side.now .heat-guide[open] summary:after{content:'▴'}
+.answer-side.now .heat-guide-body{margin-top:11px;padding:12px 13px;background:#5d080b;border:1px solid #b78847}
+.answer-side.now .heat-guide-body p{margin:0 0 9px;color:#f8e2be;font-size:12px;line-height:1.6}
+.answer-side.now .heat-guide-body ul{padding:0;margin:0;list-style:none;display:grid;gap:0}
+.answer-side.now .heat-guide-body li{
+  display:grid;grid-template-columns:minmax(105px,31%) 1fr;gap:13px;
+  padding:9px 0;border-top:1px solid rgba(246,211,140,.2);
+  font-size:12px;line-height:1.5;
+}
+.answer-side.now .heat-guide-body li strong{color:#ffdf99;font-weight:850}
+.answer-side.now .heat-guide-body li span{color:#fff1d5}
+@media (max-width:410px){
+  .answer-side.now .heat-guide-body li{grid-template-columns:1fr;gap:2px}
+}
+
+/* v1.9 surgical correction, based on v1.5: ONLY each bottle information row
+   (the user-outlined rectangle) gets green with gold text. Exterior, header,
+   table frame, layout, inputs, buttons, duration tiles remain unchanged. */
+.history-row,
+.history-row.completed,
+.history-row.gifted {
+  background:#234832;
+  color:#f5d890;
+  border:1px solid #d2ac5f;
+  border-left:4px solid #dfb765;
+}
+.history-row .history-purchased-value,
+.history-row .history-bottle-id,
+.history-row .history-caption {
+  color:#f5d890;
+}
+
+
+/* v2.0 — REVERSE ONLY the table enclosure and its inner bottle rows.
+   The bordered table enclosure becomes green/gold; the bottle data rows
+   are restored to cream. Outside Purchase & Bottle History section untouched.
+   No geometry, markup, controls, or JavaScript changes. */
+#section-bottle-history .history-sheet {
+  background:#203e2b;
+  border-color:#d7ad58;
+}
+#section-bottle-history .history-column-head {
+  background:transparent;
+  color:#f3ca68;
+}
+#section-bottle-history .history-row,
+#section-bottle-history .history-row.completed,
+#section-bottle-history .history-row.gifted {
+  background:#fff7e8;
+  color:#1e3020;
+  border-color:#d2be93;
+  border-left:4px solid #c0994e;
+}
+#section-bottle-history .history-row.completed {background:#fff1d7;border-left-color:#750e0d}
+#section-bottle-history .history-row.gifted {background:#f6f4e9;border-left-color:#78816b}
+#section-bottle-history .history-row .history-purchased-value {color:#223d2b}
+#section-bottle-history .history-row .history-bottle-id,
+#section-bottle-history .history-row .history-caption {color:#6b6d52}
+
+
+/* v2.2: Two self-explanatory actions, no action panels. Bottle History unaffected. */
+.detail-final-stop{margin-top:22px;border-top:2px solid #c49a45;padding-top:19px}
+.detail-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0;padding:0;border:0}
+.detail-actions .action-button{flex:0 0 auto;min-width:105px}
+#detail-feedback{margin-top:11px;min-height:20px}
+@media(max-width:710px){.detail-actions{justify-content:space-between}.detail-actions .action-button{flex:0 0 auto;min-width:0}}
+
+</style></head><body data-theme="green-cream"><header><div class="brand">Pepper Junction<small>Find Your Heat. Find Your Flavor.</small></div><span class="toplink" aria-label="Standalone concept preview">The Review Yard</span></header><main class="container"><div class="eyebrow">Your personal review archive</div><h1>The Review Yard</h1><p class="intro">Your reviews have a permanent home. This is where you can find your personal ratings and tasting notes for Pepper Junction products. Revisit your thoughts any time by searching by brand.</p><div class="prototype" id="yard-state" role="status">Loading your private Review Yard…</div><div class="stats"><div class="stat"><strong id="count">0</strong><span>Products reviewed</span></div><div class="stat"><strong id="brands">0</strong><span>Brands in your Yard</span></div><div class="stat"><strong id="archived">0</strong><span>Retired products preserved</span></div></div><div class="filters"><div class="field search"><label for="search">Search your reviews</label><input id="search" type="search" placeholder="Search by product, brand, or note"></div><div class="field"><label for="filter">Show</label><select id="filter"><option value="all">All reviews</option><option value="approved">Public review approved</option><option value="pending">Awaiting moderation</option><option value="retired">Retired products</option></select></div><div class="field"><label for="sort">Sort within each brand</label><select id="sort"><option value="name">Product name A–Z</option><option value="newest">Most recently reviewed</option><option value="oldest">Oldest reviews first</option><option value="rating">Highest private rating</option></select></div></div><div id="yard" class="groups" aria-live="polite"></div><p class="fineprint">Your original reviews are preserved. Private updates do not alter public reviews, Passenger Notes, or the Badge Depot.</p></main><div class="overlay" id="overlay" role="presentation"><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" tabindex="-1" id="dialog"><button type="button" class="close" id="close" aria-label="Close review details">×</button><div id="detail"></div></section></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="assets/js/pj-auth.js"></script>
+<script src="assets/js/pj-review-data.js"></script>
+<script>
+const D=window.PJReviewData;
+const SAMPLE=[];
+let mode='sample',previousFocus=null;
+// Demo-only private note state. Never modifies original public answers.
+const personalEdits = Object.create(null);
+let activeReviewId = null;
+document.querySelectorAll('[data-theme-choice]').forEach(b=>{const a=b.dataset.themeChoice==='green-cream';b.classList.toggle('active',a);b.setAttribute('aria-pressed',String(a));});
+document.querySelectorAll('[data-theme-choice]').forEach(b=>b.addEventListener('click',()=>{document.body.dataset.theme=b.dataset.themeChoice;document.querySelectorAll('[data-theme-choice]').forEach(x=>{let isActive=x===b;x.classList.toggle('active',isActive);x.setAttribute('aria-pressed',String(isActive))})}));
+const $=id=>document.getElementById(id);
+function esc(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;')}
+SAMPLE.forEach(function(r){
+  r.publicFood = r.publicFood || 'Fantastic with grilled chicken.';
+  r.publicLove = r.publicLove || r.publicLine;
+  r.privateFood = r.publicFood;
+  r.privateLove = r.publicLove;
+});
+// The saved fields are separate objects; copying happens once in the intended live flow.
+function personal(r){const edited=personalEdits[r.id]||{};return {food:r.privateFood,love:r.privateLove,rating:edited.rating??r.rating,note:edited.note??(r.privateNote||''),changes:edited.changes||{}};}
+function records(){return SAMPLE}
+function formattedDate(d){const t=new Date(d+'T12:00:00');return t.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'})}
+function stars(n){return `★ ${Number(n).toFixed(2)} / 5`}
+function render(){let all=records();$('count').textContent=all.length;$('brands').textContent=new Set(all.map(r=>r.brand)).size;$('archived').textContent=all.filter(r=>r.retired).length;let q=$('search').value.trim().toLowerCase(),f=$('filter').value,sort=$('sort').value;let filtered=all.filter(r=>(!q||[r.brand,r.product,r.privateNote,personal(r).note,r.publicLine].some(x=>String(x).toLowerCase().includes(q)))&&(f==='all'||(f==='retired'?r.retired:r.moderation.toLowerCase()===f)));if(!filtered.length){$('yard').innerHTML=`<div class="empty">${all.length?'No reviews match your filters. Try another search.':'Your Review Yard is waiting for its first saved product review.'}</div>`;return}let grouped={};filtered.forEach(r=>(grouped[r.brand]??=[]).push(r));$('yard').innerHTML=Object.keys(grouped).sort((a,b)=>a.localeCompare(b)).map(brand=>{let items=grouped[brand];items.sort((a,b)=>sort==='newest'?b.date.localeCompare(a.date):sort==='oldest'?a.date.localeCompare(b.date):sort==='rating'?personal(b).rating-personal(a).rating:a.product.localeCompare(b.product));return `<section class="group"><div class="grouphead"><h2>${esc(brand)}</h2><small>${items.length} saved ${items.length===1?'review':'reviews'}</small></div><div class="grid">${items.map(card).join('')}</div></section>`}).join('')}
+function card(r){const image=r.image?`<img loading="lazy" src="https://pepperjunction401.com/assets/sauces/${encodeURIComponent(r.image)}" alt="${esc(r.product)}" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><span class="fallback" hidden>✦</span>`:`<span class="fallback">✦</span>`;return `<article class="review"><div class="reviewhead"><div class="thumb">${image}</div><div class="reviewtop"><div class="brandname">${esc(r.brand)}</div><div class="productname">${esc(r.product)}</div><div class="date">Reviewed ${formattedDate(r.date)}</div><div class="private">${stars(personal(r).rating)}</div><div class="subtext">Private rating</div></div></div><div class="reviewbody"><div class="notelabel">Your personal notes</div><p>${esc(personal(r).note||'No personal notes yet.')}</p>${r.retired?'<span class="status retired">Retired product</span>':''}<span class="status ${r.moderation==='Pending'?'pending':''}">Public review: ${esc(r.moderation)}</span></div><div class="cardactions"><button type="button" data-view="${esc(r.id)}">View Your Review</button></div></article>`}
+// Demo-only CNS illustrations. Live integration will load these options from the authoritative product CNS.
+const CATALOG_SAMPLES={};
+const HEAT_LADDER=['Mild','Medium','Hot','Very Hot','Super Hot','Extreme','Inferno'];
+const FOOD_STYLES=['American','Asian','BBQ','Buffalo','Cajun','Caribbean','Indian','Mediterranean','Mexican','Southwestern','Snack'];
+const HITS=['Water Park','Jacuzzi Heat','Bonfire','Rip Current','Rogue Wave','Tsunami'];
+const FINISH=['Mutual Split','Thanks for Stopping By','No Hard Feelings','Stays for Coffee','Escorted Out','Say Goodnight'];
+const LANE=['Yes — this was right where I like it.','A little hotter than my usual lane, but manageable.','No — this was hotter than I normally enjoy.','No — this was milder than I normally enjoy.'];
+// Display Stop ID mapping is anchored to the CURRENT questionnaire; its database IDs do not change.
+// Display labels come from the currently deployed questionnaire; stable q-ids persist in Supabase.
+const STOPS=[
+ {stop:8,id:'q7',prompt:'How would you rate the heat?',type:'single'},
+ {stop:9,id:'q8',prompt:'Would you purchase it again?',type:'yesno'},
+ {stop:10,id:'q9',prompt:'Would you purchase this as a gift for someone?',type:'yesno'},
+ {stop:11,id:'q10',prompt:'What style of food did you use this item on?',type:'single'},
+ {stop:12,id:'q11',prompt:'Which flavors stood out to you the most?',type:'multi'},
+ {stop:13,id:'q12',prompt:'How did the heat hit?',type:'single'},
+ {stop:14,id:'q13',prompt:'How did the heat finish?',type:'single'},
+ {stop:15,id:'q16',prompt:"Was this sauce's heat level in your lane?",type:'single'},
+ {stop:16,id:'q17',prompt:"How accurate was Pepper Junction's description of this item?",type:'accuracy'}
+];
+let activeDetail=null;
+function productCns(r){const p=D?.getProduct(r.slug);return p?{heat:p.heatCategory,food:p.foodStyle,flavors:p.reviewFlavorOptions}:r.archivedCns||{heat:'',food:'',flavors:[]};}
+function optionsFor(q,r){const c=productCns(r);switch(q.id){
+ case 'q7': {let k=HEAT_LADDER.indexOf(c.heat);return k<0?[r.answers.q7].filter(Boolean):HEAT_LADDER.slice(Math.max(0,k-1),Math.min(HEAT_LADDER.length,k+2));}
+ case 'q8':case 'q9':return ['Yes','No'];
+ case 'q10':return D?.getFoodStyles()||FOOD_STYLES;
+ case 'q11':return c.flavors?.length?c.flavors:(Array.isArray(r.answers.q11)?r.answers.q11:[]);
+ case 'q12':return D?.getHowItHits()?.sort((a,b)=>HITS.indexOf(a)-HITS.indexOf(b))||HITS;
+ case 'q13':return D?.getHeatFinish()||FINISH;
+ case 'q16':return LANE;
+ case 'q17':return [1,2,3,4,5];
+ default:return [];
+}}
+function originalFor(q,r){return r.answers?.[q.id]??'Not Applicable';}
+function labelOf(value){return Array.isArray(value)?value.join(', '):String(value??'Not answered');}
+function currentFor(q,r){const p=personal(r);return Object.prototype.hasOwnProperty.call(p.changes,q.id)?p.changes[q.id]:originalFor(q,r);}
+// Heat guides reproduce the wording in review.html (Main), rather than introducing
+// new definitions. They are informational and never change the current answer.
+const HEAT_GUIDES = {
+ q12: [
+  ['Water Park','Playful, lively, zippy heat without overwhelming intensity.'],
+  ['Jacuzzi Heat','Gradual, comfortable warmth that builds without an aggressive burn.'],
+  ['Bonfire','A prolonged, persistent, comfortable heat with no sudden hit.'],
+  ['Rip Current','Flavor arrives first, followed by a delayed punch of heat.'],
+  ['Rogue Wave','Immediate heat that hits right out of the gate.'],
+  ['Tsunami','Immediate heat that continues intensifying into something powerful.']
+ ],
+ q13: [
+  ['Mutual Split','The heat and flavor finish together, with the flavor having the final word.'],
+  ['Thanks for Stopping By','A smooth, pleasant departure. The heat winds down gently.'],
+  ['No Hard Feelings','The heat drops away quickly after making its impression.'],
+  ['Stays for Coffee','The heat lingers awhile, overstaying its welcome.'],
+  ['Escorted Out','A substantial lingering burn that refuses to leave quietly.'],
+  ['Say Goodnight','Overwhelming, long-lasting heat that’ll end your night.']
+ ]
+};
+function heatGuideFor(q){
+ const guide=HEAT_GUIDES[q.id];if(!guide)return '';
+ const rows=guide.map(([label,meaning])=>`<li><strong>${esc(label)}</strong><span>${esc(meaning)}</span></li>`).join('');
+ return `<details class="heat-guide"><summary><span class="heat-guide-icon" aria-hidden="true">?</span>What do these heat descriptions mean?</summary><div class="heat-guide-body"><p>Choose the description that best matches your experience.</p><ul>${rows}</ul></div></details>`;
+}
+function controlFor(q,r){
+ const v=currentFor(q,r),opts=optionsFor(q,r);
+ if(q.type==='accuracy')return `<input class="current-field now-accuracy" type="range" min="1" max="5" step="1" value="${Number(v)}" data-qid="${q.id}" aria-label="Private description accuracy, 1 to 5 in whole steps"><div class="range-labels"><span>1 · Way off</span><b id="readout-${q.id}">${Number(v)} / 5</b><span>5 · Nailed it</span></div><p class="field-hint">1: Way off · 2: A little off · 3: Mostly accurate · 4: Very accurate · 5: Nailed it</p>`;
+ const multi=q.type==='multi';
+ const choices=opts.map(x=>`<label><input type="${multi?'checkbox':'radio'}" name="now-${q.id}" data-qid="${q.id}" value="${esc(x)}" ${multi?(Array.isArray(v)&&v.includes(x)?'checked':''):(x===v?'checked':'')}>${esc(x)}</label>`).join('');
+ const guide=heatGuideFor(q);
+ return `<div class="choice-chips ${q.id==='q16'?'choice-lines':''}" role="group" aria-label="Your current private answer for Train Stop ${q.stop}">${choices}</div>${multi?'<p class="field-hint">Select 1–3 flavor options for this product.</p>':''}${guide}`;
+}
+function stopCard(q,r){return `<section class="stop-pair" aria-labelledby="question-${q.id}">
+ <div class="detail-stage-title"><span class="train-stop">TRAIN STOP ${q.stop} OF 17</span><span class="locked-tag">Private copy · editable</span></div>
+ <div class="question-label" id="question-${q.id}">${esc(q.prompt)}</div>
+ <div class="original-current">
+  <div class="answer-side"><div class="answer-heading">THEN · Original <span>🔒</span></div><div class="answer-value">${esc(labelOf(originalFor(q,r)))}</div></div>
+  <div class="answer-side now"><div class="answer-heading">NOW · Your answer <span>✎</span></div>${controlFor(q,r)}</div>
+ </div></section>`;}
+
+/* Illustrative purchase records and bottle logs. No Square records are accessed.
+   Each bottle log has its own stable demo ID. This is the future badge integration
+   seam: the Review Yard records personal dates; an independent Badge Engine may later
+   evaluate a completed, validated bottle log. This page never awards badges. */
+const DEMO_HISTORY={
+ 'pj-demo-1':[
+  {id:'order-sample-1a',purchased:'2026-10-12',quantity:2,bottles:[{id:'bottle-sample-1a',purpose:'for-me',opened:'2026-10-20',finished:'2026-11-03'},{id:'bottle-sample-1a-2',purpose:'gift',opened:'',finished:''}]},
+  {id:'order-sample-1b',purchased:'2026-11-15',quantity:1,bottles:[]}
+ ],
+ 'pj-demo-2':[
+  {id:'order-sample-2a',purchased:'2026-02-04',quantity:1,bottles:[{id:'bottle-sample-2a',opened:'2026-02-08',finished:''}]}
+ ],
+ 'pj-demo-retired':[
+  {id:'order-sample-retired',purchased:'2025-09-19',quantity:1,bottles:[{id:'bottle-sample-r',opened:'2025-09-22',finished:'2025-10-17'}]}
+ ]
+};
+const savedDemoHistory=Object.create(null);
+let editingHistory=[];
+let nextBottleId=100;
+function demoHistoryFor(r){
+ const grouped=new Map();
+ for(const b of (r.bottles||[])){
+  const id=b.purchaseLineItemId;
+  if(!grouped.has(id))grouped.set(id,{id,purchased:String(b.purchasedAt||'').slice(0,10),quantity:0,bottles:[]});
+  const order=grouped.get(id);
+  const ordinal=Number(b.bottleOrdinal);
+  order.bottles.push({id:id+'-'+ordinal,purchaseLineItemId:id,bottleOrdinal:ordinal,
+   purpose:b.purpose==='for_me'?'for-me':b.purpose==='gift'?'gift':'unassigned',
+   opened:b.openedOn||'',finished:b.finishedOn||''});
+ }
+ for(const o of grouped.values()){o.bottles.sort((a,b)=>a.bottleOrdinal-b.bottleOrdinal);o.quantity=o.bottles.length;}
+ return Array.from(grouped.values()).sort((a,b)=>b.purchased.localeCompare(a.purchased));
+}
+function durationDays(opened,finished){
+ if(!opened||!finished)return null;
+ const a=Date.parse(opened+'T12:00:00Z'),b=Date.parse(finished+'T12:00:00Z');
+ return Number.isFinite(a)&&Number.isFinite(b)?Math.round((b-a)/86400000):null;
+}
+function durationDisplay(b){
+ const days=durationDays(b.opened,b.finished);
+ if(b.purpose==='gift')return `<div class="history-duration gifted" data-duration="${esc(b.id)}"><strong>🎁 GIFT</strong><small>Was a Gift</small></div>`;
+ if(b.purpose==='unassigned')return `<div class="history-duration" data-duration="${esc(b.id)}"><strong>—</strong><small>Choose For Me or Was a Gift</small></div>`;
+ if(b.opened&&b.finished&&days!==null&&days>=0)return `<div class="history-duration completed" data-duration="${esc(b.id)}"><strong>${days}</strong><span class="unit">${days===1?'DAY':'DAYS'}</span><small>OPENING → LAST DROP</small></div>`;
+ if(b.finished&&!b.opened)return `<div class="history-duration" data-duration="${esc(b.id)}"><strong>—</strong><small>Enter an opened date</small></div>`;
+ if(b.opened)return `<div class="history-duration" data-duration="${esc(b.id)}"><strong>IN USE</strong><small>Enter the finished date</small></div>`;
+ return `<div class="history-duration" data-duration="${esc(b.id)}"><strong>—</strong><small>Awaiting dates</small></div>`;
+}
+function historyMarkup(){
+ const all=editingHistory.flatMap(order=>order.bottles.map((b,i)=>({order,b,index:i})));
+ const gifted=all.filter(x=>x.b.purpose==='gift').length;
+ const finished=all.filter(x=>x.b.purpose==='for-me'&&x.b.finished).length;
+ const rows=all.map(({order,b,index})=>{
+  const mine=b.purpose==='for-me';
+  const disabled=mine?'':'disabled';
+  const days=durationDays(b.opened,b.finished);
+  const done=mine&&b.opened&&b.finished&&days!==null&&days>=0;
+  return `<div class="history-row history-grid ${done?'completed':''} ${b.purpose==='gift'?'gifted':''}" data-bottle-row="${esc(b.id)}">
+   <div><span class="history-purchased-value">${formattedDate(order.purchased)}</span><span class="history-bottle-id">Bottle ${index+1} of ${order.quantity}</span></div>
+   <div class="history-purpose" role="group" aria-label="Bottle ${index+1} from ${formattedDate(order.purchased)}: who was it for?">
+    <button class="history-choice" type="button" data-purpose="for-me" data-order="${esc(order.id)}" data-bottle="${esc(b.id)}" aria-pressed="${mine}">For Me</button>
+    <button class="history-choice gift" type="button" data-purpose="gift" data-order="${esc(order.id)}" data-bottle="${esc(b.id)}" aria-pressed="${b.purpose==='gift'}">Was a Gift</button>
+   </div>
+   <div><input class="history-date-input" type="date" id="opened-${esc(b.id)}" aria-label="Opened date for bottle ${index+1} purchased ${formattedDate(order.purchased)}" data-order="${esc(order.id)}" data-bottle="${esc(b.id)}" data-date-field="opened" value="${esc(b.opened)}" min="${esc(order.purchased)}" ${disabled}></div>
+   <div><input class="history-date-input" type="date" id="finished-${esc(b.id)}" aria-label="Finished date for bottle ${index+1} purchased ${formattedDate(order.purchased)}" data-order="${esc(order.id)}" data-bottle="${esc(b.id)}" data-date-field="finished" value="${esc(b.finished)}" min="${esc(order.purchased)}" ${disabled}></div>
+   ${durationDisplay(b)}
+  </div>`;
+ }).join('');
+ return `<p class="history-mobile-hint">Swipe horizontally to see all dates and your days-to-last-drop result →</p><div class="history-scroll" role="region" aria-label="Bottle purchase and use history" tabindex="0"><div class="history-sheet">
+  <div class="history-column-head history-grid" aria-hidden="true"><span>Purchased</span><span>For Who?</span><span>Opened</span><span>Finished</span><span>Days to Last Drop</span></div>
+  ${rows||'<p class="history-caption">No purchases on record.</p>'}
+ </div></div><div class="history-summary">${editingHistory.length} verified ${editingHistory.length===1?'purchase':'purchases'} · ${all.length} ${all.length===1?'bottle':'bottles'} · ${gifted} gifted · ${finished} finished</div>`;
+}
+function renderHistoryOnly(){const host=document.getElementById('history-entries');if(host)host.innerHTML=historyMarkup();}
+function validateHistory(){
+ const now=new Date();
+ const today=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
+ for(const order of editingHistory){
+  if(order.bottles.length!==order.quantity)return 'Bottle row count must match the verified purchase quantity';
+  for(const bottle of order.bottles){
+   if(bottle.purpose!=='for-me'&&(bottle.opened||bottle.finished))return 'Gift or unassigned entries cannot have personal use dates';
+   if(bottle.opened&&bottle.opened<order.purchased)return 'Opened date cannot precede the purchase';
+   if(bottle.finished&&bottle.finished<order.purchased)return 'Finished date cannot precede the purchase';
+   if(bottle.opened&&bottle.finished&&bottle.finished<bottle.opened)return 'Finished date cannot precede the opened date';
+   if(bottle.finished&&!bottle.opened)return 'Enter the opening date before recording the finished date';
+   if((bottle.opened&&bottle.opened>today)||(bottle.finished&&bottle.finished>today))return 'Future dates cannot be recorded as actual use';
+  }
+ }
+ return null;
+}
+
+function detail(id){
+  const r=SAMPLE.find(x=>x.id===id);if(!r)return;
+  activeReviewId=id;previousFocus=document.activeElement;
+  const x=personal(r);
+  editingHistory=demoHistoryFor(r);
+  const img=r.image?`<img src="https://pepperjunction401.com/assets/sauces/${encodeURIComponent(r.image)}" alt="${esc(r.product)}" onerror="this.style.display='none'">`:'✦';
+  // Simulation only: not a claim about the real inventory of any illustrated SKU.
+  const avail=r.retired?'discontinued':'out';
+  const availLabel=r.retired?'Discontinued':'Checking availability';
+  const productName=r.product;
+  $('detail').innerHTML=`
+   <div class="detail-top">
+    <div class="detail-photo"><span class="detail-fallback">✦</span>${img}</div>
+    <div><div class="detail-kicker">The Review Yard · View Your Review</div>
+    <h2 id="dialog-title">${esc(r.brand)} — ${esc(productName)}</h2>
+    <div class="date">Original questionnaire submitted ${formattedDate(r.date)}</div>
+    <div class="detail-meta"><span class="meta-chip">Permanent personal record</span><span class="meta-chip neutral">Public review: ${esc(r.moderation)}</span><span class="meta-chip ${avail==='in'?'':'unavailable'}">${availLabel}</span></div></div>
+   </div>
+   <p class="detail-help">The answers you originally submitted are preserved. Your private rating, current impressions and personal journal can evolve without changing the original questionnaire, Passenger Notes or other public website features.</p>
+   <nav class="detail-shortcuts" aria-label="Jump within your review"><span>Jump to:</span><button type="button" data-jump="section-food-original">Original food answer</button><button type="button" data-jump="section-personal-notes">Personal Notes</button><button type="button" data-jump="section-bottle-history">Bottle History</button></nav>
+   <div class="detail-section" id="section-rating"><h3>Your Private Rating</h3><p class="subnote">Independent of the public People's Choice score. Change it whenever you like.</p>
+    <div class="rating-row"><div class="rating-display"><strong id="personal-rating-readout">${Number(x.rating).toFixed(2)}</strong><small>Out of 5 stars</small></div><div><input id="personal-rating-slider" class="rate-input" type="range" min="1" max="5" step="0.25" value="${Number(x.rating)}" aria-label="Your private rating, 1 to 5 in quarter-star steps"><div class="range-labels"><span>1.00</span><span>2.00</span><span>3.00</span><span>4.00</span><span>5.00</span></div></div></div>
+   </div>
+   <section class="detail-section"><div class="detail-stage-title"><span class="train-stop">TRAIN STOP 7 OF 17</span><span class="locked-tag">🔒 Original · read only</span></div>
+    <div class="question-label">What do you love about ${esc(productName)}?</div>
+    <div class="readonly-value">${esc(r.publicLove)}</div><p class="subnote">Your original product comment is preserved here. Any public display remains governed by the established moderation process.</p></section>
+   <section class="stop-group"><h3>Train Stops 8–16 · Then &amp; Now</h3><p class="stops-intro">THEN shows what you originally submitted. NOW is your independent personal answer using the same question controls as the questionnaire. Public Passenger Notes and the original submission never change.</p>${STOPS.map(q=>stopCard(q,r)).join('')}</section>
+   <section class="detail-section" id="section-food-original"><div class="detail-stage-title"><span class="train-stop">TRAIN STOP 17 OF 17</span><span class="locked-tag">🔒 Original · read only</span></div>
+    <div class="question-label">What food do you love ${esc(productName)} on?</div>
+    <div class="readonly-value">${esc(r.publicFood)}</div><p class="subnote">This original food response is customer-private. It is not published as a product-page comment.</p></section>
+   <section class="detail-section" id="section-personal-notes"><h3>Personal Notes</h3><p class="subnote">Your private journal. Write about new dishes, flavor discoveries or whatever you'd like to remember.</p>
+    <div class="journal-guidance" aria-hidden="true"><span>New food pairings</span><span>Flavor discoveries</span><span>Thoughts worth remembering</span></div>
+    <label for="personal-journal" class="edit-label">Your journal entry</label><textarea id="personal-journal" maxlength="2000" class="note-textarea" placeholder="What would you like to remember about this product?">${esc(x.note)}</textarea>
+    <div class="note-bottom"><span>Only you can see these notes. Your original answers stay unchanged.</span><b id="personal-note-count">${x.note.length.toLocaleString()} / 2,000</b></div></section>
+   <section class="detail-section" id="section-bottle-history"><h3>Your Purchase &amp; Bottle History</h3><p class="history-help">Every purchased bottle has its own row automatically. Choose <strong>For Me</strong> or <strong>Was a Gift</strong> beside the purchase date. For your bottles, enter Opened and Finished whenever you like. Your days to the last drop appear at the far right. Purchase dates and quantities come from your verified Pepper Junction purchases.</p>
+    <div id="history-entries">${historyMarkup()}</div>
+    <p class="history-footer">Future Last Drop badge integration can reference completed bottle-log records. No badges are calculated or issued by this page.</p>
+   </section>
+   <section class="detail-final-stop" id="section-final-actions" aria-label="Save or add to cart">
+    <div class="detail-actions">
+     <button id="detail-save" class="action-button" type="button">Save</button>
+     <button id="detail-cart" class="action-button cart" type="button" ${avail!=='in'?'disabled':''}>${avail==='in'?'Add to Cart':avail==='out'?'Out of Stock':'No Longer Available'}</button>
+    </div>
+    <p id="detail-feedback" role="status" aria-live="polite"></p>
+   </section>`;
+  $('overlay').classList.add('visible');$('overlay').setAttribute('role','presentation');document.body.style.overflow='hidden';$('dialog').focus();
+  $('personal-rating-slider').addEventListener('input',()=>{$('personal-rating-readout').textContent=Number($('personal-rating-slider').value).toFixed(2)});
+  $('personal-journal').addEventListener('input',()=>{$('personal-note-count').textContent=$('personal-journal').value.length.toLocaleString()+' / 2,000'});
+  $('detail').querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.jump)?.scrollIntoView({behavior:'smooth',block:'start'})));
+  $('history-entries').addEventListener('click',e=>{
+   const button=e.target.closest('[data-purpose]');if(!button)return;
+   const order=editingHistory.find(o=>o.id===button.dataset.order);
+   const bottle=order?.bottles.find(b=>b.id===button.dataset.bottle);
+   if(!bottle)return;
+   const next=button.dataset.purpose;
+   if(bottle.purpose===next)return;
+   if(next==='gift'&&(bottle.opened||bottle.finished)){
+    if(!window.confirm('This bottle has personal use dates. Marking it as a gift will clear them. Continue?'))return;
+    bottle.opened='';bottle.finished='';
+   }
+   bottle.purpose=next;
+   renderHistoryOnly();
+   $('detail-feedback').textContent=next==='gift'?'Gift designation updated in your unsaved preview.':'Bottle marked For Me. You can enter your dates now.';
+  });
+  $('history-entries').addEventListener('change',e=>{
+   const input=e.target.closest('[data-date-field]');if(!input)return;
+   const order=editingHistory.find(o=>o.id===input.dataset.order);
+   const bottle=order?.bottles.find(b=>b.id===input.dataset.bottle);
+   if(!bottle||bottle.purpose!=='for-me')return;
+   bottle[input.dataset.dateField]=input.value;
+   // Refresh the full line so its large, right-aligned duration updates immediately.
+   const scroll=$('history-entries').querySelector('.history-scroll');
+   const left=scroll?.scrollLeft??0;
+   renderHistoryOnly();
+   $('history-entries').querySelector('.history-scroll').scrollLeft=left;
+   $('detail-feedback').textContent='Bottle dates updated in your unsaved preview. Save to keep them here.';
+  });
+  document.querySelectorAll('[data-qid="q11"]').forEach(input=>input.addEventListener('change',()=>{let selected=[...document.querySelectorAll('[data-qid="q11"]:checked')];if(selected.length>3){input.checked=false;$('detail-feedback').textContent='Up to three flavors can be selected.';}}));
+  const accuracy=$('detail').querySelector('.now-accuracy');accuracy?.addEventListener('input',()=>{$('readout-q17').textContent=accuracy.value+' / 5'});
+
+  $('detail-save').addEventListener('click',async()=>{
+   const historyError=validateHistory();if(historyError){$('detail-feedback').textContent=historyError;document.getElementById('section-bottle-history').scrollIntoView({behavior:'smooth',block:'center'});return;}
+   const changes={};STOPS.forEach(q=>{
+    let value;
+    if(q.type==='multi')value=[...$('detail').querySelectorAll('[data-qid="'+q.id+'"]:checked')].map(input=>input.value);
+    else if(q.type==='accuracy')value=Number($('detail').querySelector('[data-qid="'+q.id+'"]').value);
+    else value=$('detail').querySelector('[data-qid="'+q.id+'"]:checked')?.value??null;
+    if(JSON.stringify(value)!==JSON.stringify(originalFor(q,r)))changes[q.id]=value;
+   });
+   if(Object.values(changes).some(v=>v===null)){$('detail-feedback').textContent='Please choose an answer for each current impression.';return;}
+   const journal=$('personal-journal').value;
+   const rating=Number($('personal-rating-slider').value);
+   const bottles=editingHistory.flatMap(o=>o.bottles.map(b=>({
+    purchaseLineItemId:b.purchaseLineItemId,bottleOrdinal:b.bottleOrdinal,
+    purpose:b.purpose==='for-me'?'for_me':b.purpose==='gift'?'gift':null,
+    openedOn:b.opened||null,finishedOn:b.finished||null
+   })));
+   const btn=$('detail-save');btn.disabled=true;$('detail-feedback').textContent='Saving your private changes…';
+   try{
+    await D.saveYard({reviewId:id,answersNow:changes,journalNotes:journal,bottles});
+    personalEdits[id]={rating,note:journal,changes};
+    r.bottles.forEach(b=>{const saved=bottles.find(x=>x.purchaseLineItemId===b.purchaseLineItemId&&x.bottleOrdinal===b.bottleOrdinal);if(saved){b.purpose=saved.purpose;b.openedOn=saved.openedOn;b.finishedOn=saved.finishedOn;}});
+    const ratingOk=await D.savePersonalRating(r.slug,rating).catch(()=>false);
+    $('detail-feedback').textContent=ratingOk?'✓ Changes Saved':'Your answers, journal, and bottle dates were saved. Private rating could not be saved; please try again.';
+    render();
+   }catch(e){$('detail-feedback').textContent='Unable to save. Your entries are still on screen; please try again.';console.warn('Review Yard save unavailable',e);}
+   finally{btn.disabled=false;}
+  });
+  const cartButton=$('detail-cart');
+  let commercial=null;
+  if(!r.retired){
+   cartButton.textContent='Checking Availability';cartButton.disabled=true;
+   const cns=rawCatalog.find(p=>p.slug===r.slug);
+   if(cns){
+    fetch('https://cdbenwthxhypuuipyjlv.supabase.co/functions/v1/square-commercial-public',{
+     method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',credentials:'omit',body:JSON.stringify({product_ids:[r.slug]})
+    }).then(x=>x.json().then(body=>{if(!x.ok)throw Error('Unavailable');return body;}))
+      .then(body=>{
+       const state=Array.isArray(body.items)?body.items.find(p=>p.product_id===r.slug):null;
+       if(!state||state.current!==true||!Number.isFinite(Number(state.price)))throw Error('No current price');
+       commercial={price:Number(state.price),available:state.available===true};
+       cartButton.disabled=!commercial.available;
+       cartButton.textContent=commercial.available?'Add to Cart':'Out of Stock';
+      }).catch(()=>{cartButton.disabled=true;cartButton.textContent='Unavailable';});
+   }else{cartButton.disabled=true;cartButton.textContent='No Longer Available';}
+  }
+  cartButton.addEventListener('click',()=>{
+   const cns=rawCatalog.find(p=>p.slug===r.slug);
+   const host=window.parent!==window&&window.parent.PJCart?window.parent:window;
+   if(!commercial?.available||!cns||!host.PJCart)return;
+   try{
+    host.PJCart.addItem({product_id:r.slug,slug:r.slug,product_name:cns['Product Name'],brand:cns.Brand,
+     price:commercial.price,square_id:cns.Square_ID,square_url:cns['Product URL']||'',
+     image:'assets/sauces/'+r.slug+'.png',category:cns.Category,quantity:1,
+     heat_category:cns['Heat Category'],food_style:cns['Food Style'],best_pairings:cns['Best Food Pairings']});
+    host.PJCartDrawer?.open?.();
+    $('detail-feedback').textContent='Added to Cart';
+   }catch(e){$('detail-feedback').textContent='Cart unavailable. Please try again.';}
+  });
+}
+function closeDialog(){$('overlay').classList.remove('visible');document.body.style.overflow='';if(previousFocus&&previousFocus.focus)previousFocus.focus()}
+document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));render()}));['search','filter','sort'].forEach(id=>$(id).addEventListener(id==='search'?'input':'change',render));$('yard').addEventListener('click',e=>{let b=e.target.closest('[data-view]');if(b)detail(b.dataset.view)});$('close').addEventListener('click',closeDialog);$('overlay').addEventListener('click',e=>{if(e.target===$('overlay'))closeDialog()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDialog();if(e.key==='Tab'&&$('overlay').classList.contains('visible')){let f=[$('close')];if(e.shiftKey){if(document.activeElement===f[0]){e.preventDefault();$('close').focus()}}else if(document.activeElement===f[0]){e.preventDefault();$('close').focus()}}});
+let rawCatalog=[];
+async function loadYard(){
+ try{
+  if(!D)throw Error('REVIEW_ADAPTER_UNAVAILABLE');
+  await D.loadCatalog();
+  rawCatalog=await fetch('data/Database_Pepper_Junction.json',{cache:'no-store'}).then(r=>r.ok?r.json():[]);
+  const result=await D.getYard();
+  if(!Array.isArray(result.reviews))throw Error('INVALID_RESPONSE');
+  SAMPLE.length=0;
+  for(const r of result.reviews){
+   const c=D.getProduct(r.slug);
+   const snapshot=r.bottles?.find(x=>x.productSnapshot)?.productSnapshot||{};
+   const name=c?.name||snapshot['Product Name']||snapshot.name||r.slug.replaceAll('-',' ');
+   const brand=c?.brand||snapshot.Brand||snapshot.brand||'Archived Products';
+   const reviewed=new Date(r.submittedAt||Date.now()).toISOString().slice(0,10);
+   const obj={id:r.id,slug:r.slug,brand,product:name,answers:r.answers||{},date:reviewed,
+    image:r.slug+'.png',rating:r.personalRating??3,moderation:
+      r.moderationStatus==='approved'?'Approved':r.moderationStatus==='frozen'?'Pending':'Pending',
+    retired:r.availability==='retired'||r.isActive===false||!c,
+    availability:r.availability||'unavailable',bottles:r.bottles||[],
+    journalNotes:r.journalNotes||'',answersNow:r.answersNow||{},
+    publicFood:r.answers?.q14||'',publicLove:r.answers?.q15||'',
+    privateFood:r.privateFood||'',privateLove:r.privateLove||'',
+    publicLine:r.answers?.q15||'',privateNote:r.journalNotes||'',
+    archivedCns:{heat:'',food:'',flavors:Array.isArray(r.answers?.q11)?r.answers.q11:[]}};
+   SAMPLE.push(obj);
+   personalEdits[obj.id]={rating:obj.rating,note:obj.journalNotes,changes:obj.answersNow};
+  }
+  $('yard-state').textContent=SAMPLE.length?'Your private Review Yard is ready.':'Your Review Yard is waiting for its first submitted product review.';
+  render();
+ }catch(err){
+  $('yard-state').innerHTML='Unable to load your Review Yard. <a href="account.html?return=yard">Sign in</a> or try again.';
+  console.warn('Review Yard read failed',err);
+  render();
+ }
+}
+loadYard();
+</script></body></html>
