@@ -98,6 +98,8 @@
    return service('status',slug);
   },
   // Customer-specific eligibility and review status come from the existing Review Board service.
+  getYard:function(){return service('yard',null);},
+  saveYard:function(payload){return service('yard-save',null,payload);},
   getReviewBoard:function(){return service('board',null);},
   selectReviewReward:function(rowNumber,productSlug){return service('reward-select',productSlug,{rowNumber:rowNumber});},
   submitReview:function(payload){return service('submit',payload.productSlug,{answers:payload.answers,submittedAt:payload.submittedAt});},
