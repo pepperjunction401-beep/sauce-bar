@@ -429,7 +429,7 @@ const STOPS=[
 ];
 let activeDetail=null;
 function productCns(r){const p=D?.getProduct(r.slug);return p?{heat:p.heatCategory,food:p.foodStyle,flavors:p.reviewFlavorOptions}:r.archivedCns||{heat:'',food:'',flavors:[]};}
-function optionsFor(q,r){const c=productCns(r);switch(q.id){
+function optionsBaseFor(q,r){const c=productCns(r);switch(q.id){
  case 'q7': {let k=HEAT_LADDER.indexOf(c.heat);return k<0?[r.answers.q7].filter(Boolean):HEAT_LADDER.slice(Math.max(0,k-1),Math.min(HEAT_LADDER.length,k+2));}
  case 'q8':case 'q9':return ['Yes','No'];
  case 'q10':return D?.getFoodStyles()||FOOD_STYLES;
@@ -440,6 +440,15 @@ function optionsFor(q,r){const c=productCns(r);switch(q.id){
  case 'q17':return [1,2,3,4,5];
  default:return [];
 }}
+function optionsFor(q,r){
+ const options=optionsBaseFor(q,r).slice();
+ const original=r.answers?.[q.id];
+ const originals=Array.isArray(original)?original:[original];
+ for(const value of originals){
+  if(value!==null&&value!==undefined&&!options.includes(value))options.unshift(value);
+ }
+ return options;
+}
 function originalFor(q,r){return r.answers?.[q.id]??'Not Applicable';}
 function labelOf(value){return Array.isArray(value)?value.join(', '):String(value??'Not answered');}
 function currentFor(q,r){const p=personal(r);return Object.prototype.hasOwnProperty.call(p.changes,q.id)?p.changes[q.id]:originalFor(q,r);}
