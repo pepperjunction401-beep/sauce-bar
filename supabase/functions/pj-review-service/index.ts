@@ -256,28 +256,142 @@ Deno.serve(async req=>{
   })),rows});
  }
  if(action==="yard"){
-  const {data:reviews,error}=await admin.from("pj_review_submissions")
-    .select("id,product_slug_snapshot,submitted_at,moderation_status,q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q16,q17,q14_original,q15_original")
-    .eq("customer_id",user.id).order("submitted_at",{ascending:false});
-  if(error)return reply({error:"YARD_UNAVAILABLE"},503);
-  const {data:notes,error:noteError}=await admin.from("pj_review_private_notes")
-    .select("review_id,food_notes,tasting_notes").eq("customer_id",user.id);
-  if(noteError)return reply({error:"YARD_UNAVAILABLE"},503);
-  const {data:ratings,error:ratingError}=await admin.from("pj_review_personal_ratings")
-    .select("product_slug,rating").eq("customer_id",user.id);
-  if(ratingError)return reply({error:"YARD_UNAVAILABLE"},503);
-  const noteByReview=new Map((notes||[]).map(x=>[x.review_id,x]));
-  const ratingsBySlug=new Map((ratings||[]).map(x=>[x.product_slug,x.rating]));
-  return reply({reviews:(reviews||[]).map(r=>({
-   id:r.id,slug:r.product_slug_snapshot,submittedAt:r.submitted_at,
-   moderationStatus:r.moderation_status,
-   answers:{q1:r.q1,q2:r.q2,q3:r.q3,q4:r.q4,q5:r.q5,q6:r.q6,
-    q7:r.q7,q8:r.q8,q9:r.q9,q10:r.q10,q11:r.q11,q12:r.q12,q13:r.q13,
-    q16:r.q16,q17:r.q17,q14:r.q14_original,q15:r.q15_original},
-   privateFood:noteByReview.get(r.id)?.food_notes??r.q14_original,
-   privateLove:noteByReview.get(r.id)?.tasting_notes??r.q15_original,
-   personalRating:ratingsBySlug.get(r.product_slug_snapshot)??null
-  }))});
+  const [reviewsResult,notesResult,ratingsResult,purchasesResult,logResult,excludedResult,productsResult,commerceResult]=await Promise.all([
+   admin.from("pj_review_submissions")
+    .select("id,product_id,product_slug_snapshot,submitted_at,moderation_status,q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q16,q17,q14_original,q15_original")
+    .eq("customer_id",user.id).order("submitted_at",{ascending:false}),
+   admin.from("pj_review_private_notes")
+    .select("review_id,food_notes,tasting_notes,answers_now,journal_notes").eq("customer_id",user.id),
+   admin.from("pj_review_personal_ratings")
+    .select("product_slug,rating").eq("customer_id",user.id),
+   admin.from("purchases")
+    .select("id,completed_at,square_created_at,created_at,purchase_status,import_status,purchase_line_items(id,product_id,cns_slug_snapshot,quantity,line_total_amount,square_line_item_uid,source_product_snapshot)")
+    .eq("customer_id",user.id),
+   admin.from("pj_review_bottle_log")
+    .select("id,purchase_line_item_id,bottle_ordinal,purpose,opened_on,finished_on")
+    .eq("customer_id",user.id),
+   admin.from("pj_review_reward_excluded_lines")
+    .select("purchase_id,square_line_item_uid").eq("customer_id",user.id),
+   admin.from("pj_products").select("id,cns_slug,is_active"),
+   admin.from("product_commercial_state")
+    .select("product_id,sync_status,availability_status,square_location_enabled,square_archived,square_sold_out,inventory_mode,quantity_on_hand,price_amount")
+  ]);
+  if(reviewsResult.error||notesResult.error||ratingsResult.error||purchasesResult.error||
+     logResult.error||excludedResult.error||productsResult.error||commerceResult.error)return reply({error:"YARD_UNAVAILABLE"},503);
+  const notes=new Map((notesResult.data||[]).map(x=>[x.review_id,x]));
+  const ratings=new Map((ratingsResult.data||[]).map(x=>[x.product_slug,x.rating]));
+  const products=new Map((productsResult.data||[]).map(x=>[x.id,x]));
+  const commercial=new Map((commerceResult.data||[]).map(x=>[x.product_id,x]));
+  const logs=new Map((logResult.data||[]).map(x=>[x.purchase_line_item_id+":"+x.bottle_ordinal,x]));
+  const excluded=new Set((excludedResult.data||[]).map(x=>x.purchase_id+":"+x.square_line_item_uid));
+  const bottlesByProduct=new Map<string,unknown[]>();
+  for(const purchase of purchasesResult.data||[]){
+   // Completed verified facts only; never count refunded/reward-only lines as bottles.
+   if(purchase.purchase_status!=="completed"||purchase.import_status!=="attached")continue;
+   for(const line of purchase.purchase_line_items||[]){
+    const count=Number(line.quantity);
+    if(!Number.isSafeInteger(count)||count<1||count>200||
+      Number(line.line_total_amount)<=0||
+      excluded.has(purchase.id+":"+line.square_line_item_uid))continue;
+    const product=products.get(line.product_id);
+    const slug=product?.cns_slug||line.cns_slug_snapshot;
+    if(!slug)continue;
+    const rows=bottlesByProduct.get(slug)||[];
+    for(let i=1;i<=count;i++){
+     const saved=logs.get(line.id+":"+i);
+     rows.push({id:saved?.id||null,purchaseLineItemId:line.id,bottleOrdinal:i,
+      purchasedAt:purchase.completed_at||purchase.square_created_at||purchase.created_at,
+      purpose:saved?.purpose||null,openedOn:saved?.opened_on||null,
+      finishedOn:saved?.finished_on||null,productSnapshot:line.source_product_snapshot||null});
+    }
+    bottlesByProduct.set(slug,rows);
+   }
+  }
+  return reply({reviews:(reviewsResult.data||[]).map(r=>{
+   const note=notes.get(r.id);
+   const product=products.get(r.product_id);
+   const state=commercial.get(r.product_id);
+   const available=product?.is_active===true&&state?.sync_status==="current"&&
+     state?.availability_status==="available"&&state?.square_location_enabled===true&&
+     state?.square_archived!==true&&state?.square_sold_out!==true&&
+     (state?.inventory_mode!=="tracked"||Number(state?.quantity_on_hand)>0);
+   return {
+    id:r.id,slug:r.product_slug_snapshot,submittedAt:r.submitted_at,
+    moderationStatus:r.moderation_status,isActive:product?.is_active===true,
+    availability:product?.is_active===false?"retired":available?"available":
+      state?.availability_status==="out_of_stock"?"out_of_stock":"unavailable",
+    // Price and availability come from this same environment; never cross to Production in Dev.
+    commercialPrice:available && Number.isFinite(Number(state?.price_amount)) ? Number(state?.price_amount) : null,
+    answers:{q1:r.q1,q2:r.q2,q3:r.q3,q4:r.q4,q5:r.q5,q6:r.q6,
+     q7:r.q7,q8:r.q8,q9:r.q9,q10:r.q10,q11:r.q11,q12:r.q12,q13:r.q13,
+     q16:r.q16,q17:r.q17,q14:r.q14_original,q15:r.q15_original},
+    privateFood:note?.food_notes??r.q14_original,
+    privateLove:note?.tasting_notes??r.q15_original,
+    answersNow:note?.answers_now||{},journalNotes:note?.journal_notes||"",
+    personalRating:ratings.get(r.product_slug_snapshot)??null,
+    bottles:bottlesByProduct.get(r.product_slug_snapshot)||[]
+   };
+  })});
+ }
+ if(action==="yard-save"){
+  if(typeof request.reviewId!=="string"||
+     !request.answersNow||typeof request.answersNow!=="object"||Array.isArray(request.answersNow)||
+     typeof request.journalNotes!=="string"||request.journalNotes.length>2000||
+     !Array.isArray(request.bottles)||request.bottles.length>200)
+   return reply({error:"INVALID_PERSONAL_SAVE"},400);
+  const validKeys=new Set(["q7","q8","q9","q10","q11","q12","q13","q16","q17"]);
+  const {data:review,error:reviewError}=await admin.from("pj_review_submissions")
+   .select("id,product_slug_snapshot,q7,q8,q9,q10,q11,q12,q13,q16,q17")
+   .eq("id",request.reviewId).eq("customer_id",user.id).maybeSingle();
+  if(reviewError||!review)return reply({error:"REVIEW_NOT_FOUND"},404);
+  const overrides=request.answersNow as Record<string,unknown>;
+  if(Object.keys(overrides).some(k=>!validKeys.has(k)))return reply({error:"INVALID_PERSONAL_ANSWERS"},400);
+  const catalogUrl=url.includes(DEV_PROJECT)?DEV_CNS:LIVE_CNS;
+  let catalog:Record<string,unknown>[]=[];
+  try {
+   const resp=await fetch(catalogUrl,{cache:"no-store",signal:AbortSignal.timeout(5000)});
+   if(resp.ok){const body=await resp.json();if(Array.isArray(body))catalog=body;}
+  }catch{}
+  const product=catalog.find(p=>p.slug===review.product_slug_snapshot);
+  const validValues=(id:string):unknown[]=>{
+   if(id==="q8"||id==="q9")return ["Yes","No"];
+   if(id==="q16")return LANE;
+   if(id==="q17")return [1,2,3,4,5];
+   if(id==="q7"){
+    const index=HEAT.indexOf(String(product?.["Heat Category"]||""));
+    return index<0?[]:HEAT.slice(Math.max(0,index-1),Math.min(HEAT.length,index+2));
+   }
+   if(id==="q10")return uniqueColumn(catalog,"Food Style");
+   if(id==="q11")return Array.isArray(product?.["Review Flavor Options"])
+    ?product!["Review Flavor Options"] as unknown[]
+    :Array.isArray(review.q11)?review.q11:[];
+   if(id==="q12")return uniqueColumn(catalog,"How it Hits");
+   if(id==="q13")return uniqueColumn(catalog,"Heat Finish");
+   return [];
+  };
+  for(const [id,value] of Object.entries(overrides)){
+   if(id==="q11"){
+    const options=validValues(id);
+    if(!Array.isArray(value)||value.length<1||value.length>3||
+       new Set(value).size!==value.length||!value.every(v=>typeof v==="string"&&options.includes(v)))
+      return reply({error:"INVALID_PERSONAL_ANSWERS"},400);
+   }else if(!validValues(id).includes(value)){
+    // A retired product may be absent from current CNS. Its exact original selection
+    // remains a valid no-change value, but new unsupported choices are not invented.
+    if(product||JSON.stringify(value)!==JSON.stringify(review[id as keyof typeof review]))
+     return reply({error:"INVALID_PERSONAL_ANSWERS"},400);
+   }
+  }
+  const bottles=request.bottles.map((b:Record<string,unknown>)=>({
+   purchase_line_item_id:b.purchaseLineItemId,bottle_ordinal:b.bottleOrdinal,
+   purpose:b.purpose||null,opened_on:b.openedOn||null,finished_on:b.finishedOn||null
+  }));
+  // This RPC updates private notes and bottle records in ONE transaction.
+  const {data,error}=await admin.rpc("pj_review_yard_save",{
+   p_customer_id:user.id,p_review_id:review.id,p_answers_now:overrides,
+   p_journal_notes:request.journalNotes,p_bottles:bottles
+  });
+  return error?reply({error:"YARD_SAVE_REJECTED"},400):reply(data);
  }
  const slug=typeof request.slug==="string"?request.slug:typeof request.productSlug==="string"?request.productSlug:"";
  if(!slug||slug.length>180||!/^[a-z0-9][a-z0-9-]*$/.test(slug))return reply({error:"INVALID_PRODUCT"},400);
