@@ -404,8 +404,8 @@ SAMPLE.forEach(function(r){
 function personal(r){const edited=personalEdits[r.id]||{};return {food:r.privateFood,love:r.privateLove,rating:edited.rating??r.rating,note:edited.note??(r.privateNote||''),changes:edited.changes||{}};}
 function records(){return SAMPLE}
 function formattedDate(d){const t=new Date(d+'T12:00:00');return t.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'})}
-function stars(n){return `★ ${Number(n).toFixed(2)} / 5`}
-function render(){let all=records();$('count').textContent=all.length;$('brands').textContent=new Set(all.map(r=>r.brand)).size;$('archived').textContent=all.filter(r=>r.retired).length;let q=$('search').value.trim().toLowerCase(),f=$('filter').value,sort=$('sort').value;let filtered=all.filter(r=>(!q||[r.brand,r.product,r.privateNote,personal(r).note,r.publicLine].some(x=>String(x).toLowerCase().includes(q)))&&(f==='all'||(f==='retired'?r.retired:r.moderation.toLowerCase()===f)));if(!filtered.length){$('yard').innerHTML=`<div class="empty">${all.length?'No reviews match your filters. Try another search.':'Your Review Yard is waiting for its first saved product review.'}</div>`;return}let grouped={};filtered.forEach(r=>(grouped[r.brand]??=[]).push(r));$('yard').innerHTML=Object.keys(grouped).sort((a,b)=>a.localeCompare(b)).map(brand=>{let items=grouped[brand];items.sort((a,b)=>sort==='newest'?b.date.localeCompare(a.date):sort==='oldest'?a.date.localeCompare(b.date):sort==='rating'?personal(b).rating-personal(a).rating:a.product.localeCompare(b.product));return `<section class="group"><div class="grouphead"><h2>${esc(brand)}</h2><small>${items.length} saved ${items.length===1?'review':'reviews'}</small></div><div class="grid">${items.map(card).join('')}</div></section>`}).join('')}
+function stars(n){return n===null||n===undefined?'Not rated yet':`★ ${Number(n).toFixed(2)} / 5`}
+function render(){let all=records();$('count').textContent=all.length;$('brands').textContent=new Set(all.map(r=>r.brand)).size;$('archived').textContent=all.filter(r=>r.retired).length;let q=$('search').value.trim().toLowerCase(),f=$('filter').value,sort=$('sort').value;let filtered=all.filter(r=>(!q||[r.brand,r.product,r.privateNote,personal(r).note,r.publicLine].some(x=>String(x).toLowerCase().includes(q)))&&(f==='all'||(f==='retired'?r.retired:r.moderation.toLowerCase()===f)));if(!filtered.length){$('yard').innerHTML=`<div class="empty">${all.length?'No reviews match your filters. Try another search.':'Your Review Yard is waiting for its first saved product review.'}</div>`;return}let grouped={};filtered.forEach(r=>(grouped[r.brand]??=[]).push(r));$('yard').innerHTML=Object.keys(grouped).sort((a,b)=>a.localeCompare(b)).map(brand=>{let items=grouped[brand];items.sort((a,b)=>sort==='newest'?b.date.localeCompare(a.date):sort==='oldest'?a.date.localeCompare(b.date):sort==='rating'?(Number(personal(b).rating??0)-Number(personal(a).rating??0)):a.product.localeCompare(b.product));return `<section class="group"><div class="grouphead"><h2>${esc(brand)}</h2><small>${items.length} saved ${items.length===1?'review':'reviews'}</small></div><div class="grid">${items.map(card).join('')}</div></section>`}).join('')}
 function card(r){const image=r.image?`<img loading="lazy" src="https://pepperjunction401.com/assets/sauces/${encodeURIComponent(r.image)}" alt="${esc(r.product)}" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><span class="fallback" hidden>✦</span>`:`<span class="fallback">✦</span>`;return `<article class="review"><div class="reviewhead"><div class="thumb">${image}</div><div class="reviewtop"><div class="brandname">${esc(r.brand)}</div><div class="productname">${esc(r.product)}</div><div class="date">Reviewed ${formattedDate(r.date)}</div><div class="private">${stars(personal(r).rating)}</div><div class="subtext">Private rating</div></div></div><div class="reviewbody"><div class="notelabel">Your personal notes</div><p>${esc(personal(r).note||'No personal notes yet.')}</p>${r.retired?'<span class="status retired">Retired product</span>':''}<span class="status ${r.moderation==='Pending'?'pending':''}">Public review: ${esc(r.moderation)}</span></div><div class="cardactions"><button type="button" data-view="${esc(r.id)}">View Your Review</button></div></article>`}
 // Demo-only CNS illustrations. Live integration will load these options from the authoritative product CNS.
 const CATALOG_SAMPLES={};
@@ -605,7 +605,7 @@ function detail(id){
    <p class="detail-help">The answers you originally submitted are preserved. Your private rating, current impressions and personal journal can evolve without changing the original questionnaire, Passenger Notes or other public website features.</p>
    <nav class="detail-shortcuts" aria-label="Jump within your review"><span>Jump to:</span><button type="button" data-jump="section-food-original">Original food answer</button><button type="button" data-jump="section-personal-notes">Personal Notes</button><button type="button" data-jump="section-bottle-history">Bottle History</button></nav>
    <div class="detail-section" id="section-rating"><h3>Your Private Rating</h3><p class="subnote">Independent of the public People's Choice score. Change it whenever you like.</p>
-    <div class="rating-row"><div class="rating-display"><strong id="personal-rating-readout">${Number(x.rating).toFixed(2)}</strong><small>Out of 5 stars</small></div><div><input id="personal-rating-slider" class="rate-input" type="range" min="1" max="5" step="0.25" value="${Number(x.rating)}" aria-label="Your private rating, 1 to 5 in quarter-star steps"><div class="range-labels"><span>1.00</span><span>2.00</span><span>3.00</span><span>4.00</span><span>5.00</span></div></div></div>
+    <div class="rating-row"><div class="rating-display"><strong id="personal-rating-readout">${Number(x.rating??3).toFixed(2)}</strong><small>Out of 5 stars</small></div><div><input id="personal-rating-slider" class="rate-input" type="range" min="1" max="5" step="0.25" value="${Number(x.rating??3)}" aria-label="Your private rating, 1 to 5 in quarter-star steps"><div class="range-labels"><span>1.00</span><span>2.00</span><span>3.00</span><span>4.00</span><span>5.00</span></div></div></div>
    </div>
    <section class="detail-section"><div class="detail-stage-title"><span class="train-stop">TRAIN STOP 7 OF 17</span><span class="locked-tag">🔒 Original · read only</span></div>
     <div class="question-label">What do you love about ${esc(productName)}?</div>
@@ -630,7 +630,8 @@ function detail(id){
     <p id="detail-feedback" role="status" aria-live="polite"></p>
    </section>`;
   $('overlay').classList.add('visible');$('overlay').setAttribute('role','presentation');document.body.style.overflow='hidden';$('dialog').focus();
-  $('personal-rating-slider').addEventListener('input',()=>{$('personal-rating-readout').textContent=Number($('personal-rating-slider').value).toFixed(2)});
+  let ratingTouched=false;
+  $('personal-rating-slider').addEventListener('input',()=>{ratingTouched=true;$('personal-rating-readout').textContent=Number($('personal-rating-slider').value).toFixed(2)});
   $('personal-journal').addEventListener('input',()=>{$('personal-note-count').textContent=$('personal-journal').value.length.toLocaleString()+' / 2,000'});
   $('detail').querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.jump)?.scrollIntoView({behavior:'smooth',block:'start'})));
   $('history-entries').addEventListener('click',e=>{
@@ -684,9 +685,13 @@ function detail(id){
    const btn=$('detail-save');btn.disabled=true;$('detail-feedback').textContent='Saving your private changes…';
    try{
     await D.saveYard({reviewId:id,answersNow:changes,journalNotes:journal,bottles});
-    personalEdits[id]={rating,note:journal,changes};
     r.bottles.forEach(b=>{const saved=bottles.find(x=>x.purchaseLineItemId===b.purchaseLineItemId&&x.bottleOrdinal===b.bottleOrdinal);if(saved){b.purpose=saved.purpose;b.openedOn=saved.openedOn;b.finishedOn=saved.finishedOn;}});
-    const ratingOk=await D.savePersonalRating(r.slug,rating).catch(()=>false);
+    // A never-rated product stays unrated unless the customer actually moves the slider.
+    const ratingOk=!ratingTouched||await D.savePersonalRating(r.slug,rating).catch(()=>false);
+    const persistedRating=ratingOk&&ratingTouched?rating:x.rating;
+    r.rating=persistedRating;
+    personalEdits[id]={rating:persistedRating,note:journal,changes};
+    if(ratingOk)ratingTouched=false;
     $('detail-feedback').textContent=ratingOk?'✓ Changes Saved':'Your answers, journal, and bottle dates were saved. Private rating could not be saved; please try again.';
     render();
    }catch(e){$('detail-feedback').textContent='Unable to save. Your entries are still on screen; please try again.';console.warn('Review Yard save unavailable',e);}
@@ -734,7 +739,7 @@ async function loadYard(){
    const brand=c?.brand||snapshot.Brand||snapshot.brand||'Archived Products';
    const reviewed=new Date(r.submittedAt||Date.now()).toISOString().slice(0,10);
    const obj={id:r.id,slug:r.slug,brand,product:name,answers:r.answers||{},date:reviewed,
-    image:r.slug+'.png',rating:r.personalRating??3,moderation:
+    image:r.slug+'.png',rating:r.personalRating===null?null:r.personalRating,commercialPrice:r.commercialPrice,moderation:
       r.moderationStatus==='approved'?'Approved':r.moderationStatus==='frozen'?'Pending':'Pending',
     retired:r.availability==='retired'||r.isActive===false||!c,
     availability:r.availability||'unavailable',bottles:r.bottles||[],
