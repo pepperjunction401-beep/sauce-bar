@@ -261,7 +261,8 @@ Deno.serve(async req=>{
    rewardEligibleSlugs:rewardOptions.get(rowNumber)||[]
   }));
   return reply({products:(data||[]).map(p=>({
-   ...p,moderationStatus:moderationBySlug.get(p.product_slug)??null,\n   originalPublicScore:publicScoreBySlug.get(p.product_slug)??null
+   ...p,moderationStatus:moderationBySlug.get(p.product_slug)??null,
+   originalPublicScore:publicScoreBySlug.get(p.product_slug)??null
   })),rows});
  }
  if(action==="yard"){
