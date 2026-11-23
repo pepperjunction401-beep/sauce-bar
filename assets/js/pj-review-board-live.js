@@ -65,6 +65,14 @@
       if(banner)banner.textContent='Verified purchases unlock your products. Review submissions are subject to approval.';
       var footnote=doc.querySelector('.footnote');
       if(footnote)footnote.textContent='Verified purchases and submitted questionnaires determine your progress. Row prizes are protected until Square confirms a qualifying redemption order.';
+      // Display-only score directly beneath a customer's reviewed product title.
+      // The authenticated service supplies the public score; no browser scoring.
+      if(!doc.getElementById('pj-board-public-score-style')){
+        var scoreStyle=doc.createElement('style');
+        scoreStyle.id='pj-board-public-score-style';
+        scoreStyle.textContent='.pj-board-public-score{display:block;margin:4px 0 8px;color:#F3CA68;font-size:11px;font-weight:800;line-height:1.35;font-variant-numeric:tabular-nums}';
+        doc.head.appendChild(scoreStyle);
+      }
       var unlocked=0,submitted=0,approved=0,focused=null;
       manifest.products.forEach(function(product,index){
         var card=cards[index],item=state.get(product.slug);
@@ -79,7 +87,16 @@
         card.classList.add(!revealed?'locked':reviewed?'reviewed':'unlocked');
         var brand=card.querySelector('.brandname'),name=card.querySelector('.name');
         if(brand)brand.textContent=revealed?product.brand:'Product locked';
-        if(name)name.textContent=revealed?product.name:'????';
+        if(name){
+          name.textContent=revealed?product.name:'????';
+          var publicScore=item&&item.originalPublicScore;
+          if(reviewed&&typeof publicScore==='number'&&Number.isFinite(publicScore)&&publicScore>=3&&publicScore<=5){
+            var scoreLine=doc.createElement('div');
+            scoreLine.className='pj-board-public-score';
+            scoreLine.textContent='★ Your Public Score: '+publicScore.toFixed(2)+' / 5';
+            name.insertAdjacentElement('afterend',scoreLine);
+          }
+        }
         var thumb=card.querySelector('.thumb');
         if(thumb){
           thumb.replaceChildren();
