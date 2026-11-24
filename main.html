@@ -2172,6 +2172,49 @@
  #pj-merc-detail .pj-merc-quantity{flex:none}
  #pj-merc-detail .pj-merc-actions .pj-merc-quantity button{min-width:38px;min-height:44px}
 }
+
+/* Mercantile showcase visual refresh — presentation only; existing shopping pipeline preserved. */
+#pj-merc-detail .pj-merc-board{gap:clamp(3px,.6vw,8px);padding-top:10%;justify-content:center;overflow:visible}
+#pj-merc-detail .pj-merc-board h2{font:700 clamp(15px,2.7vw,35px)/1.08 Georgia,serif;transform:none}
+#pj-merc-detail .pj-merc-rating{width:100%;box-sizing:border-box;text-align:center;border:1px solid #a87933;border-radius:6px;color:#ffda94;padding:clamp(4px,.55vw,8px) 3px;line-height:1.1;background:linear-gradient(135deg,#25180c99,#0b0907aa);box-shadow:inset 0 0 0 1px #5b3a16,0 2px 10px #0007}
+#pj-merc-detail .pj-merc-rating::before,#pj-merc-detail .pj-merc-rating::after{content:'✦';color:#c58c39;font-size:clamp(9px,1vw,13px);margin:0 clamp(2px,.5vw,7px);vertical-align:middle}
+#pj-merc-detail .pj-merc-rating::before{float:left}#pj-merc-detail .pj-merc-rating::after{float:right}
+#pj-merc-detail .pj-merc-rating[hidden],#pj-merc-detail .pj-merc-property[hidden]{display:none!important}
+#pj-merc-detail .pj-merc-stars-wrap{display:inline-block;position:relative;white-space:nowrap;line-height:1}
+#pj-merc-detail .pj-merc-stars-fill{position:absolute;inset:0 auto 0 0;overflow:hidden;white-space:nowrap;color:#ffb82f}
+#pj-merc-detail #pj-merc-rating-stars{color:#ffb82f;font-size:clamp(12px,1.6vw,20px);letter-spacing:1px}
+#pj-merc-detail #pj-merc-rating-value{margin-left:8px;font:700 clamp(12px,1.4vw,19px) Georgia,serif;white-space:nowrap}
+#pj-merc-detail .pj-merc-rating small{display:block;font:italic clamp(8px,.9vw,12px) Georgia,serif}
+#pj-merc-detail .pj-merc-properties{width:100%;display:flex;flex-direction:column;gap:clamp(3px,.35vw,6px)}
+#pj-merc-detail .pj-merc-property{display:grid;grid-template-columns:47% 1fr;gap:4%;align-items:center;text-align:left;border-bottom:1px solid #b98a39;padding:0 0 clamp(2px,.4vw,6px)}
+#pj-merc-detail .pj-merc-property span{background:linear-gradient(#563117,#281408);border:1px solid #b77b27;border-radius:5px;box-shadow:inset 0 0 0 1px #80511f;color:#ffdfa0;font:700 clamp(8px,1.02vw,13px)/1.15 Georgia,serif;text-align:center;padding:clamp(3px,.45vw,7px) 2px}
+#pj-merc-detail .pj-merc-property strong{color:#ffe2ae;font:700 clamp(10px,1.4vw,18px)/1.15 Georgia,serif;overflow-wrap:anywhere}
+#pj-merc-detail #pj-merc-flavor{font:clamp(9px,1.25vw,16px)/1.2 Georgia,serif}
+#pj-merc-detail .pj-merc-actions{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(5px,.65vw,9px);width:100%;align-items:stretch}
+#pj-merc-detail .pj-merc-actions a{display:flex;justify-content:center;align-items:center;min-width:0;font:700 clamp(9px,1vw,13px)/1.15 Georgia,serif;border-radius:4px;box-shadow:inset 0 1px 0 #ffe2a8,0 2px 5px #0007}
+#pj-merc-detail .pj-merc-quantity{display:grid;grid-template-columns:1fr 1fr 1fr;min-width:0;width:100%;background:#efc77e;border-radius:4px;box-shadow:inset 0 1px 0 #ffe2a8,0 2px 5px #0007;overflow:hidden}
+#pj-merc-detail .pj-merc-actions .pj-merc-quantity button{font:800 clamp(17px,1.9vw,24px)/1 Arial,sans-serif;color:#160e07;min-width:0;min-height:32px;padding:3px;background:transparent}
+#pj-merc-detail .pj-merc-quantity output{align-self:center;font:700 clamp(13px,1.4vw,18px)/1 Arial,sans-serif;color:#160e07}
+#pj-merc-detail .pj-merc-actions .pj-merc-quantity button:disabled{opacity:.42}
+@media(max-width:650px){
+ #pj-merc-detail .pj-merc-board{gap:2px}
+ #pj-merc-detail .pj-merc-property{gap:2%;padding-bottom:2px}
+ #pj-merc-detail .pj-merc-property span{font-size:clamp(6px,1.5vw,9px);padding:2px 1px}
+ #pj-merc-detail .pj-merc-property strong{font-size:clamp(8px,2vw,11px)}
+ #pj-merc-detail #pj-merc-rating-stars{font-size:10px}
+ #pj-merc-detail #pj-merc-rating-value{font-size:10px}
+ #pj-merc-detail .pj-merc-rating small{font-size:8px}
+ #pj-merc-detail #pj-merc-flavor{font-size:clamp(8px,2vw,11px)}
+}
+@media(max-width:650px) and (orientation:portrait){
+ #pj-merc-detail .pj-merc-board{display:flex;top:34%;left:52%;width:36%;height:60%;padding:0;justify-content:center;gap:2px}
+ #pj-merc-detail .pj-merc-board h2,#pj-merc-detail .pj-merc-board p{position:static;width:auto;left:auto;margin:0}
+ #pj-merc-detail #pj-merc-focus-title,#pj-merc-detail #pj-merc-flavor{position:static;top:auto}
+ #pj-merc-detail .pj-merc-board h2{font-size:clamp(10px,3vw,15px)}
+ #pj-merc-detail .pj-merc-actions{position:absolute;top:calc(100% + 12px);left:-125%;width:225%;right:auto;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:8px}
+ #pj-merc-detail .pj-merc-actions a{min-height:44px;white-space:normal;font-size:clamp(9px,2.25vw,12px)}
+ #pj-merc-detail .pj-merc-actions .pj-merc-quantity button{min-height:44px;min-width:0}
+}
 /* Mobile-only full-cabinet stage: maintain original cabinet artwork and proportions. */
 .pj-merc-cabinet-layer{display:none}
 @media(max-width:650px){
@@ -2239,7 +2282,7 @@
 
 <div class="pj-merc-layer pj-merc-cabinet-layer" id="pj-merc-cabinet" role="dialog" aria-modal="true" aria-label="Mercantile display case" aria-hidden="true"><div class="pj-merc-cabinet-wrap"><button type="button" id="pj-merc-cabinet-close" class="pj-merc-cabinet-close">← Return to passenger car</button><div class="pj-merc-cabinet-stage"><img src="assets/mercantile/Pullman_Mercantile_Cabinet_No_Rails.jpg" alt="Complete Pullman Mercantile display cabinet"><div class="pj-merc-cabinet-hotspots" id="pj-merc-cabinet-hotspots"><button type="button" data-pj-cabinet-dept="0" aria-label="Open top left shelf"></button><button type="button" data-pj-cabinet-dept="1" aria-label="Open top center shelf"></button><button type="button" data-pj-cabinet-dept="2" aria-label="Open top right shelf"></button><button type="button" data-pj-cabinet-dept="3" aria-label="Open middle left shelf"></button><button type="button" data-pj-cabinet-dept="4" aria-label="Open middle center shelf"></button><button type="button" data-pj-cabinet-dept="5" aria-label="Open middle right shelf"></button><button type="button" data-pj-cabinet-dept="6" aria-label="Open bottom left shelf"></button><button type="button" data-pj-cabinet-dept="7" aria-label="Open bottom center shelf"></button><button type="button" data-pj-cabinet-dept="8" aria-label="Open bottom right shelf"></button></div></div></div></div>
 <div class="pj-merc-layer" id="pj-merc-shelf" role="dialog" aria-modal="true" aria-label="Mercantile shelf" aria-hidden="true"><div class="pj-merc-frame"><div class="pj-merc-toolbar"><strong id="pj-merc-title"></strong><button id="pj-merc-exit" type="button">← Return to passenger car</button></div><div class="pj-merc-stage"><img id="pj-merc-shelf-art" src="assets/mercantile/Pullman_Expanded_1_Shelves.jpg" alt="Illuminated Pullman shelf"><div class="pj-merc-bottles one" id="pj-merc-products"></div></div></div></div>
-<div class="pj-merc-layer" id="pj-merc-detail" role="dialog" aria-modal="true" aria-label="Pullman bottle alcove" aria-hidden="true"><div class="pj-merc-alcove"><img class="pj-merc-alcove-bottle" id="pj-merc-focus-img" alt=""><button class="pj-merc-back" id="pj-merc-return" type="button">← Back to shelf</button><div class="pj-merc-price is-pending" id="pj-merc-price" aria-live="polite">Checking price…</div><div class="pj-merc-board"><h2 id="pj-merc-focus-title"></h2><p id="pj-merc-heat"></p><p id="pj-merc-flavor"></p><div class="pj-merc-actions"><a id="pj-merc-product-link" href="#">Full product page →</a><div class="pj-merc-quantity" role="group" aria-label="Quantity in cart"><button id="pj-merc-add" type="button" aria-label="Add one bottle" disabled>+</button><output id="pj-merc-count" aria-live="polite">0</output><button id="pj-merc-subtract" type="button" aria-label="Remove one bottle" disabled>−</button></div></div></div></div></div>
+<div class="pj-merc-layer" id="pj-merc-detail" role="dialog" aria-modal="true" aria-label="Pullman bottle alcove" aria-hidden="true"><div class="pj-merc-alcove"><img class="pj-merc-alcove-bottle" id="pj-merc-focus-img" alt=""><button class="pj-merc-back" id="pj-merc-return" type="button">← Back to shelf</button><div class="pj-merc-price is-pending" id="pj-merc-price" aria-live="polite">Checking price…</div><div class="pj-merc-board"><h2 id="pj-merc-focus-title"></h2><div class="pj-merc-rating" id="pj-merc-rating" hidden aria-label="People’s Choice rating"><span id="pj-merc-rating-stars" aria-hidden="true"></span><strong id="pj-merc-rating-value"></strong><small>Passenger Reviews</small></div><div class="pj-merc-properties"><div class="pj-merc-property" id="pj-merc-heat-row"><span>HEAT LEVEL</span><strong id="pj-merc-heat"></strong></div><div class="pj-merc-property" id="pj-merc-hit-row"><span>HOW IT HITS</span><strong id="pj-merc-hit"></strong></div><div class="pj-merc-property" id="pj-merc-finish-row"><span>HOW IT FINISHES</span><strong id="pj-merc-finish"></strong></div></div><p id="pj-merc-flavor"></p><div class="pj-merc-actions"><a id="pj-merc-product-link" href="#">Full product page →</a><div class="pj-merc-quantity" role="group" aria-label="Quantity in cart"><button id="pj-merc-add" type="button" aria-label="Add one bottle" disabled>+</button><output id="pj-merc-count" aria-live="polite">0</output><button id="pj-merc-subtract" type="button" aria-label="Remove one bottle" disabled>−</button></div></div></div></div></div>
   <!-- ═══ VIDEO GATE ═══════════════════════════════════════════ -->
   <div id="video-gate">
     <video id="video-gate-player" src="assets/video/pepper-junction-welcome.mp4" playsinline muted></video>
@@ -2658,7 +2701,7 @@ const groups=[
 ['SNACKS',p=>p.Category==='SNACKS'],
 ['OILS & VINEGARS',p=>p.Category==='Olive Oil/Vinegar']
 ];
-const el=id=>document.getElementById(id);const shelf=el('pj-merc-shelf'),detail=el('pj-merc-detail'),cabinet=el('pj-merc-cabinet');const isMobileMerc=()=>window.matchMedia('(max-width:650px)').matches;let data=[],trigger=null,lastBottle=null,currentProduct=null,currentCommercial=null,priceRequest=0;
+const el=id=>document.getElementById(id);const shelf=el('pj-merc-shelf'),detail=el('pj-merc-detail'),cabinet=el('pj-merc-cabinet');const isMobileMerc=()=>window.matchMedia('(max-width:650px)').matches;let data=[],trigger=null,lastBottle=null,currentProduct=null,currentCommercial=null,priceRequest=0,ratingRequest=0;
 function show(layer,on){layer.classList.toggle('is-visible',on);layer.setAttribute('aria-hidden',String(!on));document.body.style.overflow=shelf.classList.contains('is-visible')||detail.classList.contains('is-visible')||cabinet.classList.contains('is-visible')?'hidden':''}
 function openShelf(i,button){if(!data.length)return;show(cabinet,false);trigger=button;const items=data.filter(groups[i][1]).filter(p=>art[p.slug]);const two=items.length>6;el('pj-merc-title').textContent=groups[i][0]+'';el('pj-merc-shelf-art').src='assets/mercantile/'+(two?'Pullman_Expanded_2_Shelves.jpg':'Pullman_Expanded_1_Shelves.jpg');const slots=el('pj-merc-products');slots.className='pj-merc-bottles '+(two?'two':'one');slots.dataset.dept=String(i);slots.style.setProperty('--pj-merc-columns',Math.max(1,two?Math.ceil(items.length/2):items.length));slots.replaceChildren();items.forEach((p,index)=>{const b=document.createElement('button');b.type='button';b.className='pj-merc-bottle'+(two&&index<Math.ceil(items.length/2)?' pj-merc-upper':'');b.setAttribute('aria-label','Inspect '+p['Product Name']);b.title=p['Product Name'];b.dataset.pjMercSlug=p.slug;const img=document.createElement('img');img.src=art[p.slug];img.alt='';b.append(img);b.addEventListener('click',()=>openBottle(p,b));slots.append(b)});show(shelf,true);el('pj-merc-exit').focus({preventScroll:true})}
 function mercQuantity(){if(!currentProduct||!window.PJCart)return 0;const item=window.PJCart.read().items.find(x=>x.product_id===currentProduct.slug);return item?Number(item.quantity)||0:0}
@@ -2673,7 +2716,43 @@ function refreshMercPrice(p){
     priceEl.textContent='$'+currentCommercial.price.toFixed(2);priceEl.classList.remove('is-pending');refreshMercCart();
   }).catch(err=>{if(request!==priceRequest||currentProduct?.slug!==p.slug)return;priceEl.textContent='Price unavailable';priceEl.classList.add('is-pending');refreshMercCart();console.warn('Mercantile Square price unavailable',err)});
 }
-function openBottle(p,b){currentProduct=p;lastBottle=b;refreshMercCart();refreshMercPrice(p);el('pj-merc-focus-img').src=art[p.slug];el('pj-merc-focus-img').alt=p['Product Name'];el('pj-merc-focus-title').textContent=p['Product Name'];el('pj-merc-heat').textContent=p['Heat Category']?'Heat: '+p['Heat Category']:'';el('pj-merc-flavor').textContent=p['Primary Flavor Notes']||p['hero sub']||'';const a=el('pj-merc-product-link');a.hidden=false;const url=new URL('products/'+encodeURIComponent(p.slug)+'.html',location.href);url.searchParams.set('pjMercShelf',el('pj-merc-products').dataset.dept);url.searchParams.set('pjMercBottle',p.slug);a.href=url.href;show(shelf,false);show(detail,true);el('pj-merc-return').focus({preventScroll:true})}
+/* Existing public Passenger Notes channel: rating is accepted only when backend returns
+   an approved quarter-rounded aggregate. No raw scoring or customer data in this page. */
+function refreshMercRating(p){
+  const request=++ratingRequest;
+  const ratingEl=el('pj-merc-rating');
+  ratingEl.hidden=true;
+  const host=location.hostname;
+  const testing=host==='localhost'||host==='127.0.0.1';
+  const base=testing?'https://slubpfmpjgoupujptayy.supabase.co':'https://cdbenwthxhypuuipyjlv.supabase.co';
+  const apikey=testing?'sb_publishable_Yqg6Y8-c2Kf_T6s9D-76WQ_aVqxLyTo':'sb_publishable_1VOvjHvVLszMI_Rrb-tfig_Ox_EitKr';
+  fetch(base+'/functions/v1/pj-passenger-notes',{
+    method:'POST',headers:{'Content-Type':'application/json','apikey':apikey},
+    body:JSON.stringify({slug:p.slug})
+  }).then(r=>{if(!r.ok)throw Error('Public review unavailable');return r.json()}).then(result=>{
+    if(request!==ratingRequest||currentProduct?.slug!==p.slug)return;
+    // Only display a server-supplied public aggregate; do not infer it from questionnaire answers.
+    const score=Number(result?.rating), count=Number(result?.count);
+    if(result?.available!==true||result?.rating==null||result?.count==null||
+       !Number.isFinite(score)||score<3||score>5||Math.round(score*4)!==score*4||
+       !Number.isInteger(count)||count<1)return;
+    const stars=el('pj-merc-rating-stars');
+    stars.replaceChildren();
+    const wrap=document.createElement('span');
+    wrap.className='pj-merc-stars-wrap';
+    const empty=document.createElement('span');
+    empty.textContent='☆☆☆☆☆';
+    const fill=document.createElement('span');
+    fill.className='pj-merc-stars-fill';
+    fill.textContent='★★★★★';
+    fill.style.width=(score/5*100)+'%';
+    wrap.append(empty,fill);stars.append(wrap);
+    el('pj-merc-rating-value').textContent=score.toFixed(2)+'/5';
+    ratingEl.querySelector('small').textContent=count+' verified review'+(count===1?'':'s');
+    ratingEl.hidden=false;
+  }).catch(()=>{if(request===ratingRequest)ratingEl.hidden=true;});
+}
+function openBottle(p,b){currentProduct=p;lastBottle=b;refreshMercCart();refreshMercPrice(p);el('pj-merc-focus-img').src=art[p.slug];el('pj-merc-focus-img').alt=p['Product Name'];el('pj-merc-focus-title').textContent=p['Product Name'];el('pj-merc-heat').textContent=p['Heat Category']||'';el('pj-merc-heat-row').hidden=!p['Heat Category'];el('pj-merc-hit').textContent=p['How it Hits']||'';el('pj-merc-hit-row').hidden=!p['How it Hits'];el('pj-merc-finish').textContent=p['Heat Finish']||'';el('pj-merc-finish-row').hidden=!p['Heat Finish'];el('pj-merc-flavor').textContent=p['Primary Flavor Notes']||p['hero sub']||'';refreshMercRating(p);const a=el('pj-merc-product-link');a.hidden=false;const url=new URL('products/'+encodeURIComponent(p.slug)+'.html',location.href);url.searchParams.set('pjMercShelf',el('pj-merc-products').dataset.dept);url.searchParams.set('pjMercBottle',p.slug);a.href=url.href;show(shelf,false);show(detail,true);el('pj-merc-return').focus({preventScroll:true})}
 el('pj-merc-add').addEventListener('click',()=>{if(!currentProduct||!currentCommercial||!currentCommercial.available||!window.PJCart)return;
   const p=currentProduct;window.PJCart.addItem({product_id:p.slug,slug:p.slug,product_name:p['Product Name'],brand:p.Brand,price:currentCommercial.price,square_id:p.Square_ID,square_url:p['Product URL'],image:art[p.slug],quantity:1,category:p.Category,heat_category:p['Heat Category'],food_style:p['Food Style'],best_pairings:p['Best Food Pairings']});refreshMercCart();
 });
