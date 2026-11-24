@@ -2187,7 +2187,25 @@
 #pj-merc-detail .pj-merc-rating small{display:block;font:italic clamp(8px,.9vw,12px) Georgia,serif}
 #pj-merc-detail .pj-merc-properties{width:100%;display:flex;flex-direction:column;gap:clamp(3px,.35vw,6px)}
 #pj-merc-detail .pj-merc-property{display:grid;grid-template-columns:47% 1fr;gap:4%;align-items:center;text-align:left;border-bottom:1px solid #b98a39;padding:0 0 clamp(2px,.4vw,6px)}
-#pj-merc-detail .pj-merc-property span{background:linear-gradient(#563117,#281408);border:1px solid #b77b27;border-radius:5px;box-shadow:inset 0 0 0 1px #80511f;color:#ffdfa0;font:700 clamp(8px,1.02vw,13px)/1.15 Georgia,serif;text-align:center;padding:clamp(3px,.45vw,7px) 2px}
+/* Cast-brass classification nameplates: layered metallic patina, bevel, and rivets. */
+#pj-merc-detail .pj-merc-property span{
+ position:relative;display:flex;align-items:center;justify-content:center;min-height:clamp(26px,2.6vw,33px);
+ box-sizing:border-box;padding:clamp(4px,.42vw,7px) clamp(10px,1vw,15px);isolation:isolate;
+ color:#fff0c0;text-align:center;text-shadow:0 1px 1px #150b02,0 -1px 0 #f2c27155;
+ font:700 clamp(9px,1.02vw,13px)/1.12 Georgia,serif;letter-spacing:.025em;
+ border:2px solid #b67b27;border-radius:3px;
+ background:linear-gradient(180deg,#f1c977 0%,#bb8434 8%,#764619 17%,#3b210d 48%,#5a330f 79%,#b97c29 91%,#e6b662 100%);
+ box-shadow:inset 0 1px 0 #ffe3a5,inset 0 -1px 0 #1e0d03,inset 1px 0 0 #e6b46588,inset -1px 0 0 #1d0e03,0 1px 1px #000c,0 3px 5px #0009;
+}
+#pj-merc-detail .pj-merc-property span::before,#pj-merc-detail .pj-merc-property span::after{
+ content:'';position:absolute;top:50%;width:clamp(3px,.38vw,5px);height:clamp(3px,.38vw,5px);
+ border-radius:50%;transform:translateY(-50%);pointer-events:none;
+ background:radial-gradient(circle at 31% 27%,#fff2ba 0%,#d4a44f 25%,#79501e 66%,#35200b 100%);
+ box-shadow:0 0 0 1px #281707,0 1px 1px #0008;
+}
+#pj-merc-detail .pj-merc-property span::before{left:clamp(3px,.45vw,6px)}
+#pj-merc-detail .pj-merc-property span::after{right:clamp(3px,.45vw,6px)}
+#pj-merc-detail .pj-merc-property strong{text-shadow:0 1px 2px #000a}
 #pj-merc-detail .pj-merc-property strong{color:#ffe2ae;font:700 clamp(10px,1.4vw,18px)/1.15 Georgia,serif;overflow-wrap:anywhere}
 #pj-merc-detail #pj-merc-flavor{font:clamp(9px,1.25vw,16px)/1.2 Georgia,serif}
 #pj-merc-detail .pj-merc-actions{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(5px,.65vw,9px);width:100%;align-items:stretch}
@@ -2199,7 +2217,7 @@
 @media(max-width:650px){
  #pj-merc-detail .pj-merc-board{gap:2px}
  #pj-merc-detail .pj-merc-property{gap:2%;padding-bottom:2px}
- #pj-merc-detail .pj-merc-property span{font-size:clamp(6px,1.5vw,9px);padding:2px 1px}
+ #pj-merc-detail .pj-merc-property span{font-size:clamp(8px,1.75vw,10px);min-height:22px;padding:3px 8px;border-width:1px}
  #pj-merc-detail .pj-merc-property strong{font-size:clamp(8px,2vw,11px)}
  #pj-merc-detail #pj-merc-rating-stars{font-size:10px}
  #pj-merc-detail #pj-merc-rating-value{font-size:10px}
@@ -2282,7 +2300,7 @@
 
 <div class="pj-merc-layer pj-merc-cabinet-layer" id="pj-merc-cabinet" role="dialog" aria-modal="true" aria-label="Mercantile display case" aria-hidden="true"><div class="pj-merc-cabinet-wrap"><button type="button" id="pj-merc-cabinet-close" class="pj-merc-cabinet-close">← Return to passenger car</button><div class="pj-merc-cabinet-stage"><img src="assets/mercantile/Pullman_Mercantile_Cabinet_No_Rails.jpg" alt="Complete Pullman Mercantile display cabinet"><div class="pj-merc-cabinet-hotspots" id="pj-merc-cabinet-hotspots"><button type="button" data-pj-cabinet-dept="0" aria-label="Open top left shelf"></button><button type="button" data-pj-cabinet-dept="1" aria-label="Open top center shelf"></button><button type="button" data-pj-cabinet-dept="2" aria-label="Open top right shelf"></button><button type="button" data-pj-cabinet-dept="3" aria-label="Open middle left shelf"></button><button type="button" data-pj-cabinet-dept="4" aria-label="Open middle center shelf"></button><button type="button" data-pj-cabinet-dept="5" aria-label="Open middle right shelf"></button><button type="button" data-pj-cabinet-dept="6" aria-label="Open bottom left shelf"></button><button type="button" data-pj-cabinet-dept="7" aria-label="Open bottom center shelf"></button><button type="button" data-pj-cabinet-dept="8" aria-label="Open bottom right shelf"></button></div></div></div></div>
 <div class="pj-merc-layer" id="pj-merc-shelf" role="dialog" aria-modal="true" aria-label="Mercantile shelf" aria-hidden="true"><div class="pj-merc-frame"><div class="pj-merc-toolbar"><strong id="pj-merc-title"></strong><button id="pj-merc-exit" type="button">← Return to passenger car</button></div><div class="pj-merc-stage"><img id="pj-merc-shelf-art" src="assets/mercantile/Pullman_Expanded_1_Shelves.jpg" alt="Illuminated Pullman shelf"><div class="pj-merc-bottles one" id="pj-merc-products"></div></div></div></div>
-<div class="pj-merc-layer" id="pj-merc-detail" role="dialog" aria-modal="true" aria-label="Pullman bottle alcove" aria-hidden="true"><div class="pj-merc-alcove"><img class="pj-merc-alcove-bottle" id="pj-merc-focus-img" alt=""><button class="pj-merc-back" id="pj-merc-return" type="button">← Back to shelf</button><div class="pj-merc-price is-pending" id="pj-merc-price" aria-live="polite">Checking price…</div><div class="pj-merc-board"><h2 id="pj-merc-focus-title"></h2><div class="pj-merc-rating" id="pj-merc-rating" hidden aria-label="People’s Choice rating"><span id="pj-merc-rating-stars" aria-hidden="true"></span><strong id="pj-merc-rating-value"></strong><small>Passenger Reviews</small></div><div class="pj-merc-properties"><div class="pj-merc-property" id="pj-merc-heat-row"><span>HEAT LEVEL</span><strong id="pj-merc-heat"></strong></div><div class="pj-merc-property" id="pj-merc-hit-row"><span>HOW IT HITS</span><strong id="pj-merc-hit"></strong></div><div class="pj-merc-property" id="pj-merc-finish-row"><span>HOW IT FINISHES</span><strong id="pj-merc-finish"></strong></div></div><p id="pj-merc-flavor"></p><div class="pj-merc-actions"><a id="pj-merc-product-link" href="#">Full product page →</a><div class="pj-merc-quantity" role="group" aria-label="Quantity in cart"><button id="pj-merc-add" type="button" aria-label="Add one bottle" disabled>+</button><output id="pj-merc-count" aria-live="polite">0</output><button id="pj-merc-subtract" type="button" aria-label="Remove one bottle" disabled>−</button></div></div></div></div></div>
+<div class="pj-merc-layer" id="pj-merc-detail" role="dialog" aria-modal="true" aria-label="Pullman bottle alcove" aria-hidden="true"><div class="pj-merc-alcove"><img class="pj-merc-alcove-bottle" id="pj-merc-focus-img" alt=""><button class="pj-merc-back" id="pj-merc-return" type="button">← Back to shelf</button><div class="pj-merc-price is-pending" id="pj-merc-price" aria-live="polite">Checking price…</div><div class="pj-merc-board"><h2 id="pj-merc-focus-title"></h2><div class="pj-merc-rating" id="pj-merc-rating" hidden aria-label="People’s Choice rating"><span id="pj-merc-rating-stars" aria-hidden="true"></span><strong id="pj-merc-rating-value"></strong><small>People’s Choice Rating</small></div><div class="pj-merc-properties"><div class="pj-merc-property" id="pj-merc-heat-row"><span>HEAT LEVEL</span><strong id="pj-merc-heat"></strong></div><div class="pj-merc-property" id="pj-merc-hit-row"><span>HOW IT HITS</span><strong id="pj-merc-hit"></strong></div><div class="pj-merc-property" id="pj-merc-finish-row"><span>HOW IT FINISHES</span><strong id="pj-merc-finish"></strong></div></div><p id="pj-merc-flavor"></p><div class="pj-merc-actions"><a id="pj-merc-product-link" href="#">Full product page →</a><div class="pj-merc-quantity" role="group" aria-label="Quantity in cart"><button id="pj-merc-add" type="button" aria-label="Add one bottle" disabled>+</button><output id="pj-merc-count" aria-live="polite">0</output><button id="pj-merc-subtract" type="button" aria-label="Remove one bottle" disabled>−</button></div></div></div></div></div>
   <!-- ═══ VIDEO GATE ═══════════════════════════════════════════ -->
   <div id="video-gate">
     <video id="video-gate-player" src="assets/video/pepper-junction-welcome.mp4" playsinline muted></video>
@@ -2748,7 +2766,7 @@ function refreshMercRating(p){
     fill.style.width=(score/5*100)+'%';
     wrap.append(empty,fill);stars.append(wrap);
     el('pj-merc-rating-value').textContent=score.toFixed(2)+'/5';
-    ratingEl.querySelector('small').textContent=count+' verified review'+(count===1?'':'s');
+    ratingEl.querySelector('small').textContent='People’s Choice Rating';
     ratingEl.hidden=false;
   }).catch(()=>{if(request===ratingRequest)ratingEl.hidden=true;});
 }
