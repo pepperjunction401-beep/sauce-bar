@@ -2233,6 +2233,19 @@
  #pj-merc-detail .pj-merc-actions a{min-height:44px;white-space:normal;font-size:clamp(9px,2.25vw,12px)}
  #pj-merc-detail .pj-merc-actions .pj-merc-quantity button{min-height:44px;min-width:0}
 }
+/* Alcove price: move to clear upper-right corner, away from product title and rating. */
+#pj-merc-detail .pj-merc-price{
+ top:15.5%;right:9.5%;
+ font-size:clamp(22px,3vw,38px);
+ line-height:1.05;transform:rotate(10deg);
+ text-shadow:0 2px 2px #000e,1px 1px 1px #f2ebd355;
+}
+@media(max-width:650px) and (orientation:portrait){
+ #pj-merc-detail .pj-merc-price{
+  top:14%;right:8.5%;font-size:clamp(15px,4.5vw,23px);
+  transform:rotate(8deg);
+ }
+}
 /* Mobile-only full-cabinet stage: maintain original cabinet artwork and proportions. */
 .pj-merc-cabinet-layer{display:none}
 @media(max-width:650px){
