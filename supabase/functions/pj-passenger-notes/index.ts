@@ -2,7 +2,6 @@
 // Strictly read-only: approved reviews; no personal identifiers, originals,
 // private ratings, scoring, badges, payments, or moderation writes.
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "npm:@supabase/supabase-js@2.83.0";
 
 const MIN_APPROVED = 1; // Each customer contributes at most one approved review per product.
 const PAGE_SIZE = 500;
@@ -48,17 +47,26 @@ Deno.serve(async (request) => {
     return reply({error:"INVALID_PRODUCT"},400);
   const url=Deno.env.get("SUPABASE_URL"), key=secretKey();
   if(!url||!key) return reply({error:"SERVICE_UNAVAILABLE"},503);
-  const admin=createClient(url,key,{auth:{persistSession:false}});
-  // Query only the four fields being aggregated. Never select identities or prose.
+  // The secret API key is NOT a JWT. Use it only as the server-side apikey
+  // header; older supabase-js clients forward it as Authorization, causing
+  // intermittent PostgREST 401/PGRST303 and hiding otherwise valid ratings.
+  // Never expose this key or any individual review fields to the browser.
   const rows:(Answers & {points_raw:number|null})[]=[];
   for(let page=0;page<MAX_PAGES;page++){
-    const start=page*PAGE_SIZE;
-    const {data,error}=await admin.from("pj_review_submissions")
-      .select("q10,q11,q12,q13,points_raw")
-      .eq("product_slug_snapshot",slug).eq("moderation_status","approved")
-      .range(start,start+PAGE_SIZE-1);
-    if(error)return reply({error:"NOTES_UNAVAILABLE"},503);
-    const batch=(data||[]) as (Answers & {points_raw:number|null})[];
+    const endpoint=new URL("/rest/v1/pj_review_submissions",url);
+    endpoint.searchParams.set("select","q10,q11,q12,q13,points_raw");
+    endpoint.searchParams.set("product_slug_snapshot","eq."+slug);
+    endpoint.searchParams.set("moderation_status","eq.approved");
+    endpoint.searchParams.set("offset",String(page*PAGE_SIZE));
+    endpoint.searchParams.set("limit",String(PAGE_SIZE));
+    let response:Response;
+    try {
+      response=await fetch(endpoint,{headers:{apikey:key,accept:"application/json"}});
+    } catch {return reply({error:"NOTES_UNAVAILABLE"},503);}
+    if(!response.ok)return reply({error:"NOTES_UNAVAILABLE"},503);
+    let batch:(Answers & {points_raw:number|null})[];
+    try {batch=await response.json();} catch {return reply({error:"NOTES_UNAVAILABLE"},503);}
+    if(!Array.isArray(batch))return reply({error:"NOTES_UNAVAILABLE"},503);
     rows.push(...batch);
     if(batch.length<PAGE_SIZE)break;
     if(page===MAX_PAGES-1)return reply({error:"NOTES_LIMIT_REACHED"},503);
