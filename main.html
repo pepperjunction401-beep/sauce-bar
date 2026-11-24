@@ -2176,7 +2176,9 @@
 /* Mercantile showcase visual refresh — presentation only; existing shopping pipeline preserved. */
 #pj-merc-detail .pj-merc-board{gap:clamp(3px,.6vw,8px);padding-top:10%;justify-content:center;overflow:visible}
 #pj-merc-detail .pj-merc-board h2{font:700 clamp(15px,2.7vw,35px)/1.08 Georgia,serif;transform:none}
-#pj-merc-detail .pj-merc-rating{width:100%;text-align:center;border-block:1px solid #a87933;color:#ffda94;padding:3px 0;line-height:1.1}
+#pj-merc-detail .pj-merc-rating{width:100%;box-sizing:border-box;text-align:center;border:1px solid #a87933;border-radius:6px;color:#ffda94;padding:clamp(4px,.55vw,8px) 3px;line-height:1.1;background:linear-gradient(135deg,#25180c99,#0b0907aa);box-shadow:inset 0 0 0 1px #5b3a16,0 2px 10px #0007}
+#pj-merc-detail .pj-merc-rating::before,#pj-merc-detail .pj-merc-rating::after{content:'✦';color:#c58c39;font-size:clamp(9px,1vw,13px);margin:0 clamp(2px,.5vw,7px);vertical-align:middle}
+#pj-merc-detail .pj-merc-rating::before{float:left}#pj-merc-detail .pj-merc-rating::after{float:right}
 #pj-merc-detail .pj-merc-rating[hidden],#pj-merc-detail .pj-merc-property[hidden]{display:none!important}
 #pj-merc-detail .pj-merc-stars-wrap{display:inline-block;position:relative;white-space:nowrap;line-height:1}
 #pj-merc-detail .pj-merc-stars-fill{position:absolute;inset:0 auto 0 0;overflow:hidden;white-space:nowrap;color:#ffb82f}
@@ -2189,8 +2191,8 @@
 #pj-merc-detail .pj-merc-property strong{color:#ffe2ae;font:700 clamp(10px,1.4vw,18px)/1.15 Georgia,serif;overflow-wrap:anywhere}
 #pj-merc-detail #pj-merc-flavor{font:clamp(9px,1.25vw,16px)/1.2 Georgia,serif}
 #pj-merc-detail .pj-merc-actions{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(5px,.65vw,9px);width:100%;align-items:stretch}
-#pj-merc-detail .pj-merc-actions a{display:flex;justify-content:center;align-items:center;min-width:0;font:700 clamp(9px,1vw,13px)/1.15 Georgia,serif}
-#pj-merc-detail .pj-merc-quantity{display:grid;grid-template-columns:1fr 1fr 1fr;min-width:0;width:100%;background:#efc77e}
+#pj-merc-detail .pj-merc-actions a{display:flex;justify-content:center;align-items:center;min-width:0;font:700 clamp(9px,1vw,13px)/1.15 Georgia,serif;border-radius:4px;box-shadow:inset 0 1px 0 #ffe2a8,0 2px 5px #0007}
+#pj-merc-detail .pj-merc-quantity{display:grid;grid-template-columns:1fr 1fr 1fr;min-width:0;width:100%;background:#efc77e;border-radius:4px;box-shadow:inset 0 1px 0 #ffe2a8,0 2px 5px #0007;overflow:hidden}
 #pj-merc-detail .pj-merc-actions .pj-merc-quantity button{font:800 clamp(17px,1.9vw,24px)/1 Arial,sans-serif;color:#160e07;min-width:0;min-height:32px;padding:3px;background:transparent}
 #pj-merc-detail .pj-merc-quantity output{align-self:center;font:700 clamp(13px,1.4vw,18px)/1 Arial,sans-serif;color:#160e07}
 #pj-merc-detail .pj-merc-actions .pj-merc-quantity button:disabled{opacity:.42}
