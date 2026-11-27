@@ -1,3 +1,4 @@
+import { commercialDiagnostic } from "./diagnostic.js";
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
@@ -73,7 +74,10 @@ Deno.serve(async (req: Request) => {
     .select("id,cns_slug,is_active")
     .in("cns_slug", productIds);
 
-  if (productsError) return json(req, { error: "Unable to read product state" }, 500);
+  if (productsError) {
+    console.error(JSON.stringify(commercialDiagnostic("pj_products", productsError, productIds, new Date().toISOString())));
+    return json(req, { error: "Unable to read product state" }, 500);
+  }
 
   const rows = products ?? [];
   const ids = rows.map((p: any) => p.id);
@@ -85,7 +89,10 @@ Deno.serve(async (req: Request) => {
         .in("product_id", ids)
     : { data: [], error: null };
 
-  if (statesError) return json(req, { error: "Unable to read commercial state" }, 500);
+  if (statesError) {
+    console.error(JSON.stringify(commercialDiagnostic("product_commercial_state", statesError, productIds, new Date().toISOString())));
+    return json(req, { error: "Unable to read commercial state" }, 500);
+  }
 
   const stateByProduct = new Map((states ?? []).map((s: any) => [s.product_id, s]));
 
