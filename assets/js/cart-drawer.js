@@ -38,8 +38,10 @@
   function syncCommercialPrices() {
     var cart = window.PJCart.read();
     var items = Array.isArray(cart && cart.items) ? cart.items : [];
-    var ids = Array.from(new Set(items.map(function (item) {
-      return item && item.product_id;
+    var ids = Array.from(new Set(items.filter(function (item) {
+      return item && item.kind !== 'pj_review_reward';
+    }).map(function (item) {
+      return item.product_id;
     }).filter(Boolean)));
 
     if (!ids.length) return;
@@ -70,6 +72,8 @@
         var changed = false;
 
         latest.items.forEach(function (item) {
+          // Complimentary reward price is always $0.00 and server-authorized.
+          if (item.kind === 'pj_review_reward') return;
           var state = byId[item.product_id];
           if (!state || state.current !== true || state.available !== true) return;
 
@@ -346,7 +350,7 @@
     renderBadgeTeasers(summary);
 
     if (summary.items.some(function (item) {
-      return item.price_source !== 'square-commercial';
+      return item.kind !== 'pj_review_reward' && item.price_source !== 'square-commercial';
     })) {
       syncCommercialPrices();
     }
@@ -421,17 +425,14 @@
             '</div>' +
 
             '<div class="pj-cart-qty-row">' +
-              '<button class="pj-cart-qty-btn" type="button" data-cart-dec="' +
-                esc(item.product_id) +
-              '" aria-label="Decrease quantity">−</button>' +
-
-              '<span class="pj-cart-qty">' +
-                esc(item.quantity) +
-              '</span>' +
-
-              '<button class="pj-cart-qty-btn" type="button" data-cart-inc="' +
-                esc(item.product_id) +
-              '" aria-label="Increase quantity">+</button>' +
+              (item.kind === 'pj_review_reward' ?
+                '<span class="pj-cart-qty">1 complimentary · $0.00</span>' :
+                '<button class="pj-cart-qty-btn" type="button" data-cart-dec="' +
+                  esc(item.product_id) +
+                '" aria-label="Decrease quantity">−</button>' +
+                '<span class="pj-cart-qty">' + esc(item.quantity) + '</span>' +
+                '<button class="pj-cart-qty-btn" type="button" data-cart-inc="' +
+                  esc(item.product_id) + '" aria-label="Increase quantity">+</button>') +
 
               '<button class="pj-cart-remove" type="button" data-cart-remove="' +
                 esc(item.product_id) +
@@ -461,7 +462,7 @@
     }
 
     if (checkoutBtn) {
-      checkoutBtn.disabled = summary.loyalty_reward ? (summary.paid_item_count || 0) === 0 : summary.item_count === 0;
+      checkoutBtn.disabled = (summary.paid_item_count || 0) === 0;
     }
   }
 
@@ -553,7 +554,10 @@
       return;
     }
 
-    if (window.PJCart.getLoyaltyReward && window.PJCart.getLoyaltyReward()) {
+    // Review redemption needs the authenticated Review Board cart adapter.
+    // Paid-only shoppers continue through the existing drawer checkout.
+    if ((window.PJCart.getReviewReward && window.PJCart.getReviewReward()) ||
+        (window.PJCart.getLoyaltyReward && window.PJCart.getLoyaltyReward())) {
       window.location.assign(getCartBasePath() + 'cart-page.html');
       return;
     }
